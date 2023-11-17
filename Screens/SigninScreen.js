@@ -1,5 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+
+// Importing the logo
+// import Logo from './assets/Logo.png'; 
 
 const SignInScreen = ({ navigation }) => {
   return (
