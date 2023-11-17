@@ -1,9 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 
-// Assuming you're using the entire screen's width and height
-const { width, height } = Dimensions.get('window');
-
 const LoginLaunch = () => {
   return (
     <View style={styles.container}>
@@ -33,8 +30,9 @@ const LoginLaunch = () => {
 
 const styles = StyleSheet.create({
   container: {
-    width: width,
-    height: height,
+    width: 390,
+    height: 844,
+    position: 'relative',
     backgroundColor: '#535CE8',
   },
   backgroundCircle: {
@@ -51,31 +49,31 @@ const styles = StyleSheet.create({
     top: 50,
     left: 22,
     fontSize: 48,
-    fontWeight: '700',
+    fontWeight: '600',
     color: '#171A1F',
     textAlign: 'center',
   },
   content: {
     position: 'absolute',
-    top: 190,
+    top: 250,
     left: 12,
     width: 357,
-    fontSize: 28,
-    fontWeight: '600',
+    fontSize: 24,
+    fontWeight: '500',
     color: 'white',
     lineHeight: 42, // This may not have the desired effect in React Native; adjust as necessary
   },
   disclaimer: {
     position: 'absolute',
-    top: 703,
+    top: 680,
     left: 12,
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: 10,
+    fontWeight: '500',
     color: '#BCC1CA',
   },
   button: {
     position: 'absolute',
-    top: 777,
+    top: 715,
     left: 21,
     width: 348,
     paddingVertical: 12,
