@@ -13,9 +13,13 @@ const SignInScreen = ({ navigation }) => {
         <Text style={styles.label}>Password</Text>
         <TextInput style={styles.input} placeholder="Enter password" secureTextEntry />
       </View>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('LoginLaunch')} // Make sure the navigation route name is correct
+      >
         <Text style={styles.buttonText}>Sign In</Text>
       </TouchableOpacity>
+      {/* <Text style={styles.buttonText} onPress={() => navigation.navigate('LoginLaunch')}> Sign In </Text> */}
       <Text style={styles.footerText}>
         Don't have an account? 
         <Text style={styles.signUpText} onPress={() => navigation.navigate('CreateAccount')}> Sign up</Text>
@@ -72,4 +76,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default SignInScreen;
