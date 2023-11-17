@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 
-const LoginLaunch = () => {
+const LoginLaunch = ({navigation}) => {
   return (
     <View style={styles.container}>
       {/* Large white circle in the background */}
@@ -21,7 +21,10 @@ const LoginLaunch = () => {
       </Text>
 
       {/* Agree & Continue button */}
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity 
+      style={styles.button}
+      onPress = {()=> navigation.navigate('DataInput')}
+      >
         <Text style={styles.buttonText}>Agree & Continue</Text>
       </TouchableOpacity>
     </View>

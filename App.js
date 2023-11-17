@@ -5,6 +5,8 @@ import IntroductionScreen from './Screens/IntroductionScreen'; // Adjust the imp
 import SignInScreen from './Screens/SigninScreen'; // Adjust the import path as necessary
 import CreateAccount from './Screens/CreateAccount';
 import LoginLaunch from './Screens/LoginLaunch';
+// import InitialDataInput from './Screens/DataInput';
+import DataInput from './Screens/DataInput';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +33,11 @@ const App = () => {
         <Stack.Screen
           name="LoginLaunch"
           component={LoginLaunch}
+          options={{ headerShown: false }} // Assuming you don't want to show the header
+        />
+        <Stack.Screen
+          name="DataInput"
+          component={DataInput}
           options={{ headerShown: false }} // Assuming you don't want to show the header
         />
         {/* Add other screens as you create them */}
