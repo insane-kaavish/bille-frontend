@@ -64,6 +64,7 @@ const DataInput = ({navigation}) => {
       {/* Continue button */}
       <TouchableOpacity
         style={{ width: 348, height: 50, marginTop: 40, backgroundColor: '#535CE8', borderRadius: 26, overflow: 'hidden', justifyContent: 'center', alignItems: 'center' }}
+        onPress={()=>navigation.navigate('RoomData')}
       >
         <Text style={{ color: 'white', fontSize: 18, fontFamily: 'Lato', fontWeight: '400', lineHeight: 28 }}>Continue</Text>
       </TouchableOpacity>
