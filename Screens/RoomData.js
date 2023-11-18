@@ -1,129 +1,112 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 
-const RoomData = ({navigation}) => {
+const { width, height } = Dimensions.get('window');
+
+const RoomData = ({ navigation }) => {
   return (
     <View style={styles.container}>
-        <TouchableOpacity 
-        style={styles.submitButton}
-        onPress={() => navigation.navigate('DataComplete')}>
-            <Text style={styles.submitText}>Submit</Text>    
-        </TouchableOpacity>
-      
-      <View style={styles.roomSection}>
-        <View style={styles.closeIcon} />
-        <Text style={styles.roomName}>Enter Room Name</Text>
+      <Text style={styles.header}>Bill-E</Text>
+      <Text style={styles.setupTitle}>Setup</Text>
+
+      {/* Room Option */}
+      <View style={[styles.roomContainer, { top: height * 0.25 }]}>
+        <View style={styles.iconPlaceholder} />
         <Text style={styles.roomTitle}>Room</Text>
-        <View style={styles.addRoomIcon} />
+        <Text style={styles.inputLabel}>Enter Room Name</Text>
       </View>
 
-      <View style={styles.setupTitle}>
-        <Text style={styles.setupText}>Setup</Text>
+      {/* Add Room Option */}
+      <View style={[styles.roomContainer, { top: height * 0.4, backgroundColor: 'rgba(123, 97, 255, 0.4)' }]}>
+        <View style={[styles.iconPlaceholder, { backgroundColor: 'transparent' }]} />
+        <Text style={[styles.roomTitle, { opacity: 0.4 }]}>Add Room</Text>
+        <Text style={styles.inputLabel}>Enter Room Name</Text>
       </View>
+
+      {/* Submit Button */}
+      <TouchableOpacity
+        style={styles.submitButton}
+        onPress={() => {/* Handle submit action */}}
+      >
+        <Text style={styles.submitText}>Submit</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    width: width,
     height: '100%',
-    position: 'relative',
     backgroundColor: 'white',
-    boxShadow: '0px 3px 6px rgba(18, 15, 40, 0.12)',
+  },
+  header: {
+    textAlign: 'center',
+    fontSize: 48,
+    fontWeight: 'bold',
+    color: '#171A1F',
+    position: 'absolute',
+    top: height * 0.05,
+    alignSelf: 'center',
+  },
+  setupTitle: {
+    position: 'absolute',
+    top: height * 0.15,
+    left: 21,
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#171A1F',
+  },
+  roomContainer: {
+    position: 'absolute',
+    width: '90%',
+    height: 79,
+    left: 20,
+    backgroundColor: '#F3F4F6',
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 20,
+  },
+  iconPlaceholder: {
+    width: 54,
+    height: 54,
+    backgroundColor: 'rgba(123, 97, 255, 1)',
+    borderRadius: 12,
+    marginRight: 20,
+  },
+  roomTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#171A1F',
+  },
+  inputLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#BCC1CA',
+    position: 'absolute',
+    right: 26,
   },
   submitButton: {
-    width: 348,
-    paddingTop: 12,
-    paddingBottom: 12,
-    left: 23,
-    top: 761,
     position: 'absolute',
+    width: '90%',
+    paddingVertical: 12,
     backgroundColor: '#535CE8',
     borderRadius: 26,
-    overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
-    display: 'flex',
+    bottom: 10,
+    alignSelf: 'center',
   },
   submitText: {
     color: 'white',
     fontSize: 18,
-    fontFamily: 'Lato',
-    fontWeight: '400',
-    lineHeight: 28,
-    wordWrap: 'wrap',
-  },
-  roomSection: {
-    width: 348,
-    height: 79,
-    left: 20,
-    top: 179,
-    position: 'absolute',
-  },
-  closeIcon: {
-    width: 348,
-    height: 79,
-    paddingLeft: 302,
-    paddingRight: 26,
-    left: 0,
-    top: 0,
-    position: 'absolute',
-    backgroundColor: '#FAFAFB',
-    boxShadow: '0px 8px 17px rgba(23, 26, 31, 0.23)',
-    borderRadius: 16,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    display: 'flex',
-  },
-  roomName: {
-    left: 82,
-    top: 39,
-    position: 'absolute',
-    color: '#BCC1CA',
-    fontSize: 14,
-    fontFamily: 'Outfit',
-    fontWeight: '600',
-    lineHeight: 22,
-    wordWrap: 'wrap',
-  },
-  roomTitle: {
-    left: 82,
-    top: 11,
-    position: 'absolute',
-    color: '#171A1F',
-    fontSize: 24,
-    fontFamily: 'Outfit',
-    fontWeight: '600',
-    lineHeight: 36,
-    wordWrap: 'wrap',
-  },
-  addRoomIcon: {
-    width: 54,
-    height: 54,
-    padding: 13,
-    left: 16,
-    top: 11,
-    position: 'absolute',
-    backgroundColor: '#7B48CC',
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-    display: 'flex',
-  },
-  setupTitle: {
-    left: 21,
-    top: 115,
-    position: 'absolute',
-  },
-  setupText: {
-    textAlign: 'center',
-    color: '#171A1F',
-    fontSize: 32,
-    fontFamily: 'Outfit',
-    fontWeight: '700',
-    lineHeight: 48,
-    wordWrap: 'wrap',
+    fontWeight: 'normal',
   },
 });
 
