@@ -1,6 +1,7 @@
-import React from 'react';
+import React ,{ useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import * as Font from 'expo-font';
 import IntroductionScreen from './Screens/IntroductionScreen'; // Adjust the import path as necessary
 import SignInScreen from './Screens/SigninScreen'; // Adjust the import path as necessary
 import CreateAccount from './Screens/CreateAccount';
@@ -15,6 +16,27 @@ import Home from './Screens/Home';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        'Lato-Regular': require('./extra/fonts/Lato/Lato-Regular.ttf'),
+        'Outfit-Bold': require('./extra/fonts/Outfit/static/Outfit-Bold.ttf'),
+        'Outfit-Regular': require('./extra/fonts/Outfit/static/Outfit-Regular.ttf'),
+        // Add other font weights and styles as needed
+        // 'Lato-Bold': require('./assets/fonts/Lato-Bold.ttf'),
+        // 'Outfit-Regular': require('./assets/fonts/Outfit-Regular.ttf'),
+      });
+      setFontsLoaded(true);
+    };
+
+    loadFonts();
+  }, []);
+
+  // if (!fontsLoaded) {
+  //   return <Text>Loading...</Text>;
+  // }
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Introduction">

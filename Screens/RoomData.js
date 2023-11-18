@@ -26,7 +26,7 @@ const RoomData = ({ navigation }) => {
       {/* Submit Button */}
       <TouchableOpacity
         style={styles.submitButton}
-        onPress={() => {/* Handle submit action */}}
+        onPress={() => {navigation.navigate('DataComplete')}}
       >
         <Text style={styles.submitText}>Submit</Text>
       </TouchableOpacity>
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   submitButton: {
     position: 'absolute',
     width: '90%',
-    paddingVertical: 12,
+    paddingVertical: 18,
     backgroundColor: '#535CE8',
     borderRadius: 26,
     justifyContent: 'center',
