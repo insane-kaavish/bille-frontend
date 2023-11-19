@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   readyText: {
     color: '#171A1F',
     fontSize: 18,
-    fontFamily: 'Lato',
+    fontFamily: 'Lato-Regular',
     fontWeight: '400',
     lineHeight: 28,
     // alignContent 'left',/

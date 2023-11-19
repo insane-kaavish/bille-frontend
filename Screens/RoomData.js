@@ -50,11 +50,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   setupTitle: {
-    position: 'absolute',
+    // position: 'absolute',
     top: height * 0.15,
     left: 21,
     fontSize: 32,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
+    fontFamily: 'Outfit-Bold',
     color: '#171A1F',
   },
   roomContainer: {
