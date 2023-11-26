@@ -4,7 +4,7 @@ import { TouchableOpacity ,StyleSheet, ScrollView ,Image,  View, Text } from 're
 
 const DashBoard = () => {
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
          {/* BillE */}
         <View style={styles.BillEcontainer}>
             <Text style={styles.BillEtext}>Bill-E</Text>
@@ -88,7 +88,7 @@ const DashBoard = () => {
 
 
 
-    </ScrollView>
+    </View>
   );
 };
 
