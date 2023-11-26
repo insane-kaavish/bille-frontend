@@ -11,6 +11,7 @@ import DataInput from './Screens/DataInput';
 import RoomData from './Screens/RoomData';
 import DataComplete from './Screens/DataComplete';
 import Home from './Screens/Home';
+import DashBoard from './Screens/DashBoard';
 
 
 const Stack = createNativeStackNavigator();
@@ -22,6 +23,7 @@ const App = () => {
     const loadFonts = async () => {
       await Font.loadAsync({
         'Lato-Regular': require('./extra/fonts/Lato/Lato-Regular.ttf'),
+        'Lato-Bold': require('./extra/fonts/Lato/Lato-Bold.ttf'),
         'Outfit-Bold': require('./extra/fonts/Outfit/static/Outfit-Bold.ttf'),
         'Outfit-Regular': require('./extra/fonts/Outfit/static/Outfit-Regular.ttf'),
         // Add other font weights and styles as needed
@@ -80,6 +82,11 @@ const App = () => {
           name="Home"
           component={Home}
           options={{ headerShown: false }} // Assuming you don't want to show the header
+        />
+        <Stack.Screen
+          name="DashBoard"
+          component={DashBoard}
+          options={{headerShown: false }} // Assuming you don't want to show the header
         />
         {/* Add other screens as you create them */}
       </Stack.Navigator>
