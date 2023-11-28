@@ -3,8 +3,15 @@ import { TouchableOpacity ,StyleSheet, ScrollView ,Image,  View, Text } from 're
 // import styles from './YourStyleSheet';
 
 const DashBoard = () => {
+    const handleTabPress = (tabIndex) => {
+        // Implement your navigation logic here based on the tabIndex
+        console.log(`Tab ${tabIndex + 1} pressed`);
+      };
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
+        
+
+    <ScrollView >
          {/* BillE */}
         <View style={styles.BillEcontainer}>
             <Text style={styles.BillEtext}>Bill-E</Text>
@@ -35,7 +42,7 @@ const DashBoard = () => {
                 <View style={styles.c4innerCircleContainer}>
             <View style={styles.c4innermostCircleContainer}>
             {/* <View style={styles.c4blackCircle}></View> */}
-            <View style={styles.c4greenCircle}></View>
+            <Image source={require('../extra/assets/OV.png')}/>
           </View>
         </View>
       </View>
@@ -82,6 +89,25 @@ const DashBoard = () => {
       </View>
       <Text style={styles.c13updateRequiredText}>Data Update Required!</Text>
     </View>
+    {/* c14 or peak hour card*/}
+    <View style={styles.c14container}>
+      <Text style={styles.c14title}>Peak Hours</Text>
+      <Text style={styles.c14time}>6:30 - 11:30 pm</Text>
+      <Text style={styles.c14updated}>updated a week ago</Text>
+      <View style={styles.c14iconContainer}>
+        <Image source={require('../extra/assets/c14.png')}/>
+      </View>
+    </View>
+    {/* c12 */}
+    <View style={styles.c12container}>
+      <Text style={styles.c12titleText}>Per Unit Price</Text>
+      <Text style={styles.c12priceText}>Rs. 23.91</Text>
+      <Text style={styles.c12updatedText}>updated 1 day ago</Text>
+      <View style={styles.c12iconContainer}>
+      <Image source={require('../extra/assets/c12.png')}/>
+      </View>
+    </View>
+    {/*  */}
 
 
 
@@ -89,6 +115,30 @@ const DashBoard = () => {
 
 
     </ScrollView>
+    {/* Navigation */}
+    <View style={styles.navcontainer}>
+      <TouchableOpacity style={styles.navtab} onPress={() => handleTabPress(0)}>
+      <Image source={require('../extra/assets/nav1.png')}/>
+        <Text style={styles.navlabel}>Overview</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.navtab} onPress={() => handleTabPress(1)}>
+      <Image source={require('../extra/assets/nav2.png')} />
+        <Text style={styles.navlabel}>Prediction</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.navtab} onPress={() => handleTabPress(2)}>
+      <Image source={require('../extra/assets/nav3.png')}/>
+        <Text style={styles.navlabel}>Room Wise</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.navtab} onPress={() => handleTabPress(3)}>
+      <Image source={require('../extra/assets/nav4.png')}/>
+        <Text style={styles.navlabel}>Insights</Text>
+      </TouchableOpacity>
+    </View>
+    {/* end nav */}
+    </View>
   );
 };
 
@@ -400,11 +450,11 @@ c13cardContainer: {
     top: 94,
     position: 'absolute',
     color: 'white',
-    fontSize: 14,
+    fontSize: 13,
     fontFamily: 'Outfit-Regular',
     fontWeight: '500',
     lineHeight: 22,
-    // wordWrap: 'break-word',
+    wordWrap: 'break-word',
   },
   c13dateContainer: {
     left: 9,
@@ -455,6 +505,137 @@ c13cardContainer: {
     lineHeight: 18,
     // wordWrap: 'break-word',
   },
+//   c14
+  c14container: {
+    width: 166,
+    height: 189,
+    left: 21,
+    top: 633,
+    position: 'absolute',
+    backgroundColor: '#125D95',
+    borderRadius: 16,
+    elevation: 3,
+  },
+  c14title: {
+    left: 7,
+    top: 90,
+    position: 'absolute',
+    color: 'white',
+    fontSize: 14,
+    fontFamily: 'Outfit-Bold',
+    fontWeight: '500',
+    lineHeight: 22,
+  },
+  c14time: {
+    left: 7,
+    top: 113,
+    position: 'absolute',
+    color: 'white',
+    fontSize: 22,
+    fontFamily: 'Outfit-Bold',
+    fontWeight: '500',
+    lineHeight: 34,
+  },
+  c14updated: {
+    left: 7,
+    top: 149,
+    position: 'absolute',
+    color: 'white',
+    fontSize: 11,
+    fontFamily: 'Lato-Regular',
+    fontWeight: '400',
+    lineHeight: 18,
+  },
+  c14iconContainer: {
+    width: 58,
+    height: 58,
+    left: 90,
+    top: 20,
+    position: 'absolute',
+  },
+//   c12
+  c12container: {
+    width: 166,
+    height: 189,
+    left: 203,
+    top: 633,
+    position: 'absolute',
+    backgroundColor: '#21A1A3',
+    boxShadow: '0px 4px 9px rgba(23, 26, 31, 0.19)',
+    borderRadius: 16,
+  },
+  c12titleText: {
+    left: 12,
+    top: 90,
+    position: 'absolute',
+    color: 'white',
+    fontSize: 14,
+    fontFamily: 'Outfit',
+    fontWeight: '500',
+    lineHeight: 22,
+  },
+  c12priceText: {
+    left: 12,
+    top: 112,
+    position: 'absolute',
+    color: 'white',
+    fontSize: 24,
+    fontFamily: 'Outfit',
+    fontWeight: '500',
+    lineHeight: 36,
+  },
+  c12updatedText: {
+    left: 12,
+    top: 149,
+    position: 'absolute',
+    color: 'white',
+    fontSize: 11,
+    fontFamily: 'Lato',
+    fontWeight: '400',
+    lineHeight: 18,
+  },
+  c12iconContainer: {
+    width: 66,
+    height: 66,
+    left: 82,
+    top: 16,
+    position: 'absolute',
+  },
+//   navigaion
+navcontainer: {
+    flexDirection: 'row',
+    height: 64,
+    backgroundColor: 'white',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    elevation: 5, // Android shadow
+    shadowColor: '#171A1F',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    position: 'absolute',
+    bottom: 10,
+    left: 0,
+    right: 0,
+  },
+  navtab: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  navicon: {
+    width: 34,
+    height: 34,
+    // Customize your icon styles here
+    backgroundColor: '#535CE8',
+  },
+  navlabel: {
+    fontSize: 11,
+    color: '#9095A0',
+    marginTop: 4,
+  },
+
+  
 
 });
 

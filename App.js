@@ -44,7 +44,7 @@ const App = () => {
       <Stack.Navigator initialRouteName="Introduction">
         <Stack.Screen
           name="Introduction"
-          component={DashBoard}
+          component={IntroductionScreen}
           options={{ headerShown: false }} // Assuming you don't want a header for the intro screen
         />
         <Stack.Screen
