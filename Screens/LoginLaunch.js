@@ -33,9 +33,7 @@ const LoginLaunch = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: 390,
-    height: 844,
-    position: 'relative',
+    flex: 1,
     backgroundColor: '#535CE8',
   },
   backgroundCircle: {

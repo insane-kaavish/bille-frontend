@@ -1,113 +1,257 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ScrollView, TextInput } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const RoomData = ({ navigation }) => {
+  const [rooms, setRooms] = useState([{ name: '', appliances: [{ name: '', usage: '' }] }]);
+  const [activeRoomIndex, setActiveRoomIndex] = useState(null);
+
+  const addRoom = () => {
+    setRooms([...rooms, { name: '', appliances: [{ name: '', usage: '' }] }]);
+  };
+
+  const addAppliance = (roomIndex) => {
+    const newRooms = [...rooms];
+    newRooms[roomIndex].appliances.push({ name: '', usage: '' });
+    setRooms(newRooms);
+  };
+
+  const toggleAccordion = (index) => {
+    setActiveRoomIndex(activeRoomIndex === index ? null : index);
+  };
+
+  const renderAppliance = (appliance, roomIndex, applianceIndex) => {
+    return (
+      <View key={`appliance-${applianceIndex}`} style={styles.applianceItem}>
+        <Picker
+          selectedValue={appliance.name}
+          style={styles.pickerStyle}
+          onValueChange={(itemValue) =>
+            setApplianceName(roomIndex, applianceIndex, itemValue)
+          }>
+          {/* Dummy Picker Items, replace with your actual appliances */}
+          <Picker.Item label="Choose Your Appliance" value="" />
+          <Picker.Item label="Air Conditioner" value="air_conditioner" />
+          <Picker.Item label="Heater" value="heater" />
+          <Picker.Item label="Washing Machine" value="washing_machine" />
+        </Picker>
+        <TextInput
+          style={styles.usageInput}
+          onChangeText={(text) => setApplianceUsage(roomIndex, applianceIndex, text)}
+          value={appliance.usage}
+          placeholder="Select Hrs"
+          keyboardType="numeric"
+        />
+      </View>
+    );
+  };
+
+  const setApplianceName = (roomIndex, applianceIndex, name) => {
+    const newRooms = [...rooms];
+    newRooms[roomIndex].appliances[applianceIndex].name = name;
+    setRooms(newRooms);
+  };
+
+  const setApplianceUsage = (roomIndex, applianceIndex, usage) => {
+    const newRooms = [...rooms];
+    newRooms[roomIndex].appliances[applianceIndex].usage = usage;
+    setRooms(newRooms);
+  };
+
+  const renderRooms = () => {
+    return rooms.map((room, index) => (
+      <View key={`room-${index}`} style={styles.roomWrapper}>
+        {/* Room Accordion */}
+        <TouchableOpacity style={styles.roomContainer} onPress={() => toggleAccordion(index)}>
+          <View style={styles.iconPlaceholder} />
+          <TextInput
+            style={styles.roomInput}
+            onChangeText={(text) => setRoomName(index, text)}
+            value={room.name}
+            placeholder="Enter Room Name"
+          />
+          <TouchableOpacity onPress={() => toggleAccordion(index)}>
+            <Text style={styles.dropdownArrow}>{activeRoomIndex === index ? '▲' : '▼'}</Text>
+          </TouchableOpacity>
+        </TouchableOpacity>
+
+        {/* Appliance Options - Hidden initially */}
+        {activeRoomIndex === index && (
+          <View style={styles.applianceContainer}>
+            {room.appliances.map((appliance, applianceIndex) =>
+              renderAppliance(appliance, index, applianceIndex)
+            )}
+            <TouchableOpacity
+              style={styles.addApplianceButton}
+              onPress={() => addAppliance(index)}>
+              <Text style={styles.addApplianceText}>+ Add An Appliance</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
+    ));
+  };
+
+  const setRoomName = (index, name) => {
+    const newRooms = [...rooms];
+    newRooms[index].name = name;
+    setRooms(newRooms);
+  };
+
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       <Text style={styles.header}>Bill-E</Text>
       <Text style={styles.setupTitle}>Setup</Text>
 
-      {/* Room Option */}
-      <View style={[styles.roomContainer, { top: height * 0.25 }]}>
-        <View style={styles.iconPlaceholder} />
-        <Text style={styles.roomTitle}>Room</Text>
-        <Text style={styles.inputLabel}>Enter Room Name</Text>
-      </View>
+      {renderRooms()}
 
       {/* Add Room Option */}
-      <View style={[styles.roomContainer, { top: height * 0.4, backgroundColor: 'rgba(123, 97, 255, 0.4)' }]}>
-        <View style={[styles.iconPlaceholder, { backgroundColor: 'transparent' }]} />
-        <Text style={[styles.roomTitle, { opacity: 0.4 }]}>Add Room</Text>
-        <Text style={styles.inputLabel}>Enter Room Name</Text>
-      </View>
+      <TouchableOpacity
+        style={[styles.addRoomContainer]}
+        onPress={addRoom}>
+        <View style={[styles.iconPlaceholder, styles.addIconPlaceholder]} />
+        <Text style={styles.addRoomText}>Add Room</Text>
+      </TouchableOpacity>
 
       {/* Submit Button */}
       <TouchableOpacity
         style={styles.submitButton}
-        onPress={() => {navigation.navigate('DataComplete')}}
-      >
+        onPress={() => navigation.navigate('DataComplete')}>
         <Text style={styles.submitText}>Submit</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: width,
-    height: '100%',
+    flex: 1,
     backgroundColor: 'white',
   },
+  contentContainer: {
+    paddingBottom: 50,
+    alignItems: 'center',
+  },
   header: {
-    textAlign: 'center',
-    fontSize: 48,
+    fontSize: 26,
     fontWeight: 'bold',
-    color: '#171A1F',
-    position: 'absolute',
-    top: height * 0.05,
-    alignSelf: 'center',
+    color: '#000',
+    marginVertical: 20,
   },
   setupTitle: {
-    // position: 'absolute',
-    top: height * 0.15,
-    left: 21,
-    fontSize: 32,
-    // fontWeight: 'bold',
-    fontFamily: 'Outfit-Bold',
-    color: '#171A1F',
+    fontSize: 22,
+    fontWeight: '600',
+    color: '#000',
+    alignSelf: 'flex-start',
+    marginLeft: 20,
+    marginBottom: 10,
+  },
+  roomWrapper: {
+    width: '90%',
+    marginBottom: 10,
   },
   roomContainer: {
-    position: 'absolute',
-    width: '90%',
-    height: 79,
-    left: 20,
-    backgroundColor: '#F3F4F6',
-    borderRadius: 20,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 2,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 20,
+    padding: 15,
+    marginBottom: 10,
   },
   iconPlaceholder: {
-    width: 54,
-    height: 54,
-    backgroundColor: 'rgba(123, 97, 255, 1)',
+    width: 40,
+    height: 40,
+    borderRadius: 10,
+    backgroundColor: '#7B61FF',
+    marginRight: 15,
+  },
+  roomInput: {
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#000',
+    flex: 1,
+  },
+  dropdownArrow: {
+    fontSize: 18,
+    color: '#000',
+    marginRight: 10,
+  },
+  applianceContainer: {
+    backgroundColor: '#FFFFFF',
     borderRadius: 12,
-    marginRight: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    padding: 15,
   },
-  roomTitle: {
-    fontSize: 24,
+  applianceItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  pickerStyle: {
+    flex: 1,
+    marginRight: 10,
+  },
+  usageInput: {
+    borderWidth: 1,
+    borderColor: '#CCC',
+    borderRadius: 8,
+    padding: 8,
+    width: 100,
+    marginRight: 10,
+  },
+  addApplianceButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+  },
+  addApplianceText: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#7B61FF',
+    marginLeft: 5,
+  },
+  addRoomContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(123, 97, 255, 0.1)',
+    borderRadius: 12,
+    padding: 15,
+    width: '90%',
+    marginTop: 10,
+  },
+  addIconPlaceholder: {
+    backgroundColor: 'transparent',
+  },
+  addRoomText: {
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#171A1F',
-  },
-  inputLabel: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#BCC1CA',
-    position: 'absolute',
-    right: 26,
+    color: 'rgba(123, 97, 255, 1)',
+    marginLeft: 15,
   },
   submitButton: {
-    position: 'absolute',
-    width: '90%',
-    paddingVertical: 18,
     backgroundColor: '#535CE8',
     borderRadius: 26,
+    paddingVertical: 18,
+    width: '90%',
     justifyContent: 'center',
     alignItems: 'center',
-    bottom: 10,
-    alignSelf: 'center',
+    marginTop: 20,
   },
   submitText: {
-    color: 'white',
     fontSize: 18,
-    fontWeight: 'normal',
+    fontWeight: '600',
+    color: '#FFFFFF',
   },
 });
 

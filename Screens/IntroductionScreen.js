@@ -20,9 +20,7 @@ const IntroductionScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: 390,
-    height: 844,
-    position: 'relative',
+    flex: 1,
     backgroundColor: '#535CE8',
   },
   largeCircle: {
@@ -34,21 +32,10 @@ const styles = StyleSheet.create({
     top: -185,
     left: -47,
   },
-//   smallCircle: {
-//     width: 58,
-//     height: 58,
-//     position: 'absolute',
-//     backgroundColor: 'white',
-//     borderRadius: 29,
-//     top: 476,
-//     left: 37,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
   title: {
     position: 'absolute',
     top: 100,
-    left: 48,
+    alignSelf: 'center',
     color: '#171A1F',
     fontSize: 48,
     fontWeight: '700',
@@ -57,7 +44,7 @@ const styles = StyleSheet.create({
   subtitle: {
     position: 'absolute',
     top: 550,
-    left: 30,
+    alignSelf: 'center', // This will center the subtitle
     color: 'white',
     fontSize: 24,
     fontWeight: '600',
@@ -65,7 +52,7 @@ const styles = StyleSheet.create({
   continueButton: {
     position: 'absolute',
     top: 739,
-    left: 21,
+    alignSelf: 'center', // This will center the button
     width: 348,
     paddingVertical: 12,
     backgroundColor: 'white',
