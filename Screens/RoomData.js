@@ -1,15 +1,33 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ScrollView, TextInput } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  TextInput,
+  SafeAreaView,
+  Alert,
+  Platform,
+  StatusBar
+} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { useNavigation } from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const { width } = Dimensions.get('window');
-
-const RoomData = ({ navigation }) => {
+const RoomData = () => {
   const [rooms, setRooms] = useState([{ name: '', appliances: [{ name: '', usage: '' }] }]);
   const [activeRoomIndex, setActiveRoomIndex] = useState(null);
+  const navigation = useNavigation();
 
   const addRoom = () => {
-    setRooms([...rooms, { name: '', appliances: [{ name: '', usage: '' }] }]);
+    const newRoom = { name: '', appliances: [{ name: '', usage: '' }] }; // Start with one appliance
+    setRooms([...rooms, newRoom]);
+  };
+
+  const removeRoom = (roomIndex) => {
+    const newRooms = rooms.filter((_, index) => index !== roomIndex);
+    setRooms(newRooms);
   };
 
   const addAppliance = (roomIndex) => {
@@ -18,34 +36,14 @@ const RoomData = ({ navigation }) => {
     setRooms(newRooms);
   };
 
-  const toggleAccordion = (index) => {
-    setActiveRoomIndex(activeRoomIndex === index ? null : index);
+  const removeAppliance = (roomIndex, applianceIndex) => {
+    const newRooms = [...rooms];
+    newRooms[roomIndex].appliances.splice(applianceIndex, 1);
+    setRooms(newRooms);
   };
 
-  const renderAppliance = (appliance, roomIndex, applianceIndex) => {
-    return (
-      <View key={`appliance-${applianceIndex}`} style={styles.applianceItem}>
-        <Picker
-          selectedValue={appliance.name}
-          style={styles.pickerStyle}
-          onValueChange={(itemValue) =>
-            setApplianceName(roomIndex, applianceIndex, itemValue)
-          }>
-          {/* Dummy Picker Items, replace with your actual appliances */}
-          <Picker.Item label="Choose Your Appliance" value="" />
-          <Picker.Item label="Air Conditioner" value="air_conditioner" />
-          <Picker.Item label="Heater" value="heater" />
-          <Picker.Item label="Washing Machine" value="washing_machine" />
-        </Picker>
-        <TextInput
-          style={styles.usageInput}
-          onChangeText={(text) => setApplianceUsage(roomIndex, applianceIndex, text)}
-          value={appliance.usage}
-          placeholder="Select Hrs"
-          keyboardType="numeric"
-        />
-      </View>
-    );
+  const toggleAccordion = (index) => {
+    setActiveRoomIndex(index === activeRoomIndex ? null : index);
   };
 
   const setApplianceName = (roomIndex, applianceIndex, name) => {
@@ -60,32 +58,58 @@ const RoomData = ({ navigation }) => {
     setRooms(newRooms);
   };
 
+  const setRoomName = (index, name) => {
+    const newRooms = [...rooms];
+    newRooms[index].name = name;
+    setRooms(newRooms);
+  };
+
+  const renderAppliance = (appliance, roomIndex, applianceIndex) => {
+    return (
+      <View key={`appliance-${applianceIndex}`} style={styles.applianceItem}>
+        <Picker
+          selectedValue={appliance.name}
+          style={styles.pickerStyle}
+          onValueChange={(itemValue) => setApplianceName(roomIndex, applianceIndex, itemValue)}
+          mode="dropdown"
+        >
+          <Picker.Item label="Choose Your Appliance" value="" />
+          {/* ... other appliance options */}
+        </Picker>
+        <TextInput
+          style={styles.usageInput}
+          onChangeText={(text) => setApplianceUsage(roomIndex, applianceIndex, text)}
+          value={appliance.usage}
+          placeholder="Select Hrs"
+          keyboardType="numeric"
+        />
+        <TouchableOpacity onPress={() => removeAppliance(roomIndex, applianceIndex)}>
+          <Ionicons name="close-circle" size={24} color="red" />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   const renderRooms = () => {
     return rooms.map((room, index) => (
       <View key={`room-${index}`} style={styles.roomWrapper}>
-        {/* Room Accordion */}
         <TouchableOpacity style={styles.roomContainer} onPress={() => toggleAccordion(index)}>
-          <View style={styles.iconPlaceholder} />
           <TextInput
             style={styles.roomInput}
             onChangeText={(text) => setRoomName(index, text)}
             value={room.name}
             placeholder="Enter Room Name"
           />
-          <TouchableOpacity onPress={() => toggleAccordion(index)}>
-            <Text style={styles.dropdownArrow}>{activeRoomIndex === index ? '▲' : '▼'}</Text>
+          <TouchableOpacity onPress={() => removeRoom(index)}>
+            <Ionicons name="close-circle" size={24} color="red" />
           </TouchableOpacity>
         </TouchableOpacity>
-
-        {/* Appliance Options - Hidden initially */}
         {activeRoomIndex === index && (
-          <View style={styles.applianceContainer}>
+          <View>
             {room.appliances.map((appliance, applianceIndex) =>
               renderAppliance(appliance, index, applianceIndex)
             )}
-            <TouchableOpacity
-              style={styles.addApplianceButton}
-              onPress={() => addAppliance(index)}>
+            <TouchableOpacity style={styles.addApplianceButton} onPress={() => addAppliance(index)}>
               <Text style={styles.addApplianceText}>+ Add An Appliance</Text>
             </TouchableOpacity>
           </View>
@@ -94,164 +118,147 @@ const RoomData = ({ navigation }) => {
     ));
   };
 
-  const setRoomName = (index, name) => {
-    const newRooms = [...rooms];
-    newRooms[index].name = name;
-    setRooms(newRooms);
-  };
-
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-      <Text style={styles.header}>Bill-E</Text>
-      <Text style={styles.setupTitle}>Setup</Text>
-
-      {renderRooms()}
-
-      {/* Add Room Option */}
-      <TouchableOpacity
-        style={[styles.addRoomContainer]}
-        onPress={addRoom}>
-        <View style={[styles.iconPlaceholder, styles.addIconPlaceholder]} />
-        <Text style={styles.addRoomText}>Add Room</Text>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.headerBar}>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.header}>Bill-E</Text>
+        <TouchableOpacity style={styles.logoutButton} onPress={() => navigation.reset({ index: 0, routes: [{ name: 'SignIn' }] })}>
+          <Ionicons name="log-out" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
+      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        <Text style={styles.setupTitle}>Setup</Text>
+        {renderRooms()}
+        <TouchableOpacity style={styles.addRoomButton} onPress={addRoom}>
+          <Text style={styles.addRoomButtonText}>+ Add Room</Text>
+        </TouchableOpacity>
+      </ScrollView>
+      <TouchableOpacity style={styles.submitButton} onPress={() => Alert.alert('Submit', 'Data submitted successfully')}>
+        <Text style={styles.submitButtonText}>Submit</Text>
       </TouchableOpacity>
-
-      {/* Submit Button */}
-      <TouchableOpacity
-        style={styles.submitButton}
-        onPress={() => navigation.navigate('DataComplete')}>
-        <Text style={styles.submitText}>Submit</Text>
-      </TouchableOpacity>
-    </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
     backgroundColor: 'white',
   },
+  container: {
+    flex: 1,
+  },
   contentContainer: {
-    paddingBottom: 50,
-    alignItems: 'center',
+    padding: 16,
+    justifyContent: 'space-between',
   },
   header: {
     fontSize: 26,
     fontWeight: 'bold',
-    color: '#000',
-    marginVertical: 20,
+    color: 'black',
+    alignSelf: 'center',
+    margin: 20,
   },
   setupTitle: {
     fontSize: 22,
-    fontWeight: '600',
-    color: '#000',
-    alignSelf: 'flex-start',
-    marginLeft: 20,
-    marginBottom: 10,
+    fontWeight: 'bold',
+    color: 'black',
+    marginLeft: 16,
+    marginBottom: 20,
   },
   roomWrapper: {
-    width: '90%',
-    marginBottom: 10,
+    backgroundColor: '#f7f7f7',
+    borderRadius: 10,
+    padding: 16,
+    marginBottom: 16,
   },
   roomContainer: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 15,
-    marginBottom: 10,
-  },
-  iconPlaceholder: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
-    backgroundColor: '#7B61FF',
-    marginRight: 15,
   },
   roomInput: {
-    fontSize: 18,
-    fontWeight: '500',
-    color: '#000',
     flex: 1,
-  },
-  dropdownArrow: {
-    fontSize: 18,
-    color: '#000',
-    marginRight: 10,
+    borderWidth: 1,
+    borderColor: 'grey',
+    borderRadius: 10,
+    padding: 12,
+    marginRight: 8,
   },
   applianceContainer: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-    padding: 15,
+    marginTop: 16,
   },
   applianceItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 16,
   },
   pickerStyle: {
     flex: 1,
-    marginRight: 10,
+    borderWidth: 1,
+    borderColor: 'grey',
+    borderRadius: 10,
+    marginRight: 8,
+    padding: 12,
   },
   usageInput: {
+    flex: 1,
     borderWidth: 1,
-    borderColor: '#CCC',
-    borderRadius: 8,
-    padding: 8,
-    width: 100,
-    marginRight: 10,
+    borderColor: 'grey',
+    borderRadius: 10,
+    padding: 12,
   },
   addApplianceButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    backgroundColor: '#e8e8e8',
+    borderRadius: 20,
     padding: 10,
+    alignItems: 'center',
+    width: '100%',
   },
   addApplianceText: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#7B61FF',
-    marginLeft: 5,
-  },
-  addRoomContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(123, 97, 255, 0.1)',
-    borderRadius: 12,
-    padding: 15,
-    width: '90%',
-    marginTop: 10,
-  },
-  addIconPlaceholder: {
-    backgroundColor: 'transparent',
-  },
-  addRoomText: {
-    fontSize: 18,
+    color: 'blue',
     fontWeight: 'bold',
-    color: 'rgba(123, 97, 255, 1)',
-    marginLeft: 15,
+  },
+  addRoomButton: {
+    backgroundColor: 'blue',
+    borderRadius: 20,
+    padding: 12,
+    alignItems: 'center',
+    width: '100%',
+  },
+  addRoomButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  headerBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0, // Add padding for Android status bar
+    paddingHorizontal: 10,
+  },
+  backButton: {
+    top: 10,
+    left: 10,
+  },
+  logoutButton: {
+    top: 10,
+    right: 10,
   },
   submitButton: {
-    backgroundColor: '#535CE8',
-    borderRadius: 26,
-    paddingVertical: 18,
-    width: '90%',
-    justifyContent: 'center',
+    backgroundColor: 'blue',
+    borderRadius: 20,
+    padding: 12,
     alignItems: 'center',
-    marginTop: 20,
+    width: '90%',
+    alignSelf: 'center',
+    marginVertical: 20,
   },
-  submitText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#FFFFFF',
+  submitButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
 
