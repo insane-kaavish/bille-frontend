@@ -136,7 +136,7 @@ const RoomData = () => {
           <Text style={styles.addRoomButtonText}>+ Add Room</Text>
         </TouchableOpacity>
       </ScrollView>
-      <TouchableOpacity style={styles.submitButton} onPress={() => Alert.alert('Submit', 'Data submitted successfully')}>
+      <TouchableOpacity style={styles.submitButton} onPress={() => navigation.navigate('DashBoard')}>
         <Text style={styles.submitButtonText}>Submit</Text>
       </TouchableOpacity>
     </SafeAreaView>
