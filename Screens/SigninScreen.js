@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, ActivityInd
 
 const handleAuth = async (email, password) => {
   try {
-    const response = await fetch('http://0.0.0.0:8000/api-auth-token/', {
+    const response = await fetch('http://0.0.0.0:8000/api-token-auth/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ const SignInScreen = ({ navigation }) => {
     if (await handleLogin(email, password)) {
       setToken(await handleAuth(email, password));
       setLoading(false);
-      navigation.navigate('loginLaunch'); // Add this line to navigate to the loginLaunch screen
+      navigation.navigate('DashBoard'); // Add this line to navigate to the loginLaunch screen
     }
   }
 
