@@ -21,7 +21,7 @@ const handleSignUp = async (data) => {
 
   // Make the API call
   try {
-    const response = fetch('http://0.0.0.0:8000/signup/', {
+    const response = await fetch('http://0.0.0.0:8000/signup/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
