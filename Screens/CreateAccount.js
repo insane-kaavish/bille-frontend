@@ -127,6 +127,64 @@ const CreateAccount = ({ navigation }) => {
   );
 };
 
-// Rest of the code...
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  header: {
+    fontSize: 48,
+    fontWeight: '700',
+    color: '#171A1F',
+    position: 'absolute',
+    top: 47,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: '700',
+    color: '#171A1F',
+    marginTop: 125, // Adjust as per your layout
+  },
+  inputContainer: {
+    width: '90%',
+    marginVertical: 10, // Adjust as per your layout
+  },
+  label: {
+    color: '#424955',
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  input: {
+    height: 43,
+    backgroundColor: '#F3F4F6',
+    borderRadius: 16,
+    padding: 10,
+    marginTop: 5,
+  },
+  button: {
+    backgroundColor: '#535CE8',
+    borderRadius: 26,
+    paddingVertical: 12,
+    width: '90%',
+    alignItems: 'center',
+    marginTop: 20, // Adjust as per your layout
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: '400',
+  },
+  footerText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#171A1F',
+    marginTop: 20, // Adjust as per your layout
+  },
+  footerTextHighlight: {
+    color: '#535CE8',
+  },
+});
 
 export default CreateAccount;
