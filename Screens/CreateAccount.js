@@ -21,7 +21,7 @@ const handleSignUp = async (data) => {
 
   // Make the API call
   try {
-    const response = fetch('http://0.0.0.0:8000/signup', {
+    const response = fetch('http://0.0.0.0:8000/signup/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ const handleSignUp = async (data) => {
       body: JSON.stringify(data),
     });
 
-    if (response.status != 201) return false;
+    if (response.status != 200) return false;
     return true;
   }
   catch (error) {
@@ -42,6 +42,7 @@ const CreateAccount = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [token, setToken] = useState([]);
 
   const handleSubmit = async () => {
     // Prepare the data to send
