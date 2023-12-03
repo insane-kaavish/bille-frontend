@@ -1,31 +1,83 @@
-import React from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 
-// Importing the logo
-// import Logo from './assets/Logo.png'; 
+const handleAuth = async (email, password) => {
+  try {
+    const response = await fetch('http://0.0.0.0:8000/api-auth-token/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username: email, password }),
+    });
+    const data = await response.json();
+    return data.token;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const handleLogin = async (email, password) => {
+  try {
+    const response = await fetch('http://0.0.0.0:8000/login/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username: email, password }),
+    });
+    const data = await response.json();
+    return true;
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 const SignInScreen = ({ navigation }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setLoading] = useState(true);
+  const [token, setToken] = useState([]);
+
+  const handleSubmit = async () => {
+    if (await handleLogin(email, password)) {
+      setToken(await handleAuth(email, password));
+      setLoading(false);
+      navigation.navigate('loginLaunch'); // Add this line to navigate to the loginLaunch screen
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Welcome back 👋</Text>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Email</Text>
-        <TextInput style={styles.input} placeholder="Enter email" />
+        <TextInput
+          style={styles.input}
+          placeholder="Enter email"
+          value={email}
+          onChangeText={setEmail}
+        />
       </View>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Password</Text>
-        <TextInput style={styles.input} placeholder="Enter password" secureTextEntry />
+        <TextInput
+          style={styles.input}
+          placeholder="Enter password"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
       </View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('LoginLaunch')} // Make sure the navigation route name is correct
-      >
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Sign In</Text>
       </TouchableOpacity>
-      {/* <Text style={styles.buttonText} onPress={() => navigation.navigate('LoginLaunch')}> Sign In </Text> */}
       <Text style={styles.footerText}>
-        Don't have an account? 
-        <Text style={styles.signUpText} onPress={() => navigation.navigate('CreateAccount')}> Sign up</Text>
+        Don't have an account?
+        <Text style={styles.signUpText} onPress={() => navigation.navigate('CreateAccount')}>
+          {' '}
+          Sign up
+        </Text>
       </Text>
     </View>
   );
