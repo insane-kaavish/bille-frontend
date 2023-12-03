@@ -19,8 +19,8 @@ const IconButton = () => {
   const handleIconPress = () => {
     console.log('icon pressed');
     // Set the state to make the new component visible
-    if(setNewComponentVisible(false)){setNewComponentVisible(true);}
-    else if (setNewComponentVisible(true)){setNewComponentVisible(false);}
+    if(isNewComponentVisible==false){setNewComponentVisible(true);}
+    else if (isNewComponentVisible== true){setNewComponentVisible(false);}
     
   };
 
