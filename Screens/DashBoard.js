@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacity ,StyleSheet, ScrollView ,Image,  View, Text } from 'react-native';
 // import styles from './YourStyleSheet';
 import NavBar from './NavBar';
+import IconButton from './IconButton';
 
 const DashBoard = () => {
     
@@ -14,18 +15,7 @@ const DashBoard = () => {
         <View style={styles.BillEcontainer}>
             <Text style={styles.BillEtext}>Bill-E</Text>
         </View>
-        {/* Icon */}
-        <View style={styles.Iconcontainer}>
-            <View style={styles.IconimageContainer}>
-                <Image
-                    style={styles.Iconimage}
-                    // source={{ uri: 'https://via.placeholder.com/44x44' }}
-                />
-                <View style={styles.Iconoverlay}>
-                <View></View>
-                </View>
-            </View>
-        </View>
+        <IconButton/>
         {/* Date*/}
         <View style={styles.Datecontainer}>
             <Text style={styles.Datetext}>TUES 11 JUL</Text>
