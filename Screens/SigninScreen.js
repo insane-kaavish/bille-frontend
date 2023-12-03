@@ -26,7 +26,7 @@ const handleLogin = async (email, password) => {
       },
       body: JSON.stringify({ username: email, password }),
     });
-    const data = await response.json();
+    if (response.status != 201) return false;
     return true;
   } catch (error) {
     console.error(error);
