@@ -37,24 +37,25 @@ const NavBar = () => {
 const styles = StyleSheet.create({
   navcontainer: {
     flexDirection: 'row',
-    height: 64,
+    height: 70,
     backgroundColor: 'white',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    elevation: 5, // Android shadow
+    elevation: 7, // Android shadow
     shadowColor: '#171A1F',
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
     position: 'absolute',
-    bottom: 10,
+    bottom: 0,
     left: 0,
     right: 0,
   },
   navtab: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'top',
     alignItems: 'center',
+
   },
   navlabel: {
     fontSize: 11,

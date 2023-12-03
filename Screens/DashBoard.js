@@ -11,11 +11,12 @@ const DashBoard = () => {
         
 
     <ScrollView >
+      
          {/* BillE */}
         <View style={styles.BillEcontainer}>
             <Text style={styles.BillEtext}>Bill-E</Text>
         </View>
-        <IconButton/>
+        
         {/* Date*/}
         <View style={styles.Datecontainer}>
             <Text style={styles.Datetext}>TUES 11 JUL</Text>
@@ -101,7 +102,7 @@ const DashBoard = () => {
 
 
 
-
+    <IconButton/>
     </ScrollView>
     <NavBar/>
     </View>
