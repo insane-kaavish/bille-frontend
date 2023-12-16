@@ -88,7 +88,8 @@ const App = () => {
           component={DashBoard}
           options={{headerShown: false }} // Assuming you don't want to show the header
         />
-        {/* Add other screens as you create them */}
+        {/* Add other screens as you create them  hello
+        */} 
       </Stack.Navigator>
     </NavigationContainer>
   );
