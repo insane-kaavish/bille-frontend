@@ -10,7 +10,7 @@ const DashBoard = () => {
     <View style={styles.container}>
         
 
-    <ScrollView >
+    <View >
       
          {/* BillE */}
         <View style={styles.BillEcontainer}>
@@ -102,9 +102,9 @@ const DashBoard = () => {
 
 
 
-    <IconButton/>
-    </ScrollView>
-    <NavBar/>
+    {/* <IconButton/> */}
+    </View>
+    {/* <NavBar/> */}
     </View>
   );
 };
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     height: '100%',
     position: 'relative',
     backgroundColor: 'white',
-    boxShadow: '0px 2px 5px rgba(23, 26, 31, 0.17)',
+    // boxShadow: '0px 2px 5px rgba(23, 26, 31, 0.17)',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
   },
