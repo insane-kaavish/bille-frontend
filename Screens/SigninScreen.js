@@ -38,14 +38,15 @@ const handleLogin = async (email, password) => {
 const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false); // Set initial value of isLoading to false
   const [token, setToken] = useState([]);
 
   const handleSubmit = async () => {
+    setLoading(true); // Set isLoading to true when the sign-in button is pressed
     if (await handleLogin(email, password)) {
       setToken(await handleAuth(email, password));
       setLoading(false);
-      navigation.navigate('DashBoard'); // Add this line to navigate to the loginLaunch screen
+      navigation.navigate('DashBoard');
     }
   }
 
@@ -71,8 +72,12 @@ const SignInScreen = ({ navigation }) => {
           onChangeText={setPassword}
         />
       </View>
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>Sign In</Text>
+      <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={isLoading}>
+        {isLoading ? (
+          <ActivityIndicator color="white" /> // Show loading symbol when isLoading is true
+        ) : (
+          <Text style={styles.buttonText}>Sign In</Text>
+        )}
       </TouchableOpacity>
       <Text style={styles.footerText}>
         Don't have an account?
