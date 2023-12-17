@@ -10,7 +10,7 @@ const DashBoard = () => {
     <View style={styles.container}>
         
 
-    <ScrollView >
+    <View >
       
          {/* BillE */}
         <View style={styles.BillEcontainer}>
@@ -102,9 +102,9 @@ const DashBoard = () => {
 
 
 
-    <IconButton/>
-    </ScrollView>
-    <NavBar/>
+    {/* <IconButton/> */}
+    </View>
+    {/* <NavBar/> */}
     </View>
   );
 };
