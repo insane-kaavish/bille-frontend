@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 
+const API_URL = process.env.API_URL
+
 const handleAuth = async (email, password) => {
   try {
-    const response = await fetch('http://0.0.0.0:8000/api-token-auth/', {
+    const response = await fetch(`${API_URL}/api-token-auth/`, { // Add this line to fetch the token from the API
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -19,7 +21,7 @@ const handleAuth = async (email, password) => {
 
 const handleLogin = async (email, password) => {
   try {
-    const response = await fetch('http://0.0.0.0:8000/login/', {
+    const response = await fetch(`${API_URL}/login/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
