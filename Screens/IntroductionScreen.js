@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
     color: '#171A1F',
     fontSize: 48,
     fontWeight: '700',
-    textAlign: 'center',
+    // textAlign: 'center',
+    textAlign:'left',
   },
   subtitle: {
     position: 'absolute',
