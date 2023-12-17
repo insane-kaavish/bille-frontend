@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 
-const API_URL = process.env.API_URL
+const API_URL = 'https://app.bille.live';
 
 const handleAuth = async (email, password) => {
   try {
@@ -26,7 +26,7 @@ const handleLogin = async (email, password) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ username: email, password }),
+      body: JSON.stringify({ email: email, password }),
     });
     if (response.status != 201) return false;
     return true;

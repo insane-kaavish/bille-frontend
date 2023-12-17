@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+// import { API_URL } from '@env';
 
-API_URL = process.env.API_URL;
+const API_URL = 'https://app.bille.live';
 
 const handleAuth = async (email, password) => {
   try {
+    console.log(`${API_URL}/api-token-auth/`)
     const response = await fetch(`${API_URL}/api-token-auth/`, {
       method: 'POST',
       headers: {
