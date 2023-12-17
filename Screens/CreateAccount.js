@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 // import { API_URL } from '@env';
 
 const API_URL = 'https://app.bille.live';
@@ -47,8 +47,11 @@ const CreateAccount = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [token, setToken] = useState([]);
+  const [isLoading, setLoading] = useState(false); // Add isLoading state
 
   const handleSubmit = async () => {
+    setLoading(true); // Set isLoading to true when submitting
+
     // Prepare the data to send
     const data = {
       first_name: name,
@@ -61,10 +64,11 @@ const CreateAccount = ({ navigation }) => {
     if (await handleSignUp(data)) {
       setToken(await handleAuth(email, password));
       navigation.navigate('DashBoard');
-    }
-    else {
+    } else {
       console.log('Error signing up');
     }
+
+    setLoading(false); // Set isLoading to false after submission
   };
 
   return (
@@ -79,7 +83,7 @@ const CreateAccount = ({ navigation }) => {
           style={styles.input}
           placeholder="Enter name"
           value={name}
-          onChangeText={text => setName(text)}
+          onChangeText={(text) => setName(text)}
         />
       </View>
 
@@ -91,7 +95,7 @@ const CreateAccount = ({ navigation }) => {
           placeholder="Enter email"
           keyboardType="email-address"
           value={email}
-          onChangeText={text => setEmail(text)}
+          onChangeText={(text) => setEmail(text)}
         />
       </View>
 
@@ -103,7 +107,7 @@ const CreateAccount = ({ navigation }) => {
           placeholder="Enter password"
           secureTextEntry
           value={password}
-          onChangeText={text => setPassword(text)}
+          onChangeText={(text) => setPassword(text)}
         />
       </View>
 
@@ -115,13 +119,17 @@ const CreateAccount = ({ navigation }) => {
           placeholder="Enter password"
           secureTextEntry
           value={confirmPassword}
-          onChangeText={text => setConfirmPassword(text)}
+          onChangeText={(text) => setConfirmPassword(text)}
         />
       </View>
 
       {/* Sign Up Button */}
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>Sign Up</Text>
+      <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={isLoading}>
+        {isLoading ? (
+          <ActivityIndicator color="white" /> // Show loading indicator when isLoading is true
+        ) : (
+          <Text style={styles.buttonText}>Sign Up</Text>
+        )}
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
