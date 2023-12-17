@@ -12,6 +12,7 @@ const ChangeUsernameScreen = () => {
     setCurrentUsername(newUsername);
     setNewUsername('');
   };
+  // test line
 
   return (
     <View style={styles.container}>
