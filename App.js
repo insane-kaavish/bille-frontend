@@ -12,6 +12,8 @@ import RoomData from './Screens/RoomData';
 import DataComplete from './Screens/DataComplete';
 import Home from './Screens/Home';
 import DashBoard from './Screens/DashBoard';
+import EditProfile from './Screens/EditProfile';
+
 
 
 const Stack = createNativeStackNavigator();
