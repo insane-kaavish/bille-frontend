@@ -6,7 +6,6 @@ import IntroductionScreen from './Screens/IntroductionScreen'; // Adjust the imp
 import SignInScreen from './Screens/SigninScreen'; // Adjust the import path as necessary
 import CreateAccount from './Screens/CreateAccount';
 import LoginLaunch from './Screens/LoginLaunch';
-// import InitialDataInput from './Screens/DataInput';
 import DataInput from './Screens/DataInput';
 import RoomData from './Screens/RoomData';
 import DataComplete from './Screens/DataComplete';
@@ -20,7 +19,8 @@ import Settings from './Screens/Settings';
 import HelpCenter from './Screens/HelpCenter';
 import Prediction from './Screens/Prediction';
 import ContactUs from './Screens/ContactUs';
-import Privacy from './Screens/Privacy'
+import Privacy from './Screens/Privacy';
+import RoomwisePrediction from './Screens/RoomwisePrediction';
 
 const Stack = createNativeStackNavigator();
 
@@ -141,8 +141,11 @@ const App = () => {
           component={Privacy}
           options={{headerShown: false }} // Assuming you don't want to show the header
         />
-        {/* Add other screens as you create them  hello
-        */} 
+        <Stack.Screen
+          name="RoomwisePrediction"
+          component={RoomwisePrediction}
+          options={{headerShown: false }} // Assuming you don't want to show the header
+        />
       </Stack.Navigator>
       </NavigationContainer>
   );
