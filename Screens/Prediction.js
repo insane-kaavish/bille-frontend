@@ -122,15 +122,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     padding: 10,
-    zIndex: 1, // Ensures that header is above the other content
+    zIndex: 1,
+  },
+  menuButtonContainer: {
+    padding: 30, // Increase touchable area
   },
   menuIcon: {
     padding: 10,
-    zIndex: 1, // Ensures that menu icon is clickable
+    zIndex: 1, 
   },
   menuOptionsStyle: {
     marginTop: 40,
-    zIndex: 1, // Ensures that menu options are clickable
+    marginVertical: 10,
+    zIndex: 1,
   },
   scrollContainer: {
     flex: 1,
@@ -173,15 +177,17 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   detailsButton: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
+    backgroundColor: '#535CE8',
+    borderRadius: 20,
+    padding: 12,
+    alignItems: 'center',
+    width: '70%',
+    alignSelf: 'center',
+    marginVertical: 20,
   },
   detailsButtonText: {
     color: 'white',
     fontWeight: 'bold',
-    textAlign: 'center',
   },
   graphCard: {
     backgroundColor: '#f9f9f9',
