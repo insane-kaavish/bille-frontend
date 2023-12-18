@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 12,
     alignItems: 'center',
-    width: '20%',
+    width: '70%',
     alignSelf: 'center',
     marginVertical: 20,
   },
