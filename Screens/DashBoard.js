@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { MenuProvider, Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
 import { useNavigation } from '@react-navigation/native';
 
 const DashBoard = () => {
@@ -11,7 +10,10 @@ const DashBoard = () => {
   const navigateToOverview = () => {
     navigation.navigate('DashBoard');
   };
-  const navigateToPrediction = () => console.log('Navigate to Prediction');
+  // Updated function to navigate to Prediction screen
+  const navigateToPrediction = () => {
+    navigation.navigate('Prediction'); // Ensure 'Prediction' matches the route name defined in your navigator
+  };
   const navigateToRoomWise = () => console.log('Navigate to Room Wise');
   const navigateToProfile = () => {
     navigation.navigate('EditProfile');
@@ -21,7 +23,6 @@ const DashBoard = () => {
 
   const day = today.getDate();
   const monthName = today.toLocaleString('default', { month: 'long' });
-  // const year = today.getFullYear();
 
   const getOrdinalNum = (n) => {
     return n + (n > 0 ? ['th', 'st', 'nd', 'rd'][(n > 3 && n < 21) || n % 10 > 3 ? 0 : n % 10] : '');
@@ -62,55 +63,55 @@ const DashBoard = () => {
           </Menu>
         </View>
       </View>
-        <View style={styles.BillEcontainer}>
-            <Text style={styles.BillEtext}>Bill-E</Text>
-        </View>
-        
-        {/* Date*/}
-        <View style={styles.Datecontainer}>
-          <Text style={styles.Datetext}>{dateString}</Text>
-        </View>
-        {/* over view text */}
-        <View style={styles.OVcontainer}>
-            <Text style={styles.OVtext}>Overview</Text>
-        </View>
-        {/* Current units container or container 4 */}
-        <View style={styles.c4}>
-            <View style={styles.c4circleContainer}>
-                <View style={styles.c4innerCircleContainer}>
+      <View style={styles.BillEcontainer}>
+        <Text style={styles.BillEtext}>Bill-E</Text>
+      </View>
+
+      <View style={styles.Datecontainer}>
+        <Text style={styles.Datetext}>{dateString}</Text>
+      </View>
+
+      <View style={styles.OVcontainer}>
+        <Text style={styles.OVtext}>Overview</Text>
+      </View>
+
+      <View style={styles.c4}>
+        <View style={styles.c4circleContainer}>
+          <View style={styles.c4innerCircleContainer}>
             <View style={styles.c4innermostCircleContainer}>
-            {/* <View style={styles.c4blackCircle}></View> */}
-            <Image source={require('../extra/assets/OV.png')}/>
+              <Image source={require('../extra/assets/OV.png')}/>
+            </View>
           </View>
         </View>
+        <Text style={styles.c4title}>Current Units</Text>
+        <Text style={styles.c4description}>
+          Based on your current consumption data, your predicted units are 213 and consider good.
+        </Text>
+        <Text style={styles.c4unitsCount}>213</Text>
       </View>
-      <Text style={styles.c4title}>Current Units</Text>
-      <Text style={styles.c4description}>
-        Based on your current consumption data, your predicted units are 213 and consider good.
-      </Text>
-      <Text style={styles.c4unitsCount}>213</Text>
-        </View>
-        <View style={styles.HLcontainer}>
-            <Text style={styles.HLtitle}>Highlights</Text>
-        </View>
+
+      <View style={styles.HLcontainer}>
+        <Text style={styles.HLtitle}>Highlights</Text>
+      </View>
+
       <View style={styles.VMbuttonContainer}>
-        <TouchableOpacity style={styles.VMbutton}>
+        <TouchableOpacity style={styles.VMbutton} onPress={navigateToPrediction}>
           <Text style={styles.VMbuttonText}>View more</Text>
           <View style={styles.VMarrowContainer}>
             <View style={styles.VMarrowLine}></View>
           </View>
         </TouchableOpacity>
       </View>
+
       <View style={styles.c11cardContainer}>
         <Text style={styles.c11expectedBillText}>Expected Bill</Text>
         <Text style={styles.c11amountText}>Rs. 10,523.21</Text>
         <Text style={styles.c11usagePatternText}>Based on ongoing usage pattern</Text>
         <View style={styles.c11iconContainer}>
           <Image source={require('../extra/assets/c11.png')}/>
-
         </View>
       </View>
-      {/* c13 */}
+
       <View style={styles.c13cardContainer}>
         <Text style={styles.c13titleText}>Latest Consumption Data</Text>
         <View style={styles.c13dateContainer}>
@@ -119,12 +120,12 @@ const DashBoard = () => {
         </View>
         <View style={styles.c13iconContainer}>
           <View style={styles.c13iconInnerContainer}>
-          <Image source={require('../extra/assets/c13.png')}/>
+            <Image source={require('../extra/assets/c13.png')}/>
           </View>
         </View>
         <Text style={styles.c13updateRequiredText}>Data Update Required!</Text>
       </View>
-      {/* c14 or peak hour card*/}
+
       <View style={styles.c14container}>
         <Text style={styles.c14title}>Peak Hours</Text>
         <Text style={styles.c14time}>6:30 - 11:30 pm</Text>
@@ -133,12 +134,13 @@ const DashBoard = () => {
           <Image source={require('../extra/assets/c14.png')}/>
         </View>
       </View>
+
       <View style={styles.c12container}>
         <Text style={styles.c12titleText}>Per Unit Price</Text>
         <Text style={styles.c12priceText}>Rs. 23.91</Text>
         <Text style={styles.c12updatedText}>updated 1 day ago</Text>
         <View style={styles.c12iconContainer}>
-        <Image source={require('../extra/assets/c12.png')}/>
+          <Image source={require('../extra/assets/c12.png')}/>
         </View>
       </View>
 
@@ -166,6 +168,7 @@ const styles = StyleSheet.create({
     height: '100%',
     position: 'relative',
     backgroundColor: 'white',
+    flex: 1,
     // boxShadow: '0px 2px 5px rgba(23, 26, 31, 0.17)',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
