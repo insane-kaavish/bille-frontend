@@ -46,7 +46,7 @@ const SignInScreen = ({ navigation }) => {
     // if (await handleLogin(email, password)) {
     //   setToken(await handleAuth(email, password));
     //   setLoading(false);
-      navigation.navigate('DataInput');
+      navigation.navigate('DashBoard');
     // }
   }
 
