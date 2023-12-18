@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
-const ChangeUsernameScreen = () => {
+const ChangeUsername = ({ navigation }) => {
   const [currentUsername, setCurrentUsername] = useState('Bashir');
   const [newUsername, setNewUsername] = useState('');
 
@@ -11,6 +11,7 @@ const ChangeUsernameScreen = () => {
     // For now, we'll just update the state
     setCurrentUsername(newUsername);
     setNewUsername('');
+    navigation.navigate('EditProfile');
   };
   // test line
 
@@ -82,4 +83,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChangeUsernameScreen;
+export default ChangeUsername;

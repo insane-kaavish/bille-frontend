@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
-const ChangeEmailScreen = () => {
+const ChangeEmail = ({ navigation }) => {
   const [currentEmail, setCurrentEmail] = useState('Bashir@gmail.com');
   const [newEmail, setNewEmail] = useState('');
 
   const handleChangeEmail = () => {
-    // Implement logic to update the Email, e.g., make an API call
-
-    // For now, we'll just update the state
     setCurrentEmail(newEmail);
     setNewEmail('');
+    navigation.navigate('EditProfile');
   };
 
   return (
@@ -81,4 +79,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChangeEmailScreen;
+export default ChangeEmail;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
-const ChangePasswordScreen = () => {
+const ChangePassword = ({ navigation }) => {
   const [currentPassword, setCurrentPassword] = useState('currentPassword123');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -16,6 +16,7 @@ const ChangePasswordScreen = () => {
       setNewPassword('');
       setConfirmPassword('');
       setPasswordMatchError(false);
+      navigation.navigate('EditProfile');
     } else {
       // Passwords don't match, show an error
       setPasswordMatchError(true);
@@ -110,4 +111,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChangePasswordScreen;
+export default ChangePassword;

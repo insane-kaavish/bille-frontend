@@ -10,7 +10,7 @@ const IntroductionScreen = ({ navigation }) => {
       <Text style={styles.subtitle}>Know what you are paying for!</Text>
       <TouchableOpacity
         style={styles.continueButton}
-        onPress={() => navigation.navigate('RoomData')}
+        onPress={() => navigation.navigate('SignIn')}
       >
         <Text style={styles.continueText}>Continue</Text>
       </TouchableOpacity>

@@ -146,7 +146,7 @@ const RoomData = () => {
             renderAppliance(appliance, index, applianceIndex)
           )}
           <TouchableOpacity style={styles.addApplianceButton} onPress={() => addAppliance(index)}>
-            <Text style={styles.addApplianceText}>+ Add An Appliance</Text>
+            <Text style={styles.addApplianceText}>Add Appliances</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -169,7 +169,7 @@ const RoomData = () => {
         <Text style={styles.setupTitle}>Setup</Text>
         {renderRooms()}
         <TouchableOpacity style={styles.addRoomButton} onPress={addRoom}>
-          <Text style={styles.addRoomButtonText}>+ Add Room</Text>
+          <Text style={styles.addRoomButtonText}>Add More Rooms</Text>
         </TouchableOpacity>
       </ScrollView>
       <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
   applianceItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 5,
     justifyContent: 'space-between', // This will distribute space evenly between the items
   },
   pickerStyle: {
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
     marginLeft: 8, // Add this if you want space on the left as well
   },
   addApplianceButton: {
-    backgroundColor: '#e8e8e8',
+    backgroundColor: '#535CE8',
     borderRadius: 20,
     padding: 10,
     alignItems: 'center',
@@ -262,15 +262,17 @@ const styles = StyleSheet.create({
     marginTop: 10, // Add some margin at the top if needed
   },
   addApplianceText: {
-    color: 'blue',
+    color: 'white',
     fontWeight: 'bold',
   },
   addRoomButton: {
-    backgroundColor: 'blue',
+    backgroundColor: '#535CE8',
     borderRadius: 20,
     padding: 12,
     alignItems: 'center',
-    width: '100%',
+    width: '70%',
+    // height: '25%',
+    alignSelf: 'center',
   },
   addRoomButtonText: {
     color: 'white',
@@ -292,11 +294,11 @@ const styles = StyleSheet.create({
     right: 10,
   },
   submitButton: {
-    backgroundColor: 'blue',
+    backgroundColor: '#535CE8',
     borderRadius: 20,
     padding: 12,
     alignItems: 'center',
-    width: '90%',
+    width: '20%',
     alignSelf: 'center',
     marginVertical: 20,
   },
