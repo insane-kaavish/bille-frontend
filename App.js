@@ -18,6 +18,7 @@ import ChangeEmail from './Screens/ChangeEmail';
 import ChangePassword from './Screens/ChangePassword';
 import Settings from './Screens/Settings';
 import HelpCenter from './Screens/HelpCenter';
+import Prediction from './Screens/Prediction';
 
 const Stack = createNativeStackNavigator();
 
@@ -121,6 +122,11 @@ const App = () => {
         <Stack.Screen
           name="HelpCenter"
           component={HelpCenter}
+          options={{headerShown: false }} // Assuming you don't want to show the header
+        />
+        <Stack.Screen
+          name="Prediction"
+          component={Prediction}
           options={{headerShown: false }} // Assuming you don't want to show the header
         />
         {/* Add other screens as you create them  hello
