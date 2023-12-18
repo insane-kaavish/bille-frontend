@@ -1,25 +1,74 @@
 import React from 'react';
-import { TouchableOpacity ,StyleSheet, ScrollView ,Image,  View, Text } from 'react-native';
-// import styles from './YourStyleSheet';
-import NavBar from './NavBar';
-import IconButton from './IconButton';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { MenuProvider, Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import { useNavigation } from '@react-navigation/native';
 
 const DashBoard = () => {
-    
-  return (
-    <View style={styles.container}>
-        
+  const navigation = useNavigation(); // Hook to access the navigation prop
 
-    <ScrollView >
-      
-         {/* BillE */}
+  const navigateToOverview = () => {
+    navigation.navigate('DashBoard');
+  };
+  const navigateToPrediction = () => console.log('Navigate to Prediction');
+  const navigateToRoomWise = () => console.log('Navigate to Room Wise');
+  const navigateToProfile = () => {
+    navigation.navigate('EditProfile');
+  };
+
+  const today = new Date();
+
+  const day = today.getDate();
+  const monthName = today.toLocaleString('default', { month: 'long' });
+  // const year = today.getFullYear();
+
+  const getOrdinalNum = (n) => {
+    return n + (n > 0 ? ['th', 'st', 'nd', 'rd'][(n > 3 && n < 21) || n % 10 > 3 ? 0 : n % 10] : '');
+  };
+
+  const dateString = `${getOrdinalNum(day)} ${monthName}`;
+
+  return (
+    <MenuProvider style={styles.container}>
+      <View style={styles.headerContainer}>
+        <View style={styles.menuButtonContainer}>
+          <Menu>
+            <MenuTrigger>
+              <Ionicons name="menu" size={30} color="black" />
+            </MenuTrigger>
+            <MenuOptions style={styles.menuOptionsStyle}>
+              <MenuOption onSelect={() => {
+                navigation.navigate('EditProfile');
+              }}>
+                <Text style={styles.menuOptionText}>Profile</Text>
+              </MenuOption>
+              <MenuOption onSelect={() => {
+                navigation.navigate('Settings'); 
+              }}>
+                <Text style={styles.menuOptionText}>Settings</Text>
+              </MenuOption>
+              <MenuOption onSelect={() => {
+                navigation.navigate('HelpCenter');
+              }}>
+                <Text style={styles.menuOptionText}>Help center</Text>
+              </MenuOption>
+              <MenuOption onSelect={() => {
+                navigation.navigate('SignIn');
+              }}>
+                <Text style={styles.menuOptionText}>Sign out</Text>
+              </MenuOption>
+            </MenuOptions>
+          </Menu>
+        </View>
+      </View>
         <View style={styles.BillEcontainer}>
             <Text style={styles.BillEtext}>Bill-E</Text>
         </View>
         
         {/* Date*/}
         <View style={styles.Datecontainer}>
-            <Text style={styles.Datetext}>TUES 11 JUL</Text>
+          <Text style={styles.Datetext}>{dateString}</Text>
         </View>
         {/* over view text */}
         <View style={styles.OVcontainer}>
@@ -41,75 +90,75 @@ const DashBoard = () => {
       </Text>
       <Text style={styles.c4unitsCount}>213</Text>
         </View>
-    {/* Highlights */}
         <View style={styles.HLcontainer}>
             <Text style={styles.HLtitle}>Highlights</Text>
         </View>
-    {/* "View more" button */}
-    <View style={styles.VMbuttonContainer}>
-      <TouchableOpacity style={styles.VMbutton}>
-        <Text style={styles.VMbuttonText}>View more</Text>
-        <View style={styles.VMarrowContainer}>
-          <View style={styles.VMarrowLine}></View>
-        </View>
-      </TouchableOpacity>
-    </View>
-    {/* c11 or Expected bill container */}
-    <View style={styles.c11cardContainer}>
-      <Text style={styles.c11expectedBillText}>Expected Bill</Text>
-      <Text style={styles.c11amountText}>Rs. 10,523.21</Text>
-      <Text style={styles.c11usagePatternText}>Based on ongoing usage pattern</Text>
-      <View style={styles.c11iconContainer}>
-        <Image source={require('../extra/assets/c11.png')}/>
+      <View style={styles.VMbuttonContainer}>
+        <TouchableOpacity style={styles.VMbutton}>
+          <Text style={styles.VMbuttonText}>View more</Text>
+          <View style={styles.VMarrowContainer}>
+            <View style={styles.VMarrowLine}></View>
+          </View>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.c11cardContainer}>
+        <Text style={styles.c11expectedBillText}>Expected Bill</Text>
+        <Text style={styles.c11amountText}>Rs. 10,523.21</Text>
+        <Text style={styles.c11usagePatternText}>Based on ongoing usage pattern</Text>
+        <View style={styles.c11iconContainer}>
+          <Image source={require('../extra/assets/c11.png')}/>
 
-      </View>
-    </View>
-    {/* c13 */}
-    <View style={styles.c13cardContainer}>
-      <Text style={styles.c13titleText}>Latest Consumption Data</Text>
-      <View style={styles.c13dateContainer}>
-        <Text style={styles.c13numberText}>35</Text>
-        <Text style={styles.c13daysAgoText}>days ago</Text>
-      </View>
-      <View style={styles.c13iconContainer}>
-        <View style={styles.c13iconInnerContainer}>
-        <Image source={require('../extra/assets/c13.png')}/>
         </View>
       </View>
-      <Text style={styles.c13updateRequiredText}>Data Update Required!</Text>
-    </View>
-    {/* c14 or peak hour card*/}
-    <View style={styles.c14container}>
-      <Text style={styles.c14title}>Peak Hours</Text>
-      <Text style={styles.c14time}>6:30 - 11:30 pm</Text>
-      <Text style={styles.c14updated}>updated a week ago</Text>
-      <View style={styles.c14iconContainer}>
-        <Image source={require('../extra/assets/c14.png')}/>
+      {/* c13 */}
+      <View style={styles.c13cardContainer}>
+        <Text style={styles.c13titleText}>Latest Consumption Data</Text>
+        <View style={styles.c13dateContainer}>
+          <Text style={styles.c13numberText}>35</Text>
+          <Text style={styles.c13daysAgoText}>days ago</Text>
+        </View>
+        <View style={styles.c13iconContainer}>
+          <View style={styles.c13iconInnerContainer}>
+          <Image source={require('../extra/assets/c13.png')}/>
+          </View>
+        </View>
+        <Text style={styles.c13updateRequiredText}>Data Update Required!</Text>
       </View>
-    </View>
-    {/* c12 */}
-    <View style={styles.c12container}>
-      <Text style={styles.c12titleText}>Per Unit Price</Text>
-      <Text style={styles.c12priceText}>Rs. 23.91</Text>
-      <Text style={styles.c12updatedText}>updated 1 day ago</Text>
-      <View style={styles.c12iconContainer}>
-      <Image source={require('../extra/assets/c12.png')}/>
+      {/* c14 or peak hour card*/}
+      <View style={styles.c14container}>
+        <Text style={styles.c14title}>Peak Hours</Text>
+        <Text style={styles.c14time}>6:30 - 11:30 pm</Text>
+        <Text style={styles.c14updated}>updated a week ago</Text>
+        <View style={styles.c14iconContainer}>
+          <Image source={require('../extra/assets/c14.png')}/>
+        </View>
       </View>
-    </View>
-    {/*  */}
+      <View style={styles.c12container}>
+        <Text style={styles.c12titleText}>Per Unit Price</Text>
+        <Text style={styles.c12priceText}>Rs. 23.91</Text>
+        <Text style={styles.c12updatedText}>updated 1 day ago</Text>
+        <View style={styles.c12iconContainer}>
+        <Image source={require('../extra/assets/c12.png')}/>
+        </View>
+      </View>
 
-
-
-
-
-    <IconButton/>
-    </ScrollView>
-    <NavBar/>
-    </View>
+      <View style={styles.navBar}>
+        <TouchableOpacity onPress={navigateToOverview}>
+          <Ionicons name="home-outline" size={24} color="#000" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={navigateToPrediction}>
+          <Ionicons name="stats-chart-outline" size={24} color="#000" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={navigateToRoomWise}>
+          <Ionicons name="grid-outline" size={24} color="#000" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={navigateToProfile}>
+          <Ionicons name="person-outline" size={24} color="#000" /> 
+        </TouchableOpacity>
+      </View>
+    </MenuProvider>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -117,9 +166,37 @@ const styles = StyleSheet.create({
     height: '100%',
     position: 'relative',
     backgroundColor: 'white',
-    boxShadow: '0px 2px 5px rgba(23, 26, 31, 0.17)',
+    // boxShadow: '0px 2px 5px rgba(23, 26, 31, 0.17)',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
+  },
+  navBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    borderTopWidth: 1,
+    borderTopColor: '#EFEFEF',
+    paddingVertical: 10,
+    backgroundColor: '#FFFFFF',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  headerContainer: {
+    position: 'absolute',
+    right: 10,
+    top: 10,
+    zIndex: 10, // Ensure the menu is above other elements
+  },
+  menuButtonContainer: {
+    padding: 30, // Increase touchable area
+  },
+  menuOptionsStyle: {
+    marginTop: 40, // Adjust the position of the menu dropdown
+  },
+  menuOptionText: {
+    padding: 10,
+    fontSize: 16,
   },
   BillEcontainer: {
     left: 60,

@@ -13,8 +13,12 @@ import DataComplete from './Screens/DataComplete';
 import Home from './Screens/Home';
 import DashBoard from './Screens/DashBoard';
 import EditProfile from './Screens/EditProfile';
-
-
+import ChangeUserName from './Screens/ChangeUserName';
+import ChangeEmail from './Screens/ChangeEmail';
+import ChangePassword from './Screens/ChangePassword';
+import Settings from './Screens/Settings';
+import HelpCenter from './Screens/HelpCenter';
+import Prediction from './Screens/Prediction';
 
 const Stack = createNativeStackNavigator();
 
@@ -42,7 +46,7 @@ const App = () => {
   //   return <Text>Loading...</Text>;
   // }
   return (
-    <NavigationContainer>
+      <NavigationContainer>
       <Stack.Navigator initialRouteName="Introduction">
         <Stack.Screen
           name="Introduction"
@@ -90,10 +94,45 @@ const App = () => {
           component={DashBoard}
           options={{headerShown: false }} // Assuming you don't want to show the header
         />
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfile}
+          options={{headerShown: false }} // Assuming you don't want to show the header
+        />
+        <Stack.Screen
+          name="ChangeUserName"
+          component={ChangeUserName}
+          options={{headerShown: false }} // Assuming you don't want to show the header
+        />
+        <Stack.Screen
+          name="ChangeEmail"
+          component={ChangeEmail}
+          options={{headerShown: false }} // Assuming you don't want to show the header
+        />
+        <Stack.Screen
+          name="ChangePassword"
+          component={ChangePassword}
+          options={{headerShown: false }} // Assuming you don't want to show the header
+        />
+        <Stack.Screen
+          name="Settings"
+          component={Settings}
+          options={{headerShown: false }} // Assuming you don't want to show the header
+        />
+        <Stack.Screen
+          name="HelpCenter"
+          component={HelpCenter}
+          options={{headerShown: false }} // Assuming you don't want to show the header
+        />
+        <Stack.Screen
+          name="Prediction"
+          component={Prediction}
+          options={{headerShown: false }} // Assuming you don't want to show the header
+        />
         {/* Add other screens as you create them  hello
         */} 
       </Stack.Navigator>
-    </NavigationContainer>
+      </NavigationContainer>
   );
 };
 
