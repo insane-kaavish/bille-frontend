@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import { BarChart } from 'react-native-chart-kit';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import {
@@ -23,21 +22,16 @@ const screenWidth = Dimensions.get('window').width;
 const RoomwisePrediction = () => {
   const navigation = useNavigation();
 
-  const chartConfig = {
-    backgroundGradientFrom: '#FFF',
-    backgroundGradientTo: '#FFF',
-    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-    strokeWidth: 2,
-    barPercentage: 0.5,
-  };
+  const rooms = [
+    { name: 'Ali’s Bedroom', units: 56, icon: 'bed-outline', color: '#517fa4' },
+    { name: 'Kitchen', units: 34, icon: 'fast-food-outline', color: '#f44336' },
+    { name: 'Bashir Living Room', units: 15, icon: 'tv-outline', color: '#ffeb3b' },
+    // Add other rooms as needed
+  ];
 
-  const data = {
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    datasets: [
-      {
-        data: Array.from({ length: 7 }, () => Math.random() * 100),
-      },
-    ],
+  const navigateToRoomDetails = (roomName) => {
+    console.log('Navigating to details of', roomName);
+    // Implement your navigation logic
   };
 
   return (
@@ -65,35 +59,27 @@ const RoomwisePrediction = () => {
       </View>
 
       <ScrollView style={styles.scrollContainer}>
-        <View style={styles.predictionCard}>
-          <Text style={styles.title}>Predicted Consumption</Text>
-          <View style={styles.consumptionCircle}>
-            <Text style={styles.consumptionValue}>213</Text>
-            <Text style={styles.consumptionUnit}>Predicted Units</Text>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>All Rooms Overview</Text>
+        </View>
+        {rooms.map((room, index) => (
+        <TouchableOpacity
+          key={index}
+          style={styles.roomCard}
+          onPress={() => navigateToRoomDetails(room.name)}
+        >
+          <View style={[styles.iconContainer, { backgroundColor: room.color }]}>
+            <Ionicons name={room.icon} size={24} color="#fff" />
           </View>
-          <Text style={styles.estimatedBill}>
-            Your estimated bill for this month will be Pkr. 30,000
-          </Text>
-          <TouchableOpacity
-            style={styles.detailsButton}
-            onPress={() => navigation.navigate('RoomDetails')}
-          >
-            <Text style={styles.detailsButtonText}>View Room Details</Text>
-          </TouchableOpacity>
-        </View>
+          <View style={styles.roomDetails}>
+            <Text style={styles.roomName}>{room.name}</Text>
+            <Text style={styles.roomUnits}>{`${room.units} Units`}</Text>
+          </View>
+          <Ionicons name="chevron-forward" size={24} color="#C0C0C0" />
+        </TouchableOpacity>
+      ))}
 
-        <View style={styles.graphCard}>
-        <BarChart
-          style={styles.graphStyle}
-          data={data}
-          width={screenWidth - 64} // Subtract total horizontal padding and margins
-          height={220}
-          yAxisLabel="$"
-          chartConfig={chartConfig}
-          verticalLabelRotation={30}
-        />
-        </View>
-      </ScrollView>
+    </ScrollView>
 
       <View style={styles.navBar}>
         <TouchableOpacity onPress={() => navigation.navigate('DashBoard')}>
@@ -102,7 +88,7 @@ const RoomwisePrediction = () => {
         <TouchableOpacity onPress={() => navigation.navigate('Prediction')}>
           <Ionicons name="stats-chart-outline" size={24} color="#000" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('RoomDetails')}>
+        <TouchableOpacity onPress={() => navigation.navigate('RoomwisePrediction')}>
           <Ionicons name="grid-outline" size={24} color="#000" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
@@ -122,14 +108,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     padding: 10,
+    top: 25,
+    right : 5,
     zIndex: 1,
   },
-  menuButtonContainer: {
-    padding: 30, // Increase touchable area
-  },
   menuIcon: {
-    padding: 10,
-    zIndex: 1, 
+    marginTop: 5,
   },
   menuOptionsStyle: {
     marginTop: 40,
@@ -139,68 +123,52 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
   },
-  predictionCard: {
-    backgroundColor: '#f9f9f9',
-    borderRadius: 8,
+  titleContainer: {
     padding: 16,
-    margin: 16,
+    paddingTop: 30,
+    paddingBottom: 20,
+    backgroundColor: '#fff',
     alignItems: 'center',
   },
   title: {
     fontSize: 22,
     fontWeight: 'bold',
-    marginBottom: 10,
   },
-  consumptionCircle: {
-    width: 160,
-    height: 160,
-    borderRadius: 80,
-    borderColor: '#00BCD4',
-    borderWidth: 2,
+  roomCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 15,
+    marginVertical: 5,
+    marginHorizontal: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  iconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 10,
+    // backgroundColor: '#e0e0e0', // You can remove this if you're setting the background color dynamically
+    marginRight: 12,
   },
-  consumptionValue: {
-    fontSize: 48,
+  roomDetails: {
+    flex: 1,
+    justifyContent: 'center', // Center content vertically
+  },
+  roomName: {
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#000',
   },
-  consumptionUnit: {
-    fontSize: 18,
-    color: '#666',
-  },
-  estimatedBill: {
+  roomUnits: {
     fontSize: 16,
     color: '#666',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  detailsButton: {
-    backgroundColor: '#535CE8',
-    borderRadius: 20,
-    padding: 12,
-    alignItems: 'center',
-    width: '70%',
-    alignSelf: 'center',
-    marginVertical: 20,
-  },
-  detailsButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  graphCard: {
-    backgroundColor: '#f9f9f9',
-    borderRadius: 8,
-    paddingVertical: 16,
-    paddingHorizontal: 16, // Adjust padding as needed
-    marginHorizontal: 16,
-    marginTop: 10,
-    marginBottom: 20,
-    overflow: 'hidden', // Ensures that the graph does not overflow the card
-  },
-  graphStyle: {
-    marginVertical: 8,
   },
   navBar: {
     flexDirection: 'row',
@@ -213,7 +181,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    zIndex: 1, // Ensures that navBar is clickable
+    zIndex: 1,
   },
   menuOptionText: {
     fontSize: 16,

@@ -76,7 +76,7 @@ const App = () => {
           </Text>
           <TouchableOpacity
             style={styles.detailsButton}
-            onPress={() => navigation.navigate('RoomDetails')}
+            onPress={() => navigation.navigate('RoomwisePrediction')}
           >
             <Text style={styles.detailsButtonText}>View Room Details</Text>
           </TouchableOpacity>
@@ -102,7 +102,7 @@ const App = () => {
         <TouchableOpacity onPress={() => navigation.navigate('Prediction')}>
           <Ionicons name="stats-chart-outline" size={24} color="#000" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('RoomDetails')}>
+        <TouchableOpacity onPress={() => navigation.navigate('RoomwisePrediction')}>
           <Ionicons name="grid-outline" size={24} color="#000" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
@@ -122,6 +122,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     padding: 10,
+    top: 25,
+    right : 5,
     zIndex: 1,
   },
   menuButtonContainer: {

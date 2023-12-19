@@ -14,7 +14,9 @@ const DashBoard = () => {
   const navigateToPrediction = () => {
     navigation.navigate('Prediction'); // Ensure 'Prediction' matches the route name defined in your navigator
   };
-  const navigateToRoomWise = () => console.log('Navigate to Room Wise');
+  const navigateToRoomWise = () => {
+    navigation.navigate('RoomwisePrediction');
+  };
   const navigateToProfile = () => {
     navigation.navigate('EditProfile');
   };
@@ -187,15 +189,20 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     position: 'absolute',
-    right: 10,
-    top: 10,
+    right: 5, // Adjust this as necessary to move horizontally
+    top: 25, // Adjust this as necessary to move vertically
     zIndex: 10, // Ensure the menu is above other elements
+  },
+  menuIcon: {
+    // If you have padding here, it could be affecting the position as well
+    padding: 10, // You might want to adjust this padding
+    zIndex: 1,
   },
   menuButtonContainer: {
     padding: 30, // Increase touchable area
   },
   menuOptionsStyle: {
-    marginTop: 40, // Adjust the position of the menu dropdown
+    marginTop: 30, // Adjust the position of the menu dropdown
   },
   menuOptionText: {
     padding: 10,

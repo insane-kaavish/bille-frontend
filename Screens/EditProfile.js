@@ -1,6 +1,21 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Dimensions,
+  Image,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {
+  MenuProvider,
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
 
 const EditProfile = ({ navigation }) => {
   const handlePasswordChange = () => {
@@ -21,13 +36,39 @@ const EditProfile = ({ navigation }) => {
   const navigateToOverview = () => {
     navigation.navigate('DashBoard');
   };
-  const navigateToPrediction = () => console.log('Navigate to Prediction');
-  const navigateToRoomWise = () => console.log('Navigate to Room Wise');
+  const navigateToPrediction = () => {
+    navigation.navigate('Prediction');
+  };
+  const navigateToRoomWise = () => {
+    navigation.navigate('RoomwisePrediction');
+  };
   const navigateToProfile = () => {
     navigation.navigate('EditProfile');
   };
 
   return (
+    <MenuProvider style={styles.container}>
+      <View style={styles.header}>
+        <Menu>
+          <MenuTrigger>
+            <Ionicons name="menu" size={30} color="black" />
+          </MenuTrigger>
+          <MenuOptions style={styles.menuOptionsStyle}>
+            <MenuOption onSelect={() => navigation.navigate('EditProfile')}>
+              <Text style={styles.menuOptionText}>Profile</Text>
+            </MenuOption>
+            <MenuOption onSelect={() => navigation.navigate('Settings')}>
+              <Text style={styles.menuOptionText}>Settings</Text>
+            </MenuOption>
+            <MenuOption onSelect={() => navigation.navigate('HelpCenter')}>
+              <Text style={styles.menuOptionText}>Help Center</Text>
+            </MenuOption>
+            <MenuOption onSelect={() => navigation.navigate('SignIn')}>
+              <Text style={styles.menuOptionText}>Sign Out</Text>
+            </MenuOption>
+          </MenuOptions>
+        </Menu>
+      </View>
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.profileSection}>
@@ -74,6 +115,7 @@ const EditProfile = ({ navigation }) => {
         </TouchableOpacity>
       </View>
     </View>
+    </MenuProvider>
   );
 };
 
@@ -81,6 +123,30 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    padding: 10,
+    top: 25,
+    right: 5,
+    zIndex: 1,
+  },
+  menuIcon: {
+    padding: 10,
+    zIndex: 1,
+  },
+  menuOptionsStyle: {
+    marginTop: 40,
+    marginVertical: 10,
+    zIndex: 1,
+  },
+  menuOptionText: {
+    fontSize: 16,
+    padding: 10,
+  },
+  menuButtonContainer: {
+    padding: 30, // Increase touchable area
   },
   scrollViewContent: {
     flexGrow: 1,

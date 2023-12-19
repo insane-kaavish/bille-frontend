@@ -18,8 +18,12 @@ const SettingsScreen = ({ navigation }) => {
   const navigateToOverview = () => {
     navigation.navigate('DashBoard');
   };
-  const navigateToPrediction = () => console.log('Navigate to Prediction');
-  const navigateToRoomWise = () => console.log('Navigate to Room Wise');
+  const navigateToPrediction = () => {
+    navigation.navigate('Prediction');
+  };
+  const navigateToRoomWise = () => {
+    navigation.navigate('RoomwisePrediction');
+  };
   const navigateToProfile = () => {
     navigation.navigate('EditProfile');
   };
