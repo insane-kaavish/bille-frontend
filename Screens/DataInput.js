@@ -1,9 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
 const DataInput = ({ navigation }) => {
+  // State hooks for input fields
+  const [houseSize, setHouseSize] = useState('');
+  const [numOfFloors, setNumOfFloors] = useState('');
+  const [numOfPeople, setNumOfPeople] = useState('');
+  const [unitsLastMonth, setUnitsLastMonth] = useState('');
+  const [unitsMonthBeforeLast, setUnitsMonthBeforeLast] = useState('');
+
+  // Function to handle continue click
+  const handleContinue = () => {
+    const inputData = {
+      houseSize,
+      numOfFloors,
+      numOfPeople,
+      unitsLastMonth,
+      unitsMonthBeforeLast,
+    };
+    console.log(inputData);
+
+    navigation.navigate('RoomData', { inputData }); // Uncomment to navigate and pass data
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Get Started</Text>
@@ -14,6 +35,8 @@ const DataInput = ({ navigation }) => {
         <TextInput
           placeholder="Please enter numerics"
           style={styles.input}
+          value={houseSize}
+          onChangeText={setHouseSize}
         />
       </View>
 
@@ -23,6 +46,8 @@ const DataInput = ({ navigation }) => {
         <TextInput
           placeholder="Enter Number of floors"
           style={styles.input}
+          value={numOfFloors}
+          onChangeText={setNumOfFloors}
         />
       </View>
 
@@ -32,6 +57,8 @@ const DataInput = ({ navigation }) => {
         <TextInput
           placeholder="Enter number of people in the House"
           style={styles.input}
+          value={numOfPeople}
+          onChangeText={setNumOfPeople}
         />
       </View>
 
@@ -41,6 +68,8 @@ const DataInput = ({ navigation }) => {
         <TextInput
           placeholder="Electricity units previous month"
           style={styles.input}
+          value={unitsLastMonth}
+          onChangeText={setUnitsLastMonth}
         />
       </View>
 
@@ -50,13 +79,15 @@ const DataInput = ({ navigation }) => {
         <TextInput
           placeholder="Electricity units of month before previous month"
           style={styles.input}
+          value={unitsMonthBeforeLast}
+          onChangeText={setUnitsMonthBeforeLast}
         />
       </View>
 
       {/* Continue button */}
       <TouchableOpacity
         style={styles.submitButton}
-        onPress={() => navigation.navigate('RoomData')}
+        onPress={handleContinue}
       >
         <Text style={styles.submitText}>Continue</Text>
       </TouchableOpacity>
