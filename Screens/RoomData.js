@@ -176,7 +176,7 @@ const RoomData = () => {
         <Text style={styles.submitButtonText}>Submit</Text>
       </TouchableOpacity>
     </SafeAreaView>
-  );
+  );  
 };
 
 const styles = StyleSheet.create({

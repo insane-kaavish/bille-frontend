@@ -35,7 +35,7 @@ const RoomwisePrediction = () => {
   };
 
   return (
-    <MenuProvider style={styles.container}>
+    <MenuProvider skipInstanceCheck={true} style={styles.container}>
       <View style={styles.header}>
         <Menu>
           <MenuTrigger>

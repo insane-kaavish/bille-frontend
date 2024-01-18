@@ -33,7 +33,7 @@ const DashBoard = () => {
   const dateString = `${getOrdinalNum(day)} ${monthName}`;
 
   return (
-    <MenuProvider style={styles.container}>
+    <MenuProvider skipInstanceCheck={true} style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={styles.menuButtonContainer}>
           <Menu>
