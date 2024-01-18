@@ -42,12 +42,13 @@ const SignInScreen = ({ navigation }) => {
   const [token, setToken] = useState([]);
 
   const handleSubmit = async () => {
-    // setLoading(true); // Set isLoading to true when the sign-in button is pressed
-    // if (await handleLogin(email, password)) {
-    //   setToken(await handleAuth(email, password));
-    //   setLoading(false);
+    if (email === '' || password === '') return;
+    setLoading(true); // Set isLoading to true when the sign-in button is pressed
+    if (await handleLogin(email, password)) {
+      setToken(await handleAuth(email, password));
+      setLoading(false);
       navigation.navigate('DataInput');
-    // }
+    }
   }
 
   return (

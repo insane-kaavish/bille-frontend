@@ -47,9 +47,12 @@ const CreateAccount = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [token, setToken] = useState([]);
+  const [isLoading, setLoading] = useState(false); // Set initial value of isLoading to false
 
   const handleSubmit = async () => {
     // Prepare the data to send
+    if (name === '' || email === '' || password === '' || confirmPassword === '') return;
+    setLoading(true); // Set isLoading to true when the sign-in button is pressed
     const data = {
       first_name: name,
       last_name: '',
@@ -60,6 +63,7 @@ const CreateAccount = ({ navigation }) => {
     };
     if (await handleSignUp(data)) {
       setToken(await handleAuth(email, password));
+      setLoading(false);
       navigation.navigate('DashBoard');
     }
     else {
