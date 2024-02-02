@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import IntroductionScreen from './Screens/IntroductionScreen';
 import SignInScreen from './Screens/SigninScreen'; 
 import CreateAccount from './Screens/CreateAccount';
 import LoginLaunch from './Screens/LoginLaunch';
