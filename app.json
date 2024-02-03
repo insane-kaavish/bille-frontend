@@ -11,9 +11,15 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
+    "assets": [
+      "./extra/fonts/Lato",
+      "./extra/fonts/Outfit/static"
     ],
+    "assetBundlePatterns": [
+      "./extra/fonts/Lato/*",
+      "./extra/fonts/Outfit/static/*"
+    ],
+    
     "ios": {
       "supportsTablet": true,
       "infoPlist": {

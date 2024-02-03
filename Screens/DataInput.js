@@ -1,30 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
 const DataInput = ({ navigation }) => {
+  // State hooks for input fields
+  const [numOfPeople, setNumOfPeople] = useState('');
+  const [stayatHomeOccupant, setStayatHomeOccupants] = useState('');
+  const [ParttimeHomeOccupant, setParttimeHomeOccupants] = useState('');
+  const [FulltimeHomeOccupants, setFulltimeHomeOccupants] = useState('');
+
+  // Function to handle continue click
+  const handleContinue = () => {
+    const inputData = {
+      numOfPeople,
+      stayatHomeOccupant,
+      ParttimeHomeOccupant,
+      FulltimeHomeOccupants,
+    };
+    console.log(inputData);
+
+    navigation.navigate('RoomData', { inputData }); // Uncomment to navigate and pass data
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Get Started</Text>
-      
-      {/* Input Section: Size of House */}
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>What is the size of your house?</Text>
-        <TextInput
-          placeholder="Please enter numerics"
-          style={styles.input}
-        />
-      </View>
-
-      {/* Input Section: Number of Floors */}
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>How many floors do you have in your house?</Text>
-        <TextInput
-          placeholder="Enter Number of floors"
-          style={styles.input}
-        />
-      </View>
 
       {/* Input Section: Number of People */}
       <View style={styles.inputContainer}>
@@ -32,31 +33,47 @@ const DataInput = ({ navigation }) => {
         <TextInput
           placeholder="Enter number of people in the House"
           style={styles.input}
+          value={numOfPeople}
+          onChangeText={setNumOfPeople}
         />
       </View>
 
-      {/* Input Section: Electricity Units Last Month */}
       <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>How many electricity units were consumed previous month?</Text>
+        <Text style={styles.inputLabel}>How many people are completely stay at home occupants in your house?</Text>
         <TextInput
-          placeholder="Electricity units previous month"
+          placeholder="Occupants who are stay at home"
           style={styles.input}
+          value={stayatHomeOccupant}
+          onChangeText={setStayatHomeOccupants}
         />
       </View>
 
       {/* Input Section: Electricity Units Month Before Last */}
       <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>How many electricity units were consumed the month before the previous month?</Text>
+        <Text style={styles.inputLabel}>How many people are part-time employees, go to school, college or university in your house?</Text>
         <TextInput
-          placeholder="Electricity units of month before previous month"
+          placeholder="Occupants who are not home aproximately 6 hours"
           style={styles.input}
+          value={ParttimeHomeOccupant}
+          onChangeText={setParttimeHomeOccupants}
+        />
+      </View>
+
+      {/* Input Section: Electricity Units Month Before Last */}
+      <View style={styles.inputContainer}>
+        <Text style={styles.inputLabel}>How many people are full-time employees in your house?</Text>
+        <TextInput
+          placeholder="Occupants who are not home aproximately 10 hours"
+          style={styles.input}
+          value={FulltimeHomeOccupants}
+          onChangeText={setFulltimeHomeOccupants}
         />
       </View>
 
       {/* Continue button */}
       <TouchableOpacity
         style={styles.submitButton}
-        onPress={() => navigation.navigate('RoomData')}
+        onPress={handleContinue}
       >
         <Text style={styles.submitText}>Continue</Text>
       </TouchableOpacity>

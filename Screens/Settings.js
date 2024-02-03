@@ -1,21 +1,40 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Switch } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const SettingsScreen = ({ navigation }) => {
   // Placeholder for actual navigation or action calls
-  const navigateToPrivacy = () => console.log('Navigate to Privacy');
-  const navigateToContactUs = () => console.log('Navigate to Contact Us');
-  const navigateToNotifications = () => console.log('Navigate to Notifications');
+  const navigateToPrivacy = () => {
+    navigation.navigate('Privacy');
+    console.log('Navigate to Privacy')};
+  const navigateToContactUs = () => {
+    navigation.navigate('ContactUs');
+    console.log('Navigate to Contact Us');}
+
+  
+  const navigateToNotifications = () => {
+    console.log('Navigate to Notifications')};
 
   const navigateToOverview = () => {
     navigation.navigate('DashBoard');
   };
-  const navigateToPrediction = () => console.log('Navigate to Prediction');
-  const navigateToRoomWise = () => console.log('Navigate to Room Wise');
+  const navigateToPrediction = () => {
+    navigation.navigate('Prediction');
+  };
+  const navigateToRoomWise = () => {
+    navigation.navigate('RoomwisePrediction');
+  };
   const navigateToProfile = () => {
     navigation.navigate('EditProfile');
   };
+
+  // const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+
+  // const toggleNotifications = () => {
+  //   setNotificationsEnabled(!notificationsEnabled);
+  //   // Implement logic to toggle notifications (e.g., update settings, send requests, etc.)
+  // };
+
 
   return (
     <View style={styles.container}>

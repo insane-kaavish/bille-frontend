@@ -53,6 +53,8 @@ const CreateAccount = ({ navigation }) => {
     setLoading(true); // Set isLoading to true when submitting
 
     // Prepare the data to send
+    if (name === '' || email === '' || password === '' || confirmPassword === '') return;
+    setLoading(true); // Set isLoading to true when the sign-in button is pressed
     const data = {
       first_name: name,
       last_name: '',
@@ -63,6 +65,7 @@ const CreateAccount = ({ navigation }) => {
     };
     if (await handleSignUp(data)) {
       setToken(await handleAuth(email, password));
+      setLoading(false);
       navigation.navigate('DashBoard');
     } else {
       console.log('Error signing up');
