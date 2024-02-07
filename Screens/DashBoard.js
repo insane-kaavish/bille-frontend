@@ -4,6 +4,7 @@ import { MenuProvider, Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native';
+import WeatherComponent from './Weather';
 
 const DashBoard = () => {
   const navigation = useNavigation(); // Hook to access the navigation prop
@@ -74,7 +75,8 @@ const DashBoard = () => {
       </View>
 
       <View style={styles.Datecontainer}>
-        <Text style={styles.Datetext}>{dateString}</Text>
+        <Text style={styles.Datetext}>{dateString} <WeatherComponent/> </Text>
+        
       </View>
 
       <View style={styles.OVcontainer}>
