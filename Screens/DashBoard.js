@@ -1,8 +1,10 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import {  View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { MenuProvider, Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import { ScrollView } from 'react-native';
+import WeatherComponent from './Weather';
 
 const DashBoard = () => {
   const navigation = useNavigation(); // Hook to access the navigation prop
@@ -65,12 +67,16 @@ const DashBoard = () => {
           </Menu>
         </View>
       </View>
+
+
+      <ScrollView style= {styles.scrollContainer}>
       <View style={styles.BillEcontainer}>
         <Text style={styles.BillEtext}>Bill-E</Text>
       </View>
 
       <View style={styles.Datecontainer}>
-        <Text style={styles.Datetext}>{dateString}</Text>
+        <Text style={styles.Datetext}>{dateString} <WeatherComponent/> </Text>
+        
       </View>
 
       <View style={styles.OVcontainer}>
@@ -146,6 +152,8 @@ const DashBoard = () => {
         </View>
       </View>
 
+      </ScrollView>
+
       <View style={styles.navBar}>
         <TouchableOpacity onPress={navigateToOverview}>
           <Ionicons name="home-outline" size={24} color="#000" />
@@ -192,6 +200,9 @@ const styles = StyleSheet.create({
     right: 5, // Adjust this as necessary to move horizontally
     top: 25, // Adjust this as necessary to move vertically
     zIndex: 10, // Ensure the menu is above other elements
+  },
+  scrollContainer: {
+    flex: 1,
   },
   menuIcon: {
     // If you have padding here, it could be affecting the position as well
