@@ -22,17 +22,21 @@ const DashBoard = () => {
   const navigateToProfile = () => {
     navigation.navigate('EditProfile');
   };
-
+  const units= 213
+  const unitprice = 23.91;
+  const expectedbill= unitprice*units
   const today = new Date();
-
+  const dayOfWeek = today.getDay();
   const day = today.getDate();
+  const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const dayName = daysOfWeek[dayOfWeek];
   const monthName = today.toLocaleString('default', { month: 'long' });
 
   const getOrdinalNum = (n) => {
     return n + (n > 0 ? ['th', 'st', 'nd', 'rd'][(n > 3 && n < 21) || n % 10 > 3 ? 0 : n % 10] : '');
   };
 
-  const dateString = `${getOrdinalNum(day)} ${monthName}`;
+  const dateString = `${dayName} ${getOrdinalNum(day)} ${monthName}`;
 
   return (
     <MenuProvider skipInstanceCheck={true} style={styles.container}>
@@ -102,25 +106,43 @@ const DashBoard = () => {
         <Text style={styles.HLtitle}>Highlights</Text>
       </View>
 
-      <View style={styles.VMbuttonContainer}>
-        <TouchableOpacity style={styles.VMbutton} onPress={navigateToPrediction}>
-          <Text style={styles.VMbuttonText}>View more</Text>
-          <View style={styles.VMarrowContainer}>
-            <View style={styles.VMarrowLine}></View>
-          </View>
-        </TouchableOpacity>
-      </View>
 
-      <View style={styles.c11cardContainer}>
+
+
+
+              {/* highlights */}
+      <TouchableOpacity style={styles.rectangle1} onPresss = {navigateToOverview}>
+        <Text style={styles.rectangle1Text}>Expected Bill: </Text>
+        <Text style={styles.r1t2} > Rs. {expectedbill}</Text>
+        <View style={styles.rectangle1icon}>
+
+        <Image source={require('../extra/assets/EBIcon.png')}/>
+        </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.rectangle2} onPresss = {navigateToOverview}>
+        <Text style={styles.rectangle2Text}>Per Unit Price: </Text>
+        <Text style={styles.r2t2} > Rs. {unitprice}</Text>
+        <View style={styles.rectangle2icon}>
+
+        <Image source={require('../extra/assets/UPIcon.png')}/>
+        </View>
+      </TouchableOpacity>
+      {/* <View style={styles.rectangle1icon} ><EBicon/></View> */}
+
+
+
+
+      {/* <View style={styles.c11cardContainer}>
         <Text style={styles.c11expectedBillText}>Expected Bill</Text>
         <Text style={styles.c11amountText}>Rs. 10,523.21</Text>
         <Text style={styles.c11usagePatternText}>Based on ongoing usage pattern</Text>
         <View style={styles.c11iconContainer}>
           <Image source={require('../extra/assets/c11.png')}/>
         </View>
-      </View>
+      </View> */}
 
-      <View style={styles.c13cardContainer}>
+      {/* <View style={styles.c13cardContainer}>
         <Text style={styles.c13titleText}>Latest Consumption Data</Text>
         <View style={styles.c13dateContainer}>
           <Text style={styles.c13numberText}>35</Text>
@@ -150,7 +172,7 @@ const DashBoard = () => {
         <View style={styles.c12iconContainer}>
           <Image source={require('../extra/assets/c12.png')}/>
         </View>
-      </View>
+      </View> */}
 
       </ScrollView>
 
@@ -484,21 +506,7 @@ c11cardContainer: {
     lineHeight: 18,
     wordWrap: 'break-word',
   },
-  c11iconContainer: {
-    width: 58,
-    height: 58,
-    left: 90,
-    top: 17,
-    position: 'absolute',
-  },
-  c11icon: {
-    width: 38.67,
-    height: 48.33,
-    left: 9.67,
-    top: 4.83,
-    position: 'absolute',
-    backgroundColor: 'white',
-  },
+  
 //   c13
 c13cardContainer: {
     width: 166,
@@ -665,6 +673,109 @@ c13cardContainer: {
     left: 82,
     top: 16,
     position: 'absolute',
+  },
+  highlights:{
+
+
+  },
+  rectangle1:{
+    position: 'absolute',
+    width: 348,
+    height: 180,
+    left: 21,
+    top: 430,
+    // width: 
+    height:94,
+    backgroundColor: '#F1F2FDFF',
+    borderRadius: 8,
+  },
+  rectangle1Text:{
+    position:'absolute',
+    fontFamily: 'Outfit-Bold',
+    top:5,
+    left:7,
+
+    Fontsize : 40,
+    color:'#171A1FFF',
+  },
+  r1t2:{
+    position:'absolute',
+    top: 30,
+    left:1,
+    fontSize:45,
+    fontFamily: 'Outfit-Regular',
+    color: '#171A1FFF',
+
+
+
+  },
+  rectangle1icon:{
+    position: 'absolute',
+    top: 9,
+    left: 270,
+    width: 76,
+    height: 76,
+    // backgroundColor: '#379AE6',
+
+  },
+  rectangle2:{
+    position: 'absolute',
+    width: 348,
+    height: 180,
+    left: 21,
+    top: 540,
+    // width: 
+    height:94,
+    backgroundColor: '#F1F2FDFF',
+    borderRadius: 8,
+  },
+  rectangle2Text:{
+    position:'absolute',
+    fontFamily: 'Outfit-Bold',
+    top:5,
+    left:7,
+
+    fontSize:17,
+    color:'#171A1FFF',
+  },
+  r2t2:{
+    position:'absolute',
+    top: 30,
+    left:1,
+    fontSize:45,
+    fontFamily: 'Outfit-Regular',
+    color: '#171A1FFF',
+    
+  },
+  rectangle2icon:{
+    position: 'absolute',
+    top: 5,
+    left: 260,
+    width: 76,
+    height: 76,
+    // backgroundColor: '#379AE6',
+  },
+
+
+
+
+
+
+
+  c11iconContainer: {
+    position: 200,
+    width: '100%',
+    height: '100%',
+    
+  },
+  c11icon: {
+    width: 38.67,
+    height: 'auto',
+    left: 9.67,
+    top: 4.83,
+    position: 'absolute',
+    // backgroundColor: '#379AE6FF',
+    // fill: '#379AE6FF',
   },
 
   
