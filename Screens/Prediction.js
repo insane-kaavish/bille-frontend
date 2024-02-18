@@ -1,4 +1,4 @@
-import React from 'react';
+import React  from 'react';
 import {
   StyleSheet,
   View,
@@ -7,7 +7,9 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import { BarChart } from 'react-native-chart-kit';
+import Chart from 'chart.js/auto';
+import { BarChart,LineChart } from 'react-native-chart-kit';
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import {
@@ -56,24 +58,61 @@ const App = () => {
         ]
     }
   };
+  // useEffect(()=>{
+  //   if (data){
+  //     const labels = Object.keys(data1.monthwise_units);
+  //     const values = Object.values(data1.monthwise_units).map((valueArray)=>valueArray[0]);
+  //     const ctx = document.getElementById('My Chart');
+
+  //     const newChart = new Chart(ctx,{
+  //       type:'bar',
+  //       data:{
+  //         labels:labels,
+  //         datasets:[{
+  //           label:'Unit Consumed',
+  //           data:values,
+  //         }]
+
+  //       },
+  //       options:{scales:{y:{beginAtZero:true}}}
+  //     });
+  //     setChart(newChart); 
+
+  //   }
+
+  // },[data]);
   const labels = Object.keys(data1.monthwise_units);
   const values = Object.values(data1.monthwise_units).map((valueArray)=>valueArray[0]);
 
+  const data ={
+    
+    labels :labels,
+    datasets:[
+      {
+        label:'previos months consumption',
+        data:values,
+        color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`,
+        strokeWidth:2
+      }
+    ]
+  };
+
+  
   // const newBarChart = {
   //   type:'bar',
   //   data:{
   //     Labels:[labels],
   //   }
   // }
-  const data ={
-    labels:labels,
-    datasets:[
-      {
-        data:values,
-        label:'units consumed',
-      }
-    ]
-  }
+  // const data ={
+  //   labels:labels,
+  //   datasets:[
+  //     {
+  //       data:values,
+  //       label:'units consumed',
+  //     }
+  //   ]
+  // }
 
   // const data = {
   //   labels: ['Jan', 'FEB', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'],
@@ -127,7 +166,7 @@ const App = () => {
         </View>
 
         <View style={styles.graphCard}>
-        <BarChart
+        {/* <BarChart
           style={styles.graphStyle}
           data={data}
           width={screenWidth - 64} // Subtract total horizontal padding and margins
@@ -136,26 +175,28 @@ const App = () => {
           
           chartConfig={chartConfig}
           verticalLabelRotation={30}
-        />
-        </View>
+        /> */}
+        <LineChart
+          data={data}
+          width={screenWidth-32}
+          height={500}
+          yAxisLabel=""
+          verticalLabelRotation={90}
+          chartConfig={{
+            backgroundGradientFrom: '#FFF',
+            backgroundGradientTo: '#FFF',
+            color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+            strokeWidth: 0,
+            barPercentage: 0.3,
+            propsForLabels:{fontsize:2}
+          }}
+          bezier
+          style={{ marginVertical: 8, borderRadius: 16 }}
+      />
 
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
+
+
+        </View>
       </ScrollView>
 
       <View style={styles.navBar}>
@@ -256,19 +297,19 @@ const styles = StyleSheet.create({
   },
   graphCard: {
     backgroundColor: '#f9f9f9',
-    borderRadius: 8,
+    borderRadius: 1,
     paddingVertical: 16,
     paddingHorizontal: 16, // Adjust padding as needed
     marginHorizontal: 16,
     marginTop: 10,
-    marginBottom: 20,
+    marginBottom: 70,
     overflow: 'hidden', // Ensures that the graph does not overflow the card
   },
   graphStyle: {
     // position:'absolute'
-    marginVertical: 8,
+    marginVertical: 1,
     marginRight:10,
-    borderRadius:15,
+    borderRadius:1,
     
     
   },
