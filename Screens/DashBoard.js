@@ -128,7 +128,23 @@ const DashBoard = () => {
         <Image source={require('../extra/assets/UPIcon.png')}/>
         </View>
       </TouchableOpacity>
-      {/* <View style={styles.rectangle1icon} ><EBicon/></View> */}
+      
+      {/* Monthly reports */}
+      <View style={styles.MRContainer}>
+        <Text style={styles.MRtext}>Monthly Report</Text>
+        <TouchableOpacity style={styles.RRcontainer} onPress={navigateToRoomWise}>
+              <Text style={styles.RRText}>Room Report</Text> 
+              <View style={styles.RRicon}><Image source={require('../extra/assets/RRIcon.png')}/></View>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.MUGcontainer} onPress={navigateToPrediction}>
+          <Text style={styles.MUGText}> Monthly Unit Graph</Text>
+          <View style={styles.MUGicon}><Image source={require('../extra/assets/MUGIcon.png')}/></View>
+        </TouchableOpacity>
+
+      </View>
+
+
+
 
 
 
@@ -756,29 +772,91 @@ c13cardContainer: {
     // backgroundColor: '#379AE6',
   },
 
-
-
-
-
-
-
-  c11iconContainer: {
-    position: 200,
-    width: '100%',
-    height: '100%',
-    
-  },
-  c11icon: {
-    width: 38.67,
-    height: 'auto',
-    left: 9.67,
-    top: 4.83,
+  MRContainer:{
     position: 'absolute',
-    // backgroundColor: '#379AE6FF',
-    // fill: '#379AE6FF',
+    top: 650,
+    left: 21,
+  },
+  MRtext:{
+    color: '#171A1F',
+    fontSize: 20,
+    fontFamily: 'Outfit-Bold',
+    fontWeight: '600',
+    lineHeight: 30,
+    wordWrap: 'break-word',
+  },
+  RRcontainer: {
+    position: 'absolute',
+    top: 40,
+    left: 0,
+    width: 166,
+    height: 91,
+    backgroundColor: '#FFFFFF', // white
+    borderRadius: 16,
+    shadowColor: '#171A1F',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 9,
+    elevation: 2, // for Android
+  },
+  RRText:{
+    top: 13,
+    left: 85,
+    width: 100,
+    height: 'auto',
+    fontFamily: 'Outfit-Regular', // Heading
+    fontSize: 20,
+    fontWeight: '700',
+    lineHeight: 30,
+    color: '#323842', // neutral-700
+    flexWrap :'wrap',
+
+  },
+  RRicon:{
+    top:-40,
+    left: 15,
   },
 
-  
+
+  MUGcontainer: {
+    position: 'absolute',
+    top: 40,
+    left: 182,
+    width: 166,
+    height: 91,
+    backgroundColor: '#FFFFFF', // white
+    borderRadius: 16,
+    shadowColor: '#171A1F',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 9,
+    elevation: 2, // for Android
+  },
+  MUGText:{
+    top: 13,
+    left: 60,
+    width: 100,
+    height: 'auto',
+    fontFamily: 'Outfit-Regular', // Heading
+    fontSize: 20,
+    fontWeight: '700',
+    lineHeight: 30,
+    color: '#323842', // neutral-700
+    flexWrap :'wrap',
+
+  },
+  MUGicon:{
+    top:-43,
+    left: 6,
+
+
+  },  
 
 });
 
