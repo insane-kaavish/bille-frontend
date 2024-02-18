@@ -73,10 +73,12 @@ const DashBoard = () => {
       </View>
 
 
-      <View style= {styles.scrollContainer}>
+      
       <View style={styles.BillEcontainer}>
         <Text style={styles.BillEtext}>Bill-E</Text>
       </View>
+      <ScrollView>
+        <View>
 
       <View style={styles.Datecontainer}>
         <Text style={styles.Datetext}>{dateString} <WeatherComponent/> </Text>
@@ -140,8 +142,27 @@ const DashBoard = () => {
           <Text style={styles.MUGText}> Monthly Unit Graph</Text>
           <View style={styles.MUGicon}><Image source={require('../extra/assets/MUGIcon.png')}/></View>
         </TouchableOpacity>
+      </View>
+      
+
+      {/* tips/news */}
+      <View style={styles.ECTcontainer}>
+        <Text style={styles.ECTtext}>Electricity Conservation Tips</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
 
       </View>
+      {/* tips/news end */}
 
 
 
@@ -189,8 +210,8 @@ const DashBoard = () => {
           <Image source={require('../extra/assets/c12.png')}/>
         </View>
       </View> */}
-
       </View>
+      </ScrollView>
 
       <View style={styles.navBar}>
         <TouchableOpacity onPress={navigateToOverview}>
@@ -206,6 +227,7 @@ const DashBoard = () => {
           <Ionicons name="person-outline" size={24} color="#000" /> 
         </TouchableOpacity>
       </View>
+      
     </MenuProvider>
   );
 };
@@ -857,6 +879,22 @@ c13cardContainer: {
 
 
   },  
+  ECTcontainer:{
+    position: 'absolute',
+    top: 800,
+    left: 21,
+  },
+  ECTtext:{
+    color: '#171A1F',
+    fontSize: 20,
+    fontFamily: 'Outfit-Bold',
+    fontWeight: '600',
+    lineHeight: 30,
+    wordWrap: 'break-word',
+  },
+
+
+
 
 });
 

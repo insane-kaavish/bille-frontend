@@ -17,7 +17,7 @@ import {
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu';
-import Svg, { Circle, Rect } from 'react-native-svg';
+// import Svg, { Circle, Rect } from 'react-native-svg';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -28,18 +28,61 @@ const App = () => {
     backgroundGradientFrom: '#FFF',
     backgroundGradientTo: '#FFF',
     color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-    strokeWidth: 2,
-    barPercentage: 0.5,
+    strokeWidth: 0,
+    barPercentage: 0.3,
   };
+  const data1={
+    "monthwise_units": {
+        "January-2019": [
+            199
+        ],
+        "May-2021": [
+            1000
+        ],
+        "March-2022": [
+            750
+        ],
+        "July-2023": [
+            400
+        ],
+        "August-2023": [
+            500
+        ],
+        "April-2024": [
+            100
+        ],
+        "September-2024": [
+            299
+        ]
+    }
+  };
+  const labels = Object.keys(data1.monthwise_units);
+  const values = Object.values(data1.monthwise_units).map((valueArray)=>valueArray[0]);
 
-  const data = {
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    datasets: [
+  // const newBarChart = {
+  //   type:'bar',
+  //   data:{
+  //     Labels:[labels],
+  //   }
+  // }
+  const data ={
+    labels:labels,
+    datasets:[
       {
-        data: Array.from({ length: 7 }, () => Math.random() * 100),
-      },
-    ],
-  };
+        data:values,
+        label:'units consumed',
+      }
+    ]
+  }
+
+  // const data = {
+  //   labels: ['Jan', 'FEB', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'],
+  //   datasets: [
+  //     {
+  //       data: Array.from({ length: 12 }, () => Math.random() * 50),
+  //     },
+  //   ],
+  // };
 
   return (
     <MenuProvider skipInstanceCheck={true} style={styles.container}>
@@ -65,7 +108,7 @@ const App = () => {
         </Menu>
       </View>
 
-      <View style={styles.scrollContainer}>
+      <ScrollView style={styles.scrollContainer}>
         <View style={styles.predictionCard}>
           <Text style={styles.title}>Predicted Consumption</Text>
           <View style={styles.consumptionCircle}>
@@ -88,13 +131,32 @@ const App = () => {
           style={styles.graphStyle}
           data={data}
           width={screenWidth - 64} // Subtract total horizontal padding and margins
-          height={220}
-          yAxisLabel="$"
+          height={250}
+          yAxisLabel=""
+          
           chartConfig={chartConfig}
           verticalLabelRotation={30}
         />
         </View>
-      </View>
+
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+        <Text>ggggg</Text>
+      </ScrollView>
 
       <View style={styles.navBar}>
         <TouchableOpacity onPress={() => navigation.navigate('DashBoard')}>
@@ -203,7 +265,12 @@ const styles = StyleSheet.create({
     overflow: 'hidden', // Ensures that the graph does not overflow the card
   },
   graphStyle: {
+    // position:'absolute'
     marginVertical: 8,
+    marginRight:10,
+    borderRadius:15,
+    
+    
   },
   navBar: {
     flexDirection: 'row',
