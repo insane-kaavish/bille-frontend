@@ -17,6 +17,7 @@ import {
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu';
+import Svg, { Circle, Rect } from 'react-native-svg';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -64,7 +65,7 @@ const App = () => {
         </Menu>
       </View>
 
-      <ScrollView style={styles.scrollContainer}>
+      <View style={styles.scrollContainer}>
         <View style={styles.predictionCard}>
           <Text style={styles.title}>Predicted Consumption</Text>
           <View style={styles.consumptionCircle}>
@@ -93,7 +94,7 @@ const App = () => {
           verticalLabelRotation={30}
         />
         </View>
-      </ScrollView>
+      </View>
 
       <View style={styles.navBar}>
         <TouchableOpacity onPress={() => navigation.navigate('DashBoard')}>

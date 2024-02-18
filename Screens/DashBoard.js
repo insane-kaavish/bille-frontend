@@ -73,7 +73,7 @@ const DashBoard = () => {
       </View>
 
 
-      <ScrollView style= {styles.scrollContainer}>
+      <View style= {styles.scrollContainer}>
       <View style={styles.BillEcontainer}>
         <Text style={styles.BillEtext}>Bill-E</Text>
       </View>
@@ -111,7 +111,7 @@ const DashBoard = () => {
 
 
               {/* highlights */}
-      <TouchableOpacity style={styles.rectangle1} onPresss = {navigateToOverview}>
+      <TouchableOpacity style={styles.rectangle1} onPress = {navigateToOverview}>
         <Text style={styles.rectangle1Text}>Expected Bill: </Text>
         <Text style={styles.r1t2} > Rs. {expectedbill}</Text>
         <View style={styles.rectangle1icon}>
@@ -190,7 +190,7 @@ const DashBoard = () => {
         </View>
       </View> */}
 
-      </ScrollView>
+      </View>
 
       <View style={styles.navBar}>
         <TouchableOpacity onPress={navigateToOverview}>
