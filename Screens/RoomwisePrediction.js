@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Svg, { Circle } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import {
   MenuProvider,
@@ -23,11 +24,20 @@ const RoomwisePrediction = () => {
   const navigation = useNavigation();
 
   const rooms = [
-    { name: 'Ali’s Bedroom', units: 56, icon: 'bed-outline', color: '#517fa4' },
-    { name: 'Kitchen', units: 34, icon: 'fast-food-outline', color: '#f44336' },
-    { name: 'Bashir Living Room', units: 15, icon: 'tv-outline', color: '#ffeb3b' },
-    // Add other rooms as needed
+    { name: 'Ali’s Bedroom', units: 56, color: '#517fa4' },
+    { name: 'Kitchen', units: 34, color: '#f44336' },
+    { name: 'Bashir Living Room', units: 15, color: '#ffeb3b' },
   ];
+
+  // Calculate total units for all rooms
+  const totalAllUnits = rooms.reduce((total, room) => total + room.units, 0);
+
+  // Calculate total units for displayed rooms
+  const displayedRooms = rooms.slice(0, 2); // Assuming only first two rooms are displayed
+  const totalDisplayedUnits = displayedRooms.reduce((total, room) => total + room.units, 0);
+
+  // Total units text
+  const totalUnitsText = `${totalDisplayedUnits} of ${totalAllUnits} units`;
 
   const navigateToRoomDetails = (roomName) => {
     console.log('Navigating to details of', roomName);
@@ -60,7 +70,40 @@ const RoomwisePrediction = () => {
 
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>All Rooms Overview</Text>
+          <Text style={styles.title}>Highest Usage Rooms</Text>
+          <View style={styles.progressContainer}>
+            <Svg width="200" height="250">
+              {rooms.map((room, index) => (
+                <React.Fragment key={index}>
+                  {/* Outer circle */}
+                  <Circle
+                    cx="100"
+                    cy="135"
+                    r={(90 - index * 15).toString()}
+                    fill="none"
+                    stroke={room.color}
+                    strokeWidth="10"
+                  />
+                  {/* Remaining part */}
+                  <Circle
+                    cx="100"
+                    cy="135"
+                    r={(90 - index * 15).toString()}
+                    fill="none"
+                    stroke="#ddd"
+                    strokeWidth="10"
+                    strokeOpacity="0.95"
+                    strokeDasharray={`${(1 - room.units / totalAllUnits) * (2 * Math.PI * (90 - index * 15))} ${(2 * Math.PI * (90 - index * 15))}`}
+                    strokeDashoffset={`${(room.units / totalAllUnits) * (2 * Math.PI * (90 - index * 15))}`}
+                  />
+                </React.Fragment>
+              ))}
+              {/* Display total units */}
+              {/* <Text x="100" y="145" textAnchor="middle" stroke="black" fontSize="16">
+                {totalUnitsText}
+              </Text> */}
+            </Svg>
+          </View>
         </View>
         {rooms.map((room, index) => (
         <TouchableOpacity
@@ -187,6 +230,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 10,
   },
+  
 });
 
 export default RoomwisePrediction;
