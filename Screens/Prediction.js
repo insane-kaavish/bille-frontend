@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import Chart from 'chart.js/auto';
+
 import { BarChart,LineChart } from 'react-native-chart-kit';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
