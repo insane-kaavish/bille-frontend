@@ -10,8 +10,8 @@ import DataInput from './Screens/DataInput';
 import RoomData from './Screens/RoomData';
 import DataComplete from './Screens/DataComplete';
 import Home from './Screens/Home';
-import DashBoard from './Screens/DashBoard';
-import DashBoard1 from './Screens/DashBoard1';
+// import DashBoard from './Screens/DashBoard';
+import DashBoard from './Screens/DashBoard1';
 import EditProfile from './Screens/EditProfile';
 import ChangeUserName from './Screens/ChangeUserName';
 import ChangeEmail from './Screens/ChangeEmail';
@@ -54,7 +54,7 @@ const App = () => {
         />
         <Stack.Screen
           name="SignIn"
-          component={DashBoard1}
+          component={SignInScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
