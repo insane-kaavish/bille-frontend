@@ -37,7 +37,7 @@ const RoomwisePrediction = () => {
   const totalDisplayedUnits = displayedRooms.reduce((total, room) => total + room.units, 0);
 
   // Total units text
-  const totalUnitsText = `${totalDisplayedUnits} of ${totalAllUnits} units`;
+  const totalUnitsText = `${totalAllUnits} units`;
 
   const navigateToRoomDetails = (roomName) => {
     console.log('Navigating to details of', roomName);
@@ -84,7 +84,6 @@ const RoomwisePrediction = () => {
                     stroke={room.color}
                     strokeWidth="10"
                   />
-                  {/* Remaining part */}
                   <Circle
                     cx="100"
                     cy="135"
@@ -98,10 +97,11 @@ const RoomwisePrediction = () => {
                   />
                 </React.Fragment>
               ))}
-              {/* Display total units */}
-              {/* <Text x="100" y="145" textAnchor="middle" stroke="black" fontSize="16">
-                {totalUnitsText}
-              </Text> */}
+              {/* <View style={[styles.middletext]}>
+                <Text x="100" y="135">
+                  {totalUnitsText}
+                </Text>
+              </View> */}
             </Svg>
           </View>
         </View>
@@ -230,7 +230,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 10,
   },
-  
+  middletext: {
+      color: '#000',
+  }
 });
 
 export default RoomwisePrediction;
