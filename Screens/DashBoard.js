@@ -77,7 +77,7 @@ const DashBoard = () => {
       <View style={styles.BillEcontainer}>
         <Text style={styles.BillEtext}>Bill-E</Text>
       </View>
-      <ScrollView>
+      <View>
         <View>
 
       <View style={styles.Datecontainer}>
@@ -89,7 +89,7 @@ const DashBoard = () => {
         <Text style={styles.OVtext}>Overview</Text>
       </View>
 
-      <View style={styles.c4}>
+      <TouchableOpacity style={styles.c4} onPress={navigateToPrediction}>
         <View style={styles.c4circleContainer}>
           <View style={styles.c4innerCircleContainer}>
             <View style={styles.c4innermostCircleContainer}>
@@ -101,8 +101,8 @@ const DashBoard = () => {
         <Text style={styles.c4description}>
           Based on your current consumption data, your predicted units are 213 and consider good.
         </Text>
-        <Text style={styles.c4unitsCount}>213</Text>
-      </View>
+        <Text style={styles.c4unitsCount}>{units}</Text>
+      </TouchableOpacity>
 
       <View style={styles.HLcontainer}>
         <Text style={styles.HLtitle}>Highlights</Text>
@@ -148,18 +148,7 @@ const DashBoard = () => {
       {/* tips/news */}
       <View style={styles.ECTcontainer}>
         <Text style={styles.ECTtext}>Electricity Conservation Tips</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
-        <Text>ggggg</Text>
+       
 
       </View>
       {/* tips/news end */}
@@ -211,7 +200,7 @@ const DashBoard = () => {
         </View>
       </View> */}
       </View>
-      </ScrollView>
+      </View>
 
       <View style={styles.navBar}>
         <TouchableOpacity onPress={navigateToOverview}>
