@@ -1,8 +1,8 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { MenuProvider, Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 
 const Menu1 = () => {
   const navigation = useNavigation();
@@ -11,7 +11,7 @@ const Menu1 = () => {
     <MenuProvider>
       <View style={styles.container}>
         <Menu>
-          <MenuTrigger>
+          <MenuTrigger style={styles.menuTrigger}>
             <Ionicons name="menu" size={30} color="black" />
           </MenuTrigger>
           <MenuOptions style={styles.menuOptionsStyle}>
@@ -36,15 +36,16 @@ const Menu1 = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    top: 55,
-    left: 328
-    
+    position: 'absolute',
+    top: '10%',
+    right: '10%',
+    zIndex: 1,
+  },
+  menuTrigger: {
+    margin: 10,
   },
   menuOptionsStyle: {
-    marginTop: 10,
+    marginTop: 40,
   },
   menuOptionText: {
     fontSize: 16,
