@@ -45,6 +45,7 @@ const App = () => {
   }, []);
 
   return (
+    <AuthProvider>
       <NavigationContainer>
       <Stack.Navigator initialRouteName="Introduction">
         <Stack.Screen
@@ -144,6 +145,7 @@ const App = () => {
         />
       </Stack.Navigator>
       </NavigationContainer>
+    </AuthProvider>
   );
 };
 

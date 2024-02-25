@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { useAuth } from './AuthProvider';
 
 const { width, height } = Dimensions.get('window');
 
@@ -9,7 +10,7 @@ const DataInput = ({ navigation }) => {
   const [stayatHomeOccupant, setStayatHomeOccupants] = useState('');
   const [ParttimeHomeOccupant, setParttimeHomeOccupants] = useState('');
   const [FulltimeHomeOccupants, setFulltimeHomeOccupants] = useState('');
-
+  const { authToken } = useAuth();
   // Function to handle continue click
   const handleContinue = () => {
     const inputData = {
@@ -19,6 +20,7 @@ const DataInput = ({ navigation }) => {
       FulltimeHomeOccupants,
     };
     console.log(inputData);
+    console.log(authToken);
 
     navigation.navigate('RoomData', { inputData }); // Uncomment to navigate and pass data
   };

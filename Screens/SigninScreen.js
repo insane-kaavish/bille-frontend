@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { useAuth } from './AuthProvider';
+import Config from 'react-native-config';
 
-const API_URL = 'https://app.bille.live';
+const API_URL = Config.API_URL;
+// const API_URL = 'https://app.bille.live';
 
 const handleAuth = async (email, password) => {
   try {
@@ -39,16 +42,19 @@ const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setLoading] = useState(false); // Set initial value of isLoading to false
-  const [token, setToken] = useState([]);
+  // const [token, setToken] = useState([]);
+  const { authToken, login } = useAuth();
 
   const handleSubmit = async () => {
-    // if (email === '' || password === '') return;
-    // setLoading(true); // Set isLoading to true when the sign-in button is pressed
-    // if (await handleLogin(email, password)) {
+    if (email === '' || password === '') return;
+    setLoading(true); // Set isLoading to true when the sign-in button is pressed
+    if (await handleLogin(email, password)) {
       // setToken(await handleAuth(email, password));
-      // setLoading(false);
+      login(await handleAuth(email, password));
+      console.log(authToken);
+      setLoading(false);
       navigation.navigate('DataInput');
-    // }
+    }
   }
 
   return (
