@@ -3,6 +3,11 @@ import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, ActivityInd
 import { useAuth } from './AuthProvider';
 import Config from 'react-native-config';
 
+const validateEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
 const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,6 +21,10 @@ const SignInScreen = ({ navigation }) => {
       console.log(authToken);
       setLoading(false);
       navigation.navigate('DataInput');
+    }
+    else {
+      setLoading(false);
+      email(''); password('');
     }
   }
 
