@@ -3,10 +3,6 @@ import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, ActivityInd
 import { useAuth } from './AuthProvider';
 import Config from 'react-native-config';
 
-const API_URL = Config.API_URL;
-// const API_URL='http://192.168.18.6:8000'
-// const API_URL = 'https://app.bille.live';
-
 const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
