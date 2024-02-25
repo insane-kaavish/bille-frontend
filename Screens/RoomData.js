@@ -10,7 +10,7 @@ import {
   Platform,
   StatusBar,
 } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+// import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -102,7 +102,7 @@ const RoomData = () => {
   const renderAppliance = (appliance, roomIndex, applianceIndex) => {
     return (
       <View key={`appliance-${applianceIndex}`} style={styles.applianceItem}>
-        <Picker
+        {/* <Picker
           selectedValue={appliance.name}
           style={styles.pickerStyle}
           onValueChange={(itemValue) => setApplianceName(roomIndex, applianceIndex, itemValue)}
@@ -111,7 +111,7 @@ const RoomData = () => {
           {applianceOptions.map((applianceName, index) => (
             <Picker.Item key={index} label={applianceName} value={applianceName} />
           ))}
-        </Picker>
+        </Picker> */}
         <TextInput
           style={styles.usageInput}
           onChangeText={(text) => setApplianceUsage(roomIndex, applianceIndex, text)}
