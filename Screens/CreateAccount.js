@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 // import { API_URL } from '@env';
+import DefaultLayout from './_defaultLayout';
 
 const API_URL = 'https://app.bille.live';
 
@@ -76,7 +77,7 @@ const CreateAccount = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Bill-E</Text>
-      <Text style={styles.title}>Create Account</Text>
+      {/* <Text style={styles.title}>Create Account</Text> */}
 
       {/* Name Field */}
       <View style={styles.inputContainer}>
