@@ -1,17 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { MenuProvider, Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { MenuProvider,Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
-const Menu1 = () => {
+const FixedMenu = () => {
   const navigation = useNavigation();
 
   return (
-    <MenuProvider>
-      <View style={styles.container}>
+    <MenuProvider skipInstanceCheck={true} style={styles.container} >
+      <TouchableOpacity style={styles.menuButtonContainer}>
         <Menu>
-          <MenuTrigger style={styles.menuTrigger}>
+          <MenuTrigger style={styles.menuIcon}>
             <Ionicons name="menu" size={30} color="black" />
           </MenuTrigger>
           <MenuOptions style={styles.menuOptionsStyle}>
@@ -29,7 +29,7 @@ const Menu1 = () => {
             </MenuOption>
           </MenuOptions>
         </Menu>
-      </View>
+      </TouchableOpacity>
     </MenuProvider>
   );
 };
@@ -37,20 +37,23 @@ const Menu1 = () => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: '10%',
-    right: '10%',
+    top: 50,
+    right: 10,
+    // zIndex: 10,
+  },
+  menuButtonContainer: {
+    padding: 10,
+  },
+  menuIcon: {
     zIndex: 1,
   },
-  menuTrigger: {
-    margin: 10,
-  },
   menuOptionsStyle: {
-    marginTop: 40,
+    marginTop: 30,
   },
   menuOptionText: {
-    fontSize: 16,
     padding: 10,
+    fontSize: 16,
   },
 });
 
-export default Menu1;
+export default FixedMenu;

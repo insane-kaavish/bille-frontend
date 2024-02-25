@@ -46,77 +46,78 @@ const Dashboard = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      
       {/* <Menu1 /> */}
       <ScrollView style={styles.scrollContainer}>
       {/* Bill-E */}
-      <View style={styles.BillEcontainer}>
-        <Text style={styles.BillEtext}>Bill-E</Text>
-      </View>
+        <View style={styles.BillEcontainer}>
+          <Text style={styles.BillEtext}>Bill-E</Text>
+        </View>
       {/* Date and Weather */}
-      <View style={styles.Datecontainer}>
-        <Text style={styles.Datetext}>{dateString} <WeatherComponent/> </Text>
-      </View>
+        <View style={styles.Datecontainer}>
+          <Text style={styles.Datetext}>{dateString} <WeatherComponent/> </Text>
+        </View>
       {/* Overview */}
-      <View style={styles.OVcontainer}>
-        <Text style={styles.OVtext}>Overview</Text>
-      </View>
+        <View style={styles.OVcontainer}>
+          <Text style={styles.OVtext}>Overview</Text>
+        </View>
       {/* main card for prediction */}
-      <TouchableOpacity style={styles.MC} onPress={navigateToPrediction}>
-        <View style={styles.MCcircleContainer}>
-          <View style={styles.MCinnerCircleContainer}>
-            <View style={styles.MCinnermostCircleContainer}>
-              <Image source={require('../extra/assets/OV.png')}/>
+        <TouchableOpacity style={styles.MC} onPress={navigateToPrediction}>
+          <View style={styles.MCcircleContainer}>
+            <View style={styles.MCinnerCircleContainer}>
+              <View style={styles.MCinnermostCircleContainer}>
+                <Image source={require('../extra/assets/OV.png')}/>
+              </View>
             </View>
           </View>
-        </View>
-        <Text style={styles.MCtitle}>Current Units</Text>
-        <Text style={styles.MCdescription}>
-          Based on your current consumption data, your predicted units are 213 and consider good.
-        </Text>
-        <Text style={styles.MCunitsCount}>{units}</Text>
-      </TouchableOpacity>
+          <Text style={styles.MCtitle}>Current Units</Text>
+          <Text style={styles.MCdescription}>
+            Based on your current consumption data, your predicted units are 213 and consider good.
+          </Text>
+          <Text style={styles.MCunitsCount}>{units}</Text>
+        </TouchableOpacity>
 
       {/* highlights */}
-      <View style={styles.HLcontainer}>
-        <Text style={styles.HLtitle}>Highlights</Text>
-      </View>
+        <View style={styles.HLcontainer}>
+          <Text style={styles.HLtitle}>Highlights</Text>
+        </View>
       
-      <TouchableOpacity style={styles.rectangle1} onPress = {navigateToOverview}>
-        <Text style={styles.rectangle1Text}>Expected Bill: </Text>
-        <Text style={styles.r1t2} > Rs. {expectedbill}</Text>
-        <View style={styles.rectangle1icon}>
+        <TouchableOpacity style={styles.rectangle1} onPress = {navigateToOverview}>
+          <Text style={styles.rectangle1Text}>Expected Bill: </Text>
+          <Text style={styles.r1t2} > Rs. {expectedbill}</Text>
+          <View style={styles.rectangle1icon}>
 
-        <Image source={require('../extra/assets/EBIcon.png')}/>
-        </View>
-      </TouchableOpacity>
+          <Image source={require('../extra/assets/EBIcon.png')}/>
+          </View>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.rectangle2} onPresss = {navigateToOverview}>
-        <Text style={styles.rectangle2Text}>Per Unit Price: </Text>
-        <Text style={styles.r2t2} > Rs. {unitprice}</Text>
-        <View style={styles.rectangle2icon}>
+        <TouchableOpacity style={styles.rectangle2} onPresss = {navigateToOverview}>
+          <Text style={styles.rectangle2Text}>Per Unit Price: </Text>
+          <Text style={styles.r2t2} > Rs. {unitprice}</Text>
+          <View style={styles.rectangle2icon}>
 
-        <Image source={require('../extra/assets/UPIcon.png')}/>
-        </View>
-      </TouchableOpacity>
+          <Image source={require('../extra/assets/UPIcon.png')}/>
+          </View>
+        </TouchableOpacity>
 
       {/* Monthly reports */}
-      <View style={styles.MRContainer}>
-        <Text style={styles.MRtext}>Monthly Report</Text>
-        <TouchableOpacity style={styles.RRcontainer} onPress={navigateToRoomWise}>
-              <Text style={styles.RRText}>Room Report</Text> 
-              <View style={styles.RRicon}><Image source={require('../extra/assets/RRIcon.png')}/></View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.MUGcontainer} onPress={navigateToPrediction}>
-          <Text style={styles.MUGText}> Monthly Unit Graph</Text>
-          <View style={styles.MUGicon}><Image source={require('../extra/assets/MUGIcon.png')}/></View>
-        </TouchableOpacity>
-      </View>
+        <View style={styles.MRContainer}>
+          <Text style={styles.MRtext}>Monthly Report</Text>
+          <TouchableOpacity style={styles.RRcontainer} onPress={navigateToRoomWise}>
+                <Text style={styles.RRText}>Room Report</Text> 
+                <View style={styles.RRicon}><Image source={require('../extra/assets/RRIcon.png')}/></View>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.MUGcontainer} onPress={navigateToPrediction}>
+            <Text style={styles.MUGText}> Monthly Unit Graph</Text>
+            <View style={styles.MUGicon}><Image source={require('../extra/assets/MUGIcon.png')}/></View>
+          </TouchableOpacity>
+        </View>
 
       {/* tips/news */}
-      <View style={styles.ECTcontainer}>
-        <Text style={styles.ECTtext}>Electricity Conservation Tips</Text>
-        {/* <Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text> */}
-      </View>
+        <View style={styles.ECTcontainer}>
+          <Text style={styles.ECTtext}>Electricity Conservation Tips</Text>
+          {/* <Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text> */}
+        </View>
       {/* tips/news end */}
       
 
@@ -142,6 +143,7 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center',
   },
+  
   scrollContainer: {
     // flexGrow: 1,
     // marginLeft:'5%',

@@ -97,11 +97,11 @@ const RoomwisePrediction = () => {
                   />
                 </React.Fragment>
               ))}
-              {/* <View style={[styles.middletext]}>
+              <View style={[styles.middletext]}>
                 <Text x="100" y="135">
                   {totalUnitsText}
                 </Text>
-              </View> */}
+              </View>
             </Svg>
           </View>
         </View>
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     borderTopColor: '#EFEFEF',
     paddingVertical: 10,
     backgroundColor: '#FFFFFF',
-    position: 'absolute',
+    position: 'relative',
     left: 0,
     right: 0,
     bottom: 0,
@@ -232,6 +232,10 @@ const styles = StyleSheet.create({
   },
   middletext: {
       color: '#000',
+      top:'740%',
+      left:'35%'
+      
+
   }
 });
 
