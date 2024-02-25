@@ -4,53 +4,19 @@ import { useAuth } from './AuthProvider';
 import Config from 'react-native-config';
 
 const API_URL = Config.API_URL;
+// const API_URL='http://192.168.18.6:8000'
 // const API_URL = 'https://app.bille.live';
-
-const handleAuth = async (email, password) => {
-  try {
-    const response = await fetch(`${API_URL}/api-token-auth/`, { // Add this line to fetch the token from the API
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username: email, password }),
-    });
-    const data = await response.json();
-    return data.token;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const handleLogin = async (email, password) => {
-  try {
-    const response = await fetch(`${API_URL}/login/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email: email, password }),
-    });
-    if (response.status != 201) return false;
-    return true;
-  } catch (error) {
-    console.error(error);
-  }
-};
 
 const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setLoading] = useState(false); // Set initial value of isLoading to false
-  // const [token, setToken] = useState([]);
+  const [isLoading, setLoading] = useState(false);
   const { authToken, login } = useAuth();
 
   const handleSubmit = async () => {
     if (email === '' || password === '') return;
-    setLoading(true); // Set isLoading to true when the sign-in button is pressed
-    if (await handleLogin(email, password)) {
-      // setToken(await handleAuth(email, password));
-      login(await handleAuth(email, password));
+    setLoading(true);
+    if (await login(email, password)) {
       console.log(authToken);
       setLoading(false);
       navigation.navigate('DataInput');

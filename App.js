@@ -22,6 +22,7 @@ import Prediction from './Screens/Prediction';
 import ContactUs from './Screens/ContactUs';
 import Privacy from './Screens/Privacy';
 import RoomwisePrediction from './Screens/RoomwisePrediction';
+import { AuthProvider } from './Screens/AuthProvider';
 
 import * as Font from 'expo-font';
 
