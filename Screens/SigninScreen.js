@@ -30,44 +30,41 @@ const SignInScreen = ({ navigation }) => {
   }
 
   return (
-    // <DefaultLayout>
-      <View style={styles.container}>
-        <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
-        <Text style={styles.header}>Welcome back 👋</Text>
-        <View style={styles.inputContainer}>
-          {/* <Text style={styles.label}>Email</Text> */}
-          <TextInput
-            style={styles.input}
-            placeholder="Enter email"
-            value={email}
-            onChangeText={setEmail}
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          {/* <Text style={styles.label}>Password</Text> */}
-          <TextInput
-            style={styles.input}
-            placeholder="Enter password"
-            secureTextEntry
-            value={password}
-            onChangeText={setPassword}
-          />
-        </View>
-        <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={isLoading}>
-          {isLoading ? (
-            <ActivityIndicator color="white" /> // Show loading symbol when isLoading is true
-          ) : (
-            <Text style={styles.buttonText}>Sign In</Text>
-          )}
-        </TouchableOpacity>
-        <Text style={styles.footerText}>
-          Don't have an account?
-          <Text style={styles.signUpText} onPress={() => navigation.navigate('CreateAccount')}>
-            {' '}
-            Sign up
-          </Text>
-        </Text>
+    <View style={styles.container}>
+      <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
+      <Text style={styles.header}>Welcome back 👋</Text>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter email"
+          value={email}
+          onChangeText={setEmail}
+        />
       </View>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter password"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
+      </View>
+      <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={isLoading}>
+        {isLoading ? (
+          <ActivityIndicator color="white" /> // Show loading symbol when isLoading is true
+        ) : (
+          <Text style={styles.buttonText}>Sign In</Text>
+        )}
+      </TouchableOpacity>
+      <Text style={styles.footerText}>
+        Don't have an account?
+        <Text style={styles.signUpText} onPress={() => navigation.navigate('CreateAccount')}>
+          {' '}
+          Sign up
+        </Text>
+      </Text>
+    </View>
   );
 };
 
