@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { useAuth } from './AuthProvider';
 import Config from 'react-native-config';
+import DefaultLayout from './_defaultLayout';
 
 const validateEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -29,42 +30,44 @@ const SignInScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Welcome back 👋</Text>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Email</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter email"
-          value={email}
-          onChangeText={setEmail}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Password</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter password"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
-      </View>
-      <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={isLoading}>
-        {isLoading ? (
-          <ActivityIndicator color="white" /> // Show loading symbol when isLoading is true
-        ) : (
-          <Text style={styles.buttonText}>Sign In</Text>
-        )}
-      </TouchableOpacity>
-      <Text style={styles.footerText}>
-        Don't have an account?
-        <Text style={styles.signUpText} onPress={() => navigation.navigate('CreateAccount')}>
-          {' '}
-          Sign up
+    <DefaultLayout>
+      <View style={styles.container}>
+        <Text style={styles.header}>Welcome back 👋</Text>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Email</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter email"
+            value={email}
+            onChangeText={setEmail}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Password</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter password"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
+        </View>
+        <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={isLoading}>
+          {isLoading ? (
+            <ActivityIndicator color="white" /> // Show loading symbol when isLoading is true
+          ) : (
+            <Text style={styles.buttonText}>Sign In</Text>
+          )}
+        </TouchableOpacity>
+        <Text style={styles.footerText}>
+          Don't have an account?
+          <Text style={styles.signUpText} onPress={() => navigation.navigate('CreateAccount')}>
+            {' '}
+            Sign up
+          </Text>
         </Text>
-      </Text>
-    </View>
+      </View>
+    </DefaultLayout>
   );
 };
 

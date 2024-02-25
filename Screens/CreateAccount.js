@@ -58,7 +58,6 @@ const CreateAccount = ({ navigation }) => {
     const data = {
       first_name: name,
       last_name: '',
-      username: email,
       email: email,
       password: password,
       // confirmPassword: confirmPassword,
