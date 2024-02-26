@@ -39,6 +39,7 @@ const SignInScreen = ({ navigation }) => {
           placeholder="Enter email"
           value={email}
           onChangeText={setEmail}
+          autoCapitalize="none"
         />
       </View>
       <View style={styles.inputContainer}>
@@ -48,6 +49,7 @@ const SignInScreen = ({ navigation }) => {
           secureTextEntry
           value={password}
           onChangeText={setPassword}
+          autoCapitalize='none'
         />
       </View>
       <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={isLoading}>
