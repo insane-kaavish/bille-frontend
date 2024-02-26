@@ -7,7 +7,7 @@ import CreateAccount from './Screens/AuthScreens/Signup';
 import LoginLaunch from './Screens/LoginLaunch';
 import DataInput from './Screens/Data/DataInput';
 import RoomData from './Screens/Data/RoomData';
-// import DataComplete from './Screens/DataComplete';
+import DataComplete from './Screens/DataComplete';
 import Home from './Screens/Home';
 import DashBoard from './Screens/DashBoard';
 import EditProfile from './Screens/ProfileScreens/EditProfile';
@@ -54,7 +54,7 @@ const App = () => {
         /> */}
         <Stack.Screen
           name="SignIn"
-          component={Home}
+          component={SignInScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
