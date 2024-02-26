@@ -2,16 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import IntroductionScreen from './Screens/IntroductionScreen';
 import SignInScreen from './Screens/SigninScreen'; 
 import CreateAccount from './Screens/CreateAccount';
 import LoginLaunch from './Screens/LoginLaunch';
 import DataInput from './Screens/DataInput';
 import RoomData from './Screens/RoomData';
-import DataComplete from './Screens/DataComplete';
+// import DataComplete from './Screens/DataComplete';
 import Home from './Screens/Home';
-// import DashBoard from './Screens/DashBoard';
-import DashBoard from './Screens/DashBoard1';
+import DashBoard from './Screens/DashBoard';
 import EditProfile from './Screens/EditProfile';
 import ChangeUserName from './Screens/ChangeUserName';
 import ChangeEmail from './Screens/ChangeEmail';
@@ -48,12 +46,12 @@ const App = () => {
   return (
     <AuthProvider>
       <NavigationContainer>
-      <Stack.Navigator initialRouteName="Introduction">
-        <Stack.Screen
+      <Stack.Navigator initialRouteName="SignIn">
+        {/* <Stack.Screen
           name="Introduction"
           component={IntroductionScreen}
           options={{ headerShown: false }} // Assuming you don't want a header for the intro screen
-        />
+        /> */}
         <Stack.Screen
           name="SignIn"
           component={SignInScreen}
@@ -79,11 +77,11 @@ const App = () => {
           component={RoomData}
           options={{ headerShown: false }} // Assuming you don't want to show the header
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="DataComplete"
           component={DataComplete}
           options={{ headerShown: false }} // Assuming you don't want to show the header
-        />
+        /> */}
         <Stack.Screen
           name="Home"
           component={Home}

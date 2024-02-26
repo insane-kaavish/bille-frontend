@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+
+import DefaultLayout from './_defaultLayout';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import Config from 'react-native-config';
 
@@ -41,6 +43,8 @@ const handleSignUp = async (data) => {
   }
 };
 
+const screenHeight = Dimensions.get('window').height;
+
 const CreateAccount = ({ navigation }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -48,6 +52,15 @@ const CreateAccount = ({ navigation }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [token, setToken] = useState([]);
   const [isLoading, setLoading] = useState(false); // Add isLoading state
+  const [isTyping, setIsTyping] = useState(false);
+
+  const handleFocus = () => {
+    setIsTyping(true); // Set isTyping to true when a text input is focused
+  };
+
+  const handleBlur = () => {
+    setIsTyping(false); // Set isTyping to false when a text input is blurred
+  };
 
   const handleSubmit = async () => {
     setLoading(true); // Set isLoading to true when submitting
@@ -58,7 +71,6 @@ const CreateAccount = ({ navigation }) => {
     const data = {
       first_name: name,
       last_name: '',
-      username: email,
       email: email,
       password: password,
       // confirmPassword: confirmPassword,
@@ -76,53 +88,61 @@ const CreateAccount = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Bill-E</Text>
-      <Text style={styles.title}>Create Account</Text>
+      {!isTyping && <Text style={styles.header}>Bill-E</Text>}
+      {!isTyping &&<Text style={styles.title}>Create Account</Text>}
 
       {/* Name Field */}
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Name</Text>
+        {/* <Text style={styles.label}>Name</Text> */}
         <TextInput
           style={styles.input}
-          placeholder="Enter name"
+          placeholder="Full Name"
           value={name}
           onChangeText={(text) => setName(text)}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
       </View>
 
       {/* Email Field */}
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Email</Text>
+        {/* <Text style={styles.label}>Email</Text> */}
         <TextInput
           style={styles.input}
-          placeholder="Enter email"
+          placeholder="Email Address"
           keyboardType="email-address"
           value={email}
           onChangeText={(text) => setEmail(text)}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
       </View>
 
       {/* Password Field */}
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Password</Text>
+        {/* <Text style={styles.label}>Password</Text> */}
         <TextInput
           style={styles.input}
-          placeholder="Enter password"
+          placeholder="Password"
           secureTextEntry
           value={password}
           onChangeText={(text) => setPassword(text)}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
       </View>
 
       {/* Confirm Password Field */}
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Confirm Password</Text>
+        {/* <Text style={styles.label}>Confirm Password</Text> */}
         <TextInput
           style={styles.input}
-          placeholder="Enter password"
+          placeholder="Confirm Password"
           secureTextEntry
           value={confirmPassword}
           onChangeText={(text) => setConfirmPassword(text)}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
       </View>
 
@@ -156,7 +176,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#171A1F',
     position: 'absolute',
-    top: 47,
+    top: 47, 
   },
   title: {
     fontSize: 32,

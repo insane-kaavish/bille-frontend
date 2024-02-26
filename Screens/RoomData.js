@@ -68,7 +68,7 @@ const RoomData = () => {
     const roomsJson = JSON.stringify(rooms);
     console.log(roomsJson); // Log the JSON to the console
     // Perform any other actions, such as navigation or sending the data to an API
-    navigation.navigate('DataComplete', { roomsData: rooms });
+    navigation.navigate('DashBoard', { roomsData: rooms });
   };
 
   const toggleAccordion = (index) => {

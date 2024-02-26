@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { StyleSheet, StatusBar ,View, Text, TextInput, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { useAuth } from './AuthProvider';
 import Config from 'react-native-config';
+import DefaultLayout from './_defaultLayout';
 
 const validateEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -32,9 +33,9 @@ const SignInScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
       <Text style={styles.header}>Welcome back 👋</Text>
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Email</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter email"
@@ -44,7 +45,6 @@ const SignInScreen = ({ navigation }) => {
         />
       </View>
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Password</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter password"
