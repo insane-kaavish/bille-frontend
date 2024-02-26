@@ -18,6 +18,8 @@ const SignInScreen = ({ navigation }) => {
   const handleSubmit = async () => {
     if (email === '' || password === '') return;
     setLoading(true);
+    console.log('Signing in...');
+    console.log(email, password);
     if (await login(email, password)) {
       console.log(authToken);
       setLoading(false);
@@ -25,7 +27,7 @@ const SignInScreen = ({ navigation }) => {
     }
     else {
       setLoading(false);
-      email(''); password('');
+      setEmail(''); setPassword('');
     }
   }
 
@@ -39,7 +41,7 @@ const SignInScreen = ({ navigation }) => {
           placeholder="Enter email"
           value={email}
           onChangeText={setEmail}
-          autoCapitalize="none"
+          autoCapitalize='none'
         />
       </View>
       <View style={styles.inputContainer}>
