@@ -10,6 +10,7 @@ import {
 } from 'react-native-popup-menu';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesomeicons from 'react-native-vector-icons/FontAwesome';
 
 const units = 300;
 
@@ -57,17 +58,34 @@ const Dashboard = ({ navigation }) => {
             <Ionicons name="menu" size={30} color="black" style={styles.menuIcon} />
           </MenuTrigger>
           <MenuOptions style={styles.menuOptionsStyle}>
+        
             <MenuOption onSelect={() => navigation.navigate('EditProfile')}>
-              <Text style={styles.menuOptionText}>Profile</Text>
+            <Text style={styles.menuOptionText}>
+              Profile         
+            </Text>
+            <FontAwesomeicons name="user" size={30} color="black" style={styles.menuOptionIcon}/>
             </MenuOption>
             <MenuOption onSelect={() => navigation.navigate('Settings')}>
-              <Text style={styles.menuOptionText}>Settings</Text>
+            
+              <Text style={styles.menuOptionText}>
+                Settings
+              </Text>
+                <FontAwesomeicons name="gear" size={30} color="black" style={styles.menuOptionIcon}/>
             </MenuOption>
             <MenuOption onSelect={() => navigation.navigate('HelpCenter')}>
-              <Text style={styles.menuOptionText}>Help Center</Text>
+            
+              <Text style={styles.menuOptionText}>
+                Help Center
+              </Text>
+              <Ionicons name="help-circle" size={30} color="black" style={styles.menuOptionIcon}/>
             </MenuOption>
             <MenuOption onSelect={() => navigation.navigate('SignIn')}>
-              <Text style={styles.menuOptionText}>Sign Out</Text>
+              
+              <Text style={styles.menuOptionText}>
+                Sign Out   
+              </Text>
+              <Ionicons name="log-out-outline" size={30} color="black" style={styles.menuOptionIcon}/>
+
             </MenuOption>
           </MenuOptions>
         </Menu>
@@ -151,14 +169,33 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   menuOptionsStyle: {
-    marginTop: 0,
-    marginVertical: 2,
-    zIndex: 1,
+    // width:'auto',
+    flex:1,
+    marginTop: 5,
+    marginVertical: 10,
+    // flexDirection:'column',
+    // alignItems: 'center',
+    // paddingVertical: 10,
+    // paddingHorizontal: 10,
+    // justifyContent:'space-evenly',
+    // zIndex: 1,
   },
   menuOptionText: {
+    // alignItems: 'center',
+    textAlign:'center',
+    // justifyContent:'space-evenly',
     fontSize: 16,
-    padding: 10,
+    // padding: 10,
     fontFamily: 'Outfit-Bold',
+  },
+  menuOptionIcon: {
+    // marginLeft: 10,
+    // marginTop:10000,
+    // alignItems: 'left',
+    // paddingVertical: -10,
+    // justifyContent:'space-bet/ween',
+    // top:-26,
+    // right:0,
   },
   scrollContainer: {
     flex: 1,
