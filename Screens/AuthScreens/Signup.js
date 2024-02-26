@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import DefaultLayout from './_defaultLayout';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import Config from 'react-native-config';
 
@@ -42,8 +41,6 @@ const handleSignUp = async (data) => {
     console.error(error);
   }
 };
-
-const screenHeight = Dimensions.get('window').height;
 
 const CreateAccount = ({ navigation }) => {
   const [name, setName] = useState('');

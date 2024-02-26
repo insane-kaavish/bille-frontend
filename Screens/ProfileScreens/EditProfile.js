@@ -72,7 +72,7 @@ const EditProfile = ({ navigation }) => {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.profileSection}>
-        <Image source={require('../assets/icon.png')} style={styles.avatar} />
+        {/* <Image source={require('../assets/icon.png')} style={styles.avatar} /> */}
           <Text style={styles.name}>Bashir</Text>
           <Text style={styles.email}>Bashir@gmail.com</Text>
         </View>

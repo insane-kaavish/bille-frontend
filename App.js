@@ -4,10 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import SignInScreen from './Screens/AuthScreens/Signin'; 
 import CreateAccount from './Screens/AuthScreens/Signup';
-import LoginLaunch from './Screens/LoginLaunch';
 import DataInput from './Screens/Data/DataInput';
 import RoomData from './Screens/Data/RoomData';
-import DataComplete from './Screens/DataComplete';
 import Home from './Screens/Home';
 import DashBoard from './Screens/DashBoard';
 import EditProfile from './Screens/ProfileScreens/EditProfile';
@@ -63,11 +61,6 @@ const App = () => {
           options={{ headerShown: false }} // Assuming you don't want to show the header
         />
         <Stack.Screen
-          name="LoginLaunch"
-          component={LoginLaunch}
-          options={{ headerShown: false }} // Assuming you don't want to show the header
-        />
-        <Stack.Screen
           name="DataInput"
           component={DataInput}
           options={{ headerShown: false }} // Assuming you don't want to show the header
@@ -77,11 +70,6 @@ const App = () => {
           component={RoomData}
           options={{ headerShown: false }} // Assuming you don't want to show the header
         />
-        {/* <Stack.Screen
-          name="DataComplete"
-          component={DataComplete}
-          options={{ headerShown: false }} // Assuming you don't want to show the header
-        /> */}
         <Stack.Screen
           name="Home"
           component={Home}

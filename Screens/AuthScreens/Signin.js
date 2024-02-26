@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { StyleSheet, StatusBar ,View, Text, TextInput, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { useAuth } from './AuthProvider';
 import Config from 'react-native-config';
-import DefaultLayout from '../_defaultLayout';
 
 const validateEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

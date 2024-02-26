@@ -58,29 +58,7 @@ const App = () => {
         ]
     }
   };
-  // useEffect(()=>{
-  //   if (data){
-  //     const labels = Object.keys(data1.monthwise_units);
-  //     const values = Object.values(data1.monthwise_units).map((valueArray)=>valueArray[0]);
-  //     const ctx = document.getElementById('My Chart');
 
-  //     const newChart = new Chart(ctx,{
-  //       type:'bar',
-  //       data:{
-  //         labels:labels,
-  //         datasets:[{
-  //           label:'Unit Consumed',
-  //           data:values,
-  //         }]
-
-  //       },
-  //       options:{scales:{y:{beginAtZero:true}}}
-  //     });
-  //     setChart(newChart); 
-
-  //   }
-
-  // },[data]);
   const labels = Object.keys(data1.monthwise_units);
   const values = Object.values(data1.monthwise_units).map((valueArray)=>valueArray[0]);
 
@@ -96,32 +74,6 @@ const App = () => {
       }
     ]
   };
-
-  
-  // const newBarChart = {
-  //   type:'bar',
-  //   data:{
-  //     Labels:[labels],
-  //   }
-  // }
-  // const data ={
-  //   labels:labels,
-  //   datasets:[
-  //     {
-  //       data:values,
-  //       label:'units consumed',
-  //     }
-  //   ]
-  // }
-
-  // const data = {
-  //   labels: ['Jan', 'FEB', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'],
-  //   datasets: [
-  //     {
-  //       data: Array.from({ length: 12 }, () => Math.random() * 50),
-  //     },
-  //   ],
-  // };
 
   return (
     <MenuProvider skipInstanceCheck={true} style={styles.container}>
@@ -166,16 +118,6 @@ const App = () => {
         </View>
 
         <View style={styles.graphCard}>
-        {/* <BarChart
-          style={styles.graphStyle}
-          data={data}
-          width={screenWidth - 64} // Subtract total horizontal padding and margins
-          height={250}
-          yAxisLabel=""
-          
-          chartConfig={chartConfig}
-          verticalLabelRotation={30}
-        /> */}
         <LineChart
           data={data}
           width={screenWidth-32}
