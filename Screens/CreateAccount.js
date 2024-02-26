@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-// import { API_URL } from '@env';
+import Config from 'react-native-config';
 
-const API_URL = 'https://app.bille.live';
+const API_URL = Config.API_URL;
 
 const handleAuth = async (email, password) => {
   try {
