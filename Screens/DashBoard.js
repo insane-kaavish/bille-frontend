@@ -1,7 +1,6 @@
 import React from 'react';
-import { Image, View, StyleSheet, ScrollView, Text,TouchableOpacity } from 'react-native';
+import { Image, View, StyleSheet, ScrollView, Text, TouchableOpacity } from 'react-native';
 import NavBar from './Components/NavBar';
-import WeatherComponent from './Components/Weather';
 import {
   MenuProvider,
   Menu,
@@ -12,15 +11,31 @@ import {
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+const units = 300;
+
+let perUnitCost;
+if (units >= 1 && units <= 100) {
+  perUnitCost = 5.79;
+} else if (units >= 101 && units <= 200) {
+  perUnitCost = 8.11;
+} else if (units >= 201 && units <= 300) {
+  perUnitCost = 10.20;
+} else if (units >= 301 && units <= 700) {
+  perUnitCost = 17.60;
+} else {
+  perUnitCost = 20.70;
+}
+
+const totalCost = units * perUnitCost;
+
 const Dashboard = ({ navigation }) => {
 
-  // const navigation = useNavigation(); // Hook to access the navigation prop
   const navigateToOverview = () => {
     navigation.navigate('DashBoard');
   };
-  
+
   const navigateToPrediction = () => {
-    navigation.navigate('Prediction'); // Ensure 'Prediction' matches the route name defined in your navigator
+    navigation.navigate('Prediction');
   };
   const navigateToRoomWise = () => {
     navigation.navigate('RoomwisePrediction');
@@ -29,24 +44,14 @@ const Dashboard = ({ navigation }) => {
     navigation.navigate('EditProfile');
   };
 
-  const units= 213
-  const unitprice = 23.91;
-  const expectedbill= unitprice*units
-  const today = new Date();
-  const dayOfWeek = today.getDay();
-  const day = today.getDate();
-  const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  const dayName = daysOfWeek[dayOfWeek];
-  const monthName = today.toLocaleString('default', { month: 'long' });
-
-  const getOrdinalNum = (n) => {
-    return n + (n > 0 ? ['th', 'st', 'nd', 'rd'][(n > 3 && n < 21) || n % 10 > 3 ? 0 : n % 10] : '');
-  };
-
-  const dateString = `${dayName} ${getOrdinalNum(day)} ${monthName}`;
   return (
     <MenuProvider skipInstanceCheck={true} style={styles.container}>
       <View style={styles.header}>
+      <View style={{ flex: 1 }}> 
+        <Text style={{ fontFamily: 'Lato-Bold', fontSize: 20, color: '#171A1F', textAlign: 'left' }}>
+          <Text>Bill-E Dashboard</Text>
+        </Text>  
+      </View>
         <Menu>
           <MenuTrigger>
             <Ionicons name="menu" size={30} color="black" style={styles.menuIcon} />
@@ -67,53 +72,45 @@ const Dashboard = ({ navigation }) => {
           </MenuOptions>
         </Menu>
       </View>
-    
+
       <ScrollView style={styles.scrollContainer}>
-        <View style={styles.BillEcontainer}>
-          <Text style={styles.BillEtext}>Bill-E</Text>
-        </View>
-        <View style={styles.Datecontainer}>
-          <Text style={styles.Datetext}>{dateString} <WeatherComponent/> </Text>
-        </View>
-        <View style={styles.OVcontainer}>
-          <Text style={styles.OVtext}>Overview</Text>
-        </View>
         <TouchableOpacity style={styles.MC} onPress={navigateToPrediction}>
           <View style={styles.MCcircleContainer}>
-            <View style={styles.MCinnerCircleContainer}>
-              <View style={styles.MCinnermostCircleContainer}>
-                <Image source={require('../extra/assets/OV.png')}/>
-              </View>
+            <View style={styles.MCinnermostCircleContainer}>
+              <Image source={require('../extra/assets/OV.png')} />
             </View>
           </View>
           <Text style={styles.MCtitle}>Current Units</Text>
           <Text style={styles.MCdescription}>
-            Based on your current consumption data, your predicted units are 213 and consider good.
+            Based on your current consumption data, your predicted units are {units} and consider good.
           </Text>
           <Text style={styles.MCunitsCount}>{units}</Text>
         </TouchableOpacity>
+
         <View style={styles.HLcontainer}>
           <Text style={styles.HLtitle}>Highlights</Text>
         </View>
-      
-        <TouchableOpacity style={styles.rectangle1} onPress = {navigateToOverview}>
-          <Text style={styles.rectangle1Text}>Expected Bill: </Text>
-          <Text style={styles.r1t2} > Rs. {expectedbill}</Text>
-          <View style={styles.rectangle1icon}>
 
-          <Image source={require('../extra/assets/EBIcon.png')}/>
+        <View style={styles.cardsContainer}>
+        <View style={[styles.card, { backgroundColor: '#F1F2FDFF' }]}>
+            <Text style={styles.cardTitle}>Expected Bill</Text>
+            <Text style={styles.cardAmount}>Rs. {totalCost}</Text>
+            <Text style={styles.cardText}>Based on usage pattern</Text>
+            <View style={styles.cardIconContainer}>
+              <Image source={require('../extra/assets/c11.png')} />
+            </View>
           </View>
-        </TouchableOpacity>
 
-        <TouchableOpacity style={styles.rectangle2} onPresss = {navigateToOverview}>
-          <Text style={styles.rectangle2Text}>Per Unit Price: </Text>
-          <Text style={styles.r2t2} > Rs. {unitprice}</Text>
-          <View style={styles.rectangle2icon}>
-
-          <Image source={require('../extra/assets/UPIcon.png')}/>
+          <View style={[styles.card, { backgroundColor: '#F1F2FDFF' }]}>
+            <Text style={styles.cardTitle}>Per Unit Price</Text>
+            <Text style={styles.cardAmount}>Rs. {perUnitCost}</Text>
+            <Text style={styles.cardText}>Based on the slab rates</Text>
+            <View style={styles.cardIconContainer}>
+              <Image source={require('../extra/assets/c12.png')} />
+            </View>
           </View>
-        </TouchableOpacity>
-      {/* Monthly reports */}
+        </View>
+
         <View style={styles.MRContainer}>
           <Text style={styles.MRtext}>Monthly Report</Text>
           <TouchableOpacity style={styles.RRcontainer} onPress={navigateToRoomWise}>
@@ -125,10 +122,9 @@ const Dashboard = ({ navigation }) => {
             <View style={styles.MUGicon}><Image source={require('../extra/assets/MUGIcon.png')}/></View>
           </TouchableOpacity>
         </View>
-        {/* <View style={styles.ECTcontainer}>
-          <Text style={styles.ECTtext}>Electricity Conservation Tips</Text>
-        </View> */}
+
       </ScrollView>
+
       <NavBar />
     </MenuProvider>
   );
@@ -138,8 +134,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    // justifyContent:'center',
-    alignItems:'center',
+    padding: 10,
   },
   header: {
     flexDirection: 'row',
@@ -153,7 +148,7 @@ const styles = StyleSheet.create({
   },
   menuIcon: {
     marginTop: 5,
-    marginRight: 10, 
+    marginRight: 10,
   },
   menuOptionsStyle: {
     marginTop: 0,
@@ -163,61 +158,18 @@ const styles = StyleSheet.create({
   menuOptionText: {
     fontSize: 16,
     padding: 10,
+    fontFamily: 'Outfit-Bold',
   },
   scrollContainer: {
-    marginBottom:'10%',
-    backgroundColor: '',
-  },
-  BillEcontainer: {
-    top:'5%',
-    // position: 'absolute',
-    textAlign: 'center',
-    color: '',
-  },
-  BillEtext: {
-    fontSize: 48,
-    fontFamily: 'Outfit-Bold',
-    fontWeight: '700',
-    lineHeight: 68,
-    // wordWrap: 'wrap',
-  },
-  Datetext: {
-    color: '#565E6C',
-    fontSize: 12,
-    fontFamily: 'Lato-Regular',
-    fontWeight: '700',
-    lineHeight: 20, 
-    // wordWrap: 'break-word',
-  },
-  Datecontainer: {
-    // left: '7%',
-    // top: 114,
-    top:'5%',
-    // position: 'absolute',
-  },
-  OVcontainer: {
-    // left: '7%',
-    
-    top: '5%',
-    // top: 136,
-    // position: 'absolute',
-  },
-  OVtext: {
-    color: '#171A1F',
-    fontSize: 32,
-    fontFamily: 'Outfit-Bold',
-    fontWeight: '700',
-    lineHeight: 48,
-    // wordWrap: 'break-word',
+    flex: 1,
   },
   MC: {
     width: 348,
     height: 144,
-    // alignItem:'center',
-    justifyContent:'center',
-    top: '6%',
-    // position: 'absolute',
-    backgroundColor: '#F1F2FD',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    marginTop: '6%',
+    backgroundColor: '#F1F2FDFF',
     borderRadius: 16,
     shadowColor: 'rgba(23, 26, 31, 0.19)',
     shadowOffset: {
@@ -226,44 +178,13 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 1,
     shadowRadius: 9,
-    elevation: 2, // for Android
+    elevation: 2,
+    // padding: 10,
   },
   MCcircleContainer: {
-    width: 72,
-    height: 72,
     left: 259,
     top: -1,
     position: 'absolute',
-  },
-  MCinnerCircleContainer: {
-    width: 72,
-    height: 72,
-    left: 0,
-    top: 1.31,
-    position: 'absolute',
-  },
-  MCinnermostCircleContainer: {
-    width: 72,
-    height: 72,
-    left: 0,
-    top: 0,
-    position: 'absolute',
-  },
-  MCblackCircle: {
-    width: 72,
-    height: 72,
-    left: 0,
-    top: 0,
-    position: 'absolute',
-    backgroundColor: 'black',
-  },
-  MCgreenCircle: {
-    width: 62.35,
-    height: 69.38,
-    left: 4.82,
-    top: 0,
-    position: 'absolute',
-    backgroundColor: '#2EE82E',
   },
   MCtitle: {
     left: 20,
@@ -271,10 +192,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     color: '#171A1F',
     fontSize: 18,
-    fontFamily: 'Outfit-Bold',
+    fontFamily: 'Lato-Bold',
     fontWeight: '600',
     lineHeight: 28,
-    // wordWrap: 'break-word',
   },
   MCdescription: {
     width: 198,
@@ -286,7 +206,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Lato-Bold',
     fontWeight: '400',
     lineHeight: 22,
-    // wordWrap: 'break-word',
   },
   MCunitsCount: {
     left: 276,
@@ -294,155 +213,123 @@ const styles = StyleSheet.create({
     position: 'absolute',
     color: 'white',
     fontSize: 24,
-    fontFamily: 'Outfit-Regular',
+    fontFamily: 'Lato-Bold',
     fontWeight: '700',
     lineHeight: 36,
-    // wordWrap: 'break-word',
   },
   HLcontainer: {
-    // left: '7%',
-    top: '7%',
-    // position: 'absolute',
+    left: '5%',
+    top: '3%',
   },
   HLtitle: {
     color: '#171A1F',
     fontSize: 20,
-    fontFamily: 'Outfit-Bold',
+    fontFamily: 'Lato-Bold',
     fontWeight: '600',
     lineHeight: 30,
-    // wordWrap: 'break-word',
   },
-  rectangle1:{
-    // position: 'absolute',
-    width: 348,
+  cardsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+    paddingHorizontal: 10,
+  },
+  card: {
+    width: '48%',
     height: 180,
-    // left: 21,
-    top: '8%',
-    // width: 
-    height:94,
-    backgroundColor: '#F1F2FDFF',
-    borderRadius: 8,
+    backgroundColor: '#F1F2FD',
+    borderRadius: 16,
+    padding: 10,
+    shadowColor: 'rgba(23, 26, 31, 0.19)',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 9,
+    elevation: 2,
   },
-  rectangle1Text:{
-    position:'absolute',
-    fontFamily: 'Outfit-Bold',
-    top:5,
-    left:7,
-    Fontsize : 40,
-    color:'#171A1FFF',
+  cardTitle: {
+    color: '#171A1F',
+    fontSize: 18,
+    fontFamily: 'Lato-Bold',
+    fontWeight: '500',
+    lineHeight: 22,
   },
-  r1t2:{
-    position:'absolute',
-    top: 30,
-    left:1,
-    fontSize:45,
-    fontFamily: 'Outfit-Regular',
-    color: '#171A1FFF',
+  cardAmount: {
+    color: '#171A1F',
+    fontSize: 28,
+    fontFamily: 'Lato-Bold',
+    fontWeight: '500',
+    lineHeight: 36,
+    marginTop: 10,
   },
-  rectangle1icon:{
+  cardText: {
+    color: '#171A1F',
+    fontSize: 12,
+    fontFamily: 'Lato-Bold',
+    fontWeight: '400',
+    // lineHeight: 18,
+    // marginTop: 10,
+  },
+  cardIconContainer: {
+    width: 66,
+    height: 66,
     position: 'absolute',
-    top: 9,
-    left: 270,
-    width: 76,
-    height: 76,
-    // backgroundColor: '#379AE6',
-
+    right: 10,
+    bottom: 10,
   },
-  rectangle2:{
-    // position: 'absolute',
-    width: 348,
-    height: 180,
-    // left: 21,
-    top: '9%',
-    // width: 
-    height:94,
-    backgroundColor: '#F1F2FDFF',
-    borderRadius: 8,
-  },
-  rectangle2Text:{
-    position:'absolute',
-    fontFamily: 'Outfit-Bold',
-    top:5,
-    left:7,
-
-    fontSize:17,
-    color:'#171A1FFF',
-  },
-  r2t2:{
-    position:'absolute',
-    top: 30,
-    left:1,
-    fontSize:45,
-    fontFamily: 'Outfit-Regular',
-    color: '#171A1FFF',
-    
-  },
-  rectangle2icon:{
-    position: 'absolute',
-    top: 5,
-    left: 260,
-    width: 76,
-    height: 76,
-    // backgroundColor: '#379AE6',
-  },
-
-  MRContainer:{
-    // position: 'absolute',
-    top: '10%',
-    // left: 21,
+  MRContainer: {
+    marginLeft: '3%', // Aligning "Monthly Report" with "Highlights"
+    marginTop: '5%', // Adjust the margin as needed
+    justifyContent: 'space-between',
   },
   MRtext:{
     color: '#171A1F',
     fontSize: 20,
-    fontFamily: 'Outfit-Bold',
+    fontFamily: 'Lato-Bold',
     fontWeight: '600',
     lineHeight: 30,
     wordWrap: 'break-word',
   },
   RRcontainer: {
-    // position: 'absolute',
-    top: '5%',
-    left: '2%',
-    width: 166,
-    height: 91,
-    backgroundColor: '#FFFFFF', // white
+    width: '45.5%', // Match the width of the cards
+    height: 91, // Adjust the height as needed
+    backgroundColor: '#F1F2FDFF',
     borderRadius: 16,
     shadowColor: '#171A1F',
     shadowOffset: {
-      width: .5,
-      height: .5,
+      width: 0.5,
+      height: 0.5,
     },
     shadowOpacity: 0.5,
     shadowRadius: 9,
-    elevation: 2, // for Android
+    elevation: 2,
+    marginTop: '2%', // Adjust the margin as needed
   },
-  RRText:{
-    top: 13,
-    left: 85,
-    width: 100,
-    height: 'auto',
-    fontFamily: 'Outfit-Regular', // Heading
+  RRText: {
+    fontFamily: 'Lato-Bold',
     fontSize: 20,
     fontWeight: '700',
     lineHeight: 30,
-    color: '#323842', // neutral-700
-    flexWrap :'wrap',
-
+    color: '#323842',
+    flexWrap: 'wrap',
+    marginLeft: '40%', // Adjust the left margin to center the text
+    marginTop: 13, // Adjust the margin as needed
   },
-  RRicon:{
-    top:-40,
-    left: 15,
+  RRicon: {
+    // position: 'absolute',
+    left: '5%', // Adjust the left position as needed
+    top: '-50%', // Adjust the top position as needed
+    // transform: [{ translateY: -40 }], // Centering the icon vertically
   },
-
-
   MUGcontainer: {
     // position: 'absolute',
-    top: 0,
-    top:'-37%',
+    top:'-41.5%',
     left: '51%',
-    width: 166,
-    height: 91,
-    backgroundColor: '#FFFFFF', // white
+    width: '45.5%', // Match the width of the cards
+    height: 91, 
+    backgroundColor: '#F1F2FDFF', // white
     borderRadius: 16,
     shadowColor: '#171A1F',
     shadowOffset: {
@@ -469,25 +356,7 @@ const styles = StyleSheet.create({
   MUGicon:{
     top:-43,
     left: 6,
-
-
-  },  
-  ECTcontainer:{
-    // position: 'absolute',
-    top: '1%',
-    // left: 21,
   },
-  ECTtext:{
-    color: '#171A1F',
-    fontSize: 20,
-    fontFamily: 'Outfit-Bold',
-    fontWeight: '600',
-    lineHeight: 30,
-    wordWrap: 'break-word',
-  },
-
-
-
 });
 
 export default Dashboard;

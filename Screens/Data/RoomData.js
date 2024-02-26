@@ -160,13 +160,13 @@ const RoomData = () => {
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.header}>Bill-E</Text>
+        <Text style={styles.header}>Bill-E Setup</Text>
         <TouchableOpacity style={styles.logoutButton} onPress={() => navigation.reset({ index: 0, routes: [{ name: 'SignIn' }] })}>
           <Ionicons name="log-out" size={24} color="black" />
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        <Text style={styles.setupTitle}>Setup</Text>
+        {/* <Text style={styles.setupTitle}>Setup</Text> */}
         {renderRooms()}
         <TouchableOpacity style={styles.addRoomButton} onPress={addRoom}>
           <Text style={styles.addRoomButtonText}>Add More Rooms</Text>
@@ -191,12 +191,33 @@ const styles = StyleSheet.create({
     padding: 16,
     justifyContent: 'space-between',
   },
+  headerBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between', // Adjust to distribute space between the items
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  backButton: {
+    // position: 'absolute', // Ensure it's absolutely positioned for proper placement
+    // left: 10,
+    // top: 10,
+  },
+  logoutButton: {
+    // position: 'absolute', // Ensure it's absolutely positioned for proper placement
+    // right: 10,
+    // top: 10,
+  },
   header: {
     fontSize: 26,
     fontWeight: 'bold',
     color: 'black',
-    alignSelf: 'center',
-    margin: 20,
+    fontFamily: 'Lato-Bold',
+    // alignSelf: 'center',
+    // margin: 20, // Remove margin to center it horizontally
   },
   setupTitle: {
     fontSize: 22,
@@ -277,21 +298,6 @@ const styles = StyleSheet.create({
   addRoomButtonText: {
     color: 'white',
     fontWeight: 'bold',
-  },
-  headerBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0, // Add padding for Android status bar
-    paddingHorizontal: 10,
-  },
-  backButton: {
-    top: 10,
-    left: 10,
-  },
-  logoutButton: {
-    top: 10,
-    right: 10,
   },
   submitButton: {
     backgroundColor: '#535CE8',

@@ -78,6 +78,11 @@ const App = () => {
   return (
     <MenuProvider skipInstanceCheck={true} style={styles.container}>
       <View style={styles.header}>
+      <View style={{ flex: 1 }}> 
+        <Text style={{ fontFamily: 'Lato-Bold', fontSize: 20, color: '#171A1F', textAlign: 'left' }}>
+          <Text>Bill-E Prediction Summary</Text>
+        </Text>  
+      </View>
         <Menu>
           <MenuTrigger>
             <Ionicons name="menu" size={30} color="black" style={styles.menuIcon} />
@@ -159,6 +164,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    padding: 10,
   },
   header: {
     flexDirection: 'row',
@@ -178,6 +184,11 @@ const styles = StyleSheet.create({
     marginTop: 0,
     marginVertical: 2,
     zIndex: 1,
+  },
+  menuOptionText: {
+    fontSize: 16,
+    padding: 10,
+    fontFamily: 'Outfit-Bold',
   },
   scrollContainer: {
     flex: 1,
@@ -247,8 +258,6 @@ const styles = StyleSheet.create({
     marginVertical: 1,
     marginRight:10,
     borderRadius:1,
-    
-    
   },
   navBar: {
     flexDirection: 'row',
@@ -262,10 +271,6 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     zIndex: 1, // Ensures that navBar is clickable
-  },
-  menuOptionText: {
-    fontSize: 16,
-    padding: 10,
   },
 });
 

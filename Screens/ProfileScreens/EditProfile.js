@@ -49,9 +49,14 @@ const EditProfile = ({ navigation }) => {
   return (
     <MenuProvider skipInstanceCheck={true} style={styles.container}>
       <View style={styles.header}>
+      <View style={{ flex: 1 }}> 
+        <Text style={{ fontFamily: 'Lato-Bold', fontSize: 20, color: '#171A1F', textAlign: 'left' }}>
+          <Text>Bill-E Profile</Text>
+        </Text>  
+      </View>
         <Menu>
-          <MenuTrigger>
-            <Ionicons name="menu" size={30} color="black" />
+        <MenuTrigger>
+            <Ionicons name="menu" size={30} color="black" style={styles.menuIcon} />
           </MenuTrigger>
           <MenuOptions style={styles.menuOptionsStyle}>
             <MenuOption onSelect={() => navigation.navigate('EditProfile')}>
@@ -118,6 +123,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    padding: 10,
   },
   header: {
     flexDirection: 'row',
@@ -141,6 +147,7 @@ const styles = StyleSheet.create({
   menuOptionText: {
     fontSize: 16,
     padding: 10,
+    fontFamily: 'Outfit-Bold',
   },
   scrollViewContent: {
     flexGrow: 1,

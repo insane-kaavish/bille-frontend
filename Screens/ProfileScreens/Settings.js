@@ -28,14 +28,6 @@ const SettingsScreen = ({ navigation }) => {
     navigation.navigate('EditProfile');
   };
 
-  // const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-
-  // const toggleNotifications = () => {
-  //   setNotificationsEnabled(!notificationsEnabled);
-  //   // Implement logic to toggle notifications (e.g., update settings, send requests, etc.)
-  // };
-
-
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Settings</Text>
@@ -75,30 +67,30 @@ const SettingsScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50, // Adjust padding as needed
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
   },
-  heading: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 30, // Increase space below the heading
-  },
-  optionButton: {
+  header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 15,
+    justifyContent: 'flex-end',
     paddingHorizontal: 10,
+    paddingTop: 10,
+    backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderColor: '#e0e0e0',
-    backgroundColor: '#f5f5f5', // Add a background color to buttons
-    marginHorizontal: 20,
-    borderRadius: 10, // Round the corners of the buttons
-    marginBottom: 10, // Add space between buttons
+    borderBottomColor: '#ccc',
   },
-  optionText: {
-    fontSize: 18,
+  menuIcon: {
+    marginTop: 5,
+    marginRight: 10, 
+  },
+  menuOptionsStyle: {
+    marginTop: 0,
+    marginVertical: 2,
+    zIndex: 1,
+  },
+  menuOptionText: {
+    fontSize: 16,
+    padding: 10,
   },
   navBar: {
     flexDirection: 'row',

@@ -1,18 +1,21 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { MenuProvider,Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
+import { View, Text, StyleSheet } from 'react-native';
+import {
+  MenuProvider,
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
 
-const FixedMenu = () => {
-  const navigation = useNavigation();
-
+const MenuComponent = ({ navigation }) => {
   return (
-    <MenuProvider skipInstanceCheck={true} style={styles.container} >
-      <TouchableOpacity style={styles.menuButtonContainer}>
+    <MenuProvider skipInstanceCheck={true}>
+      <View style={styles.header}>
         <Menu>
-          <MenuTrigger style={styles.menuIcon}>
-            <Ionicons name="menu" size={30} color="black" />
+          <MenuTrigger>
+            <Ionicons name="menu" size={30} color="black" style={styles.menuIcon} />
           </MenuTrigger>
           <MenuOptions style={styles.menuOptionsStyle}>
             <MenuOption onSelect={() => navigation.navigate('EditProfile')}>
@@ -22,38 +25,42 @@ const FixedMenu = () => {
               <Text style={styles.menuOptionText}>Settings</Text>
             </MenuOption>
             <MenuOption onSelect={() => navigation.navigate('HelpCenter')}>
-              <Text style={styles.menuOptionText}>Help center</Text>
+              <Text style={styles.menuOptionText}>Help Center</Text>
             </MenuOption>
             <MenuOption onSelect={() => navigation.navigate('SignIn')}>
-              <Text style={styles.menuOptionText}>Sign out</Text>
+              <Text style={styles.menuOptionText}>Sign Out</Text>
             </MenuOption>
           </MenuOptions>
         </Menu>
-      </TouchableOpacity>
+      </View>
     </MenuProvider>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    top: 50,
-    right: 10,
-    // zIndex: 10,
-  },
-  menuButtonContainer: {
-    padding: 10,
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
   menuIcon: {
-    zIndex: 1,
+    marginTop: 5,
+    marginRight: 10,
   },
   menuOptionsStyle: {
-    marginTop: 30,
+    marginTop: 0,
+    marginVertical: 2,
+    zIndex: 1,
   },
   menuOptionText: {
-    padding: 10,
     fontSize: 16,
+    padding: 10,
   },
 });
 
-export default FixedMenu;
+export default MenuComponent;
