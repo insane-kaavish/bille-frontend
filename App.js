@@ -2,25 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import SignInScreen from './Screens/SigninScreen'; 
-import CreateAccount from './Screens/CreateAccount';
+import SignInScreen from './Screens/AuthScreens/Signin'; 
+import CreateAccount from './Screens/AuthScreens/Signup';
 import LoginLaunch from './Screens/LoginLaunch';
-import DataInput from './Screens/DataInput';
-import RoomData from './Screens/RoomData';
+import DataInput from './Screens/Data/DataInput';
+import RoomData from './Screens/Data/RoomData';
 // import DataComplete from './Screens/DataComplete';
 import Home from './Screens/Home';
 import DashBoard from './Screens/DashBoard';
-import EditProfile from './Screens/EditProfile';
-import ChangeUserName from './Screens/ChangeUserName';
-import ChangeEmail from './Screens/ChangeEmail';
-import ChangePassword from './Screens/ChangePassword';
-import Settings from './Screens/Settings';
-import HelpCenter from './Screens/HelpCenter';
+import EditProfile from './Screens/ProfileScreens/EditProfile';
+import ChangeUserName from './Screens/ProfileScreens/ChangeUserName';
+import ChangeEmail from './Screens/ProfileScreens/ChangeEmail';
+import ChangePassword from './Screens/ProfileScreens/ChangePassword';
+import Settings from './Screens/ProfileScreens/Settings';
+import HelpCenter from './Screens/ProfileScreens/HelpCenter';
 import Prediction from './Screens/Prediction';
-import ContactUs from './Screens/ContactUs';
-import Privacy from './Screens/Privacy';
+import ContactUs from './Screens/ProfileScreens/ContactUs';
+import Privacy from './Screens/ProfileScreens/Privacy';
 import RoomwisePrediction from './Screens/RoomwisePrediction';
-import { AuthProvider } from './Screens/AuthProvider';
+import { AuthProvider } from './Screens/AuthScreens/AuthProvider';
 
 import * as Font from 'expo-font';
 
@@ -54,7 +54,7 @@ const App = () => {
         /> */}
         <Stack.Screen
           name="SignIn"
-          component={SignInScreen}
+          component={Home}
           options={{ headerShown: false }}
         />
         <Stack.Screen
