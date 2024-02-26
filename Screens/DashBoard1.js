@@ -36,18 +36,32 @@ const Dashboard = ({ navigation }) => {
   };
 
   const dateString = `${dayName} ${getOrdinalNum(day)} ${monthName}`;
+
+
+
+
+
+
+
+
   return (
     <View style={styles.container}>
+      
+      {/* <Menu1 /> */}
       <ScrollView style={styles.scrollContainer}>
+      {/* Bill-E */}
         <View style={styles.BillEcontainer}>
           <Text style={styles.BillEtext}>Bill-E</Text>
         </View>
+      {/* Date and Weather */}
         <View style={styles.Datecontainer}>
           <Text style={styles.Datetext}>{dateString} <WeatherComponent/> </Text>
         </View>
+      {/* Overview */}
         <View style={styles.OVcontainer}>
           <Text style={styles.OVtext}>Overview</Text>
         </View>
+      {/* main card for prediction */}
         <TouchableOpacity style={styles.MC} onPress={navigateToPrediction}>
           <View style={styles.MCcircleContainer}>
             <View style={styles.MCinnerCircleContainer}>
@@ -62,6 +76,8 @@ const Dashboard = ({ navigation }) => {
           </Text>
           <Text style={styles.MCunitsCount}>{units}</Text>
         </TouchableOpacity>
+
+      {/* highlights */}
         <View style={styles.HLcontainer}>
           <Text style={styles.HLtitle}>Highlights</Text>
         </View>
@@ -83,6 +99,7 @@ const Dashboard = ({ navigation }) => {
           <Image source={require('../extra/assets/UPIcon.png')}/>
           </View>
         </TouchableOpacity>
+
       {/* Monthly reports */}
         <View style={styles.MRContainer}>
           <Text style={styles.MRtext}>Monthly Report</Text>
@@ -95,9 +112,24 @@ const Dashboard = ({ navigation }) => {
             <View style={styles.MUGicon}><Image source={require('../extra/assets/MUGIcon.png')}/></View>
           </TouchableOpacity>
         </View>
-        {/* <View style={styles.ECTcontainer}>
+
+      {/* tips/news */}
+        <View style={styles.ECTcontainer}>
           <Text style={styles.ECTtext}>Electricity Conservation Tips</Text>
-        </View> */}
+          {/* <Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text><Text>Hello</Text> */}
+        </View>
+      {/* tips/news end */}
+      
+
+
+        
+      
+
+      {/* <Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text><Text>hello</Text> */}
+      {/* <Text>yllo</Text> */}
+
+
+
       </ScrollView>
       <NavBar />
     </View>

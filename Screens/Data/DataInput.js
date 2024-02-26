@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
-import { useAuth } from './AuthProvider';
+import { useAuth } from '../AuthScreens/AuthProvider';
 
 const { width, height } = Dimensions.get('window');
 
