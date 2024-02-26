@@ -133,11 +133,7 @@ const App = () => {
             propsForLabels:{fontsize:2}
           }}
           bezier
-          style={{ marginVertical: 8, borderRadius: 16 }}
-      />
-
-
-
+          style={{ marginVertical: 8, borderRadius: 16 }}/>
         </View>
       </ScrollView>
 
@@ -166,22 +162,21 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'flex-end',
-    padding: 10,
-    top: 25,
-    right : 5,
-    zIndex: 1,
-  },
-  menuButtonContainer: {
-    padding: 30, // Increase touchable area
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
   menuIcon: {
-    padding: 10,
-    zIndex: 1, 
+    marginTop: 5,
+    marginRight: 10, 
   },
   menuOptionsStyle: {
-    marginTop: 40,
-    marginVertical: 10,
+    marginTop: 0,
+    marginVertical: 2,
     zIndex: 1,
   },
   scrollContainer: {

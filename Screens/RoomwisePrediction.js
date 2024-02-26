@@ -18,8 +18,6 @@ import {
   MenuTrigger,
 } from 'react-native-popup-menu';
 
-const screenWidth = Dimensions.get('window').width;
-
 const RoomwisePrediction = () => {
   const navigation = useNavigation();
 
@@ -70,7 +68,7 @@ const RoomwisePrediction = () => {
 
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Highest Usage Rooms</Text>
+          {/* <Text style={styles.title}>Highest Usage Rooms</Text> */}
           <View style={styles.progressContainer}>
             <Svg width="200" height="250">
               {rooms.map((room, index) => (
@@ -149,19 +147,26 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'flex-end',
-    padding: 10,
-    top: 25,
-    right : 5,
-    zIndex: 1,
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
   menuIcon: {
     marginTop: 5,
+    marginRight: 10, 
   },
   menuOptionsStyle: {
-    marginTop: 40,
-    marginVertical: 10,
+    marginTop: 0,
+    marginVertical: 2,
     zIndex: 1,
+  },
+  menuOptionText: {
+    fontSize: 16,
+    padding: 10,
   },
   scrollContainer: {
     flex: 1,
@@ -174,6 +179,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
+  headerText: {
     fontSize: 22,
     fontWeight: 'bold',
   },
@@ -197,7 +206,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: '#e0e0e0', // You can remove this if you're setting the background color dynamically
     marginRight: 12,
   },
   roomDetails: {
@@ -226,16 +234,10 @@ const styles = StyleSheet.create({
     bottom: 0,
     zIndex: 1,
   },
-  menuOptionText: {
-    fontSize: 16,
-    padding: 10,
-  },
   middletext: {
       color: '#000',
       top:'740%',
       left:'35%'
-      
-
   }
 });
 

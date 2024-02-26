@@ -69,14 +69,9 @@ const EditProfile = ({ navigation }) => {
           </MenuOptions>
         </Menu>
       </View>
+
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        <View style={styles.profileSection}>
-        {/* <Image source={require('../assets/icon.png')} style={styles.avatar} /> */}
-          <Text style={styles.name}>Bashir</Text>
-          <Text style={styles.email}>Bashir@gmail.com</Text>
-        </View>
-
         <View style={styles.optionsContainer}>
           <TouchableOpacity style={styles.optionButton} onPress={handleUsernameChange}>
             <Text style={styles.optionText}>Change Username</Text>
@@ -122,46 +117,34 @@ const EditProfile = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#fff',
   },
   header: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'flex-end',
-    padding: 10,
-    top: 25,
-    right: 5,
-    zIndex: 1,
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc', 
   },
   menuIcon: {
-    padding: 10,
-    zIndex: 1,
+    marginTop: 5,
+    marginRight: 10, 
   },
   menuOptionsStyle: {
-    marginTop: 40,
-    marginVertical: 10,
+    marginTop: 0,
+    marginVertical: 2,
     zIndex: 1,
   },
   menuOptionText: {
     fontSize: 16,
     padding: 10,
   },
-  menuButtonContainer: {
-    padding: 30, // Increase touchable area
-  },
   scrollViewContent: {
     flexGrow: 1,
     justifyContent: 'center',
-  },
-  profileSection: {
-    alignItems: 'center',
-    marginTop: 32,
-    marginBottom: 32,
-  },
-  avatar: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    marginBottom: 16,
   },
   name: {
     fontSize: 24,

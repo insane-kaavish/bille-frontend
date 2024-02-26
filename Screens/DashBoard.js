@@ -1,8 +1,16 @@
 import React from 'react';
 import { Image, View, StyleSheet, ScrollView, Text,TouchableOpacity } from 'react-native';
-import Menu1 from './Components/Menu1';
 import NavBar from './Components/NavBar';
 import WeatherComponent from './Components/Weather';
+import {
+  MenuProvider,
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
+
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Dashboard = ({ navigation }) => {
 
@@ -37,7 +45,29 @@ const Dashboard = ({ navigation }) => {
 
   const dateString = `${dayName} ${getOrdinalNum(day)} ${monthName}`;
   return (
-    <View style={styles.container}>
+    <MenuProvider skipInstanceCheck={true} style={styles.container}>
+      <View style={styles.header}>
+        <Menu>
+          <MenuTrigger>
+            <Ionicons name="menu" size={30} color="black" style={styles.menuIcon} />
+          </MenuTrigger>
+          <MenuOptions style={styles.menuOptionsStyle}>
+            <MenuOption onSelect={() => navigation.navigate('EditProfile')}>
+              <Text style={styles.menuOptionText}>Profile</Text>
+            </MenuOption>
+            <MenuOption onSelect={() => navigation.navigate('Settings')}>
+              <Text style={styles.menuOptionText}>Settings</Text>
+            </MenuOption>
+            <MenuOption onSelect={() => navigation.navigate('HelpCenter')}>
+              <Text style={styles.menuOptionText}>Help Center</Text>
+            </MenuOption>
+            <MenuOption onSelect={() => navigation.navigate('SignIn')}>
+              <Text style={styles.menuOptionText}>Sign Out</Text>
+            </MenuOption>
+          </MenuOptions>
+        </Menu>
+      </View>
+    
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.BillEcontainer}>
           <Text style={styles.BillEtext}>Bill-E</Text>
@@ -100,30 +130,45 @@ const Dashboard = ({ navigation }) => {
         </View> */}
       </ScrollView>
       <NavBar />
-    </View>
+    </MenuProvider>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
-    justifyContent:'center',
+    backgroundColor: '#fff',
+    // justifyContent:'center',
     alignItems:'center',
   },
-  
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  menuIcon: {
+    marginTop: 5,
+    marginRight: 10, 
+  },
+  menuOptionsStyle: {
+    marginTop: 0,
+    marginVertical: 2,
+    zIndex: 1,
+  },
+  menuOptionText: {
+    fontSize: 16,
+    padding: 10,
+  },
   scrollContainer: {
-    // flexGrow: 1,
-    // marginLeft:'5%',
-    // alignItems:'center',
-    // justifyContent:'center',
     marginBottom:'10%',
     backgroundColor: '',
   },
   BillEcontainer: {
-    // left: 60,
-    // left:'7%',
-    // top: 40,
     top:'5%',
     // position: 'absolute',
     textAlign: 'center',
