@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import {ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { useAuth } from '../AuthScreens/AuthProvider';
+// import { ScrollView } from 'react-native-web';
 
 const { width, height } = Dimensions.get('window');
 
@@ -11,6 +12,16 @@ const DataInput = ({ navigation }) => {
   const [ParttimeHomeOccupant, setParttimeHomeOccupants] = useState('');
   const [FulltimeHomeOccupants, setFulltimeHomeOccupants] = useState('');
   const { authToken } = useAuth();
+  const [isTyping,setIsTyping] = useState(false);
+
+  const handleFocus=()=>{
+    setIsTyping(true);
+  }
+  const handleBlur = ()=>{
+    setIsTyping(false);
+  }
+
+
   // Function to handle continue click
   const handleContinue = () => {
     const inputData = {
@@ -27,9 +38,11 @@ const DataInput = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Get Started</Text>
 
+      {!isTyping && <Text style={styles.header}>Get Started</Text>}
+      <ScrollView>
       {/* Input Section: Number of People */}
+      
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>How many people live in your house?</Text>
         <TextInput
@@ -37,6 +50,8 @@ const DataInput = ({ navigation }) => {
           style={styles.input}
           value={numOfPeople}
           onChangeText={setNumOfPeople}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
       </View>
 
@@ -47,6 +62,8 @@ const DataInput = ({ navigation }) => {
           style={styles.input}
           value={stayatHomeOccupant}
           onChangeText={setStayatHomeOccupants}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
       </View>
 
@@ -58,6 +75,8 @@ const DataInput = ({ navigation }) => {
           style={styles.input}
           value={ParttimeHomeOccupant}
           onChangeText={setParttimeHomeOccupants}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
       </View>
 
@@ -69,6 +88,8 @@ const DataInput = ({ navigation }) => {
           style={styles.input}
           value={FulltimeHomeOccupants}
           onChangeText={setFulltimeHomeOccupants}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
       </View>
 
@@ -79,6 +100,8 @@ const DataInput = ({ navigation }) => {
       >
         <Text style={styles.submitText}>Continue</Text>
       </TouchableOpacity>
+      </ScrollView>
+
     </View>
   );
 };
