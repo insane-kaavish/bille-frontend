@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+  MenuProvider,
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
+import MenuComponent from '../Components/Menu';
+import NavBar from '../Components/NavBar';
+
 
 const ChangePassword = ({ navigation }) => {
   const [currentPassword, setCurrentPassword] = useState('currentPassword123');
@@ -24,11 +34,21 @@ const ChangePassword = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Change Password</Text>
+    <MenuProvider skipInstanceCheck={true} style={styles.container}>
+      <View style={styles.header}>
+      <View style={{ flex: 1 }}> 
+        <Text style={{ fontFamily: 'Lato-Bold', fontSize: 20, color: '#171A1F', textAlign: 'left' }}>
+          <Text>Change Password</Text>
+        </Text>  
+      </View>
+        <MenuComponent navigation={navigation} />
+      </View>
+
+    <View style={styles.maincontainer}>
+      {/* <Text style={styles.header}>Change Password</Text> */}
 
       <View style={styles.PasswordContainer}>
-        <Text style={styles.label}>Current Password:</Text>
+        <Text style={styles.label}>Current Password: </Text>
         <Text style={styles.currentPassword}>{currentPassword}</Text>
       </View>
 
@@ -62,19 +82,32 @@ const ChangePassword = ({ navigation }) => {
         <Text style={styles.buttonText}>Change Password</Text>
       </TouchableOpacity>
     </View>
+
+    <NavBar />
+    </MenuProvider>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    justifyContent: 'center',
+    backgroundColor: '#fff',
+    padding: 10,
   },
   header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc', 
+  },
+  maincontainer: {
+    flex: 1,
+    padding: 20,
+    justifyContent: 'center',
   },
   PasswordContainer: {
     marginBottom: 20,
