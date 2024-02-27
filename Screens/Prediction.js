@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
@@ -11,7 +11,7 @@ import {
 import MenuComponent from './Components/Menu';
 import NavBar from './Components/NavBar';
 
-import { BarChart,LineChart } from 'react-native-chart-kit';
+import { LineChart } from 'react-native-chart-kit';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
@@ -22,7 +22,6 @@ import {
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu';
-// import Svg, { Circle, Rect } from 'react-native-svg';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -46,75 +45,79 @@ const totalCost = units * perUnitCost;
 const App = () => {
   const navigation = useNavigation();
 
-  const chartConfig = {
-    backgroundGradientFrom: '#FFF',
-    backgroundGradientTo: '#FFF',
-    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-    strokeWidth: 0,
-    barPercentage: 0.3,
-  };
-  const data1={
-    "monthwise_units": {
-        "January-2019": [
-            199
-        ],
-        "May-2021": [
-            1000
-        ],
-        "March-2022": [
-            750
-        ],
-        "July-2023": [
-            400
-        ],
-        "August-2023": [
-            500
-        ],
-        "April-2024": [
-            100
-        ],
-        "September-2024": [
-            299
-        ]
+  const data1 = {
+    Actual_units: {
+      "Jul-23": [199],
+      "Aug-23": [1000],
+      "Sep-23": [750],
+      "Oct-23": [400],
+      "Nov-23": [500],
+      "Dec-23": [100],
+      "Jan-24": [299],
+      "Feb-24": [400],
+    },
+    Predicted_units: {
+      "Jul-23": [250],
+      "Aug-23": [872],
+      "Sep-23": [549],
+      "Oct-23": [333],
+      "Nov-23": [512],
+      "Dec-23": [72],
+      "Jan-24": [349],
+      "Feb-24": [612],
     }
   };
 
-  const labels = Object.keys(data1.monthwise_units);
-  const values = Object.values(data1.monthwise_units).map((valueArray)=>valueArray[0]);
+  const labels = Object.keys(data1.Actual_units);
+  const actualValues = Object.values(data1.Actual_units).map(
+    (valueArray) => valueArray[0]
+  );
+  const predictedValues = Object.values(data1.Predicted_units).map(
+    (valueArray) => valueArray[0]
+  );
 
-  const data ={
-    
-    labels :labels,
-    datasets:[
+  const data = {
+    labels: labels,
+    datasets: [
       {
-        label:'previos months consumption',
-        data:values,
+        data: actualValues,
         color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`,
-        strokeWidth:2
-      }
-    ]
+        strokeWidth: 2,
+        label: 'Actual Units',
+      },
+      {
+        data: predictedValues,
+        color: (opacity = 1) => `rgba(244, 65, 134, ${opacity})`,
+        strokeWidth: 2,
+        label: 'Predicted Units',
+      },
+    ],
   };
 
   return (
     <MenuProvider skipInstanceCheck={true} style={styles.container}>
       <View style={styles.header}>
-      <View style={{ flex: 1 }}> 
-        <Text style={{ fontFamily: 'Lato-Bold', fontSize: 20, color: '#171A1F', textAlign: 'left' }}>
-          <Text>Bill-E Prediction Summary</Text>
-        </Text>  
-      </View>
+        <View style={{ flex: 1 }}>
+          <Text
+            style={{
+              fontFamily: 'Lato-Bold',
+              fontSize: 20,
+              color: '#171A1F',
+              textAlign: 'left',
+            }}
+          >
+            <Text>Bill-E Prediction Summary</Text>
+          </Text>
+        </View>
         <MenuComponent navigation={navigation} />
       </View>
 
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.predictionCard}>
-          <Text style={styles.title}>Predicted Consumption</Text>
-          <View style={styles.consumptionCircle}>
-            <Text style={styles.consumptionValue}>{units}</Text>
-            <Text style={styles.consumptionUnit}>Predicted Units</Text>
-          </View>
+          <Text style={styles.consumptionValue}>{units}</Text>
+          <Text style={styles.consumptionUnit}>Predicted Units</Text>
           <Text style={styles.estimatedBill}>
-            Your estimated bill for this month will be Pkr. {totalCost.toFixed(2)}
+            Your estimated bill for this month will be Rs.{totalCost.toFixed(1)}
           </Text>
           <TouchableOpacity
             style={styles.detailsButton}
@@ -125,22 +128,32 @@ const App = () => {
         </View>
 
         <View style={styles.graphCard}>
-        <LineChart
-          data={data}
-          width={screenWidth-32}
-          height={500}
-          yAxisLabel=""
-          verticalLabelRotation={90}
-          chartConfig={{
-            backgroundGradientFrom: '#FFF',
-            backgroundGradientTo: '#FFF',
-            color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-            strokeWidth: 0,
-            barPercentage: 0.3,
-            propsForLabels:{fontsize:2}
-          }}
-          bezier
-          style={{ marginVertical: 8, borderRadius: 16 }}/>
+          <ScrollView horizontal>
+            <LineChart
+              data={data}
+              width={screenWidth * 2}
+              height={500}
+              yAxisLabel=""
+              yAxisSuffix=""
+              verticalLabelRotation={90}
+              chartConfig={{
+                backgroundGradientFrom: '#FFF',
+                backgroundGradientTo: '#FFF',
+                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                strokeWidth: 2,
+                barPercentage: 0.3,
+                propsForLabels: { fontsize: 2 },
+                withInnerLines: false, // Remove grid lines
+                decimalPlaces: 0,
+                formatYLabel: (yLabel) => yLabel.toFixed(0),
+                yAxisInterval: 250,
+                decimalPlaces: 0,
+              }}
+              bezier
+              style={{ marginVertical: 8, borderRadius: 16 }}
+            />
+          </ScrollView>
+          <Text style={styles.graphDescription}>Comparison between the actual and predicted units.</Text>
         </View>
       </ScrollView>
 
@@ -167,7 +180,7 @@ const styles = StyleSheet.create({
   },
   menuIcon: {
     marginTop: 5,
-    marginRight: 10, 
+    marginRight: 10,
   },
   menuOptionsStyle: {
     marginTop: 0,
@@ -194,25 +207,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontFamily: 'Lato-Bold',
   },
-  consumptionCircle: {
-    width: 160,
-    height: 160,
-    borderRadius: 80,
-    borderColor: '#00BCD4',
-    borderWidth: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
   consumptionValue: {
     fontSize: 48,
-    // fontWeight: 'bold',
     color: '#000',
     fontFamily: 'Lato-Bold',
   },
   consumptionUnit: {
     fontSize: 18,
     color: '#666',
+    fontFamily: 'Lato-Bold',
   },
   estimatedBill: {
     fontSize: 16,
@@ -231,24 +234,24 @@ const styles = StyleSheet.create({
   },
   detailsButtonText: {
     color: 'white',
-    // fontWeight: 'bold',
     fontFamily: 'Lato-Bold',
   },
   graphCard: {
     backgroundColor: '#f9f9f9',
     borderRadius: 1,
     paddingVertical: 16,
-    paddingHorizontal: 16, // Adjust padding as needed
+    paddingHorizontal: 16,
     marginHorizontal: 16,
     marginTop: 10,
     marginBottom: 70,
-    overflow: 'hidden', // Ensures that the graph does not overflow the card
+    // overflow: 'hidden',
   },
-  graphStyle: {
-    // position:'absolute'
-    marginVertical: 1,
-    marginRight:10,
-    borderRadius:1,
+  graphDescription: {
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
+    marginTop: 10,
+    fontFamily: 'Lato-Bold',
   },
 });
 
