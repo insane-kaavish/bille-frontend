@@ -52,7 +52,7 @@ const App = () => {
         /> */}
         <Stack.Screen
           name="SignIn"
-          component={EditProfile}
+          component={SignInScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
