@@ -1,13 +1,34 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import {
+  MenuProvider,
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
+import MenuComponent from '../Components/Menu';
+import NavBar from '../Components/NavBar';
+
+
 
 const PrivacyPolicyScreen = () => {
   const navigation = useNavigation();
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.header}>Privacy Policy</Text>
+    <MenuProvider skipInstanceCheck={true} style={styles.container}>
+      <View style={styles.header}>
+      <View style={{ flex: 1 }}> 
+        <Text style={{ fontFamily: 'Lato-Bold', fontSize: 20, color: '#171A1F', textAlign: 'left' }}>
+          <Text>Privacy Policy</Text>
+        </Text>  
+      </View>
+        <MenuComponent navigation={navigation} />
+      </View>
+
+    <ScrollView style={styles.maincontainer}>
+      {/* <Text style={styles.header}>Privacy Policy</Text> */}
 
       <View style={styles.section}>
         <Text style={styles.sectionHeader}>Information We Collect</Text>
@@ -55,21 +76,36 @@ const PrivacyPolicyScreen = () => {
         <Text style={styles.backButtonText}>Back to Settings</Text>
       </TouchableOpacity>
     </ScrollView>
+
+    <NavBar />
+    </MenuProvider>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
+    padding: 10,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc', 
+  },
+  maincontainer: {
+    flex: 1,
+    // justifyContent:'center',
     paddingTop: 60,
     paddingHorizontal: 20,
     backgroundColor: 'white',
   },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
+  
   section: {
     marginBottom: 20,
   },

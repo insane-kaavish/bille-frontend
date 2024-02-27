@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+  MenuProvider,
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
+import MenuComponent from '../Components/Menu';
+import NavBar from '../Components/NavBar';
+
 
 const ChangeUsername = ({ navigation }) => {
   const [currentUsername, setCurrentUsername] = useState('Bashir');
@@ -16,8 +26,18 @@ const ChangeUsername = ({ navigation }) => {
   // test line
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Change Username</Text>
+    <MenuProvider skipInstanceCheck={true} style={styles.container}>
+      <View style={styles.header}>
+      <View style={{ flex: 1 }}> 
+        <Text style={{ fontFamily: 'Lato-Bold', fontSize: 20, color: '#171A1F', textAlign: 'left' }}>
+          <Text>Change User Name</Text>
+        </Text>  
+      </View>
+        <MenuComponent navigation={navigation} />
+      </View>
+
+      <View style={styles.maincontainer}>
+      {/* <Text style={styles.header}>Change Username</Text> */}
 
       <View style={styles.usernameContainer}>
         <Text style={styles.label}>Current Username:</Text>
@@ -38,19 +58,48 @@ const ChangeUsername = ({ navigation }) => {
         <Text style={styles.buttonText}>Change Username</Text>
       </TouchableOpacity>
     </View>
+
+
+
+    <NavBar />
+    </MenuProvider>
+
+
+
+
+
+
+
+
+
+
+
+    
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    justifyContent: 'center',
+    padding: 10,
+    backgroundColor: '#fff',
+    // justifyContent: 'center',
   },
   header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc', 
+  },
+  maincontainer: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
   },
   usernameContainer: {
     marginBottom: 20,

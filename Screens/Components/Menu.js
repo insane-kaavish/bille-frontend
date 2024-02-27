@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { navigation, View, Text, StyleSheet } from 'react-native';
 import {
   MenuProvider,
   Menu,
@@ -11,6 +11,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesomeicons from 'react-native-vector-icons/FontAwesome';
 
 const MenuComponent = ({ navigation }) => {
+  
   return (
     <Menu>
       <MenuTrigger>
@@ -28,7 +29,7 @@ const MenuComponent = ({ navigation }) => {
           <Text style={styles.menuOptionText}>
             Settings
           </Text>
-          <FontAwesomeicons name="gear" size={25} color="black" style={styles.menuOptionIcon}/>
+          <FontAwesomeicons name="gears" size={25} color="black" style={styles.menuOptionIcon}/>
         </MenuOption>
         <MenuOption onSelect={() => navigation.navigate('HelpCenter')}>
           <Text style={styles.menuOptionText}>

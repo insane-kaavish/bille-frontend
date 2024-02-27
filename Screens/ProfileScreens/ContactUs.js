@@ -1,6 +1,18 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import {
+  MenuProvider,
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
+
+import MenuComponent from '../Components/Menu';
+import NavBar from '../Components/NavBar';
+
+
 
 const ContactUsScreen = () => {
   const navigation = useNavigation();
@@ -24,8 +36,20 @@ const ContactUsScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Contact Us</Text>
+    <MenuProvider skipInstanceCheck={true} style={styles.container}>
+      <View style={styles.header}>
+      <View style={{ flex: 1 }}> 
+        <Text style={{ fontFamily: 'Lato-Bold', fontSize: 20, color: '#171A1F', textAlign: 'left' }}>
+          <Text>Contact Us</Text>
+        </Text>  
+      </View>
+        <MenuComponent navigation={navigation} />
+      </View>
+
+
+
+    <View style={styles.maincontainer}>
+      {/* <Text style={styles.header}>Contact Us</Text> */}
 
       <View style={styles.formContainer}>
         <Text style={styles.label}>Your Name:</Text>
@@ -59,19 +83,32 @@ const ContactUsScreen = () => {
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
     </View>
+
+    <NavBar />
+    </MenuProvider>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    justifyContent: 'center',
+    backgroundColor: '#fff',
+    padding: 10,
   },
   header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc', 
+  },
+  maincontainer: {
+    flex: 1,
+    padding: 20,
+    justifyContent: 'center',
   },
   formContainer: {
     marginBottom: 20,
