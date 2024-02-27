@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    padding: 16,
+    padding: 10,
     shadowColor: 'rgba(18, 15, 40, 0.12)',
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.12,

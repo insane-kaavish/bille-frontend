@@ -23,6 +23,23 @@ import {
 
 const screenWidth = Dimensions.get('window').width;
 
+const units = 300;
+
+let perUnitCost;
+if (units >= 1 && units <= 100) {
+  perUnitCost = 5.79;
+} else if (units >= 101 && units <= 200) {
+  perUnitCost = 8.11;
+} else if (units >= 201 && units <= 300) {
+  perUnitCost = 10.20;
+} else if (units >= 301 && units <= 700) {
+  perUnitCost = 17.60;
+} else {
+  perUnitCost = 20.70;
+}
+
+const totalCost = units * perUnitCost;
+
 const App = () => {
   const navigation = useNavigation();
 
@@ -108,11 +125,11 @@ const App = () => {
         <View style={styles.predictionCard}>
           <Text style={styles.title}>Predicted Consumption</Text>
           <View style={styles.consumptionCircle}>
-            <Text style={styles.consumptionValue}>213</Text>
+            <Text style={styles.consumptionValue}>{units}</Text>
             <Text style={styles.consumptionUnit}>Predicted Units</Text>
           </View>
           <Text style={styles.estimatedBill}>
-            Your estimated bill for this month will be Pkr. 30,000
+            Your estimated bill for this month will be Pkr. {totalCost.toFixed(2)}
           </Text>
           <TouchableOpacity
             style={styles.detailsButton}
@@ -188,7 +205,7 @@ const styles = StyleSheet.create({
   menuOptionText: {
     fontSize: 16,
     padding: 10,
-    fontFamily: 'Outfit-Bold',
+    fontFamily: 'Lato-Bold',
   },
   scrollContainer: {
     flex: 1,
@@ -202,8 +219,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
-    fontWeight: 'bold',
     marginBottom: 10,
+    fontFamily: 'Lato-Bold',
   },
   consumptionCircle: {
     width: 160,
@@ -217,8 +234,9 @@ const styles = StyleSheet.create({
   },
   consumptionValue: {
     fontSize: 48,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     color: '#000',
+    fontFamily: 'Lato-Bold',
   },
   consumptionUnit: {
     fontSize: 18,
@@ -241,7 +259,8 @@ const styles = StyleSheet.create({
   },
   detailsButtonText: {
     color: 'white',
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
+    fontFamily: 'Lato-Bold',
   },
   graphCard: {
     backgroundColor: '#f9f9f9',

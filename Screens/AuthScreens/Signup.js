@@ -167,6 +167,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 10,
   },
   header: {
     fontSize: 48,
