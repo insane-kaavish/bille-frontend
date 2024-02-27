@@ -1,10 +1,29 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import {
+  MenuProvider,
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
+import MenuComponent from '../Components/Menu';
+import NavBar from '../Components/NavBar';
 
-const HelpCenter = () => {
+
+const HelpCenter = (navigation) => {
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Help Center</Text>
+    <MenuProvider skipInstanceCheck={true} style={styles.container}>
+      <View style={styles.header}>
+      <View style={{ flex: 1 }}> 
+        <Text style={{ fontFamily: 'Lato-Bold', fontSize: 20, color: '#171A1F', textAlign: 'left' }}>
+          <Text>Help Center</Text>
+        </Text>  
+      </View>
+        <MenuComponent navigation={navigation} />
+      </View>
+    <ScrollView style={styles.maincontainer}>
+      {/* <Text style={styles.title}>Help Center</Text> */}
       <Text style={styles.subtitle}>About the App</Text>
       <Text style={styles.paragraph}>
         Bill-E is an intuitive app designed to help you manage and track your utility expenses. 
@@ -26,14 +45,32 @@ const HelpCenter = () => {
         24/7 to provide you with the support you need.
       </Text>
     </ScrollView>
+
+    <NavBar />
+    </MenuProvider>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    padding: 10,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc', 
+  },
+  maincontainer: {
     flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
+    // justifyContent: 'center',
+    // alignItems: 'flex-start',
     padding: 20,
     backgroundColor: '#fff',
   },
