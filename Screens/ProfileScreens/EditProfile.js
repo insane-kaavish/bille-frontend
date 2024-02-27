@@ -17,6 +17,9 @@ import {
   MenuTrigger,
 } from 'react-native-popup-menu';
 
+import MenuComponent from '../Components/Menu';
+import NavBar from '../Components/NavBar';
+
 const EditProfile = ({ navigation }) => {
   const handlePasswordChange = () => {
     navigation.navigate('ChangePassword');
@@ -54,25 +57,7 @@ const EditProfile = ({ navigation }) => {
           <Text>Bill-E Profile</Text>
         </Text>  
       </View>
-        <Menu>
-        <MenuTrigger>
-            <Ionicons name="menu" size={30} color="black" style={styles.menuIcon} />
-          </MenuTrigger>
-          <MenuOptions style={styles.menuOptionsStyle}>
-            <MenuOption onSelect={() => navigation.navigate('EditProfile')}>
-              <Text style={styles.menuOptionText}>Profile</Text>
-            </MenuOption>
-            <MenuOption onSelect={() => navigation.navigate('Settings')}>
-              <Text style={styles.menuOptionText}>Settings</Text>
-            </MenuOption>
-            <MenuOption onSelect={() => navigation.navigate('HelpCenter')}>
-              <Text style={styles.menuOptionText}>Help Center</Text>
-            </MenuOption>
-            <MenuOption onSelect={() => navigation.navigate('SignIn')}>
-              <Text style={styles.menuOptionText}>Sign Out</Text>
-            </MenuOption>
-          </MenuOptions>
-        </Menu>
+        <MenuComponent navigation={navigation} />
       </View>
 
     <View style={styles.container}>
@@ -99,22 +84,9 @@ const EditProfile = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </ScrollView>
-
-      <View style={styles.navBar}>
-        <TouchableOpacity onPress={navigateToOverview}>
-          <Ionicons name="home-outline" size={24} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={navigateToPrediction}>
-          <Ionicons name="stats-chart-outline" size={24} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={navigateToRoomWise}>
-          <Ionicons name="grid-outline" size={24} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={navigateToProfile}>
-          <Ionicons name="person-outline" size={24} color="#000" /> 
-        </TouchableOpacity>
-      </View>
     </View>
+
+    <NavBar />
     </MenuProvider>
   );
 };
@@ -134,20 +106,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#ccc', 
-  },
-  menuIcon: {
-    marginTop: 5,
-    marginRight: 10, 
-  },
-  menuOptionsStyle: {
-    marginTop: 0,
-    marginVertical: 2,
-    zIndex: 1,
-  },
-  menuOptionText: {
-    fontSize: 16,
-    padding: 10,
-    fontFamily: 'Outfit-Bold',
   },
   scrollViewContent: {
     flexGrow: 1,
@@ -178,18 +136,6 @@ const styles = StyleSheet.create({
   optionText: {
     fontSize: 18,
     color: '#000',
-  },
-  navBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    borderTopWidth: 1,
-    borderTopColor: '#EFEFEF',
-    paddingVertical: 10,
-    backgroundColor: '#FFFFFF',
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
   },
 });
 

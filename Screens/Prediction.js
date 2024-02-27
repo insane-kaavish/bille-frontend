@@ -8,6 +8,9 @@ import {
   Dimensions,
 } from 'react-native';
 
+import MenuComponent from './Components/Menu';
+import NavBar from './Components/NavBar';
+
 import { BarChart,LineChart } from 'react-native-chart-kit';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -100,25 +103,7 @@ const App = () => {
           <Text>Bill-E Prediction Summary</Text>
         </Text>  
       </View>
-        <Menu>
-          <MenuTrigger>
-            <Ionicons name="menu" size={30} color="black" style={styles.menuIcon} />
-          </MenuTrigger>
-          <MenuOptions style={styles.menuOptionsStyle}>
-            <MenuOption onSelect={() => navigation.navigate('EditProfile')}>
-              <Text style={styles.menuOptionText}>Profile</Text>
-            </MenuOption>
-            <MenuOption onSelect={() => navigation.navigate('Settings')}>
-              <Text style={styles.menuOptionText}>Settings</Text>
-            </MenuOption>
-            <MenuOption onSelect={() => navigation.navigate('HelpCenter')}>
-              <Text style={styles.menuOptionText}>Help Center</Text>
-            </MenuOption>
-            <MenuOption onSelect={() => navigation.navigate('SignIn')}>
-              <Text style={styles.menuOptionText}>Sign Out</Text>
-            </MenuOption>
-          </MenuOptions>
-        </Menu>
+        <MenuComponent navigation={navigation} />
       </View>
 
       <ScrollView style={styles.scrollContainer}>
@@ -159,20 +144,7 @@ const App = () => {
         </View>
       </ScrollView>
 
-      <View style={styles.navBar}>
-        <TouchableOpacity onPress={() => navigation.navigate('DashBoard')}>
-          <Ionicons name="home-outline" size={24} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Prediction')}>
-          <Ionicons name="stats-chart-outline" size={24} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('RoomwisePrediction')}>
-          <Ionicons name="grid-outline" size={24} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
-          <Ionicons name="person-outline" size={24} color="#000" />
-        </TouchableOpacity>
-      </View>
+      <NavBar />
     </MenuProvider>
   );
 };
@@ -277,19 +249,6 @@ const styles = StyleSheet.create({
     marginVertical: 1,
     marginRight:10,
     borderRadius:1,
-  },
-  navBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    borderTopWidth: 1,
-    borderTopColor: '#EFEFEF',
-    paddingVertical: 10,
-    backgroundColor: '#FFFFFF',
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 1, // Ensures that navBar is clickable
   },
 });
 

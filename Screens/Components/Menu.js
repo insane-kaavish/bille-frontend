@@ -8,58 +8,67 @@ import {
   MenuTrigger,
 } from 'react-native-popup-menu';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesomeicons from 'react-native-vector-icons/FontAwesome';
 
 const MenuComponent = ({ navigation }) => {
   return (
-    <MenuProvider skipInstanceCheck={true}>
-      <View style={styles.header}>
-        <Menu>
-          <MenuTrigger>
-            <Ionicons name="menu" size={30} color="black" style={styles.menuIcon} />
-          </MenuTrigger>
-          <MenuOptions style={styles.menuOptionsStyle}>
-            <MenuOption onSelect={() => navigation.navigate('EditProfile')}>
-              <Text style={styles.menuOptionText}>Profile</Text>
-            </MenuOption>
-            <MenuOption onSelect={() => navigation.navigate('Settings')}>
-              <Text style={styles.menuOptionText}>Settings</Text>
-            </MenuOption>
-            <MenuOption onSelect={() => navigation.navigate('HelpCenter')}>
-              <Text style={styles.menuOptionText}>Help Center</Text>
-            </MenuOption>
-            <MenuOption onSelect={() => navigation.navigate('SignIn')}>
-              <Text style={styles.menuOptionText}>Sign Out</Text>
-            </MenuOption>
-          </MenuOptions>
-        </Menu>
-      </View>
-    </MenuProvider>
+    <Menu>
+      <MenuTrigger>
+        <Ionicons name="menu" size={30} color="black" style={styles.menuIcon} />
+      </MenuTrigger>
+      <MenuOptions style={styles.menuOptionsStyle}>
+    
+        <MenuOption onSelect={() => navigation.navigate('EditProfile')}>
+          <Text style={styles.menuOptionText}>
+            Profile         
+          </Text>
+          <FontAwesomeicons name="user" size={25} color="black" style={styles.menuOptionIcon}/>
+        </MenuOption>
+        <MenuOption onSelect={() => navigation.navigate('Settings')}>
+          <Text style={styles.menuOptionText}>
+            Settings
+          </Text>
+          <FontAwesomeicons name="gear" size={25} color="black" style={styles.menuOptionIcon}/>
+        </MenuOption>
+        <MenuOption onSelect={() => navigation.navigate('HelpCenter')}>
+          <Text style={styles.menuOptionText}>
+            Help Center
+          </Text>
+          <Ionicons name="help-circle" size={25} color="black" style={styles.menuOptionIcon}/>
+        </MenuOption>
+        <MenuOption onSelect={() => navigation.navigate('SignIn')}>
+          <Text style={styles.menuOptionText}>
+            Sign Out   
+          </Text>
+          <Ionicons name="log-out-outline" size={25} color="black" style={styles.menuOptionIcon}/>
+        </MenuOption>
+      </MenuOptions>
+    </Menu>
   );
 };
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingHorizontal: 10,
-    paddingTop: 10,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
   menuIcon: {
     marginTop: 5,
     marginRight: 10,
   },
   menuOptionsStyle: {
-    marginTop: 0,
-    marginVertical: 2,
-    zIndex: 1,
+    flex: 1,
+    marginTop: 5,
+    marginVertical: -10, // Adjust this value to reduce the vertical spacing
   },
   menuOptionText: {
+    textAlign: 'left',
     fontSize: 16,
-    padding: 10,
+    fontFamily: 'Outfit-Bold',
+    marginLeft: 40, // Adjust this value based on the width of the icon
+  },
+  menuOptionIcon: {
+    marginLeft: 10,
+    paddingVertical: -50,
+    justifyContent: 'space-between',
+    top: -26,
+    right: 0,
   },
 });
 

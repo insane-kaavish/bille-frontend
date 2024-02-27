@@ -25,29 +25,6 @@ const NavBar = () => {
   };
 
   return (
-    /* Navigation 
-    <View style={styles.navcontainer}>
-      <TouchableOpacity style={styles.navtab} onPress={() => handleTabPress(0)}>
-        <Image source={require('../extra/assets/nav1.png')} />
-        <Text style={styles.navlabel}>Overview</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.navtab} onPress={() => handleTabPress(1)}>
-        <Image source={require('../extra/assets/nav2.png')} />
-        <Text style={styles.navlabel}>Prediction</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.navtab} onPress={() => handleTabPress(2)}>
-        <Image source={require('../extra/assets/nav3.png')} />
-        <Text style={styles.navlabel}>Room Wise</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.navtab} onPress={() => handleTabPress(3)}>
-        <Image source={require('../extra/assets/nav4.png')} />
-        <Text style={styles.navlabel}>Insights</Text>
-      </TouchableOpacity>
-    </View>
-    /* end nav */
     <View style={styles.navBar}>
         <TouchableOpacity onPress={navigateToOverview}>
           <Ionicons name="home-outline" size={24} color="#000" />

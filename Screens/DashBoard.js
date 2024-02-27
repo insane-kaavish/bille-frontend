@@ -1,6 +1,5 @@
 import React from 'react';
 import { Image, View, StyleSheet, ScrollView, Text, TouchableOpacity } from 'react-native';
-import NavBar from './Components/NavBar';
 import {
   MenuProvider,
   Menu,
@@ -8,6 +7,9 @@ import {
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu';
+
+import MenuComponent from './Components/Menu';
+import NavBar from './Components/NavBar';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesomeicons from 'react-native-vector-icons/FontAwesome';
@@ -53,42 +55,7 @@ const Dashboard = ({ navigation }) => {
           <Text>Bill-E Dashboard</Text>
         </Text>  
       </View>
-        <Menu>
-          <MenuTrigger>
-            <Ionicons name="menu" size={30} color="black" style={styles.menuIcon} />
-          </MenuTrigger>
-          <MenuOptions style={styles.menuOptionsStyle}>
-        
-            <MenuOption onSelect={() => navigation.navigate('EditProfile')}>
-            <Text style={styles.menuOptionText}>
-              Profile         
-            </Text>
-            <FontAwesomeicons name="user" size={30} color="black" style={styles.menuOptionIcon}/>
-            </MenuOption>
-            <MenuOption onSelect={() => navigation.navigate('Settings')}>
-            
-              <Text style={styles.menuOptionText}>
-                Settings
-              </Text>
-                <FontAwesomeicons name="gear" size={30} color="black" style={styles.menuOptionIcon}/>
-            </MenuOption>
-            <MenuOption onSelect={() => navigation.navigate('HelpCenter')}>
-            
-              <Text style={styles.menuOptionText}>
-                Help Center
-              </Text>
-              <Ionicons name="help-circle" size={30} color="black" style={styles.menuOptionIcon}/>
-            </MenuOption>
-            <MenuOption onSelect={() => navigation.navigate('SignIn')}>
-              
-              <Text style={styles.menuOptionText}>
-                Sign Out   
-              </Text>
-              <Ionicons name="log-out-outline" size={30} color="black" style={styles.menuOptionIcon}/>
-
-            </MenuOption>
-          </MenuOptions>
-        </Menu>
+        <MenuComponent navigation={navigation} />
       </View>
 
       <ScrollView style={styles.scrollContainer}>
@@ -140,9 +107,7 @@ const Dashboard = ({ navigation }) => {
             <View style={styles.MUGicon}><Image source={require('../extra/assets/MUGIcon.png')}/></View>
           </TouchableOpacity>
         </View>
-
       </ScrollView>
-
       <NavBar />
     </MenuProvider>
   );
@@ -164,30 +129,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
-  menuIcon: {
-    marginTop: 5,
-    marginRight: 10,
-  },
-  menuOptionsStyle: {
-    // width:'auto',
-    flex:1,
-    marginTop: 5,
-    marginVertical: 10,
-  },
-  menuOptionText: {
-    textAlign:'center',
-    fontSize: 16,
-    fontFamily: 'Outfit-Bold',
-  },
-  // menuOptionIcon: {
-  //   // marginLeft: 10,
-  //   // marginTop:10000,
-  //   // alignItems: 'left',
-  //   // paddingVertical: -10,
-  //   // justifyContent:'space-bet/ween',
-  //   // top:-26,
-  //   // right:0,
-  // },
   scrollContainer: {
     flex: 1,
   },

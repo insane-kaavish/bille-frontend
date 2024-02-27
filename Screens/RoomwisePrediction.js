@@ -18,6 +18,9 @@ import {
   MenuTrigger,
 } from 'react-native-popup-menu';
 
+import MenuComponent from './Components/Menu';
+import NavBar from './Components/NavBar';
+
 const RoomwisePrediction = () => {
   const navigation = useNavigation();
 
@@ -50,25 +53,7 @@ const RoomwisePrediction = () => {
           <Text>Bill-E Roomwise Prediction</Text>
         </Text>  
       </View>
-        <Menu>
-          <MenuTrigger>
-            <Ionicons name="menu" size={30} color="black" style={styles.menuIcon} />
-          </MenuTrigger>
-          <MenuOptions style={styles.menuOptionsStyle}>
-            <MenuOption onSelect={() => navigation.navigate('EditProfile')}>
-              <Text style={styles.menuOptionText}>Profile</Text>
-            </MenuOption>
-            <MenuOption onSelect={() => navigation.navigate('Settings')}>
-              <Text style={styles.menuOptionText}>Settings</Text>
-            </MenuOption>
-            <MenuOption onSelect={() => navigation.navigate('HelpCenter')}>
-              <Text style={styles.menuOptionText}>Help Center</Text>
-            </MenuOption>
-            <MenuOption onSelect={() => navigation.navigate('SignIn')}>
-              <Text style={styles.menuOptionText}>Sign Out</Text>
-            </MenuOption>
-          </MenuOptions>
-        </Menu>
+        <MenuComponent navigation={navigation} />
       </View>
 
       <ScrollView style={styles.scrollContainer}>
@@ -124,23 +109,8 @@ const RoomwisePrediction = () => {
           <Ionicons name="chevron-forward" size={24} color="#C0C0C0" />
         </TouchableOpacity>
       ))}
-
     </ScrollView>
-
-      <View style={styles.navBar}>
-        <TouchableOpacity onPress={() => navigation.navigate('DashBoard')}>
-          <Ionicons name="home-outline" size={24} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Prediction')}>
-          <Ionicons name="stats-chart-outline" size={24} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('RoomwisePrediction')}>
-          <Ionicons name="grid-outline" size={24} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
-          <Ionicons name="person-outline" size={24} color="#000" />
-        </TouchableOpacity>
-      </View>
+      <NavBar />
     </MenuProvider>
   );
 };
@@ -227,19 +197,6 @@ const styles = StyleSheet.create({
   roomUnits: {
     fontSize: 16,
     color: '#666',
-  },
-  navBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    borderTopWidth: 1,
-    borderTopColor: '#EFEFEF',
-    paddingVertical: 10,
-    backgroundColor: '#FFFFFF',
-    position: 'relative',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 1,
   },
   middletext: {
       color: '#000',
