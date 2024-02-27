@@ -1,6 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Switch } from 'react-native';
+import { navigation,View, Text, StyleSheet, TouchableOpacity, Switch } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {
+  MenuProvider,
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
+import MenuComponent from '../Components/Menu';
+import NavBar from '../Components/NavBar';
+
 
 const SettingsScreen = ({ navigation }) => {
   // Placeholder for actual navigation or action calls
@@ -29,8 +39,18 @@ const SettingsScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Settings</Text>
+    <MenuProvider skipInstanceCheck={true} style={styles.container}>
+      <View style={styles.header}>
+      <View style={{ flex: 1 }}> 
+        <Text style={{ fontFamily: 'Lato-Bold', fontSize: 20, color: '#171A1F', textAlign: 'left' }}>
+          <Text>Settings</Text>
+        </Text>  
+      </View>
+        <MenuComponent navigation={navigation} />
+      </View>
+
+    <View style={styles.maincontainer}>
+      {/* <Text style={styles.heading}>Settings</Text> */}
 
       <TouchableOpacity style={styles.optionButton} onPress={navigateToNotifications}>
         <Text style={styles.optionText}>Enable Notifications</Text>
@@ -46,21 +66,11 @@ const SettingsScreen = ({ navigation }) => {
         <Text style={styles.optionText}>Contact Us</Text>
         <Ionicons name="chevron-forward-outline" size={20} color="#000" />
       </TouchableOpacity>
-      <View style={styles.navBar}>
-        <TouchableOpacity onPress={navigateToOverview}>
-          <Ionicons name="home-outline" size={24} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={navigateToPrediction}>
-          <Ionicons name="stats-chart-outline" size={24} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={navigateToRoomWise}>
-          <Ionicons name="grid-outline" size={24} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={navigateToProfile}>
-          <Ionicons name="person-outline" size={24} color="#000" /> 
-        </TouchableOpacity>
-      </View>
+      
     </View>
+
+    <NavBar />
+    </MenuProvider>
   );
 };
 
@@ -68,6 +78,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    padding: 10,
   },
   header: {
     flexDirection: 'row',
@@ -77,7 +88,26 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomColor: '#ccc', 
+  },
+  optionButton: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#F5F5F5',
+    borderRadius: 10,
+    marginBottom: 16,
+  },
+  optionText: {
+    fontSize: 18,
+    color: '#000',
+  },
+  maincontainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    justifyContent:'center',
+
   },
   menuIcon: {
     marginTop: 5,
