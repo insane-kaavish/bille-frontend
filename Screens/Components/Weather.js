@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const WeatherComponent = () => {
   const [weather, setWeather] = useState(null);
@@ -45,18 +46,30 @@ const WeatherComponent = () => {
     );
   }
 
+  const getWeatherIcon = (weather) => {
+    if (weather.weather[0].main === 'Clouds') {
+      return 'cloud';
+    } else if (weather.weather[0].main === 'Rain') {
+      return 'tint';
+    } else if (weather.weather[0].main === 'Clear') {
+      return 'sun-o';
+    } else {
+      return 'question';
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.temperature}>Karachi {weather.main.temp}°C</Text>
-      {/* <Text style={styles.description}>{weather.weather[0].description}</Text> */}
+        <Icon name={getWeatherIcon(weather)} size={20} color="#565E6C" />
+        <Text style={styles.temperature}>Karachi {weather.main.temp}°C</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'Left',
-    justifyContent: 'Right',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   temperature: {
     color: '#565E6C',
@@ -65,6 +78,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     lineHeight: 28, 
     wordWrap: 'break-word',
+    paddingLeft: 5,
   },
   description: {
     fontSize: 16,
