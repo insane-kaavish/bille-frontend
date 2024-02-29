@@ -11,7 +11,7 @@ import {
 import MenuComponent from './Components/Menu';
 import NavBar from './Components/NavBar';
 
-import { LineChart } from 'react-native-chart-kit';
+import { LineChart, ProgressChart } from 'react-native-chart-kit';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
@@ -94,6 +94,9 @@ const App = () => {
     ],
   };
 
+  // Calculate progress for the ProgressChart
+  const progress = units / 300; // Assuming 300 units is 100% progress
+
   return (
     <MenuProvider skipInstanceCheck={true} style={styles.container}>
       <View style={styles.header}>
@@ -106,7 +109,7 @@ const App = () => {
               textAlign: 'left',
             }}
           >
-            <Text>Bill-E Prediction Summary</Text>
+            Bill-E Prediction Summary
           </Text>
         </View>
         <MenuComponent navigation={navigation} />
@@ -114,7 +117,25 @@ const App = () => {
 
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.predictionCard}>
-          <Text style={styles.consumptionValue}>{units}</Text>
+          <View style={styles.progressChartContainer}>
+            <ProgressChart
+              data={[progress]}
+              width={screenWidth * 0.5}
+              height={screenWidth * 0.5}
+              strokeWidth={16}
+              radius={80}
+              chartConfig={{
+                backgroundGradientFrom: '#f9f9f9',
+                backgroundGradientTo: '#f9f9f9',
+                color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+                strokeWidth: 2, // optional, default 3
+                barPercentage: 0.8, // Set barPercentage to 0.8 for 80% circle
+              }}
+              hideLegend={true}
+            />
+            <Text style={styles.progressText}>{units} Units</Text>
+          </View>
+
           <Text style={styles.consumptionUnit}>Predicted Units</Text>
           <Text style={styles.estimatedBill}>
             Your estimated bill for this month will be Rs.{totalCost.toFixed(1)}
@@ -131,16 +152,18 @@ const App = () => {
           <ScrollView horizontal>
             <LineChart
               data={data}
-              width={screenWidth * 2}
-              height={500}
+              width={screenWidth * 1.5}
+              height={300}
               yAxisLabel=""
               yAxisSuffix=""
-              verticalLabelRotation={90}
+              verticalLabelRotation={0}
+              fromZero={true}
+              segments={4}
               chartConfig={{
                 backgroundGradientFrom: '#FFF',
                 backgroundGradientTo: '#FFF',
                 color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                strokeWidth: 2,
+                strokeWidth: 5,
                 barPercentage: 0.3,
                 propsForLabels: { fontsize: 2 },
                 withInnerLines: false, // Remove grid lines
@@ -201,11 +224,11 @@ const styles = StyleSheet.create({
     padding: 16,
     margin: 16,
     alignItems: 'center',
-  },
-  title: {
-    fontSize: 22,
-    marginBottom: 10,
-    fontFamily: 'Lato-Bold',
+    elevation: 3, // for the main shadow
+    shadowColor: '#000', // color of the shadow
+    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
+    shadowOpacity: 0.3, // opacity of the shadow
+    shadowRadius: 1, // blur radius of the shadow
   },
   consumptionValue: {
     fontSize: 48,
@@ -244,13 +267,30 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 10,
     marginBottom: 70,
-    // overflow: 'hidden',
+    elevation: 3, // for the main shadow
+    shadowColor: '#000', // color of the shadow
+    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
+    shadowOpacity: 0.3, // opacity of the shadow
+    shadowRadius: 1, // blur radius of the shadow
   },
   graphDescription: {
     fontSize: 14,
     color: '#666',
     textAlign: 'center',
     marginTop: 10,
+    fontFamily: 'Lato-Bold',
+  },
+  progressChartContainer: {
+    alignItems: 'center',
+    marginTop: 20,
+    position: 'relative',
+  },
+  progressText: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: [{ translateX: -10 }, { translateY: -10 }], // Center the text
+    fontSize: 18,
     fontFamily: 'Lato-Bold',
   },
 });

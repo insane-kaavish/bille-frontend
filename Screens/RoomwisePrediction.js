@@ -35,6 +35,9 @@ const RoomwisePrediction = () => {
     // Implement your navigation logic
   };
 
+  // Create an array of colors corresponding to each room
+  const roomColors = rooms.map(room => room.color);
+
   return (
     <MenuProvider skipInstanceCheck={true} style={styles.container}>
       <View style={styles.header}>
@@ -104,6 +107,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flex: 1,
+    
   },
   card: {
     backgroundColor: '#fff',
@@ -129,6 +133,11 @@ const styles = StyleSheet.create({
   progressContainer: {
     alignItems: 'center',
     marginBottom: 10,
+    elevation: 3, // for the main shadow
+    shadowColor: '#000', // color of the shadow
+    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
+    shadowOpacity: 0.3, // opacity of the shadow
+    shadowRadius: 1, // blur radius of the shadow
   },
   totalUnitsContainer: {
     alignItems: 'center',
