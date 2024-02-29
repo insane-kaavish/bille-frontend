@@ -101,10 +101,11 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#535CE8',
     borderRadius: 26,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
+    marginTop: '5%',
     width: '90%',
+    height: 50,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonText: {
     color: 'white',

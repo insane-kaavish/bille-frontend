@@ -26,18 +26,23 @@ const NavBar = () => {
 
   return (
     <View style={styles.navBar}>
-        <TouchableOpacity onPress={navigateToOverview}>
-          <Ionicons name="home-outline" size={24} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={navigateToPrediction}>
-          <Ionicons name="stats-chart-outline" size={24} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={navigateToRoomWise}>
-          <Ionicons name="grid-outline" size={24} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={navigateToProfile}>
-          <Ionicons name="person-outline" size={24} color="#000" /> 
-        </TouchableOpacity>
+        <View style={styles.navBar}>
+          <TouchableOpacity onPress={navigateToOverview} style={styles.navtab}>
+            <View style={{ flex: 1 }}>
+              <Ionicons name="home-outline" size={24} color="#000" />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={navigateToPrediction} style={styles.navtab}>
+            <View style={{ flex: 1 }}>
+              <Ionicons name="stats-chart-outline" size={24} color="#000" />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={navigateToRoomWise} style={styles.navtab}>
+            <View style={{ flex: 1 }}>
+              <Ionicons name="bed-outline" size={24} color="#000" />
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
   );
 };

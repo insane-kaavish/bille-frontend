@@ -12,15 +12,6 @@ const DataInput = ({ navigation }) => {
   const [ParttimeHomeOccupant, setParttimeHomeOccupants] = useState('');
   const [FulltimeHomeOccupants, setFulltimeHomeOccupants] = useState('');
   const { authToken } = useAuth();
-  const [isTyping,setIsTyping] = useState(false);
-
-  const handleFocus=()=>{
-    setIsTyping(true);
-  }
-  const handleBlur = ()=>{
-    setIsTyping(false);
-  }
-
 
   // Function to handle continue click
   const handleContinue = () => {
@@ -39,8 +30,8 @@ const DataInput = ({ navigation }) => {
   return (
     <View style={styles.container}>
 
-      {!isTyping && <Text style={styles.header}>Get Started</Text>}
       <ScrollView>
+      <Text style={styles.header}>Get Started</Text>
       {/* Input Section: Number of People */}
       
       <View style={styles.inputContainer}>
@@ -50,8 +41,8 @@ const DataInput = ({ navigation }) => {
           style={styles.input}
           value={numOfPeople}
           onChangeText={setNumOfPeople}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
+          // onFocus={handleFocus}
+          // onBlur={handleBlur}
         />
       </View>
 
@@ -62,8 +53,8 @@ const DataInput = ({ navigation }) => {
           style={styles.input}
           value={stayatHomeOccupant}
           onChangeText={setStayatHomeOccupants}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
+          // onFocus={handleFocus}
+          // onBlur={handleBlur}
         />
       </View>
 
@@ -75,8 +66,8 @@ const DataInput = ({ navigation }) => {
           style={styles.input}
           value={ParttimeHomeOccupant}
           onChangeText={setParttimeHomeOccupants}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
+          // onFocus={handleFocus}
+          // onBlur={handleBlur}
         />
       </View>
 
@@ -88,8 +79,8 @@ const DataInput = ({ navigation }) => {
           style={styles.input}
           value={FulltimeHomeOccupants}
           onChangeText={setFulltimeHomeOccupants}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
+          // onFocus={handleFocus}
+          // onBlur={handleBlur}
         />
       </View>
 
@@ -115,14 +106,14 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.12,
     shadowRadius: 6,
-    elevation: 3,
+    // elevation: 3,
   },
   header: {
     color: '#171A1F',
     fontSize: 32,
     fontWeight: '700',
     lineHeight: 48,
-    marginTop: 130,
+    marginTop: '10%',
   },
   inputContainer: {
     marginTop: 15,
@@ -146,7 +137,7 @@ const styles = StyleSheet.create({
   submitButton: {
     width: '70%',
     height: 50,
-    marginTop: 40,
+    marginTop: '5%',
     backgroundColor: '#535CE8',
     borderRadius: 26,
     justifyContent: 'center',
