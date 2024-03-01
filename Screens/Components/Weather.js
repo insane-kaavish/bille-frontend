@@ -53,7 +53,16 @@ const WeatherComponent = () => {
       return 'tint';
     } else if (weather.weather[0].main === 'Clear') {
       return 'sun-o';
-    } else {
+    } else if (weather.weather[0].main === 'Snow') {
+      return 'snowflake-o';
+    } else if (weather.weather[0].main === 'Thunderstorm') {
+      return 'bolt';
+    } else if (weather.weather[0].main === 'Drizzle') {
+      return 'tint';
+    } else if (weather.weather[0].main === 'Mist') {
+      return 'smog';
+    }
+    else {
       return '';
     }
   };
