@@ -84,22 +84,26 @@ const RoomwisePrediction = () => {
           />
           </View>
         </View>
-        {rooms.map((room, index) => (
-          <TouchableOpacity
-            key={index}
-            style={styles.roomCard}
-            onPress={() => navigateToRoomDetails(room.name)}
-            >
-            <View style={[styles.iconContainer, { backgroundColor: room.color }]}>
-              <Ionicons name="home" size={24} color="#fff" />
-            </View>
-            <View style={styles.roomDetails}>
-              <Text style={styles.roomName}>{room.name}</Text>
-              <Text style={styles.roomUnits}>{`${room.units} Units`}</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={24} color="#C0C0C0" />
-          </TouchableOpacity>
-        ))}
+        <View style={styles.card}>
+          {rooms.map((room, index) => (
+            <TouchableOpacity
+              key={index}
+              // style={styles.roomCard}
+              onPress={() => navigateToRoomDetails(room.name)}
+              >
+              <View style={[styles.card, { flexDirection: 'row', alignItems: 'center' }]}>
+                <View style={[styles.iconContainer, { backgroundColor: room.color }]}>
+                  <Ionicons name="home" size={24} color="#fff" />
+                </View>
+                <View style={styles.roomDetails}>
+                  <Text style={styles.roomName}>{room.name}</Text>
+                  <Text style={styles.roomUnits}>{`${room.units} Units`}</Text>
+                </View>
+                <Ionicons name="chevron-forward" size={24} color="#C0C0C0" />
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
       </ScrollView>
       <NavBar />
     </MenuProvider>
