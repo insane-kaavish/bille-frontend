@@ -8,108 +8,99 @@ import {
   Dimensions,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Svg, { Circle } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
-import {
-  MenuProvider,
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-} from 'react-native-popup-menu';
+import { MenuProvider } from 'react-native-popup-menu';
+import { ProgressChart } from 'react-native-chart-kit';
 
 import MenuComponent from './Components/Menu';
 import NavBar from './Components/NavBar';
+
+const hexToRgb = (hex) => { // Convert hex color to RGB color
+  const hexColor = hex.replace('#', '');
+  const r = parseInt(hexColor.substring(0, 2), 16);
+  const g = parseInt(hexColor.substring(2, 4), 16);
+  const b = parseInt(hexColor.substring(4, 6), 16);
+  return { r, g, b };}
 
 const RoomwisePrediction = () => {
   const navigation = useNavigation();
 
   const rooms = [
-    { name: 'Ali’s Bedroom', units: 56, color: '#517fa4' },
+    { name: 'Ali’s Bedroom', units: 15, color: '#517fa4' },
     { name: 'Kitchen', units: 34, color: '#f44336' },
-    { name: 'Bashir Living Room', units: 15, color: '#ffeb3b' },
+    { name: 'Bashir Living Room', units: 56, color: '#ffeb3b' },
   ];
 
   // Calculate total units for all rooms
   const totalAllUnits = rooms.reduce((total, room) => total + room.units, 0);
 
-  // Calculate total units for displayed rooms
-  const displayedRooms = rooms.slice(0, 2); // Assuming only first two rooms are displayed
-  const totalDisplayedUnits = displayedRooms.reduce((total, room) => total + room.units, 0);
-
   // Total units text
-  const totalUnitsText = `${totalAllUnits} units`;
+  const totalUnitsText = `${totalAllUnits} Units`;
 
   const navigateToRoomDetails = (roomName) => {
     console.log('Navigating to details of', roomName);
     // Implement your navigation logic
   };
 
+  // Create an array of colors corresponding to each room
+  const roomColors = rooms.map(room => room.color);
+
+  const getChartColors = (rooms, roomColors) => {
+    return rooms.map((room, index) => {
+      const rgbColor = hexToRgb(roomColors[index]);
+      return `rgba(${rgbColor.r}, ${rgbColor.g}, ${rgbColor.b}, 1)`;
+    });
+  };
+  
+  // Inside the component:
+  const chartColors = getChartColors(rooms, roomColors);
+
   return (
     <MenuProvider skipInstanceCheck={true} style={styles.container}>
       <View style={styles.header}>
-      <View style={{ flex: 1 }}> 
-        <Text style={{ fontFamily: 'Lato-Bold', fontSize: 20, color: '#171A1F', textAlign: 'left' }}>
-          <Text>Bill-E Roomwise Prediction</Text>
-        </Text>  
-      </View>
+        <View style={{ flex: 1 }}>
+          <Text style={{ fontFamily: 'Lato-Bold', fontSize: 20, color: '#171A1F', textAlign: 'left' }}>
+            <Text>Bill-E Roomwise Prediction</Text>
+          </Text>
+        </View>
         <MenuComponent navigation={navigation} />
       </View>
 
       <ScrollView style={styles.scrollContainer}>
-        <View style={styles.titleContainer}>
-          {/* <Text style={styles.title}>Highest Usage Rooms</Text> */}
+        <View style={styles.card}>
           <View style={styles.progressContainer}>
-            <Svg width="200" height="250">
-              {rooms.map((room, index) => (
-                <React.Fragment key={index}>
-                  {/* Outer circle */}
-                  <Circle
-                    cx="100"
-                    cy="135"
-                    r={(90 - index * 15).toString()}
-                    fill="none"
-                    stroke={room.color}
-                    strokeWidth="10"
-                  />
-                  <Circle
-                    cx="100"
-                    cy="135"
-                    r={(90 - index * 15).toString()}
-                    fill="none"
-                    stroke="#ddd"
-                    strokeWidth="10"
-                    strokeOpacity="0.95"
-                    strokeDasharray={`${(1 - room.units / totalAllUnits) * (2 * Math.PI * (90 - index * 15))} ${(2 * Math.PI * (90 - index * 15))}`}
-                    strokeDashoffset={`${(room.units / totalAllUnits) * (2 * Math.PI * (90 - index * 15))}`}
-                  />
-                </React.Fragment>
-              ))}
-              <View style={[styles.middletext]}>
-                <Text x="100" y="135">
-                  {totalUnitsText}
-                </Text>
-              </View>
-            </Svg>
+          <ProgressChart
+            data={rooms.map(room => room.units / totalAllUnits)}
+            width={Dimensions.get('window').width - 40}
+            height={220}
+            chartConfig={{
+              backgroundGradientFrom: '#ffffff',
+              backgroundGradientTo: '#ffffff',
+              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+              strokeWidth: 5,
+            }}
+            style={{ borderRadius: 16, padding: 10 }}
+            hideLegend={true}
+          />
           </View>
         </View>
         {rooms.map((room, index) => (
-        <TouchableOpacity
-          key={index}
-          style={styles.roomCard}
-          onPress={() => navigateToRoomDetails(room.name)}
-        >
-          <View style={[styles.iconContainer, { backgroundColor: room.color }]}>
-            <Ionicons name={room.icon} size={24} color="#fff" />
-          </View>
-          <View style={styles.roomDetails}>
-            <Text style={styles.roomName}>{room.name}</Text>
-            <Text style={styles.roomUnits}>{`${room.units} Units`}</Text>
-          </View>
-          <Ionicons name="chevron-forward" size={24} color="#C0C0C0" />
-        </TouchableOpacity>
-      ))}
-    </ScrollView>
+          <TouchableOpacity
+            key={index}
+            style={styles.roomCard}
+            onPress={() => navigateToRoomDetails(room.name)}
+            >
+            <View style={[styles.iconContainer, { backgroundColor: room.color }]}>
+              <Ionicons name="home" size={24} color="#fff" />
+            </View>
+            <View style={styles.roomDetails}>
+              <Text style={styles.roomName}>{room.name}</Text>
+              <Text style={styles.roomUnits}>{`${room.units} Units`}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={24} color="#C0C0C0" />
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
       <NavBar />
     </MenuProvider>
   );
@@ -131,37 +122,46 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
-  menuIcon: {
-    marginTop: 5,
-    marginRight: 10, 
-  },
-  menuOptionsStyle: {
-    marginTop: 0,
-    marginVertical: 2,
-    zIndex: 1,
-  },
-  menuOptionText: {
-    fontSize: 16,
-    padding: 10,
-    fontFamily: 'Outfit-Bold',
-  },
   scrollContainer: {
     flex: 1,
+    
+  },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 10,
+    marginVertical: 10,
+    marginHorizontal: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   titleContainer: {
-    padding: 16,
-    paddingTop: 30,
-    paddingBottom: 20,
-    backgroundColor: '#fff',
     alignItems: 'center',
+    marginBottom: 10,
   },
   title: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: 'bold',
+    color: '#333',
   },
-  headerText: {
-    fontSize: 22,
-    fontWeight: 'bold',
+  progressContainer: {
+    alignItems: 'center',
+    marginBottom: 10,
+    elevation: 3, // for the main shadow
+    shadowColor: '#000', // color of the shadow
+    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
+    shadowOpacity: 0.3, // opacity of the shadow
+    shadowRadius: 1, // blur radius of the shadow
+  },
+  totalUnitsContainer: {
+    alignItems: 'center',
+  },
+  totalUnitsText: {
+    fontSize: 16,
+    color: '#666',
   },
   roomCard: {
     flexDirection: 'row',
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 15,
     marginVertical: 5,
-    marginHorizontal: 15,
+    marginHorizontal: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
   },
   roomDetails: {
     flex: 1,
-    justifyContent: 'center', // Center content vertically
+    justifyContent: 'center',
   },
   roomName: {
     fontSize: 18,
@@ -198,11 +198,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
   },
-  middletext: {
-      color: '#000',
-      top:'740%',
-      left:'35%'
-  }
 });
 
 export default RoomwisePrediction;

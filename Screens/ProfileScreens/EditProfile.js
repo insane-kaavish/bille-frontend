@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#171A1F',
+    fontFamily: 'Lato-Bold',
   },
   email: {
     fontSize: 16,

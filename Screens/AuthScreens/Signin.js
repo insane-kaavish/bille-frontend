@@ -22,7 +22,7 @@ const SignInScreen = ({ navigation }) => {
     if (await login(email, password)) {
       console.log(authToken);
       setLoading(false);
-      navigation.navigate('DataInput');
+      navigation.navigate('RoomData');
     }
     else {
       setLoading(false);

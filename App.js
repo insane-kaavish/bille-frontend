@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import SignInScreen from './Screens/AuthScreens/Signin'; 
 import CreateAccount from './Screens/AuthScreens/Signup';
-import DataInput from './Screens/Data/DataInput';
+// import DataInput from './Screens/Data/DataInput';
 import RoomData from './Screens/Data/RoomData';
 import Home from './Screens/Home';
 import DashBoard from './Screens/DashBoard';
@@ -60,11 +60,11 @@ const App = () => {
           component={CreateAccount}
           options={{ headerShown: false }} // Assuming you don't want to show the header
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="DataInput"
           component={DataInput}
           options={{ headerShown: false }} // Assuming you don't want to show the header
-        />
+        /> */}
         <Stack.Screen
           name="RoomData"
           component={RoomData}

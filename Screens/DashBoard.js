@@ -142,14 +142,11 @@ const styles = StyleSheet.create({
     marginTop: '6%',
     backgroundColor: '#F1F2FDFF',
     borderRadius: 16,
-    shadowColor: 'rgba(23, 26, 31, 0.19)',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 9,
-    elevation: 2,
+    elevation: 6, // for the main shadow
+    shadowColor: '#000', // color of the shadow
+    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
+    shadowOpacity: 0.3, // opacity of the shadow
+    shadowRadius: 1, // blur radius of the shadow
   },
   MCcircleContainer: {
     left: 259,
@@ -210,14 +207,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#F1F2FD',
     borderRadius: 16,
     padding: 10,
-    shadowColor: 'rgba(23, 26, 31, 0.19)',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 9,
-    elevation: 2,
+    // elevation: 3, // for the main shadow
+    // shadowColor: '#000', // color of the shadow
+    // shadowOffset: { width: 0, height: 0 }, // same as the CSS code
+    // shadowOpacity: 0.3, // opacity of the shadow
+    // shadowRadius: 1, // blur radius of the shadow
   },
   cardTitle: {
     color: '#171A1F',
@@ -251,6 +245,11 @@ const styles = StyleSheet.create({
     marginLeft: '3%', // Aligning "Monthly Report" with "Highlights"
     marginTop: '5%', // Adjust the margin as needed
     justifyContent: 'space-between',
+    // elevation: 3, // for the main shadow
+    // shadowColor: '#000', // color of the shadow
+    // shadowOffset: { width: 0, height: 0 }, // same as the CSS code
+    // shadowOpacity: 0.3, // opacity of the shadow
+    // shadowRadius: 1, // blur radius of the shadow
   },
   MRtext:{
     color: '#171A1F',
@@ -258,22 +257,17 @@ const styles = StyleSheet.create({
     fontFamily: 'Lato-Bold',
     fontWeight: '600',
     lineHeight: 30,
-    // wordWrap: 'break-word',
   },
   RRcontainer: {
-    width: '45.5%', // Match the width of the cards
-    height: 91, // Adjust the height as needed
+    width: '45.5%',
+    height: 91,
     backgroundColor: '#F1F2FDFF',
     borderRadius: 16,
-    shadowColor: '#171A1F',
-    shadowOffset: {
-      width: 0.5,
-      height: 0.5,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 9,
-    elevation: 2,
-    marginTop: '2%', // Adjust the margin as needed
+    elevation: 6, // for the main shadow
+    shadowColor: '#000', // color of the shadow
+    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
+    shadowOpacity: 0.3, // opacity of the shadow
+    shadowRadius: 1, // blur radius of the shadow
   },
   RRText: {
     fontFamily: 'Lato-Bold',
@@ -293,20 +287,17 @@ const styles = StyleSheet.create({
   },
   MUGcontainer: {
     // position: 'absolute',
-    top:'-41.5%',
+    top:'-42.95%',
     left: '51%',
     width: '45.5%', // Match the width of the cards
     height: 91, 
     backgroundColor: '#F1F2FDFF', // white
     borderRadius: 16,
-    shadowColor: '#171A1F',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 9,
-    elevation: 2, // for Android
+    elevation: 6, // for the main shadow
+    shadowColor: '#000', // color of the shadow
+    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
+    shadowOpacity: 0.3, // opacity of the shadow
+    shadowRadius: 1, // blur radius of the shadow
   },
   MUGText:{
     top: 13,
