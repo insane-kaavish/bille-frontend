@@ -13,6 +13,7 @@ import NavBar from './Components/NavBar';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesomeicons from 'react-native-vector-icons/FontAwesome';
+import WeatherComponent from './Components/Weather';
 
 const units = 300;
 
@@ -52,8 +53,9 @@ const Dashboard = ({ navigation }) => {
       <View style={styles.header}>
       <View style={{ flex: 1 }}> 
         <Text style={{ fontFamily: 'Lato-Bold', fontSize: 20, color: '#171A1F', textAlign: 'left' }}>
-          <Text>Bill-E Dashboard</Text>
-        </Text>  
+          Bill-E Dashboard
+        </Text>
+        <WeatherComponent />
       </View>
         <MenuComponent navigation={navigation} />
       </View>
