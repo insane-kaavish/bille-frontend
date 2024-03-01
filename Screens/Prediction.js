@@ -2,7 +2,7 @@ import React from 'react';
 import MenuComponent from './Components/Menu';
 import NavBar from './Components/NavBar';
 import { LineChart, ProgressChart } from 'react-native-chart-kit';
-// import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { useNavigation } from '@react-navigation/native';
 import {
   StyleSheet,
@@ -15,14 +15,10 @@ import {
 
 import {
   MenuProvider,
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
 } from 'react-native-popup-menu';
 
 const screenWidth = Dimensions.get('window').width;
-const units = 300;
+const units = 20;
 
 let perUnitCost;
 if (units >= 1 && units <= 100) {
@@ -36,6 +32,19 @@ if (units >= 1 && units <= 100) {
 } else {
   perUnitCost = 20.70;
 }
+
+let fillPercentage;
+  if (units >= 1 && units <= 100) {
+    fillPercentage = (units / 100) * 100;
+  } else if (units >= 101 && units <= 200) {
+    fillPercentage = ((units - 100) / 100) * 100;
+  } else if (units >= 201 && units <= 300) {
+    fillPercentage = ((units - 200) / 100) * 100;
+  } else if (units >= 301 && units <= 700) {
+    fillPercentage = ((units - 300) / 400) * 100;
+  } else {
+    fillPercentage = 100;
+  }
 
 const totalCost = units * perUnitCost;
 
@@ -123,13 +132,32 @@ const App = () => {
 
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.predictionCard}>
-          
-          <Text style={styles.progressText}>{units} Units</Text>
+        <AnimatedCircularProgress
+          size={180}
+          width={15}
+          fill={fillPercentage}
+          tintColor="#00e0ff"
+          onAnimationComplete={() => console.log('onAnimationComplete')}
+          backgroundColor="#3d5875" 
+          rotation={220}
+        >
+          {
+            (fill) => (
+              <View style={styles.progressTextContainer}>
+                <Text style={styles.consumptionValue}>{units}</Text>
+                <Text style={styles.consumptionUnit}>Predicted units</Text>
+              </View>
+            )
+          }
+        </AnimatedCircularProgress>
 
-          <Text style={styles.consumptionUnit}>Predicted Units</Text>
+        <View style={styles.unitDetails}>
           <Text style={styles.estimatedBill}>
-            Your estimated bill for this month will be Rs.{totalCost.toFixed(1)}
+            Estimated Bill: <Text style={{ color: 'orange' }}> Pkr. {totalCost.toFixed(2)}</Text>
           </Text>
+        </View>
+        
+
           <TouchableOpacity
             style={styles.detailsButton}
             onPress={() => navigation.navigate('RoomwisePrediction')}
@@ -224,17 +252,20 @@ const styles = StyleSheet.create({
     fontSize: 48,
     color: '#000',
     fontFamily: 'Lato-Bold',
+    textAlign: 'center',
   },
   consumptionUnit: {
     fontSize: 18,
     color: '#666',
     fontFamily: 'Lato-Bold',
+    textAlign: 'center',
   },
   estimatedBill: {
-    fontSize: 16,
+    fontSize: 20,
     color: '#666',
     textAlign: 'center',
-    marginBottom: 20,
+    // marginBottom: 20,
+    fontFamily: 'Lato-Bold',
   },
   detailsButton: {
     backgroundColor: '#535CE8',
@@ -248,6 +279,21 @@ const styles = StyleSheet.create({
   detailsButtonText: {
     color: 'white',
     fontFamily: 'Lato-Bold',
+  },
+  progressTextContainer: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: [{ translateX: -60 }, { translateY: -40 }], // Adjust these values based on the size of your progress circle
+    alignItems: 'center',
+  },
+  progressText: {
+    fontSize: 48, // Adjust the font size as needed
+    fontFamily: 'Lato-Bold',
+    textAlign: 'center', // Center the text horizontally
+    textShadowColor: 'rgba(0, 0, 0, 0.5)', // Shadow color
+    textShadowOffset: { width: 1, height: 1 }, // Shadow offset
+    textShadowRadius: 2, // Shadow radius
   },
   graphCard: {
     backgroundColor: '#f9f9f9',
@@ -282,7 +328,20 @@ const styles = StyleSheet.create({
     transform: [{ translateX: -10 }, { translateY: -10 }], // Center the text
     fontSize: 18,
     fontFamily: 'Lato-Bold',
+    
   },
+  unitDetails: {
+    backgroundColor: '#f9f9f9',
+    borderRadius: 8,
+    padding: 16,
+    margin: 16,
+    alignItems: 'center',
+    elevation: 3, // for the main shadow
+    shadowColor: '#000', // color of the shadow
+    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
+    shadowOpacity: 0.6, // opacity of the shadow
+    shadowRadius: 1, // blur radius of the shadow
+  }
 });
 
 export default App;
