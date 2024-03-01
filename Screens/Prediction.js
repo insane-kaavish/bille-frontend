@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import MenuComponent from './Components/Menu';
 import NavBar from './Components/NavBar';
-import { LineChart, ProgressChart } from 'react-native-chart-kit';
+import { LineChart } from 'react-native-chart-kit';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { useNavigation } from '@react-navigation/native';
 import {
@@ -11,6 +11,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
 import {
@@ -18,7 +19,7 @@ import {
 } from 'react-native-popup-menu';
 
 const screenWidth = Dimensions.get('window').width;
-const units = 20;
+const units = 150;
 
 let perUnitCost;
 if (units >= 1 && units <= 100) {
@@ -34,22 +35,33 @@ if (units >= 1 && units <= 100) {
 }
 
 let fillPercentage;
-  if (units >= 1 && units <= 100) {
-    fillPercentage = (units / 100) * 100;
-  } else if (units >= 101 && units <= 200) {
-    fillPercentage = ((units - 100) / 100) * 100;
-  } else if (units >= 201 && units <= 300) {
-    fillPercentage = ((units - 200) / 100) * 100;
-  } else if (units >= 301 && units <= 700) {
-    fillPercentage = ((units - 300) / 400) * 100;
-  } else {
-    fillPercentage = 100;
-  }
+if (units >= 1 && units <= 100) {
+  fillPercentage = (units / 100) * 100;
+} else if (units >= 101 && units <= 200) {
+  fillPercentage = ((units - 100) / 100) * 100;
+} else if (units >= 201 && units <= 300) {
+  fillPercentage = ((units - 200) / 100) * 100;
+} else if (units >= 301 && units <= 700) {
+  fillPercentage = ((units - 300) / 400) * 100;
+} else {
+  fillPercentage = 100;
+}
 
 const totalCost = units * perUnitCost;
 
 const App = () => {
   const navigation = useNavigation();
+  const [hoveredSlab, setHoveredSlab] = useState(null);
+
+  // Function to handle hover event
+  const handleHover = (slab) => {
+    setHoveredSlab(slab);
+  };
+
+  // Function to handle mouse leave event
+  const handleMouseLeave = () => {
+    setHoveredSlab(null);
+  };
 
   const data1 = {
     Actual_units: {
@@ -109,9 +121,6 @@ const App = () => {
     ],
   };
 
-  // Calculate progress for the ProgressChart
-  const progress = units / 300; // Assuming 300 units is 100% progress
-
   return (
     <MenuProvider skipInstanceCheck={true} style={styles.container}>
       <View style={styles.header}>
@@ -132,31 +141,46 @@ const App = () => {
 
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.predictionCard}>
-        <AnimatedCircularProgress
-          size={180}
-          width={15}
-          fill={fillPercentage}
-          tintColor="#00e0ff"
-          onAnimationComplete={() => console.log('onAnimationComplete')}
-          backgroundColor="#3d5875" 
-          rotation={220}
-        >
-          {
-            (fill) => (
-              <View style={styles.progressTextContainer}>
-                <Text style={styles.consumptionValue}>{units}</Text>
-                <Text style={styles.consumptionUnit}>Predicted units</Text>
-              </View>
-            )
-          }
-        </AnimatedCircularProgress>
+          <TouchableWithoutFeedback
+            onPress={() => navigation.navigate('RoomwisePrediction')}
+          >
+            <AnimatedCircularProgress
+              size={180}
+              width={15}
+              fill={fillPercentage}
+              tintColor="#4682B4"
+              onAnimationComplete={() => console.log('onAnimationComplete')}
+              backgroundColor="#F2F2F2" 
+              rotation={220}
+              onMouseEnter={() => handleHover(slab)}
+              onMouseLeave={handleMouseLeave}
+            >
+              {
+                (fill) => (
+                  <View style={styles.progressTextContainer}>
+                    <Text style={styles.consumptionValue}>{units}</Text>
+                    <Text style={styles.consumptionUnit}>Predicted units</Text>
+                  </View>
+                )
+              }
+            </AnimatedCircularProgress>
+          </TouchableWithoutFeedback>
 
-        <View style={styles.unitDetails}>
-          <Text style={styles.estimatedBill}>
-            Estimated Bill: <Text style={{ color: 'orange' }}> Pkr. {totalCost.toFixed(2)}</Text>
-          </Text>
-        </View>
-        
+          {/* Render slab rates if hovered */}
+          {hoveredSlab && (
+            <View style={styles.slabRatesContainer}>
+              <Text style={styles.slabRateText}>
+                Slab Rate: {hoveredSlab.rate.toFixed(2)}
+              </Text>
+            </View>
+          )}
+
+          <View style={styles.unitDetails}>
+            <Text style={styles.estimatedBill}>
+              Estimated Bill: <Text style={{ color: 'orange' }}> Pkr. {totalCost.toFixed(2)}</Text>
+            </Text>
+          </View>
+          
 
           <TouchableOpacity
             style={styles.detailsButton}
@@ -219,20 +243,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
-  menuIcon: {
-    marginTop: 5,
-    marginRight: 10,
-  },
-  menuOptionsStyle: {
-    marginTop: 0,
-    marginVertical: 2,
-    zIndex: 1,
-  },
-  menuOptionText: {
-    fontSize: 16,
-    padding: 10,
-    fontFamily: 'Lato-Bold',
-  },
   scrollContainer: {
     flex: 1,
   },
@@ -242,7 +252,7 @@ const styles = StyleSheet.create({
     padding: 16,
     margin: 16,
     alignItems: 'center',
-    elevation: 3, // for the main shadow
+    elevation: 6, // for the main shadow
     shadowColor: '#000', // color of the shadow
     shadowOffset: { width: 0, height: 0 }, // same as the CSS code
     shadowOpacity: 0.3, // opacity of the shadow
@@ -303,7 +313,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 10,
     marginBottom: 70,
-    elevation: 3, // for the main shadow
+    elevation: 6, // for the main shadow
     shadowColor: '#000', // color of the shadow
     shadowOffset: { width: 0, height: 0 }, // same as the CSS code
     shadowOpacity: 0.3, // opacity of the shadow
@@ -316,19 +326,16 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontFamily: 'Lato-Bold',
   },
-  progressChartContainer: {
-    alignItems: 'center',
-    marginTop: 20,
-    position: 'relative',
-  },
-  progressText: {
+  slabRatesContainer: {
     position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: [{ translateX: -10 }, { translateY: -10 }], // Center the text
-    fontSize: 18,
+    bottom: -40,
+    width: '100%',
+    alignItems: 'center',
+  },
+  slabRateText: {
     fontFamily: 'Lato-Bold',
-    
+    fontSize: 16,
+    color: '#666',
   },
   unitDetails: {
     backgroundColor: '#f9f9f9',
@@ -336,7 +343,7 @@ const styles = StyleSheet.create({
     padding: 16,
     margin: 16,
     alignItems: 'center',
-    elevation: 3, // for the main shadow
+    elevation: 6, // for the main shadow
     shadowColor: '#000', // color of the shadow
     shadowOffset: { width: 0, height: 0 }, // same as the CSS code
     shadowOpacity: 0.6, // opacity of the shadow

@@ -54,7 +54,7 @@ const WeatherComponent = () => {
     } else if (weather.weather[0].main === 'Clear') {
       return 'sun-o';
     } else {
-      return 'question';
+      return '';
     }
   };
 
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Lato-Bold',
     fontWeight: '700',
     lineHeight: 28, 
-    wordWrap: 'break-word',
+    // wordWrap: 'break-word',
     paddingLeft: 5,
   },
   description: {

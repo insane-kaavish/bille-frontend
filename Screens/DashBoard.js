@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     marginTop: '6%',
     backgroundColor: '#F1F2FDFF',
     borderRadius: 16,
-    elevation: 3, // for the main shadow
+    elevation: 6, // for the main shadow
     shadowColor: '#000', // color of the shadow
     shadowOffset: { width: 0, height: 0 }, // same as the CSS code
     shadowOpacity: 0.3, // opacity of the shadow
@@ -207,11 +207,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#F1F2FD',
     borderRadius: 16,
     padding: 10,
-    elevation: 3, // for the main shadow
-    shadowColor: '#000', // color of the shadow
-    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
-    shadowOpacity: 0.3, // opacity of the shadow
-    shadowRadius: 1, // blur radius of the shadow
+    // elevation: 3, // for the main shadow
+    // shadowColor: '#000', // color of the shadow
+    // shadowOffset: { width: 0, height: 0 }, // same as the CSS code
+    // shadowOpacity: 0.3, // opacity of the shadow
+    // shadowRadius: 1, // blur radius of the shadow
   },
   cardTitle: {
     color: '#171A1F',
@@ -245,11 +245,11 @@ const styles = StyleSheet.create({
     marginLeft: '3%', // Aligning "Monthly Report" with "Highlights"
     marginTop: '5%', // Adjust the margin as needed
     justifyContent: 'space-between',
-    elevation: 3, // for the main shadow
-    shadowColor: '#000', // color of the shadow
-    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
-    shadowOpacity: 0.3, // opacity of the shadow
-    shadowRadius: 1, // blur radius of the shadow
+    // elevation: 3, // for the main shadow
+    // shadowColor: '#000', // color of the shadow
+    // shadowOffset: { width: 0, height: 0 }, // same as the CSS code
+    // shadowOpacity: 0.3, // opacity of the shadow
+    // shadowRadius: 1, // blur radius of the shadow
   },
   MRtext:{
     color: '#171A1F',
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
     height: 91,
     backgroundColor: '#F1F2FDFF',
     borderRadius: 16,
-    elevation: 3, // for the main shadow
+    elevation: 6, // for the main shadow
     shadowColor: '#000', // color of the shadow
     shadowOffset: { width: 0, height: 0 }, // same as the CSS code
     shadowOpacity: 0.3, // opacity of the shadow
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
     height: 91, 
     backgroundColor: '#F1F2FDFF', // white
     borderRadius: 16,
-    elevation: 3, // for the main shadow
+    elevation: 6, // for the main shadow
     shadowColor: '#000', // color of the shadow
     shadowOffset: { width: 0, height: 0 }, // same as the CSS code
     shadowOpacity: 0.3, // opacity of the shadow

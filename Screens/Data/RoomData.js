@@ -13,6 +13,7 @@ import {
 // import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import ModalDropdown from 'react-native-modal-dropdown';
 
 const applianceOptions = [
   "TV",
@@ -71,6 +72,10 @@ const RoomData = () => {
     navigation.navigate('DashBoard', { roomsData: rooms });
   };
 
+  const handleSkip = () => {
+    navigation.navigate('DashBoard');
+  };
+
   const toggleAccordion = (index) => {
     setOpenRoomIndices((currentIndices) => {
       if (currentIndices.includes(index)) {
@@ -102,16 +107,14 @@ const RoomData = () => {
   const renderAppliance = (appliance, roomIndex, applianceIndex) => {
     return (
       <View key={`appliance-${applianceIndex}`} style={styles.applianceItem}>
-        {/* <Picker
-          selectedValue={appliance.name}
+        <ModalDropdown
+          options={applianceOptions}
+          defaultValue="Select Appliance"
           style={styles.pickerStyle}
-          onValueChange={(itemValue) => setApplianceName(roomIndex, applianceIndex, itemValue)}
-          mode="dropdown"
-        >
-          {applianceOptions.map((applianceName, index) => (
-            <Picker.Item key={index} label={applianceName} value={applianceName} />
-          ))}
-        </Picker> */}
+          textStyle={{ color: 'black' }}
+          dropdownStyle={styles.dropdownStyle} // Add dropdownStyle prop
+          onSelect={(index, value) => setApplianceName(roomIndex, applianceIndex, value)}
+        />
         <TextInput
           style={styles.usageInput}
           onChangeText={(text) => setApplianceUsage(roomIndex, applianceIndex, text)}
@@ -166,15 +169,19 @@ const RoomData = () => {
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        {/* <Text style={styles.setupTitle}>Setup</Text> */}
         {renderRooms()}
         <TouchableOpacity style={styles.addRoomButton} onPress={addRoom}>
           <Text style={styles.addRoomButtonText}>Add More Rooms</Text>
         </TouchableOpacity>
       </ScrollView>
-      <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-        <Text style={styles.submitButtonText}>Submit</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
+          <Text style={styles.skipButtonText}>Skip</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+          <Text style={styles.submitButtonText}>Submit</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );  
 };
@@ -201,16 +208,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
-  },
-  backButton: {
-    // position: 'absolute', // Ensure it's absolutely positioned for proper placement
-    // left: 10,
-    // top: 10,
-  },
-  logoutButton: {
-    // position: 'absolute', // Ensure it's absolutely positioned for proper placement
-    // right: 10,
-    // top: 10,
   },
   header: {
     fontSize: 26,
@@ -300,18 +297,36 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
+  submitButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  dropdownStyle: {
+    backgroundColor: 'gray', // Set the background color to gray
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 35, // Adjust the paddingHorizontal value here
+    marginBottom: 30,
+  },
+  skipButton: {
+    backgroundColor: 'red',
+    borderRadius: 20,
+    padding: 12,
+    alignItems: 'center',
+    width: '45%',
+  },
+  skipButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
   submitButton: {
     backgroundColor: '#535CE8',
     borderRadius: 20,
     padding: 12,
     alignItems: 'center',
-    width: '70%',
-    alignSelf: 'center',
-    marginVertical: 20,
-  },
-  submitButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    width: '45%',
   },
 });
 
