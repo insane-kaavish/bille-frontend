@@ -115,6 +115,19 @@ const CreateAccount = ({ navigation }) => {
         />
       </View>
 
+      <View style={styles.inputContainer}>
+        {/* <Text style={styles.label}>Password</Text> */}
+        <TextInput
+          style={styles.input}
+          placeholder="K-Electric Account Number"
+          secureTextEntry
+          // value={password}
+          // onChangeText={(text) => setPassword(text)}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+        />
+      </View>
+
       {/* Password Field */}
       <View style={styles.inputContainer}>
         {/* <Text style={styles.label}>Password</Text> */}

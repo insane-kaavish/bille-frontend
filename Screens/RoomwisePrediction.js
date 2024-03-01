@@ -15,6 +15,13 @@ import { ProgressChart } from 'react-native-chart-kit';
 import MenuComponent from './Components/Menu';
 import NavBar from './Components/NavBar';
 
+const hexToRgb = (hex) => { // Convert hex color to RGB color
+  const hexColor = hex.replace('#', '');
+  const r = parseInt(hexColor.substring(0, 2), 16);
+  const g = parseInt(hexColor.substring(2, 4), 16);
+  const b = parseInt(hexColor.substring(4, 6), 16);
+  return { r, g, b };}
+
 const RoomwisePrediction = () => {
   const navigation = useNavigation();
 
@@ -38,6 +45,16 @@ const RoomwisePrediction = () => {
   // Create an array of colors corresponding to each room
   const roomColors = rooms.map(room => room.color);
 
+  const getChartColors = (rooms, roomColors) => {
+    return rooms.map((room, index) => {
+      const rgbColor = hexToRgb(roomColors[index]);
+      return `rgba(${rgbColor.r}, ${rgbColor.g}, ${rgbColor.b}, 1)`;
+    });
+  };
+  
+  // Inside the component:
+  const chartColors = getChartColors(rooms, roomColors);
+
   return (
     <MenuProvider skipInstanceCheck={true} style={styles.container}>
       <View style={styles.header}>
@@ -53,18 +70,18 @@ const RoomwisePrediction = () => {
         <View style={styles.card}>
           <View style={styles.progressContainer}>
           <ProgressChart
-            data={rooms.map(room => room.units / totalAllUnits)} // Data is relative to the total units
+            data={rooms.map(room => room.units / totalAllUnits)}
             width={Dimensions.get('window').width - 40}
             height={220}
             chartConfig={{
               backgroundGradientFrom: '#ffffff',
               backgroundGradientTo: '#ffffff',
               color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-              strokeWidth: 5, 
+              strokeWidth: 5,
             }}
             style={{ borderRadius: 16, padding: 10 }}
-            hideLegend={true} // Hide the legend
-            />
+            hideLegend={true}
+          />
           </View>
         </View>
         {rooms.map((room, index) => (

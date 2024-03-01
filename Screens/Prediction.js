@@ -1,4 +1,9 @@
 import React from 'react';
+import MenuComponent from './Components/Menu';
+import NavBar from './Components/NavBar';
+import { LineChart, ProgressChart } from 'react-native-chart-kit';
+// import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import { useNavigation } from '@react-navigation/native';
 import {
   StyleSheet,
   View,
@@ -8,13 +13,6 @@ import {
   Dimensions,
 } from 'react-native';
 
-import MenuComponent from './Components/Menu';
-import NavBar from './Components/NavBar';
-
-import { LineChart, ProgressChart } from 'react-native-chart-kit';
-
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
 import {
   MenuProvider,
   Menu,
@@ -24,7 +22,6 @@ import {
 } from 'react-native-popup-menu';
 
 const screenWidth = Dimensions.get('window').width;
-
 const units = 300;
 
 let perUnitCost;
@@ -68,7 +65,16 @@ const App = () => {
     }
   };
 
-  const labels = Object.keys(data1.Actual_units);
+  const labels = Object.keys(data1.Actual_units).map((label) => {
+    const month = label.split('-')[0];
+    const year = label.split('-')[1];
+    if (month === 'Dec' || month === 'Jan') {
+      return `${month}\n${year}`;
+    } else {
+      return `${month}`;
+    }
+  });
+
   const actualValues = Object.values(data1.Actual_units).map(
     (valueArray) => valueArray[0]
   );
@@ -117,24 +123,8 @@ const App = () => {
 
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.predictionCard}>
-          <View style={styles.progressChartContainer}>
-            <ProgressChart
-              data={[progress]}
-              width={screenWidth * 0.5}
-              height={screenWidth * 0.5}
-              strokeWidth={16}
-              radius={80}
-              chartConfig={{
-                backgroundGradientFrom: '#f9f9f9',
-                backgroundGradientTo: '#f9f9f9',
-                color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
-                strokeWidth: 2, // optional, default 3
-                barPercentage: 0.8, // Set barPercentage to 0.8 for 80% circle
-              }}
-              hideLegend={true}
-            />
-            <Text style={styles.progressText}>{units} Units</Text>
-          </View>
+          
+          <Text style={styles.progressText}>{units} Units</Text>
 
           <Text style={styles.consumptionUnit}>Predicted Units</Text>
           <Text style={styles.estimatedBill}>
