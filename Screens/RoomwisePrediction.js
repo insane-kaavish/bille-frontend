@@ -43,10 +43,11 @@ const RoomwisePrediction = () => {
   const totalUnitsText = `${totalAllUnits} units`;
 
 
-    const navigateToRoomDetails = (roomId) => {
+    const navigateToRoomDetails = () => {
       // const room = rooms.find(room => room.id === roomId);
       // console.log('Navigating to details of', room.name);
-      navigation.navigate('RoomDetail', { roomId: roomId }); // Correctly navigate to the RoomDetail screen
+      // navigation.navigate('RoomDetail', { roomId: roomId }); // Correctly navigate to the RoomDetail screen
+      navigation.navigate('RoomDetail');
     };
     // ...
   
@@ -103,7 +104,8 @@ const RoomwisePrediction = () => {
         <TouchableOpacity
           key={index}
           style={styles.roomCard}
-          onPress={() => navigateToRoomDetails(room.id)}
+          // onPress={() => navigateToRoomDetails(room.id)}
+          onPress={navigation.navigate('RoomDetail')}
         >
           <View style={[styles.iconContainer, { backgroundColor: room.color }]}>
             <Ionicons name={room.icon} size={24} color="#fff" />

@@ -54,7 +54,7 @@ const App = () => {
         /> */}
         <Stack.Screen
           name="SignIn"
-          component={RoomDetail}
+          component={RoomwisePrediction}
           options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -133,7 +133,7 @@ const App = () => {
           options={{headerShown: false }} // Assuming you don't want to show the header
         />
         <Stack.Screen
-          name="RoomwDetail"
+          name="RoomDetail"
           component={RoomDetail}
           options={{headerShown: false }} // Assuming you don't want to show the header
         />
