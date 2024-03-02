@@ -6,6 +6,27 @@ const API_URL = Config.API_URL;
 // Create a context with an empty object as the default value
 const AuthContext = createContext({});
 
+const handleSignUp = async (data) => {
+
+  // Make the API call
+  try {
+    const response = await fetch(`${API_URL}/signup/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.status != 200) return false;
+    return true;
+  }
+  catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
 const handleLogin = async (email, password) => {
   try {
     const response = await fetch(`${API_URL}/login/`, {
@@ -55,12 +76,18 @@ export const AuthProvider = ({ children }) => {
     return false;
   };
 
+  const signup = async (data) => {
+    if (await handleSignUp(data)) {
+      return await login(data.email, data.password);
+    }
+  };
+
   const logout = () => {
     setAuthToken(null); // Clear the token on logout
   };
 
   return (
-    <AuthContext.Provider value={{ authToken, login, logout }}>
+    <AuthContext.Provider value={{ authToken, login, logout, signup }}>
       {children}
     </AuthContext.Provider>
   );
