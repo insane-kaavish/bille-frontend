@@ -45,11 +45,6 @@ const App = () => {
     <AuthProvider>
       <NavigationContainer>
       <Stack.Navigator initialRouteName="SignIn">
-        {/* <Stack.Screen
-          name="Introduction"
-          component={IntroductionScreen}
-          options={{ headerShown: false }} // Assuming you don't want a header for the intro screen
-        /> */}
         <Stack.Screen
           name="SignIn"
           component={SignInScreen}
