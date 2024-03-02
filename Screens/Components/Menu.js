@@ -10,7 +10,15 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; // Import modern icons
 import FontAwesome from 'react-native-vector-icons/FontAwesome'; // Import modern icons
 
+import { useAuth } from '../AuthScreens/AuthProvider';
+
 const MenuComponent = ({ navigation }) => {
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigation.navigate('SignIn');
+  };
   
   return (
     <Menu>
@@ -37,9 +45,9 @@ const MenuComponent = ({ navigation }) => {
           </Text>
           <FontAwesome name="question-circle" size={25} color="black" style={styles.menuOptionIcon}/>
         </MenuOption>
-        <MenuOption onSelect={() => navigation.navigate('SignIn')}>
+        <MenuOption onSelect={handleLogout}>
           <Text style={styles.menuOptionText}>
-            Sign Out   
+            Logout   
           </Text>
           <MaterialCommunityIcons name="logout" size={25} color="black" style={styles.menuOptionIcon}/>
         </MenuOption>
