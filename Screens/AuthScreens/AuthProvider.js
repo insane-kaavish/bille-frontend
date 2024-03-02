@@ -7,8 +7,6 @@ const API_URL = Config.API_URL;
 const AuthContext = createContext({});
 
 const handleSignUp = async (data) => {
-
-  // Make the API call
   try {
     const response = await fetch(`${API_URL}/signup/`, {
       method: 'POST',
@@ -17,9 +15,7 @@ const handleSignUp = async (data) => {
       },
       body: JSON.stringify(data),
     });
-
-    if (response.status != 200) return false;
-    return true;
+    return await response.json();
   }
   catch (error) {
     console.error(error);
@@ -36,7 +32,7 @@ const handleLogin = async (email, password) => {
       },
       body: JSON.stringify({ email, password }),
     });
-    if (response.status !== 201) return false;
+    if (response.status !== 200) return false;
     return true;
   } catch (error) {
     console.error(error);
@@ -77,9 +73,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signup = async (data) => {
-    if (await handleSignUp(data)) {
-      return await login(data.email, data.password);
+    const response = await handleSignUp(data);
+    console.log(response)
+    if (response.status == 201) {
+      await login(data.email, data.password);
     }
+    return response;
   };
 
   const logout = () => {

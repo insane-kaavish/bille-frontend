@@ -23,6 +23,8 @@ const CreateAccount = ({ navigation }) => {
     setIsTyping(false); // Set isTyping to false when a text input is blurred
   };
 
+  const [error, setError] = useState('');
+
   const handleSubmit = async () => {
     setLoading(true); // Set isLoading to true when submitting
 
@@ -39,10 +41,13 @@ const CreateAccount = ({ navigation }) => {
 
     // Make the API call
     const response = await signup(data);
-    if (!response) {
+    if (response.status !== 201) {
+      console.log(response.error)
+      setError(response.error);
       setLoading(false); // Set isLoading to false after submission
       return;
     }
+    // If the sign-up is successful, navigate to the dashboard
     navigation.navigate('DashBoard');
     setLoading(false); // Set isLoading to false after submission
   };
@@ -121,6 +126,7 @@ const CreateAccount = ({ navigation }) => {
           onBlur={handleBlur}
         />
       </View>
+      {error !== '' && <Text style={styles.error}>{error}</Text>}
 
       {/* Sign Up Button */}
       <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={isLoading}>
