@@ -20,7 +20,9 @@ import Privacy from './Screens/ProfileScreens/Privacy';
 import RoomwisePrediction from './Screens/RoomwisePrediction';
 import { AuthProvider } from './Screens/AuthScreens/AuthProvider';
 
+
 import * as Font from 'expo-font';
+import RoomDetail from './Screens/RoomDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -52,7 +54,7 @@ const App = () => {
         /> */}
         <Stack.Screen
           name="SignIn"
-          component={SignInScreen}
+          component={RoomDetail}
           options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -128,6 +130,11 @@ const App = () => {
         <Stack.Screen
           name="RoomwisePrediction"
           component={RoomwisePrediction}
+          options={{headerShown: false }} // Assuming you don't want to show the header
+        />
+        <Stack.Screen
+          name="RoomwDetail"
+          component={RoomDetail}
           options={{headerShown: false }} // Assuming you don't want to show the header
         />
       </Stack.Navigator>

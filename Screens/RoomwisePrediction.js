@@ -20,14 +20,16 @@ import {
 
 import MenuComponent from './Components/Menu';
 import NavBar from './Components/NavBar';
+// import RoomDetail from './RoomDetail';
+// import { useNavigation } from '@react-navigation/native'; // Import the necessary dependency
 
 const RoomwisePrediction = () => {
   const navigation = useNavigation();
 
   const rooms = [
-    { name: 'Ali’s Bedroom', units: 56, color: '#517fa4' },
-    { name: 'Kitchen', units: 34, color: '#f44336' },
-    { name: 'Bashir Living Room', units: 15, color: '#ffeb3b' },
+    { id:1, name: 'Ali’s Bedroom', units: 56, color: '#517fa4' },
+    { id:2, name: 'Kitchen', units: 34, color: '#f44336' },
+    { id:3, name: 'Bashir Living Room', units: 15, color: '#ffeb3b' },
   ];
 
   // Calculate total units for all rooms
@@ -40,10 +42,14 @@ const RoomwisePrediction = () => {
   // Total units text
   const totalUnitsText = `${totalAllUnits} units`;
 
-  const navigateToRoomDetails = (roomName) => {
-    console.log('Navigating to details of', roomName);
-    // Implement your navigation logic
-  };
+
+    const navigateToRoomDetails = (roomId) => {
+      // const room = rooms.find(room => room.id === roomId);
+      // console.log('Navigating to details of', room.name);
+      navigation.navigate('RoomDetail', { roomId: roomId }); // Correctly navigate to the RoomDetail screen
+    };
+    // ...
+  
 
   return (
     <MenuProvider skipInstanceCheck={true} style={styles.container}>
@@ -97,7 +103,7 @@ const RoomwisePrediction = () => {
         <TouchableOpacity
           key={index}
           style={styles.roomCard}
-          onPress={() => navigateToRoomDetails(room.name)}
+          onPress={() => navigateToRoomDetails(room.id)}
         >
           <View style={[styles.iconContainer, { backgroundColor: room.color }]}>
             <Ionicons name={room.icon} size={24} color="#fff" />
