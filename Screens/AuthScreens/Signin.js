@@ -13,6 +13,7 @@ const SignInScreen = ({ navigation }) => {
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showError, setShowError] = useState(false); // State to control error message and red border
+  const [emailTouched, setEmailTouched] = useState(false); // Track if email field has been touched
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null); // Reference for password input
   const { authToken, login } = useAuth();
@@ -24,6 +25,7 @@ const SignInScreen = ({ navigation }) => {
       setShowError(false);
       setEmail('');
       setPassword('');
+      setEmailTouched(false); // Reset email touched state
     });
   
     return unsubscribe;
@@ -36,6 +38,39 @@ const SignInScreen = ({ navigation }) => {
       setPassword('');
     };
   }, []);
+
+  useEffect(() => {
+    // Validate email on each change if the email field has been touched
+    if (emailTouched) {
+      if (!validateEmail(email)) {
+        setError('Please enter a valid email address');
+        setShowError(true);
+      } else {
+        setError('');
+        setShowError(false);
+      }
+    }
+  }, [email, emailTouched]);
+
+  const handleEmailBlur = () => {
+    setEmailTouched(true);
+  };
+
+  const handlePasswordFocus = () => {
+    // Clear error when password field is focused
+    if (error) {
+      setError('');
+      setShowError(false);
+    }
+  };
+
+  const handleEmailFocus = () => {
+    // Clear error when email field is focused
+    if (error) {
+      setError('');
+      setShowError(false);
+    }
+  };
 
   const handleSubmit = async () => {
     if (email === '' || password === '') {
@@ -50,13 +85,10 @@ const SignInScreen = ({ navigation }) => {
     if (await login(email, password)) {
       console.log(authToken);
       setLoading(false);
-      navigation.navigate('RoomData'); // Have to fix: Navigate to Dashboard screen. to RoomData temporary
+      navigation.navigate('RoomData');
     } else {
       setLoading(false);
       setError('Email address or password is incorrect');
-      setEmail('');
-      setPassword('');
-      emailInputRef.current.focus();
       setShowError(true);
     }
   }  
@@ -72,6 +104,8 @@ const SignInScreen = ({ navigation }) => {
           value={email}
           onChangeText={setEmail}
           autoCapitalize='none'
+          onBlur={handleEmailBlur} // Track when email field loses focus
+          onFocus={handleEmailFocus} // Clear error when email field is focused
           ref={emailInputRef}
         />
       </View>
@@ -83,6 +117,7 @@ const SignInScreen = ({ navigation }) => {
           value={password}
           onChangeText={setPassword}
           autoCapitalize='none'
+          onFocus={handlePasswordFocus} // Clear error when password field is focused
           ref={passwordInputRef} // Assign reference to password input
         />
       </View>
@@ -123,12 +158,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderWidth: 1,
     borderRadius: 16,
-    borderColor: '#F3F4F6',
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: '700',
-    marginBottom: 5,
+    backgroundColor: '#F3F4F6',
   },
   input: {
     padding: 10,

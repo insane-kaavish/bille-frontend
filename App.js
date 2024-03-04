@@ -9,9 +9,7 @@ import RoomData from './Screens/Data/RoomData';
 import Home from './Screens/Home';
 import DashBoard from './Screens/DashBoard';
 import Profile from './Screens/ProfileScreens/Profile';
-// import ChangeUserName from './Screens/ProfileScreens/ChangeUserName';
 import ChangeEmail from './Screens/ProfileScreens/ChangeEmail';
-// import ChangePassword from './Screens/ProfileScreens/ChangePassword';
 import Settings from './Screens/ProfileScreens/Settings';
 import HelpCenter from './Screens/ProfileScreens/HelpCenter';
 import Prediction from './Screens/Prediction';
@@ -49,7 +47,7 @@ const App = () => {
       <Stack.Navigator initialRouteName="SignIn">
         <Stack.Screen
           name="SignIn"
-          component={RoomwisePrediction}
+          component={SignInScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen

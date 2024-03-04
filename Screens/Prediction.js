@@ -154,13 +154,13 @@ const App = () => {
     datasets: [
       {
         data: actualValues,
-        color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`,
+        color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`, // Adjust the blue color here
         strokeWidth: 2,
         label: "Actual Units",
       },
       {
         data: predictedValues,
-        color: (opacity = 1) => `rgba(244, 65, 134, ${opacity})`,
+        color: (opacity = 1) => `rgba(255, 0, 0, ${opacity})`, // Adjust the red color here
         strokeWidth: 2,
         label: "Predicted Units",
       },
@@ -272,7 +272,6 @@ const App = () => {
           </Text>
         </View>
       </ScrollView>
-
       <NavBar />
     </MenuProvider>
   );
