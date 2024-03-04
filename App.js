@@ -8,7 +8,7 @@ import CreateAccount from './Screens/AuthScreens/Signup';
 import RoomData from './Screens/Data/RoomData';
 import Home from './Screens/Home';
 import DashBoard from './Screens/DashBoard';
-import EditProfile from './Screens/ProfileScreens/EditProfile';
+import Profile from './Screens/ProfileScreens/Profile';
 import ChangeUserName from './Screens/ProfileScreens/ChangeUserName';
 import ChangeEmail from './Screens/ProfileScreens/ChangeEmail';
 import ChangePassword from './Screens/ProfileScreens/ChangePassword';
@@ -76,8 +76,8 @@ const App = () => {
           options={{headerShown: false }} // Assuming you don't want to show the header
         />
         <Stack.Screen
-          name="EditProfile"
-          component={EditProfile}
+          name="Profile"
+          component={Profile}
           options={{headerShown: false }} // Assuming you don't want to show the header
         />
         <Stack.Screen

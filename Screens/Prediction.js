@@ -19,7 +19,7 @@ import {
 } from 'react-native-popup-menu';
 
 const screenWidth = Dimensions.get('window').width;
-const units = 150;
+const units = 0;
 
 let perUnitCost;
 if (units >= 1 && units <= 100) {

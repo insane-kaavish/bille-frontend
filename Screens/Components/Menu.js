@@ -27,7 +27,7 @@ const MenuComponent = ({ navigation }) => {
       </MenuTrigger>
       <MenuOptions style={styles.menuOptionsStyle}>
     
-        <MenuOption onSelect={() => navigation.navigate('EditProfile')}>
+        <MenuOption onSelect={() => navigation.navigate('Profile')}>
           <Text style={styles.menuOptionText}>
             Profile         
           </Text>

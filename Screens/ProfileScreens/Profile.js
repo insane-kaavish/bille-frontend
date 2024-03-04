@@ -5,23 +5,16 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
-  Dimensions,
-  Image,
-  navigation
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
   MenuProvider,
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
 } from 'react-native-popup-menu';
 
 import MenuComponent from '../Components/Menu';
 import NavBar from '../Components/NavBar';
 
-const EditProfile = ({ navigation }) => {
+const Profile = ({ navigation }) => {
   const handlePasswordChange = () => {
     navigation.navigate('ChangePassword');
   };
@@ -64,18 +57,8 @@ const EditProfile = ({ navigation }) => {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.optionsContainer}>
-          <TouchableOpacity style={styles.optionButton} onPress={handleUsernameChange}>
-            <Text style={styles.optionText}>Change Username</Text>
-            <Ionicons name="chevron-forward-outline" size={20} color="#000" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.optionButton} onPress={handlePasswordChange}>
-            <Text style={styles.optionText}>Change Password</Text>
-            <Ionicons name="chevron-forward-outline" size={20} color="#000" />
-          </TouchableOpacity>
-
           <TouchableOpacity style={styles.optionButton} onPress={handleEmailChange}>
-            <Text style={styles.optionText}>Change Email</Text>
+            <Text style={styles.optionText}>Edit Profile</Text>
             <Ionicons name="chevron-forward-outline" size={20} color="#000" />
           </TouchableOpacity>
 
@@ -97,6 +80,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     padding: 10,
+    justifyContent: 'center', // Center content vertically
   },
   header: {
     flexDirection: 'row',
@@ -106,7 +90,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc', 
+    borderBottomColor: '#ccc',
   },
   scrollViewContent: {
     flexGrow: 1,
@@ -124,6 +108,9 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   optionsContainer: {
+    flex: 1,
+    justifyContent: 'center', // Center content vertically
+    alignItems: 'center', // Center content horizontally
     marginHorizontal: 20,
   },
   optionButton: {
@@ -134,6 +121,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
     borderRadius: 10,
     marginBottom: 16,
+    width: '100%', // Take up full width
   },
   optionText: {
     fontSize: 18,
