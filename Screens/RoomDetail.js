@@ -78,18 +78,17 @@ const RoomDetail = ({ route, navigation }) => {
           {appliances.map((appliance, index) => (
             <View key={index} style={styles.applianceRow}>
               <ModalDropdown
-  options={applianceOptions}
-  defaultValue={appliance.category || "Select Appliance"}
-  style={styles.pickerStyle}
-  textStyle={{ color: 'black' }}
-  dropdownStyle={styles.dropdownStyle}
-  onSelect={(selectedIndex, value) => setAppliances(prevState => {
-    const updatedAppliances = [...prevState];
-    updatedAppliances[index].category = value;
-    return updatedAppliances;
-  })}
-/>
-
+                options={applianceOptions}
+                defaultValue={appliance.category || "Select Appliance"}
+                style={styles.pickerStyle}
+                textStyle={{ color: 'black' }}
+                dropdownStyle={styles.dropdownStyle}
+                onSelect={(selectedIndex, value) => setAppliances(prevState => {
+                  const updatedAppliances = [...prevState];
+                  updatedAppliances[index].category = value;
+                  return updatedAppliances;
+                })}
+              />
               <TextInput
                 style={styles.usageInput}
                 onChangeText={text => setAppliances(prevState => {

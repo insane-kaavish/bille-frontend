@@ -87,7 +87,7 @@ const hexToRgb = (hex) => { // Convert hex color to RGB color
               onPress={() => navigateToRoomDetails(room.id)}
             >
               <View style={[styles.iconContainer, { backgroundColor: room.color }]}>
-                <Ionicons name={'ios-home'} size={24} color="#fff" />
+                <Ionicons name={'home'} size={24} color="#fff" />
               </View>
               <View style={styles.roomDetails}>
                 <Text style={styles.roomName}>{room.name}</Text>
