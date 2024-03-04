@@ -80,9 +80,9 @@ const Dashboard = ({ navigation }) => {
     const fetchPrediction = async () => {
       if (perUnitCost !== 0) return;
       const data = await predictRequest(authToken);
-      setUnits(data.units);
-      setTotalCost(data.total_cost);
-      setPerUnitCost(data.per_unit_cost);
+      setUnits(Math.round(data.units));
+      setTotalCost(Math.round(data.total_cost));
+      setPerUnitCost(Math.round(data.per_unit_cost));
       setLoading(false);
     };
     fetchPrediction();

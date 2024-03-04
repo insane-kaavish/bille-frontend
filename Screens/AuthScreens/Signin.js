@@ -85,7 +85,7 @@ const SignInScreen = ({ navigation }) => {
     if (await login(email, password)) {
       console.log(authToken);
       setLoading(false);
-      navigation.navigate('RoomData');
+      navigation.navigate('DashBoard'); // Have to fix: Navigate to Dashboard screen. to RoomData temporary
     } else {
       setLoading(false);
       setError('Email address or password is incorrect');
