@@ -19,7 +19,7 @@ import {
 } from 'react-native-popup-menu';
 
 const screenWidth = Dimensions.get('window').width;
-const units = 150;
+const units = 0;
 
 let perUnitCost;
 if (units >= 1 && units <= 100) {
@@ -218,7 +218,11 @@ const App = () => {
               style={{ marginVertical: 8, borderRadius: 16 }}
             />
           </ScrollView>
-          <Text style={styles.graphDescription}>Comparison between the actual and predicted units.</Text>
+          <Text style={styles.graphDescription}>
+            Comparison between the{' '}
+            <Text style={{ color: 'blue' }}>actual</Text> and{' '}
+            <Text style={{ color: 'red' }}>predicted</Text> units.
+          </Text>
         </View>
       </ScrollView>
 
