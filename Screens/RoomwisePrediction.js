@@ -14,8 +14,6 @@ import { ProgressChart } from 'react-native-chart-kit';
 
 import MenuComponent from './Components/Menu';
 import NavBar from './Components/NavBar';
-// import RoomDetail from './RoomDetail';
-// import { useNavigation } from '@react-navigation/native'; // Import the necessary dependency
 
 const hexToRgb = (hex) => { // Convert hex color to RGB color
   const hexColor = hex.replace('#', '');
@@ -34,8 +32,7 @@ const hexToRgb = (hex) => { // Convert hex color to RGB color
     ];
   
     const totalAllUnits = rooms.reduce((total, room) => total + room.units, 0);
-    const totalUnitsText = `${totalAllUnits} Units`;
-  
+
     const navigateToRoomDetails = (roomId) => {
       navigation.navigate('RoomDetail', { roomId: roomId });
     };
@@ -87,7 +84,7 @@ const hexToRgb = (hex) => { // Convert hex color to RGB color
               onPress={() => navigateToRoomDetails(room.id)}
             >
               <View style={[styles.iconContainer, { backgroundColor: room.color }]}>
-                <Ionicons name={'ios-home'} size={24} color="#fff" />
+                <Ionicons name={'home'} size={24} color="#fff" />
               </View>
               <View style={styles.roomDetails}>
                 <Text style={styles.roomName}>{room.name}</Text>

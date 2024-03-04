@@ -1,7 +1,7 @@
 // AddApplianceModal.js
 import React from 'react';
 import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+// import { Picker } from '@react-native-picker/picker';
 
 const AddApplianceModal = ({
   visible,
@@ -24,7 +24,7 @@ const AddApplianceModal = ({
       visible={visible}
       onRequestClose={onClose}
     >
-      <View style={styles.modalContainer}>
+      {/* <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <Text style={styles.modalHeader}>Add Appliance</Text>
           <Picker
@@ -64,7 +64,7 @@ const AddApplianceModal = ({
             </View>
           )}
         </View>
-      </View>
+      </View> */}
     </Modal>
   );
 };

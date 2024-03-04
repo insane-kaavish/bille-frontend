@@ -15,7 +15,7 @@ const handleSignUp = async (data) => {
       },
       body: JSON.stringify(data),
     });
-    return await response.json();
+    return response;
   }
   catch (error) {
     console.error(error);
@@ -74,8 +74,7 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (data) => {
     const response = await handleSignUp(data);
-    console.log(response)
-    if (response.status == 201) {
+    if (response.status === 201) {
       await login(data.email, data.password);
     }
     return response;
