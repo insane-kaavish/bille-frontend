@@ -11,6 +11,8 @@ const AddApplianceModal = ({
   setSelectedAppliance,
   selectedCategory,
   setSelectedCategory,
+  selectedSubcategory,
+  setSelectedSubcategory,
   usage,
   setUsage,
   addAppliance
@@ -29,32 +31,38 @@ const AddApplianceModal = ({
             selectedValue={selectedAppliance}
             onValueChange={(itemValue, itemIndex) => setSelectedAppliance(itemValue)}
           >
-            {appliances && appliances.map((appliance, index) => (
-              <Picker.Item key={index} label={appliance.name} value={appliance.name} />
+            <Picker.Item label="Select Appliance" value="" />
+            {appliances.map((appliance, index) => (
+              <Picker.Item key={index} label={appliance.category} value={appliance.category} />
             ))}
           </Picker>
           {selectedAppliance && (
-            <Picker
-              selectedValue={selectedCategory}
-              onValueChange={(itemValue, itemIndex) => setSelectedCategory(itemValue)}
-            >
-              {appliances.find(item => item.name === selectedAppliance)?.categories.map((category, index) => (
-                <Picker.Item key={index} label={category} value={category} />
-              ))}
-            </Picker>
+            <View>
+              <Picker
+                selectedValue={selectedCategory}
+                onValueChange={(itemValue, itemIndex) => setSelectedCategory(itemValue)}
+              >
+                <Picker.Item label="Select Category" value="" />
+                {appliances
+                  .find(item => item.category === selectedAppliance)
+                  .subcategories.map((category, index) => (
+                    <Picker.Item key={index} label={category} value={category} />
+                  ))}
+              </Picker>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter Usage"
+                onChangeText={text => setUsage(text)}
+                keyboardType="numeric"
+              />
+              <TouchableOpacity
+                style={styles.addButton}
+                onPress={addAppliance}
+              >
+                <Text style={styles.buttonText}>Add</Text>
+              </TouchableOpacity>
+            </View>
           )}
-          <TextInput
-            style={styles.input}
-            placeholder="Enter Usage"
-            onChangeText={text => setUsage(text)}
-            keyboardType="numeric"
-          />
-          <TouchableOpacity
-            style={styles.addButton}
-            onPress={addAppliance}
-          >
-            <Text style={styles.buttonText}>Add</Text>
-          </TouchableOpacity>
         </View>
       </View>
     </Modal>

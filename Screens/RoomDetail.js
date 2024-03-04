@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   MenuProvider,
   Menu,
@@ -20,7 +20,7 @@ import {
   Modal,
   TextInput
 } from 'react-native';
-import AddApplianceModal from './Data/ApplianceModal';
+import AddApplianceModal from './Data/ApplianceModal'; // Update import statement
 
 const RoomDetail = () => {
   const navigation = useNavigation();
@@ -33,16 +33,14 @@ const RoomDetail = () => {
       appliances: [
         {
           id: 5,
-          alias: "Living Room TV",
           category: "Television",
-          sub_category: "LED",
+          subcategories: ["LED", "LCD", "Plasma"],
           units: 1
         },
         {
           id: 2,
-          alias: "Living Room Micro",
           category: "Microwave Oven",
-          sub_category: "Solo",
+          subcategories: ["Solo", "Grill", "Convection"],
           units: 8
         }
       ],
@@ -65,33 +63,32 @@ const RoomDetail = () => {
 
     const newAppliance = {
       id: Math.random(),
-      alias: selectedAppliance,
-      category: selectedCategory,
-      sub_category: selectedSubcategory,
+      category: selectedAppliance,
+      sub_category: selectedCategory, // Here we're using sub_category as subcategory
       units: parseInt(usage),
     };
 
     setRoomDetail(prevRoomDetail => {
       const updatedRoomDetail = [...prevRoomDetail];
-      updatedRoomDetail[0].appliances.push(newAppliance); // Update the appliances array of the first room
+      updatedRoomDetail[0].appliances.push(newAppliance);
       return updatedRoomDetail;
     });
 
+    // Reset modal state
+    setSelectedAppliance('');
+    setSelectedCategory('');
+    setSelectedSubcategory('');
+    setUsage('');
+
     setShowAddApplianceModal(false);
   };
-
-  const appliances = [
-    { name: 'Television', categories: ['LED', 'LCD', 'Plasma'] },
-    { name: 'Microwave Oven', categories: ['Solo', 'Grill', 'Convection'] },
-    // Add more appliances as needed
-  ];
 
   return (
     <MenuProvider skipInstanceCheck={true} style={styles.container}>
       <View style={styles.header}>
         <View style={{ flex: 1 }}> 
           <Text style={{ fontFamily: 'Lato-Bold', fontSize: 20, color: '#171A1F', textAlign: 'left' }}>
-            <Text>Bill-E Ali's Room Detail</Text>
+            Bill-E Ali's Room Detail
           </Text>  
         </View>
         <MenuComponent navigation={navigation} />
@@ -112,7 +109,6 @@ const RoomDetail = () => {
         ))}
       </ScrollView>
 
-      {/* Add Appliance Button */}
       <TouchableOpacity
         style={styles.addApplianceButton}
         onPress={() => setShowAddApplianceModal(true)}
@@ -120,15 +116,16 @@ const RoomDetail = () => {
         <Text style={styles.addApplianceText}>+ Add Appliance</Text>
       </TouchableOpacity>
 
-      {/* Add Appliance Modal */}
       <AddApplianceModal
         visible={showAddApplianceModal}
         onClose={() => setShowAddApplianceModal(false)}
-        appliances={appliances}
+        appliances={roomDetail[0].appliances} // Pass appliances from the room detail
         selectedAppliance={selectedAppliance}
         setSelectedAppliance={setSelectedAppliance}
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
+        selectedSubcategory={selectedSubcategory}
+        setSelectedSubcategory={setSelectedSubcategory}
         usage={usage}
         setUsage={setUsage}
         addAppliance={addAppliance}
