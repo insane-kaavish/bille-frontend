@@ -24,7 +24,8 @@ import FontAwesomeicons from "react-native-vector-icons/FontAwesome";
 import WeatherComponent from "./Components/Weather";
 import Config from "react-native-config";
 
-const API_URL = Config.API_URL;
+// const API_URL = Config.API_URL;
+const API_URL = 'https://app.bille.live';
 
 const currentDate = new Date();
 const currentMonth = currentDate.getMonth(); // Adding 1 because getMonth() returns zero-based month
@@ -197,7 +198,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
     paddingHorizontal: 10,
-    paddingTop: 10,
+    paddingTop: '10%',
     backgroundColor: "#fff",
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
@@ -254,6 +255,9 @@ const styles = StyleSheet.create({
     fontFamily: "Lato-Bold",
     fontWeight: "700",
     lineHeight: 36,
+    alignContent: "center",
+    textAlign: "center",
+    transform: [{ translateX: -1.75 }],
   },
   HLcontainer: {
     left: "5%",
@@ -278,11 +282,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#F1F2FD",
     borderRadius: 16,
     padding: 10,
-    // elevation: 3, // for the main shadow
-    // shadowColor: '#000', // color of the shadow
-    // shadowOffset: { width: 0, height: 0 }, // same as the CSS code
-    // shadowOpacity: 0.3, // opacity of the shadow
-    // shadowRadius: 1, // blur radius of the shadow
   },
   cardTitle: {
     color: "#171A1F",
@@ -316,11 +315,6 @@ const styles = StyleSheet.create({
     marginLeft: "3%", // Aligning "Monthly Report" with "Highlights"
     marginTop: "5%", // Adjust the margin as needed
     justifyContent: "space-between",
-    // elevation: 3, // for the main shadow
-    // shadowColor: '#000', // color of the shadow
-    // shadowOffset: { width: 0, height: 0 }, // same as the CSS code
-    // shadowOpacity: 0.3, // opacity of the shadow
-    // shadowRadius: 1, // blur radius of the shadow
   },
   MRtext: {
     color: "#171A1F",
@@ -341,7 +335,7 @@ const styles = StyleSheet.create({
     shadowRadius: 1, // blur radius of the shadow
   },
   RRText: {
-    fontFamily: "Lato-Bold",
+    fontFamily: "Lato-Regular",
     fontSize: 20,
     fontWeight: "700",
     lineHeight: 30,
@@ -353,7 +347,7 @@ const styles = StyleSheet.create({
   RRicon: {
     // position: 'absolute',
     left: "5%", // Adjust the left position as needed
-    top: "-50%", // Adjust the top position as needed
+    top: "-60%", // Adjust the top position as needed
     // transform: [{ translateY: -40 }], // Centering the icon vertically
   },
   MUGcontainer: {
@@ -371,20 +365,20 @@ const styles = StyleSheet.create({
     shadowRadius: 1, // blur radius of the shadow
   },
   MUGText: {
-    top: 13,
-    left: 60,
-    width: 100,
-    height: "auto",
-    fontFamily: "Outfit-Regular", // Heading
+    fontFamily: "Lato-Regular",
     fontSize: 20,
     fontWeight: "700",
     lineHeight: 30,
-    color: "#323842", // neutral-700
+    color: "#323842",
     flexWrap: "wrap",
+    marginLeft: "40%", // Adjust the left margin to center the text
+    marginTop: 13, // Adjust the margin as needed
   },
   MUGicon: {
-    top: -43,
-    left: 6,
+    // position: 'absolute',
+    left: "5%", // Adjust the left position as needed
+    top: "-65%", // Adjust the top position as needed
+    // transform: [{ translateY: -40 }], // Centering the icon vertically
   },
 });
 
