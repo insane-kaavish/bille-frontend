@@ -49,7 +49,7 @@ const App = () => {
       <Stack.Navigator initialRouteName="SignIn">
         <Stack.Screen
           name="SignIn"
-          component={RoomwisePrediction}
+          component={SignInScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -120,7 +120,7 @@ const App = () => {
         <Stack.Screen
           name="RoomDetail"
           component={RoomDetail}
-          options={{headerShown: false }} // Assuming you don't want to show the header
+          // options={{headerShown: false }} // Assuming you don't want to show the header
         />
       </Stack.Navigator>
       </NavigationContainer>

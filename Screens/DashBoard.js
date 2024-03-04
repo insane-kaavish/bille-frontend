@@ -24,7 +24,8 @@ import FontAwesomeicons from "react-native-vector-icons/FontAwesome";
 import WeatherComponent from "./Components/Weather";
 import Config from "react-native-config";
 
-const API_URL = Config.API_URL;
+// const API_URL = Config.API_URL;
+const API_URL = 'https://app.bille.live';
 
 const currentDate = new Date();
 const currentMonth = currentDate.getMonth(); // Adding 1 because getMonth() returns zero-based month
@@ -197,7 +198,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
     paddingHorizontal: 10,
-    paddingTop: 10,
+    paddingTop: '10%',
     backgroundColor: "#fff",
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
