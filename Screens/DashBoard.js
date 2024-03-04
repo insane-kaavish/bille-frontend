@@ -98,9 +98,6 @@ const Dashboard = ({ navigation }) => {
   const navigateToRoomWise = () => {
     navigation.navigate("RoomwisePrediction");
   };
-  const navigateToProfile = () => {
-    navigation.navigate("Profile");
-  };
 
   return (
     <MenuProvider skipInstanceCheck={true} style={styles.container}>

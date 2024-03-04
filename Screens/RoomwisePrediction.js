@@ -46,8 +46,6 @@ const hexToRgb = (hex) => { // Convert hex color to RGB color
       });
     };
   
-    const chartColors = getChartColors(rooms, roomColors);
-  
     return (
       <MenuProvider skipInstanceCheck={true} style={styles.container}>
         <View style={styles.header}>
@@ -138,6 +136,7 @@ const hexToRgb = (hex) => { // Convert hex color to RGB color
       shadowOffset: { width: 0, height: 0 },
       shadowOpacity: 0.3,
       shadowRadius: 1,
+      width: '95%',
     },
     roomCard: {
       flexDirection: 'row',

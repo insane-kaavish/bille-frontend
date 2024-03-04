@@ -8,8 +8,8 @@ import NavBar from '../Components/NavBar';
 
 const Profile = ({ navigation }) => {
   const [editName, setEditName] = useState('Admin');
-  const [editPassword, setEditPassword] = useState('********');
-  const [editKENumber, setEditKENumber] = useState('040001633072');
+  // const [editPassword, setEditPassword] = useState('********');
+  // const [editKENumber, setEditKENumber] = useState('040001633072');
   const [editEmail, setEditEmail] = useState('admin@admin.com');
 
   const [isEditing, setIsEditing] = useState(null);
@@ -23,22 +23,12 @@ const Profile = ({ navigation }) => {
       case 'editName':
         setEditName(text);
         break;
-      case 'editPassword':
-        setEditPassword(text);
-        break;
-      case 'editKENumber':
-        setEditKENumber(text);
-        break;
       case 'editEmail':
         setEditEmail(text);
         break;
       default:
         break;
     }
-  };
-
-  const handleScreenPress = () => {
-    setIsEditing(null); // Reset editing state when clicking anywhere on the screen
   };
 
   return (
@@ -69,47 +59,6 @@ const Profile = ({ navigation }) => {
               color="#000"
               style={styles.icon}
               onPress={() => handlePress('editName')}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.card}
-            onPress={() => handlePress('editPassword')}
-          >
-            <TextInput
-              style={styles.input}
-              value={editPassword}
-              onChangeText={(text) => handleInputChange(text, 'editPassword')}
-              secureTextEntry
-              editable={isEditing === 'editPassword'}
-              selectTextOnFocus={false}
-            />
-            <Ionicons
-              name="create-outline"
-              size={20}
-              color="#000"
-              style={styles.icon}
-              onPress={() => handlePress('editPassword')}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.card}
-            onPress={() => handlePress('editKENumber')}
-          >
-            <TextInput
-              style={styles.input}
-              value={editKENumber}
-              onChangeText={(text) => handleInputChange(text, 'editKENumber')}
-              editable={isEditing === 'editKENumber'}
-              selectTextOnFocus={false}
-            />
-            <Ionicons
-              name="create-outline"
-              size={20}
-              color="#000"
-              style={styles.icon}
-              onPress={() => handlePress('editKENumber')}
             />
           </TouchableOpacity>
 

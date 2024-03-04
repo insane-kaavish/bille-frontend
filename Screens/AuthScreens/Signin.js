@@ -97,7 +97,7 @@ const SignInScreen = ({ navigation }) => {
     <View style={styles.container}>
       <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
       <Text style={styles.header}>Welcome back 👋</Text>
-      <View style={[styles.inputContainer, { borderColor: showError ? 'red' : '#F3F4F6' }]}>
+      <View style={[styles.inputContainer, { borderColor: showError ? 'red' : '#ccc' }]}>
         <TextInput
           style={styles.input}
           placeholder="Enter email"
@@ -109,7 +109,7 @@ const SignInScreen = ({ navigation }) => {
           ref={emailInputRef}
         />
       </View>
-      <View style={[styles.inputContainer, { borderColor: showError ? 'red' : '#F3F4F6' }]}>
+      <View style={[styles.inputContainer, { borderColor: showError ? 'red' : '#ccc' }]}>
         <TextInput
           style={styles.input}
           placeholder="Enter password"
@@ -159,9 +159,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 16,
     backgroundColor: '#F3F4F6',
+    borderColor: '#ccc',
   },
   input: {
     padding: 10,
+    borderColor: '#ccc',
   },
   button: {
     backgroundColor: '#535CE8',
