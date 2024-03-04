@@ -58,10 +58,28 @@ const RoomDetail = () => {
   const [usage, setUsage] = useState('');
 
   const addAppliance = () => {
-    // Logic to add appliance
+    if (!selectedAppliance || !selectedCategory || !usage) {
+      console.log('Please fill in all the fields');
+      return;
+    }
+
+    const newAppliance = {
+      id: Math.random(),
+      alias: selectedAppliance,
+      category: selectedCategory,
+      sub_category: selectedSubcategory,
+      units: parseInt(usage),
+    };
+
+    setRoomDetail(prevRoomDetail => {
+      const updatedRoomDetail = [...prevRoomDetail];
+      updatedRoomDetail[0].appliances.push(newAppliance); // Update the appliances array of the first room
+      return updatedRoomDetail;
+    });
+
+    setShowAddApplianceModal(false);
   };
 
-  // List of appliances
   const appliances = [
     { name: 'Television', categories: ['LED', 'LCD', 'Plasma'] },
     { name: 'Microwave Oven', categories: ['Solo', 'Grill', 'Convection'] },
@@ -119,7 +137,6 @@ const RoomDetail = () => {
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -139,8 +156,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
   },
   applianceCard: {
-    // flexDirection: 'row',
-    // alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FAFAFBFF',
     borderRadius: 16,
@@ -175,8 +190,17 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     marginLeft: 25,
   },
-  
-
+  addApplianceButton: {
+    backgroundColor: '#007BFF',
+    borderRadius: 5,
+    padding: 10,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  addApplianceText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
 });
 
 export default RoomDetail;
