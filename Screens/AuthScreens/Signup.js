@@ -48,13 +48,13 @@ const CreateAccount = ({ navigation }) => {
       return;
     }
     // If the sign-up is successful, navigate to the dashboard
-    navigation.navigate('DashBoard');
+    navigation.navigate('RoomData');
     setLoading(false); // Set isLoading to false after submission
   };
 
   return (
     <View style={styles.container}>
-      {!isTyping && <Text style={styles.header}>Bill-E</Text>}
+      {/* {!isTyping && <Text style={styles.header}>Bill-E</Text>} */}
       {!isTyping &&<Text style={styles.title}>Create Account</Text>}
 
       {/* Name Field */}

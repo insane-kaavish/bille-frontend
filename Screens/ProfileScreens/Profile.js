@@ -25,8 +25,8 @@ const Profile = ({ navigation }) => {
     navigation.navigate('ChangeUserName');
 };
 
-  const handleEmailChange = () => {
-    navigation.navigate('ChangeEmail');
+  const handleEditProfile = () => {
+    navigation.navigate('EditProfile');
   };
   
   // Bottom Navigation Bar Actions (replace these placeholders with your actual navigation logic)
@@ -40,7 +40,7 @@ const Profile = ({ navigation }) => {
     navigation.navigate('RoomwisePrediction');
   };
   const navigateToProfile = () => {
-    navigation.navigate('EditProfile');
+    navigation.navigate('Profile');
   };
 
   return (
@@ -57,7 +57,7 @@ const Profile = ({ navigation }) => {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.optionsContainer}>
-          <TouchableOpacity style={styles.optionButton} onPress={handleEmailChange}>
+          <TouchableOpacity style={styles.optionButton} onPress={handleEditProfile}>
             <Text style={styles.optionText}>Edit Profile</Text>
             <Ionicons name="chevron-forward-outline" size={20} color="#000" />
           </TouchableOpacity>
@@ -129,4 +129,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EditProfile;
+export default Profile;

@@ -50,7 +50,7 @@ const SignInScreen = ({ navigation }) => {
     if (await login(email, password)) {
       console.log(authToken);
       setLoading(false);
-      navigation.navigate('RoomData');
+      navigation.navigate('DashBoard');
     } else {
       setLoading(false);
       setError('Email address or password is incorrect');
