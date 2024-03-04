@@ -90,7 +90,7 @@ const RoomwisePrediction = () => {
       <View style={styles.header}>
         <View style={{ flex: 1 }}>
           <Text style={{ fontFamily: 'Lato-Bold', fontSize: 20, color: '#171A1F', textAlign: 'left' }}>
-            Bill-E Roomwise Prediction
+            Room Overview
           </Text>
         </View>
         <MenuComponent navigation={navigation} />

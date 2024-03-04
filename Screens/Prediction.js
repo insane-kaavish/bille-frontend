@@ -180,7 +180,7 @@ const App = () => {
               textAlign: "left",
             }}
           >
-            Bill-E Prediction Summary
+            Summary
           </Text>
         </View>
         <MenuComponent navigation={navigation} />
