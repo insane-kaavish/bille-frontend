@@ -36,20 +36,21 @@ const CreateAccount = ({ navigation }) => {
       last_name: '',
       email: email,
       password: password,
+      ke_num: keNumber,
       // confirmPassword: confirmPassword,
     };
 
     // Make the API call
     const response = await signup(data);
     if (response.status !== 201) {
-      console.log(response.error)
-      setError(response.error);
-      setLoading(false); // Set isLoading to false after submission
+      const responseBody = await response.json();
+      setError(responseBody.error);
+      setLoading(false);
       return;
     }
-    // If the sign-up is successful, navigate to the dashboard
+    console.log("successfully signed up");
     navigation.navigate('RoomData');
-    setLoading(false); // Set isLoading to false after submission
+    setLoading(false);
   };
 
   return (
