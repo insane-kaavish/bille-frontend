@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { MenuProvider } from 'react-native-popup-menu';
 
@@ -12,85 +12,131 @@ const Profile = ({ navigation }) => {
   const [editKENumber, setEditKENumber] = useState('040001633072');
   const [editEmail, setEditEmail] = useState('admin@admin.com');
 
-  const [isEditingName, setIsEditingName] = useState(false);
-  const [isEditingPassword, setIsEditingPassword] = useState(false);
-  const [isEditingKENumber, setIsEditingKENumber] = useState(false);
-  const [isEditingEmail, setIsEditingEmail] = useState(false);
+  const [isEditing, setIsEditing] = useState(null);
 
-  const startEditingName = () => {
-    setIsEditingName(true);
+  const handlePress = (fieldName) => {
+    setIsEditing(fieldName);
   };
 
-  const startEditingPassword = () => {
-    setIsEditingPassword(true);
+  const handleInputChange = (text, fieldName) => {
+    switch (fieldName) {
+      case 'editName':
+        setEditName(text);
+        break;
+      case 'editPassword':
+        setEditPassword(text);
+        break;
+      case 'editKENumber':
+        setEditKENumber(text);
+        break;
+      case 'editEmail':
+        setEditEmail(text);
+        break;
+      default:
+        break;
+    }
   };
 
-  const startEditingKENumber = () => {
-    setIsEditingKENumber(true);
-  };
-
-  const startEditingEmail = () => {
-    setIsEditingEmail(true);
+  const handleScreenPress = () => {
+    setIsEditing(null); // Reset editing state when clicking anywhere on the screen
   };
 
   return (
-    <MenuProvider skipInstanceCheck={true} style={styles.container}>
-      <View style={styles.header}>
-        <View style={{ flex: 1 }}> 
-          <Text style={styles.headerText}>Bill-E Profile</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <MenuProvider skipInstanceCheck={true} style={styles.container}>
+        <View style={styles.header}>
+          <View style={{ flex: 1 }}> 
+            <Text style={styles.headerText}>Bill-E Profile</Text>
+          </View>
+          <MenuComponent navigation={navigation} />
         </View>
-        <MenuComponent navigation={navigation} />
-      </View>
 
-      <View style={styles.content}>
-        <TouchableOpacity style={styles.card} onPress={startEditingName}>
-          <TextInput
-            style={styles.input}
-            value={editName}
-            onChangeText={setEditName}
-            editable={isEditingName}
-            selectTextOnFocus={false}
-          />
-          <Ionicons name="create-outline" size={20} color="#000" style={styles.icon} />
-        </TouchableOpacity>
+        <View style={styles.content}>
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => handlePress('editName')}
+          >
+            <TextInput
+              style={styles.input}
+              value={editName}
+              onChangeText={(text) => handleInputChange(text, 'editName')}
+              editable={isEditing === 'editName'}
+              selectTextOnFocus={false}
+            />
+            <Ionicons
+              name="create-outline"
+              size={20}
+              color="#000"
+              style={styles.icon}
+              onPress={() => handlePress('editName')}
+            />
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.card} onPress={startEditingPassword}>
-          <TextInput
-            style={styles.input}
-            value={editPassword}
-            onChangeText={setEditPassword}
-            secureTextEntry
-            editable={isEditingPassword}
-            selectTextOnFocus={false}
-          />
-          <Ionicons name="create-outline" size={20} color="#000" style={styles.icon} />
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => handlePress('editPassword')}
+          >
+            <TextInput
+              style={styles.input}
+              value={editPassword}
+              onChangeText={(text) => handleInputChange(text, 'editPassword')}
+              secureTextEntry
+              editable={isEditing === 'editPassword'}
+              selectTextOnFocus={false}
+            />
+            <Ionicons
+              name="create-outline"
+              size={20}
+              color="#000"
+              style={styles.icon}
+              onPress={() => handlePress('editPassword')}
+            />
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.card} onPress={startEditingKENumber}>
-          <TextInput
-            style={styles.input}
-            value={editKENumber}
-            onChangeText={setEditKENumber}
-            editable={isEditingKENumber}
-            selectTextOnFocus={false}
-          />
-          <Ionicons name="create-outline" size={20} color="#000" style={styles.icon} />
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => handlePress('editKENumber')}
+          >
+            <TextInput
+              style={styles.input}
+              value={editKENumber}
+              onChangeText={(text) => handleInputChange(text, 'editKENumber')}
+              editable={isEditing === 'editKENumber'}
+              selectTextOnFocus={false}
+            />
+            <Ionicons
+              name="create-outline"
+              size={20}
+              color="#000"
+              style={styles.icon}
+              onPress={() => handlePress('editKENumber')}
+            />
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.card} onPress={startEditingEmail}>
-          <TextInput
-            style={styles.input}
-            value={editEmail}
-            onChangeText={setEditEmail}
-            editable={isEditingEmail}
-            selectTextOnFocus={false}
-          />
-          <Ionicons name="create-outline" size={20} color="#000" style={styles.icon} />
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => handlePress('editEmail')}
+          >
+            <TextInput
+              style={styles.input}
+              value={editEmail}
+              onChangeText={(text) => handleInputChange(text, 'editEmail')}
+              editable={isEditing === 'editEmail'}
+              selectTextOnFocus={false}
+            />
+            <Ionicons
+              name="create-outline"
+              size={20}
+              color="#000"
+              style={styles.icon}
+              onPress={() => handlePress('editEmail')}
+            />
+          </TouchableOpacity>
+        </View>
 
-      <NavBar />
-    </MenuProvider>
+        <NavBar />
+      </MenuProvider>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -137,11 +183,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-  },
-  optionText: {
-    fontFamily: 'Lato-Bold',
-    fontSize: 18,
-    color: '#000',
   },
   input: {
     flex: 1,

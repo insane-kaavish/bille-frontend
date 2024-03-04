@@ -218,7 +218,11 @@ const App = () => {
               style={{ marginVertical: 8, borderRadius: 16 }}
             />
           </ScrollView>
-          <Text style={styles.graphDescription}>Comparison between the actual and predicted units.</Text>
+          <Text style={styles.graphDescription}>
+            Comparison between the{' '}
+            <Text style={{ color: 'blue' }}>actual</Text> and{' '}
+            <Text style={{ color: 'red' }}>predicted</Text> units.
+          </Text>
         </View>
       </ScrollView>
 
