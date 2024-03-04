@@ -6,6 +6,23 @@ const API_URL = 'https://app.bille.live';
 // Create a context with an empty object as the default value
 const AuthContext = createContext({});
 
+const handleSignUp = async (data) => {
+  try {
+    const response = await fetch(`${API_URL}/signup/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    return await response.json();
+  }
+  catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
 const handleLogin = async (email, password) => {
   try {
     const response = await fetch(`${API_URL}/login/`, {
@@ -15,7 +32,7 @@ const handleLogin = async (email, password) => {
       },
       body: JSON.stringify({ email, password }),
     });
-    if (response.status !== 201) return false;
+    if (response.status !== 200) return false;
     return true;
   } catch (error) {
     console.error(error);
@@ -55,12 +72,21 @@ export const AuthProvider = ({ children }) => {
     return false;
   };
 
+  const signup = async (data) => {
+    const response = await handleSignUp(data);
+    console.log(response)
+    if (response.status == 201) {
+      await login(data.email, data.password);
+    }
+    return response;
+  };
+
   const logout = () => {
     setAuthToken(null); // Clear the token on logout
   };
 
   return (
-    <AuthContext.Provider value={{ authToken, login, logout }}>
+    <AuthContext.Provider value={{ authToken, login, logout, signup }}>
       {children}
     </AuthContext.Provider>
   );

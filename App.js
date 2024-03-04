@@ -4,14 +4,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import SignInScreen from './Screens/AuthScreens/Signin'; 
 import CreateAccount from './Screens/AuthScreens/Signup';
-import DataInput from './Screens/Data/DataInput';
+// import DataInput from './Screens/Data/DataInput';
 import RoomData from './Screens/Data/RoomData';
 import Home from './Screens/Home';
 import DashBoard from './Screens/DashBoard';
-import EditProfile from './Screens/ProfileScreens/EditProfile';
-import ChangeUserName from './Screens/ProfileScreens/ChangeUserName';
+import Profile from './Screens/ProfileScreens/Profile';
+// import ChangeUserName from './Screens/ProfileScreens/ChangeUserName';
 import ChangeEmail from './Screens/ProfileScreens/ChangeEmail';
-import ChangePassword from './Screens/ProfileScreens/ChangePassword';
+// import ChangePassword from './Screens/ProfileScreens/ChangePassword';
 import Settings from './Screens/ProfileScreens/Settings';
 import HelpCenter from './Screens/ProfileScreens/HelpCenter';
 import Prediction from './Screens/Prediction';
@@ -47,11 +47,6 @@ const App = () => {
     <AuthProvider>
       <NavigationContainer>
       <Stack.Navigator initialRouteName="SignIn">
-        {/* <Stack.Screen
-          name="Introduction"
-          component={IntroductionScreen}
-          options={{ headerShown: false }} // Assuming you don't want a header for the intro screen
-        /> */}
         <Stack.Screen
           name="SignIn"
           component={RoomwisePrediction}
@@ -62,11 +57,11 @@ const App = () => {
           component={CreateAccount}
           options={{ headerShown: false }} // Assuming you don't want to show the header
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="DataInput"
           component={DataInput}
           options={{ headerShown: false }} // Assuming you don't want to show the header
-        />
+        /> */}
         <Stack.Screen
           name="RoomData"
           component={RoomData}
@@ -83,23 +78,13 @@ const App = () => {
           options={{headerShown: false }} // Assuming you don't want to show the header
         />
         <Stack.Screen
-          name="EditProfile"
-          component={EditProfile}
-          options={{headerShown: false }} // Assuming you don't want to show the header
-        />
-        <Stack.Screen
-          name="ChangeUserName"
-          component={ChangeUserName}
+          name="Profile"
+          component={Profile}
           options={{headerShown: false }} // Assuming you don't want to show the header
         />
         <Stack.Screen
           name="ChangeEmail"
           component={ChangeEmail}
-          options={{headerShown: false }} // Assuming you don't want to show the header
-        />
-        <Stack.Screen
-          name="ChangePassword"
-          component={ChangePassword}
           options={{headerShown: false }} // Assuming you don't want to show the header
         />
         <Stack.Screen

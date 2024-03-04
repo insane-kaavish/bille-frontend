@@ -1,5 +1,5 @@
 import React from 'react';
-import { navigation, View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import {
   MenuProvider,
   Menu,
@@ -7,41 +7,49 @@ import {
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesomeicons from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; // Import modern icons
+import FontAwesome from 'react-native-vector-icons/FontAwesome'; // Import modern icons
+
+import { useAuth } from '../AuthScreens/AuthProvider';
 
 const MenuComponent = ({ navigation }) => {
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigation.navigate('SignIn');
+  };
   
   return (
     <Menu>
       <MenuTrigger>
-        <Ionicons name="menu" size={30} color="black" style={styles.menuIcon} />
+        <MaterialCommunityIcons name="menu" size={30} color="black" style={styles.menuIcon} />
       </MenuTrigger>
       <MenuOptions style={styles.menuOptionsStyle}>
     
-        <MenuOption onSelect={() => navigation.navigate('EditProfile')}>
+        <MenuOption onSelect={() => navigation.navigate('Profile')}>
           <Text style={styles.menuOptionText}>
             Profile         
           </Text>
-          <FontAwesomeicons name="user" size={25} color="black" style={styles.menuOptionIcon}/>
+          <FontAwesome name="user" size={25} color="black" style={styles.menuOptionIcon}/>
         </MenuOption>
         <MenuOption onSelect={() => navigation.navigate('Settings')}>
           <Text style={styles.menuOptionText}>
             Settings
           </Text>
-          <FontAwesomeicons name="gears" size={25} color="black" style={styles.menuOptionIcon}/>
+          <FontAwesome name="gear" size={25} color="black" style={styles.menuOptionIcon}/>
         </MenuOption>
         <MenuOption onSelect={() => navigation.navigate('HelpCenter')}>
           <Text style={styles.menuOptionText}>
             Help Center
           </Text>
-          <Ionicons name="help-circle" size={25} color="black" style={styles.menuOptionIcon}/>
+          <FontAwesome name="question-circle" size={25} color="black" style={styles.menuOptionIcon}/>
         </MenuOption>
-        <MenuOption onSelect={() => navigation.navigate('SignIn')}>
+        <MenuOption onSelect={handleLogout}>
           <Text style={styles.menuOptionText}>
-            Sign Out   
+            Logout   
           </Text>
-          <Ionicons name="log-out-outline" size={25} color="black" style={styles.menuOptionIcon}/>
+          <MaterialCommunityIcons name="logout" size={25} color="black" style={styles.menuOptionIcon}/>
         </MenuOption>
       </MenuOptions>
     </Menu>

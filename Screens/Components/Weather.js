@@ -53,8 +53,17 @@ const WeatherComponent = () => {
       return 'tint';
     } else if (weather.weather[0].main === 'Clear') {
       return 'sun-o';
-    } else {
-      return 'question';
+    } else if (weather.weather[0].main === 'Snow') {
+      return 'snowflake-o';
+    } else if (weather.weather[0].main === 'Thunderstorm') {
+      return 'bolt';
+    } else if (weather.weather[0].main === 'Drizzle') {
+      return 'tint';
+    } else if (weather.weather[0].main === 'Mist') {
+      return 'smog';
+    }
+    else {
+      return '';
     }
   };
 
@@ -77,7 +86,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Lato-Bold',
     fontWeight: '700',
     lineHeight: 28, 
-    wordWrap: 'break-word',
+    // wordWrap: 'break-word',
     paddingLeft: 5,
   },
   description: {

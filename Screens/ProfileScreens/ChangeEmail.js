@@ -19,7 +19,7 @@ const ChangeEmail = ({ navigation }) => {
   const handleChangeEmail = () => {
     setCurrentEmail(newEmail);
     setNewEmail('');
-    navigation.navigate('EditProfile');
+    navigation.navigate('Profile');
   };
 
   return (

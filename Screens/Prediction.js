@@ -1,4 +1,9 @@
-import React  from 'react';
+import React, { useEffect, useState } from "react";
+import MenuComponent from "./Components/Menu";
+import NavBar from "./Components/NavBar";
+import { LineChart } from "react-native-chart-kit";
+import { AnimatedCircularProgress } from "react-native-circular-progress";
+import { useNavigation } from "@react-navigation/native";
 import {
   StyleSheet,
   View,
@@ -6,141 +11,265 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
-} from 'react-native';
+  TouchableWithoutFeedback,
+} from "react-native";
+import { useAuth } from "./AuthScreens/AuthProvider";
+import Config from "react-native-config";
 
-import MenuComponent from './Components/Menu';
-import NavBar from './Components/NavBar';
+import { MenuProvider } from "react-native-popup-menu";
 
-import { BarChart,LineChart } from 'react-native-chart-kit';
+const API_URL = Config.API_URL;
+const screenWidth = Dimensions.get("window").width;
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
-import {
-  MenuProvider,
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-} from 'react-native-popup-menu';
-// import Svg, { Circle, Rect } from 'react-native-svg';
+const currentDate = new Date();
+const currentMonth = currentDate.getMonth(); // Adding 1 because getMonth() returns zero-based month
+// Convert month to string such as Jan, Feb, etc.
+const monthNames = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
-const screenWidth = Dimensions.get('window').width;
+const currentMonthName = monthNames[currentMonth];
 
-const units = 300;
+const currentYear = currentDate.getFullYear();
 
-let perUnitCost;
-if (units >= 1 && units <= 100) {
-  perUnitCost = 5.79;
-} else if (units >= 101 && units <= 200) {
-  perUnitCost = 8.11;
-} else if (units >= 201 && units <= 300) {
-  perUnitCost = 10.20;
-} else if (units >= 301 && units <= 700) {
-  perUnitCost = 17.60;
-} else {
-  perUnitCost = 20.70;
-}
+const predictRequest = async (token) => {
+  try {
+    const response = await fetch(`${API_URL}/predict/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Token ${token}` : "",
+      },
+      body: JSON.stringify({ month: currentMonthName, year: currentYear }),
+    });
+    if (!response.ok) {
+      throw new Error("Failed to fetch bill data");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
 
-const totalCost = units * perUnitCost;
+const monthlyRequest = async (token, is_predicted = "False") => {
+  try {
+    const response = await fetch(`${API_URL}/months/?is_predicted=${is_predicted}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Token ${token}` : "",
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Failed to fetch monthly data");
+    }
+    const data = await response.json();
+    return data.monthwise_units;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
+const getLabels = () => {
+  const labels = [];
+  // Start from 11 months ago to include the correct range
+  for (let i = 11; i >= 0; i--) {
+    const year = (currentMonth - i < 0) ? currentYear - 1 : currentYear;
+    const monthIndex = (currentMonth - i + 12) % 12;
+    const month = monthNames[monthIndex];
+    const label = i === 11 || month === "Jan" ? `${month}-${year.toString().slice(-2)}` : month;
+    labels.push(label);
+  }
+  return labels;
+};
+
+const getLast12Months = () => {
+  const last12Months = [];
+  for (let i = 11; i >= 0; i--) {
+    const month = (currentMonth - i + 12) % 12;
+    const year = (currentMonth - i < 0) ? currentYear - 1 : currentYear;
+    last12Months.push(`${monthNames[month]}-${year}`);
+  }
+  return last12Months;
+};
+
+const fillMissingMonths = (data, last12Months) => {
+  return last12Months.map(month => data[month] ? data[month][0] : 0);
+};
 
 const App = () => {
   const navigation = useNavigation();
+  const [hoveredSlab, setHoveredSlab] = useState(null);
+  const { authToken } = useAuth();
+  const [labels, setLabels] = useState(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
+  const [units, setUnits] = useState(0);
+  const [totalCost, setTotalCost] = useState(0);
+  const [fillPercentage, setFillPercentage] = useState(0);
+  const [actualValues, setActualValues] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  const [predictedValues, setPredictedValues] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  
+  const last12Months = getLast12Months();
 
-  const chartConfig = {
-    backgroundGradientFrom: '#FFF',
-    backgroundGradientTo: '#FFF',
-    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-    strokeWidth: 0,
-    barPercentage: 0.3,
-  };
-  const data1={
-    "monthwise_units": {
-        "January-2019": [
-            199
-        ],
-        "May-2021": [
-            1000
-        ],
-        "March-2022": [
-            750
-        ],
-        "July-2023": [
-            400
-        ],
-        "August-2023": [
-            500
-        ],
-        "April-2024": [
-            100
-        ],
-        "September-2024": [
-            299
-        ]
-    }
+  // Function to handle hover event
+  const handleHover = (slab) => {
+    setHoveredSlab(slab);
   };
 
-  const labels = Object.keys(data1.monthwise_units);
-  const values = Object.values(data1.monthwise_units).map((valueArray)=>valueArray[0]);
+  // Function to handle mouse leave event
+  const handleMouseLeave = () => {
+    setHoveredSlab(null);
+  };
 
-  const data ={
-    
-    labels :labels,
-    datasets:[
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await predictRequest(authToken);
+      setUnits(data.units);
+      setTotalCost(Number(data.total_cost));
+      setHoveredSlab(data.per_unit_cost);
+      setActualValues(fillMissingMonths(await monthlyRequest(authToken), last12Months));
+      setPredictedValues(fillMissingMonths(await monthlyRequest(authToken, "True"), last12Months));
+      setLabels(getLabels());
+      setFillPercentage((data.units % 100));
+      console.log("actual values: ", actualValues);
+      console.log("predicted values: ", predictedValues);
+    };
+    fetchData();
+  }, [authToken]);
+
+  const data = {
+    labels: labels,
+    datasets: [
       {
-        label:'previos months consumption',
-        data:values,
+        data: actualValues,
         color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`,
-        strokeWidth:2
-      }
-    ]
+        strokeWidth: 2,
+        label: "Actual Units",
+      },
+      {
+        data: predictedValues,
+        color: (opacity = 1) => `rgba(244, 65, 134, ${opacity})`,
+        strokeWidth: 2,
+        label: "Predicted Units",
+      },
+    ],
   };
 
   return (
     <MenuProvider skipInstanceCheck={true} style={styles.container}>
       <View style={styles.header}>
-      <View style={{ flex: 1 }}> 
-        <Text style={{ fontFamily: 'Lato-Bold', fontSize: 20, color: '#171A1F', textAlign: 'left' }}>
-          <Text>Bill-E Prediction Summary</Text>
-        </Text>  
-      </View>
+        <View style={{ flex: 1 }}>
+          <Text
+            style={{
+              fontFamily: "Lato-Bold",
+              fontSize: 20,
+              color: "#171A1F",
+              textAlign: "left",
+            }}
+          >
+            Bill-E Prediction Summary
+          </Text>
+        </View>
         <MenuComponent navigation={navigation} />
       </View>
 
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.predictionCard}>
-          <Text style={styles.title}>Predicted Consumption</Text>
-          <View style={styles.consumptionCircle}>
-            <Text style={styles.consumptionValue}>{units}</Text>
-            <Text style={styles.consumptionUnit}>Predicted Units</Text>
+          <TouchableWithoutFeedback
+            onPress={() => navigation.navigate("RoomwisePrediction")}
+          >
+            <AnimatedCircularProgress
+              size={180}
+              width={15}
+              fill={fillPercentage}
+              tintColor="#4682B4"
+              onAnimationComplete={() => console.log("onAnimationComplete")}
+              backgroundColor="#F2F2F2"
+              rotation={0}
+              onMouseEnter={() => handleHover(slab)}
+              onMouseLeave={handleMouseLeave}
+            >
+              {(fill) => (
+                <View style={styles.progressTextContainer}>
+                  <Text style={styles.consumptionValue}>{units}</Text>
+                  <Text style={styles.consumptionUnit}>Predicted units</Text>
+                </View>
+              )}
+            </AnimatedCircularProgress>
+          </TouchableWithoutFeedback>
+
+          {/* Render slab rates if hovered */}
+          {hoveredSlab && (
+            <View style={styles.slabRatesContainer}>
+              <Text style={styles.slabRateText}>
+                Slab Rate: {hoveredSlab.rate}
+              </Text>
+            </View>
+          )}
+
+          <View style={styles.unitDetails}>
+            <Text style={styles.estimatedBill}>
+              Estimated Bill:{" "}
+              <Text style={{ color: "orange" }}>
+                {" "}
+                Pkr. {totalCost.toFixed(2)}
+              </Text>
+            </Text>
           </View>
-          <Text style={styles.estimatedBill}>
-            Your estimated bill for this month will be Pkr. {totalCost.toFixed(2)}
-          </Text>
+
           <TouchableOpacity
             style={styles.detailsButton}
-            onPress={() => navigation.navigate('RoomwisePrediction')}
+            onPress={() => navigation.navigate("RoomwisePrediction")}
           >
             <Text style={styles.detailsButtonText}>View Room Details</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.graphCard}>
-        <LineChart
-          data={data}
-          width={screenWidth-32}
-          height={500}
-          yAxisLabel=""
-          verticalLabelRotation={90}
-          chartConfig={{
-            backgroundGradientFrom: '#FFF',
-            backgroundGradientTo: '#FFF',
-            color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-            strokeWidth: 0,
-            barPercentage: 0.3,
-            propsForLabels:{fontsize:2}
-          }}
-          bezier
-          style={{ marginVertical: 8, borderRadius: 16 }}/>
+          <ScrollView horizontal>
+            <LineChart
+              data={data}
+              width={screenWidth * 1.5}
+              height={300}
+              yAxisLabel=""
+              yAxisSuffix=""
+              verticalLabelRotation={0}
+              fromZero={true}
+              segments={4}
+              chartConfig={{
+                backgroundGradientFrom: "#FFF",
+                backgroundGradientTo: "#FFF",
+                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                strokeWidth: 5,
+                barPercentage: 0.3,
+                propsForLabels: { fontsize: 2 },
+                withInnerLines: false, // Remove grid lines
+                decimalPlaces: 0,
+                formatYLabel: (yLabel) => yLabel.toFixed(0),
+                yAxisInterval: 250,
+                decimalPlaces: 0,
+              }}
+              bezier
+              style={{ marginVertical: 8, borderRadius: 16 }}
+            />
+          </ScrollView>
+          <Text style={styles.graphDescription}>
+            Comparison between the{' '}
+            <Text style={{ color: 'blue' }}>actual</Text> and{' '}
+            <Text style={{ color: 'red' }}>predicted</Text> units.
+          </Text>
         </View>
       </ScrollView>
 
@@ -152,103 +281,124 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 10,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
     paddingHorizontal: 10,
     paddingTop: 10,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  menuIcon: {
-    marginTop: 5,
-    marginRight: 10, 
-  },
-  menuOptionsStyle: {
-    marginTop: 0,
-    marginVertical: 2,
-    zIndex: 1,
-  },
-  menuOptionText: {
-    fontSize: 16,
-    padding: 10,
-    fontFamily: 'Lato-Bold',
+    borderBottomColor: "#ccc",
   },
   scrollContainer: {
     flex: 1,
   },
   predictionCard: {
-    backgroundColor: '#f9f9f9',
+    backgroundColor: "#f9f9f9",
     borderRadius: 8,
     padding: 16,
     margin: 16,
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 22,
-    marginBottom: 10,
-    fontFamily: 'Lato-Bold',
-  },
-  consumptionCircle: {
-    width: 160,
-    height: 160,
-    borderRadius: 80,
-    borderColor: '#00BCD4',
-    borderWidth: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 10,
+    alignItems: "center",
+    elevation: 6, // for the main shadow
+    shadowColor: "#000", // color of the shadow
+    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
+    shadowOpacity: 0.3, // opacity of the shadow
+    shadowRadius: 1, // blur radius of the shadow
   },
   consumptionValue: {
     fontSize: 48,
-    // fontWeight: 'bold',
-    color: '#000',
-    fontFamily: 'Lato-Bold',
+    color: "#000",
+    fontFamily: "Lato-Bold",
+    textAlign: "center",
   },
   consumptionUnit: {
     fontSize: 18,
-    color: '#666',
+    color: "#666",
+    fontFamily: "Lato-Bold",
+    textAlign: "center",
   },
   estimatedBill: {
-    fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
-    marginBottom: 20,
+    fontSize: 20,
+    color: "#666",
+    textAlign: "center",
+    // marginBottom: 20,
+    fontFamily: "Lato-Bold",
   },
   detailsButton: {
-    backgroundColor: '#535CE8',
+    backgroundColor: "#535CE8",
     borderRadius: 20,
     padding: 12,
-    alignItems: 'center',
-    width: '70%',
-    alignSelf: 'center',
+    alignItems: "center",
+    width: "70%",
+    alignSelf: "center",
     marginVertical: 20,
   },
   detailsButtonText: {
-    color: 'white',
-    // fontWeight: 'bold',
-    fontFamily: 'Lato-Bold',
+    color: "white",
+    fontFamily: "Lato-Bold",
+  },
+  progressTextContainer: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: [{ translateX: -60 }, { translateY: -40 }], // Adjust these values based on the size of your progress circle
+    alignItems: "center",
+  },
+  progressText: {
+    fontSize: 48, // Adjust the font size as needed
+    fontFamily: "Lato-Bold",
+    textAlign: "center", // Center the text horizontally
+    textShadowColor: "rgba(0, 0, 0, 0.5)", // Shadow color
+    textShadowOffset: { width: 1, height: 1 }, // Shadow offset
+    textShadowRadius: 2, // Shadow radius
   },
   graphCard: {
-    backgroundColor: '#f9f9f9',
+    backgroundColor: "#f9f9f9",
     borderRadius: 1,
     paddingVertical: 16,
-    paddingHorizontal: 16, // Adjust padding as needed
+    paddingHorizontal: 16,
     marginHorizontal: 16,
     marginTop: 10,
     marginBottom: 70,
-    overflow: 'hidden', // Ensures that the graph does not overflow the card
+    elevation: 6, // for the main shadow
+    shadowColor: "#000", // color of the shadow
+    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
+    shadowOpacity: 0.3, // opacity of the shadow
+    shadowRadius: 1, // blur radius of the shadow
   },
-  graphStyle: {
-    // position:'absolute'
-    marginVertical: 1,
-    marginRight:10,
-    borderRadius:1,
+  graphDescription: {
+    fontSize: 14,
+    color: "#666",
+    textAlign: "center",
+    marginTop: 10,
+    fontFamily: "Lato-Bold",
+  },
+  slabRatesContainer: {
+    position: "absolute",
+    bottom: -40,
+    width: "100%",
+    alignItems: "center",
+  },
+  slabRateText: {
+    fontFamily: "Lato-Bold",
+    fontSize: 16,
+    color: "#666",
+  },
+  unitDetails: {
+    backgroundColor: "#f9f9f9",
+    borderRadius: 8,
+    padding: 16,
+    margin: 16,
+    alignItems: "center",
+    elevation: 6, // for the main shadow
+    shadowColor: "#000", // color of the shadow
+    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
+    shadowOpacity: 0.6, // opacity of the shadow
+    shadowRadius: 1, // blur radius of the shadow
   },
 });
 

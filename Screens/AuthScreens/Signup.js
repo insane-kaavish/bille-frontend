@@ -2,62 +2,28 @@ import React, { useState } from 'react';
 
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import Config from 'react-native-config';
-
-const API_URL = Config.API_URL;
-
-const handleAuth = async (email, password) => {
-  try {
-    console.log(`${API_URL}/api-token-auth/`)
-    const response = await fetch(`${API_URL}/api-token-auth/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username: email, password }),
-    });
-    const data = await response.json();
-    return data.token;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const handleSignUp = async (data) => {
-
-  // Make the API call
-  try {
-    const response = await fetch(`${API_URL}/signup/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (response.status != 200) return false;
-    return true;
-  }
-  catch (error) {
-    console.error(error);
-  }
-};
+import { useAuth } from './AuthProvider';
 
 const CreateAccount = ({ navigation }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [keNumber, setKeNumber] = useState(''); // Add keNumber state
   const [token, setToken] = useState([]);
   const [isLoading, setLoading] = useState(false); // Add isLoading state
   const [isTyping, setIsTyping] = useState(false);
+  const { signup } = useAuth();
 
   const handleFocus = () => {
     setIsTyping(true); // Set isTyping to true when a text input is focused
   };
 
-  const handleBlur = () => {
-    setIsTyping(false); // Set isTyping to false when a text input is blurred
-  };
+  // const handleBlur = () => {
+  //   setIsTyping(false); // Set isTyping to false when a text input is blurred
+  // };
+
+  const [error, setError] = useState('');
 
   const handleSubmit = async () => {
     setLoading(true); // Set isLoading to true when submitting
@@ -72,20 +38,23 @@ const CreateAccount = ({ navigation }) => {
       password: password,
       // confirmPassword: confirmPassword,
     };
-    if (await handleSignUp(data)) {
-      setToken(await handleAuth(email, password));
-      setLoading(false);
-      navigation.navigate('DashBoard');
-    } else {
-      console.log('Error signing up');
-    }
 
+    // Make the API call
+    const response = await signup(data);
+    if (response.status !== 201) {
+      console.log(response.error)
+      setError(response.error);
+      setLoading(false); // Set isLoading to false after submission
+      return;
+    }
+    // If the sign-up is successful, navigate to the dashboard
+    navigation.navigate('RoomData');
     setLoading(false); // Set isLoading to false after submission
   };
 
   return (
     <View style={styles.container}>
-      {!isTyping && <Text style={styles.header}>Bill-E</Text>}
+      {/* {!isTyping && <Text style={styles.header}>Bill-E</Text>} */}
       {!isTyping &&<Text style={styles.title}>Create Account</Text>}
 
       {/* Name Field */}
@@ -97,7 +66,7 @@ const CreateAccount = ({ navigation }) => {
           value={name}
           onChangeText={(text) => setName(text)}
           onFocus={handleFocus}
-          onBlur={handleBlur}
+          // onBlur={handleBlur}
         />
       </View>
 
@@ -110,8 +79,21 @@ const CreateAccount = ({ navigation }) => {
           keyboardType="email-address"
           value={email}
           onChangeText={(text) => setEmail(text)}
+          autoCapitalize='none'
           onFocus={handleFocus}
-          onBlur={handleBlur}
+          // onBlur={handleBlur}
+        />
+      </View>
+
+      <View style={styles.inputContainer}>
+        {/* <Text style={styles.label}>Password</Text> */}
+        <TextInput
+          style={styles.input}
+          placeholder="K-Electric Account Number"
+          value={keNumber}
+          onChangeText={(text) => setKeNumber(text)}
+          onFocus={handleFocus}
+          // onBlur={handleBlur}
         />
       </View>
 
@@ -123,9 +105,10 @@ const CreateAccount = ({ navigation }) => {
           placeholder="Password"
           secureTextEntry
           value={password}
+          autoCapitalize='none'
           onChangeText={(text) => setPassword(text)}
           onFocus={handleFocus}
-          onBlur={handleBlur}
+          // onBlur={handleBlur}
         />
       </View>
 
@@ -137,11 +120,13 @@ const CreateAccount = ({ navigation }) => {
           placeholder="Confirm Password"
           secureTextEntry
           value={confirmPassword}
+          autoCapitalize='none'
           onChangeText={(text) => setConfirmPassword(text)}
           onFocus={handleFocus}
-          onBlur={handleBlur}
+          // onBlur={handleBlur}
         />
       </View>
+      {error !== '' && <Text style={styles.error}>{error}</Text>}
 
       {/* Sign Up Button */}
       <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={isLoading}>
