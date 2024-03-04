@@ -18,7 +18,8 @@ import Config from "react-native-config";
 
 import { MenuProvider } from "react-native-popup-menu";
 
-const API_URL = Config.API_URL;
+// const API_URL = Config.API_URL;
+const API_URL = 'https://app.bille.live';
 const screenWidth = Dimensions.get("window").width;
 
 const currentDate = new Date();
@@ -288,7 +289,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
     paddingHorizontal: 10,
-    paddingTop: 10,
+    paddingTop: '10%',
     backgroundColor: "#fff",
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",

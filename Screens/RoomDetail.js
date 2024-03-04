@@ -1,135 +1,119 @@
-import React, { useState } from 'react';
-import {
-  MenuProvider,
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-} from 'react-native-popup-menu';
-import { useNavigation } from '@react-navigation/native';
-import MenuComponent from './Components/Menu';
-import NavBar from './Components/NavBar';
-import {
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Dimensions,
-  Modal,
-  TextInput
-} from 'react-native';
-import AddApplianceModal from './Data/ApplianceModal'; // Update import statement
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import ModalDropdown from 'react-native-modal-dropdown';
 
-const RoomDetail = () => {
-  const navigation = useNavigation();
+// Sample API data
+const apiData = [
+  {
+    id: 1,
+    tag: "LR",
+    alias: "Living Room",
+    appliances: [
+      {
+        id: 5,
+        category: "Television",
+        subcategories: ["LED", "LCD", "Plasma"],
+        Daily_usage: 1
+      },
+      {
+        id: 2,
+        category: "Microwave Oven",
+        subcategories: ["Solo", "Grill", "Convection"],
+        Daily_usage: 8
+      }
+    ],
+    units: 9
+  }
+  // Add more rooms as needed
+];
 
-  const [roomDetail, setRoomDetail] = useState([
-    {
-      id: 1,
-      tag: "LR",
-      alias: "Living Room",
-      appliances: [
-        {
-          id: 5,
-          category: "Television",
-          subcategories: ["LED", "LCD", "Plasma"],
-          units: 1
-        },
-        {
-          id: 2,
-          category: "Microwave Oven",
-          subcategories: ["Solo", "Grill", "Convection"],
-          units: 8
-        }
-      ],
-      units: 9
-    }
-    // Add more rooms as needed
-  ]);
+const applianceOptions = [
+  "TV", "Refrigerator", "Deep Freezer", "Air Conditioner", "Washing Machine", "Microwave",
+  "Electric Oven", "Electric Kettle", "Electric Iron", "Electric Heater", "Electric Fan",
+  "Gaming Consoles", "Desktop Computer", "Electric Geyser",
+];
 
-  const [showAddApplianceModal, setShowAddApplianceModal] = useState(false);
-  const [selectedAppliance, setSelectedAppliance] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedSubcategory, setSelectedSubcategory] = useState('');
-  const [usage, setUsage] = useState('');
+const RoomDetail = ({ route, navigation }) => {
+  const { roomId } = route.params;
+  const [roomData, setRoomData] = useState(null);
+  const [appliances, setAppliances] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const room = apiData.find(room => room.id === roomId);
+      if (room) {
+        setRoomData(room);
+        const updatedAppliances = room.appliances.map(appliance => ({
+          ...appliance,
+          usage: `${appliance.Daily_usage}`
+        }));
+        setAppliances(updatedAppliances);
+      }
+    };
+  
+    fetchData();
+  }, [roomId]);
+  
 
   const addAppliance = () => {
-    if (!selectedAppliance || !selectedCategory || !usage) {
-      console.log('Please fill in all the fields');
-      return;
-    }
+    setAppliances([...appliances, { name: '', usage: '' }]);
+  };
 
-    const newAppliance = {
-      id: Math.random(),
-      category: selectedAppliance,
-      sub_category: selectedCategory, // Here we're using sub_category as subcategory
-      units: parseInt(usage),
-    };
+  const removeAppliance = (index) => {
+    const updatedAppliances = appliances.filter((_, i) => i !== index);
+    setAppliances(updatedAppliances);
+  };
 
-    setRoomDetail(prevRoomDetail => {
-      const updatedRoomDetail = [...prevRoomDetail];
-      updatedRoomDetail[0].appliances.push(newAppliance);
-      return updatedRoomDetail;
-    });
-
-    // Reset modal state
-    setSelectedAppliance('');
-    setSelectedCategory('');
-    setSelectedSubcategory('');
-    setUsage('');
-
-    setShowAddApplianceModal(false);
+  const saveData = () => {
+    console.log('Data saved successfully:', appliances);
   };
 
   return (
-    <MenuProvider skipInstanceCheck={true} style={styles.container}>
-      <View style={styles.header}>
-        <View style={{ flex: 1 }}> 
-          <Text style={{ fontFamily: 'Lato-Bold', fontSize: 20, color: '#171A1F', textAlign: 'left' }}>
-            Bill-E Ali's Room Detail
-          </Text>  
-        </View>
-        <MenuComponent navigation={navigation} />
-      </View>
-
+    <View style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
-        {roomDetail.map((room, roomIndex) => (
-          <View key={roomIndex}>
-            <Text style={styles.roomName}>{room.alias}</Text>
-            {room.appliances && room.appliances.map((appliance, applianceIndex) => (
-              <TouchableOpacity key={applianceIndex} style={styles.applianceCard}>
-                <Text style={styles.categorycard}>{appliance.category}</Text>
-                <Text style={styles.subcategorycard}>{appliance.sub_category}</Text>
-                <Text style={styles.unitscard}>{`${appliance.units} Units`}</Text>
+        <View style={styles.roomInfo}>
+          <Text>Room ID: {roomId}</Text>
+          <Text>Room Alias: {roomData ? roomData.alias : ''}</Text>
+          {appliances.map((appliance, index) => (
+            <View key={index} style={styles.applianceRow}>
+              <ModalDropdown
+  options={applianceOptions}
+  defaultValue={appliance.category || "Select Appliance"}
+  style={styles.pickerStyle}
+  textStyle={{ color: 'black' }}
+  dropdownStyle={styles.dropdownStyle}
+  onSelect={(selectedIndex, value) => setAppliances(prevState => {
+    const updatedAppliances = [...prevState];
+    updatedAppliances[index].category = value;
+    return updatedAppliances;
+  })}
+/>
+
+              <TextInput
+                style={styles.usageInput}
+                onChangeText={text => setAppliances(prevState => {
+                  const updatedAppliances = [...prevState];
+                  updatedAppliances[index].usage = text;
+                  return updatedAppliances;
+                })}
+                value={appliance.usage}
+                placeholder="Enter Usage"
+              />
+              <TouchableOpacity onPress={() => removeAppliance(index)}>
+                <Ionicons name="close-circle" size={24} color="red" />
               </TouchableOpacity>
-            ))} 
-          </View>
-        ))}
+            </View>
+          ))}
+          <TouchableOpacity style={styles.addButton} onPress={addAppliance}>
+            <Text style={styles.addButtonText}>Add Appliance</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
-
-      <TouchableOpacity
-        style={styles.addApplianceButton}
-        onPress={() => setShowAddApplianceModal(true)}
-      >
-        <Text style={styles.addApplianceText}>+ Add Appliance</Text>
+      <TouchableOpacity style={styles.saveButton} onPress={saveData}>
+        <Ionicons name="save-outline" size={24} color="#535CE8" />
       </TouchableOpacity>
-
-      <AddApplianceModal
-        visible={showAddApplianceModal}
-        onClose={() => setShowAddApplianceModal(false)}
-        appliances={roomDetail[0].appliances} // Pass appliances from the room detail
-        selectedAppliance={selectedAppliance}
-        setSelectedAppliance={setSelectedAppliance}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-        selectedSubcategory={selectedSubcategory}
-        setSelectedSubcategory={setSelectedSubcategory}
-        usage={usage}
-        setUsage={setUsage}
-        addAppliance={addAppliance}
-      />
-    </MenuProvider>
+    </View>
   );
 };
 
@@ -137,65 +121,57 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 10,
-    alignContent: 'center',
-    justifyContent: 'center',
   },
-  header: {
+  scrollContainer: {
+    flex: 1,
+    paddingHorizontal: 10,
+  },
+  roomInfo: {
+    marginTop: 20,
+  },
+  applianceRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingHorizontal: 10,
-    paddingTop: 20,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    marginBottom: 10,
   },
-  applianceCard: {
-    justifyContent: 'center',
-    backgroundColor: '#FAFAFBFF',
-    borderRadius: 16,
-    padding: 15,
-    width: Dimensions.get('window').width - 30,
-    marginVertical: 5,
-    marginHorizontal: 15,
-    shadowColor: '#171a1f',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.17,
-    shadowRadius: 2,
-    elevation: 10,
-  },
-  categorycard:{
-    fontSize: 24,
-    fontFamily: 'Lato-Bold',
-    color: '#171A1F',
-    textAlign: 'left',
-    marginLeft: 25,
-  },
-  subcategorycard:{
-    fontSize: 18,
-    fontFamily: 'Lato-Bold',
-    color: '#171A1F',
-    textAlign: 'left',
-    marginLeft: 25,
-  },
-  unitscard:{
-    fontSize: 16,
-    fontFamily: 'Lato-Bold',
-    color: '#171A1F',
-    textAlign: 'left',
-    marginLeft: 25,
-  },
-  addApplianceButton: {
-    backgroundColor: '#007BFF',
-    borderRadius: 5,
+  pickerStyle: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
     padding: 10,
+    marginRight: 10,
+  },
+  usageInput: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    padding: 10,
+    marginRight: 10,
+  },
+  addButton: {
+    backgroundColor: '#535CE8',
+    borderRadius: 8,
+    padding: 12,
     alignItems: 'center',
     marginTop: 10,
   },
-  addApplianceText: {
+  addButtonText: {
     color: '#fff',
     fontWeight: 'bold',
+  },
+  dropdownStyle: {
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    borderColor: '#ccc',
+    borderWidth: 1,
+  },
+  saveButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    zIndex: 1,
   },
 });
 

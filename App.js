@@ -118,7 +118,7 @@ const App = () => {
         <Stack.Screen
           name="RoomDetail"
           component={RoomDetail}
-          options={{headerShown: false }} // Assuming you don't want to show the header
+          // options={{headerShown: false }} // Assuming you don't want to show the header
         />
       </Stack.Navigator>
       </NavigationContainer>
