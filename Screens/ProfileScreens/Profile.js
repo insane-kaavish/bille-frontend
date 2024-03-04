@@ -19,15 +19,15 @@ const Profile = ({ navigation }) => {
     navigation.navigate('ChangePassword');
   };
 //   const handleEmailChange = () => navigation.navigate('ChangeEmail');
-  const handleSettings = () => navigation.navigate('Settings');
+  // const handleSettings = () => navigation.navigate('Settings');
 
   const handleUsernameChange = () => {
     navigation.navigate('ChangeUserName');
 };
 
-  const handleEditProfile = () => {
-    navigation.navigate('EditProfile');
-  };
+  // const handleEditProfile = () => {
+  //   navigation.navigate('EditProfile');
+  // };
   
   // Bottom Navigation Bar Actions (replace these placeholders with your actual navigation logic)
   const navigateToOverview = () => {
@@ -55,8 +55,8 @@ const Profile = ({ navigation }) => {
       </View>
 
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        <View style={styles.optionsContainer}>
+      {/* <ScrollView contentContainerStyle={styles.scrollViewContent}> */}
+        {/* <View style={styles.optionsContainer}>
           <TouchableOpacity style={styles.optionButton} onPress={handleEditProfile}>
             <Text style={styles.optionText}>Edit Profile</Text>
             <Ionicons name="chevron-forward-outline" size={20} color="#000" />
@@ -66,8 +66,8 @@ const Profile = ({ navigation }) => {
             <Text style={styles.optionText}>Settings</Text>
             <Ionicons name="chevron-forward-outline" size={20} color="#000" />
           </TouchableOpacity>
-        </View>
-      </ScrollView>
+        </View> */}
+      {/* </ScrollView> */}
     </View>
 
     <NavBar />
