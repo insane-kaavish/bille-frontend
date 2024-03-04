@@ -110,7 +110,7 @@ const hexToRgb = (hex) => { // Convert hex color to RGB color
       alignItems: 'center',
       justifyContent: 'flex-end',
       paddingHorizontal: 10,
-      paddingTop: 10,
+      padding: '10%',
       backgroundColor: '#fff',
       borderBottomWidth: 1,
       borderBottomColor: '#ccc',
