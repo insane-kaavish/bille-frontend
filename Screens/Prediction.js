@@ -57,59 +57,70 @@ const predictRequest = async (token) => {
       throw new Error("Failed to fetch bill data");
     }
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.error("Error:", error);
   }
 };
 
-const monthlyRequest = async (token, is_predicted = false) => {
+const monthlyRequest = async (token, is_predicted = "False") => {
   try {
-    const response = await fetch(`${API_URL}/months/`, {
+    const response = await fetch(`${API_URL}/months/?is_predicted=${is_predicted}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: token ? `Token ${token}` : "",
-      },
-      params: {
-        is_predicted: is_predicted,
       },
     });
     if (!response.ok) {
       throw new Error("Failed to fetch monthly data");
     }
     const data = await response.json();
-    // console.log(data);
     return data.monthwise_units;
   } catch (error) {
     console.error("Error:", error);
   }
 };
 
-const getLabels = (data) => {
-  return Object.keys(data).map((label) => {
-    const month = label.split("-")[0];
-    const year = label.split("-")[1].slice(-2);
-    if (month === "Dec" || month === "Jan") {
-      return `${month}\n${year}`;
-    } else {
-      return `${month}`;
-    }
-  });
-}
+const getLabels = () => {
+  const labels = [];
+  // Start from 11 months ago to include the correct range
+  for (let i = 11; i >= 0; i--) {
+    const year = (currentMonth - i < 0) ? currentYear - 1 : currentYear;
+    const monthIndex = (currentMonth - i + 12) % 12;
+    const month = monthNames[monthIndex];
+    const label = i === 11 || month === "Jan" ? `${month}-${year.toString().slice(-2)}` : month;
+    labels.push(label);
+  }
+  return labels;
+};
 
+const getLast12Months = () => {
+  const last12Months = [];
+  for (let i = 11; i >= 0; i--) {
+    const month = (currentMonth - i + 12) % 12;
+    const year = (currentMonth - i < 0) ? currentYear - 1 : currentYear;
+    last12Months.push(`${monthNames[month]}-${year}`);
+  }
+  return last12Months;
+};
+
+const fillMissingMonths = (data, last12Months) => {
+  return last12Months.map(month => data[month] ? data[month][0] : 0);
+};
 
 const App = () => {
   const navigation = useNavigation();
   const [hoveredSlab, setHoveredSlab] = useState(null);
   const { authToken } = useAuth();
-  const [labels, setLabels] = useState([]);
+  const [labels, setLabels] = useState(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
   const [units, setUnits] = useState(0);
   const [totalCost, setTotalCost] = useState(0);
   const [fillPercentage, setFillPercentage] = useState(0);
-  const [actualValues, setActualValues] = useState([]);
-  const [predictedValues, setPredictedValues] = useState([]);
+  const [actualValues, setActualValues] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  const [predictedValues, setPredictedValues] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  
+  const last12Months = getLast12Months();
 
   // Function to handle hover event
   const handleHover = (slab) => {
@@ -126,13 +137,14 @@ const App = () => {
     const fetchData = async () => {
       const data = await predictRequest(authToken);
       setUnits(data.units);
-      setTotalCost(data.total_cost);
-      setActualValues(await monthlyRequest(authToken));
-      setPredictedValues(await monthlyRequest(authToken, true));
-      setLabels(getLabels(actualValues));
-      console.log(units);
-      // console.log(actualValues);
-      // console.log(predictedValues);
+      setTotalCost(Number(data.total_cost));
+      setHoveredSlab(data.per_unit_cost);
+      setActualValues(fillMissingMonths(await monthlyRequest(authToken), last12Months));
+      setPredictedValues(fillMissingMonths(await monthlyRequest(authToken, "True"), last12Months));
+      setLabels(getLabels());
+      setFillPercentage((data.units % 100));
+      console.log("actual values: ", actualValues);
+      console.log("predicted values: ", predictedValues);
     };
     fetchData();
   }, [authToken]);
@@ -175,7 +187,7 @@ const App = () => {
 
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.predictionCard}>
-          {/* <TouchableWithoutFeedback
+          <TouchableWithoutFeedback
             onPress={() => navigation.navigate("RoomwisePrediction")}
           >
             <AnimatedCircularProgress
@@ -196,16 +208,16 @@ const App = () => {
                 </View>
               )}
             </AnimatedCircularProgress>
-          </TouchableWithoutFeedback> */}
+          </TouchableWithoutFeedback>
 
           {/* Render slab rates if hovered */}
-          {/* {hoveredSlab && (
+          {hoveredSlab && (
             <View style={styles.slabRatesContainer}>
               <Text style={styles.slabRateText}>
-                Slab Rate: {hoveredSlab.rate.toFixed(2)}
+                Slab Rate: {hoveredSlab.rate}
               </Text>
             </View>
-          )} */}
+          )}
 
           <View style={styles.unitDetails}>
             <Text style={styles.estimatedBill}>
@@ -227,7 +239,7 @@ const App = () => {
 
         <View style={styles.graphCard}>
           <ScrollView horizontal>
-            {/* <LineChart
+            <LineChart
               data={data}
               width={screenWidth * 1.5}
               height={300}
@@ -251,7 +263,7 @@ const App = () => {
               }}
               bezier
               style={{ marginVertical: 8, borderRadius: 16 }}
-            /> */}
+            />
           </ScrollView>
           <Text style={styles.graphDescription}>
             Comparison between the actual and predicted units.
