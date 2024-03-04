@@ -180,7 +180,7 @@ const App = () => {
               textAlign: "left",
             }}
           >
-            Bill-E Prediction Summary
+            Summary
           </Text>
         </View>
         <MenuComponent navigation={navigation} />
@@ -195,7 +195,7 @@ const App = () => {
               size={180}
               width={15}
               fill={fillPercentage}
-              tintColor="#4682B4"
+              tintColor="#535CE8"
               onAnimationComplete={() => console.log("onAnimationComplete")}
               backgroundColor="#F2F2F2"
               rotation={0}
