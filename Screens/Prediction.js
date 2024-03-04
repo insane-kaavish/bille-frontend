@@ -18,7 +18,8 @@ import Config from "react-native-config";
 
 import { MenuProvider } from "react-native-popup-menu";
 
-const API_URL = Config.API_URL;
+// const API_URL = Config.API_URL;
+const API_URL = 'https://app.bille.live';
 const screenWidth = Dimensions.get("window").width;
 
 const currentDate = new Date();
@@ -154,13 +155,13 @@ const App = () => {
     datasets: [
       {
         data: actualValues,
-        color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`,
+        color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`, // Adjust the blue color here
         strokeWidth: 2,
         label: "Actual Units",
       },
       {
         data: predictedValues,
-        color: (opacity = 1) => `rgba(244, 65, 134, ${opacity})`,
+        color: (opacity = 1) => `rgba(255, 0, 0, ${opacity})`, // Adjust the red color here
         strokeWidth: 2,
         label: "Predicted Units",
       },
@@ -272,7 +273,6 @@ const App = () => {
           </Text>
         </View>
       </ScrollView>
-
       <NavBar />
     </MenuProvider>
   );
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
     paddingHorizontal: 10,
-    paddingTop: 10,
+    paddingTop: '10%',
     backgroundColor: "#fff",
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
