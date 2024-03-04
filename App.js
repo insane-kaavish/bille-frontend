@@ -8,10 +8,10 @@ import CreateAccount from './Screens/AuthScreens/Signup';
 import RoomData from './Screens/Data/RoomData';
 import Home from './Screens/Home';
 import DashBoard from './Screens/DashBoard';
-import EditProfile from './Screens/ProfileScreens/EditProfile';
-import ChangeUserName from './Screens/ProfileScreens/ChangeUserName';
+import Profile from './Screens/ProfileScreens/Profile';
+// import ChangeUserName from './Screens/ProfileScreens/ChangeUserName';
 import ChangeEmail from './Screens/ProfileScreens/ChangeEmail';
-import ChangePassword from './Screens/ProfileScreens/ChangePassword';
+// import ChangePassword from './Screens/ProfileScreens/ChangePassword';
 import Settings from './Screens/ProfileScreens/Settings';
 import HelpCenter from './Screens/ProfileScreens/HelpCenter';
 import Prediction from './Screens/Prediction';
@@ -76,23 +76,13 @@ const App = () => {
           options={{headerShown: false }} // Assuming you don't want to show the header
         />
         <Stack.Screen
-          name="EditProfile"
-          component={EditProfile}
-          options={{headerShown: false }} // Assuming you don't want to show the header
-        />
-        <Stack.Screen
-          name="ChangeUserName"
-          component={ChangeUserName}
+          name="Profile"
+          component={Profile}
           options={{headerShown: false }} // Assuming you don't want to show the header
         />
         <Stack.Screen
           name="ChangeEmail"
           component={ChangeEmail}
-          options={{headerShown: false }} // Assuming you don't want to show the header
-        />
-        <Stack.Screen
-          name="ChangePassword"
-          component={ChangePassword}
           options={{headerShown: false }} // Assuming you don't want to show the header
         />
         <Stack.Screen

@@ -35,7 +35,7 @@ const SettingsScreen = ({ navigation }) => {
     navigation.navigate('RoomwisePrediction');
   };
   const navigateToProfile = () => {
-    navigation.navigate('EditProfile');
+    navigation.navigate('Profile');
   };
 
   return (
