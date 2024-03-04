@@ -47,7 +47,7 @@ const currentMonthName = monthNames[currentMonth];
 
 const currentYear = currentDate.getFullYear();
 
-const handlePress = async (token) => {
+const predictRequest = async (token) => {
   try {
     const response = await fetch(`${API_URL}/predict/`, {
       method: "POST",
@@ -78,7 +78,7 @@ const Dashboard = ({ navigation }) => {
   React.useEffect(() => {
     const fetchPrediction = async () => {
       if (perUnitCost !== 0) return;
-      const data = await handlePress(authToken);
+      const data = await predictRequest(authToken);
       setUnits(data.units);
       setTotalCost(data.total_cost);
       setPerUnitCost(data.per_unit_cost);
