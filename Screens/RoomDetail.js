@@ -9,7 +9,6 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import MenuComponent from './Components/Menu';
 import NavBar from './Components/NavBar';
-import { Picker } from '@react-native-picker/picker';
 import {
   StyleSheet,
   View,
