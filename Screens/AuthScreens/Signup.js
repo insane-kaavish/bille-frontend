@@ -19,9 +19,9 @@ const CreateAccount = ({ navigation }) => {
     setIsTyping(true); // Set isTyping to true when a text input is focused
   };
 
-  const handleBlur = () => {
-    setIsTyping(false); // Set isTyping to false when a text input is blurred
-  };
+  // const handleBlur = () => {
+  //   setIsTyping(false); // Set isTyping to false when a text input is blurred
+  // };
 
   const [error, setError] = useState('');
 
@@ -66,7 +66,7 @@ const CreateAccount = ({ navigation }) => {
           value={name}
           onChangeText={(text) => setName(text)}
           onFocus={handleFocus}
-          onBlur={handleBlur}
+          // onBlur={handleBlur}
         />
       </View>
 
@@ -81,7 +81,7 @@ const CreateAccount = ({ navigation }) => {
           onChangeText={(text) => setEmail(text)}
           autoCapitalize='none'
           onFocus={handleFocus}
-          onBlur={handleBlur}
+          // onBlur={handleBlur}
         />
       </View>
 
@@ -93,7 +93,7 @@ const CreateAccount = ({ navigation }) => {
           value={keNumber}
           onChangeText={(text) => setKeNumber(text)}
           onFocus={handleFocus}
-          onBlur={handleBlur}
+          // onBlur={handleBlur}
         />
       </View>
 
@@ -108,7 +108,7 @@ const CreateAccount = ({ navigation }) => {
           autoCapitalize='none'
           onChangeText={(text) => setPassword(text)}
           onFocus={handleFocus}
-          onBlur={handleBlur}
+          // onBlur={handleBlur}
         />
       </View>
 
@@ -123,7 +123,7 @@ const CreateAccount = ({ navigation }) => {
           autoCapitalize='none'
           onChangeText={(text) => setConfirmPassword(text)}
           onFocus={handleFocus}
-          onBlur={handleBlur}
+          // onBlur={handleBlur}
         />
       </View>
       {error !== '' && <Text style={styles.error}>{error}</Text>}
