@@ -1,7 +1,50 @@
 import React, { useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Animated, Image } from 'react-native';
+import { useAuth } from './AuthScreens/AuthProvider';
+import Config from 'react-native-config';
+
+// const API_URL = "https://app.bille.live";
+const API_URL = Config.API_URL;
+
+const handleScrape = async (token) => {
+  try {
+    const response = await fetch(`${API_URL}/scrape/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Token ${token}`,
+      },
+    });
+    if (response.status !== 202) return false;
+    return response;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+const checkStatus = async (token, task_id) => {
+  try {
+    const response = await fetch(`${API_URL}/task_status/?task_id=${task_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Token ${token}`,
+      },
+    });
+    const data = await response.json();
+    if (data.status === 'SUCCESS') {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 
 const HomeScreen = ({ navigation }) => {
+  const { authToken } = useAuth();
   const catPosition = useRef(new Animated.Value(-100)).current; // Changed initial value to -100
 
   useEffect(() => {
@@ -21,6 +64,26 @@ const HomeScreen = ({ navigation }) => {
     ).start();
   }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await handleScrape(authToken);
+      if (response) {
+        const data = await response.json();
+        console.log(data);
+        const { task_id } = data;
+        let status = false;
+        const intervalId = setInterval(async () => {
+          status = await checkStatus(authToken, task_id);
+          if (status) {
+            clearInterval(intervalId);
+            navigation.navigate('DashBoard');
+          }
+        }, 15000);
+      }
+    };
+    fetchData();
+  }, [authToken, navigation]);
+
   return (
     <View style={[styles.container, { backgroundColor: '#535CE8' }]}>
       <View style={styles.backgroundCircle} />
@@ -35,13 +98,6 @@ const HomeScreen = ({ navigation }) => {
           style={{ width: 180, height: 150 }}
         />
       </Animated.View>
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('DashBoard')}
-      >
-        <Text style={styles.buttonText}>Get Started</Text>
-      </TouchableOpacity>
     </View>
   );
 };
