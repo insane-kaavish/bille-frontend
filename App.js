@@ -17,10 +17,9 @@ import ContactUs from './Screens/ProfileScreens/ContactUs';
 import Privacy from './Screens/ProfileScreens/Privacy';
 import RoomwisePrediction from './Screens/RoomwisePrediction';
 import { AuthProvider } from './Screens/AuthScreens/AuthProvider';
-
+import RoomDetail from './Screens/RoomDetail';
 
 import * as Font from 'expo-font';
-import RoomDetail from './Screens/RoomDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -55,11 +54,6 @@ const App = () => {
           component={CreateAccount}
           options={{ headerShown: false }} // Assuming you don't want to show the header
         />
-        {/* <Stack.Screen
-          name="DataInput"
-          component={DataInput}
-          options={{ headerShown: false }} // Assuming you don't want to show the header
-        /> */}
         <Stack.Screen
           name="RoomData"
           component={RoomData}
