@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, StatusBar, View, Text, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useAuth } from './AuthProvider';
 
+import { Colors } from '../Styles/Colors';
+
 const validateEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
@@ -12,27 +14,25 @@ const SignInScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [showError, setShowError] = useState(false); // State to control error message and red border
-  const [emailTouched, setEmailTouched] = useState(false); // Track if email field has been touched
+  const [showError, setShowError] = useState(false);
+  const [emailTouched, setEmailTouched] = useState(false); 
   const emailInputRef = useRef(null);
-  const passwordInputRef = useRef(null); // Reference for password input
+  const passwordInputRef = useRef(null); 
   const { authToken, login } = useAuth();
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      // Reset error state and clear email field when screen comes into focus
       setError('');
       setShowError(false);
       setEmail('');
       setPassword('');
-      setEmailTouched(false); // Reset email touched state
+      setEmailTouched(false);
     });
   
     return unsubscribe;
   }, [navigation]);
 
   useEffect(() => {
-    // Clear email and password fields when component unmounts (navigating away)
     return () => {
       setEmail('');
       setPassword('');
@@ -40,7 +40,6 @@ const SignInScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    // Validate email on each change if the email field has been touched
     if (emailTouched) {
       if (!validateEmail(email)) {
         setError('Please enter a valid email address');
@@ -57,7 +56,6 @@ const SignInScreen = ({ navigation }) => {
   };
 
   const handlePasswordFocus = () => {
-    // Clear error when password field is focused
     if (error) {
       setError('');
       setShowError(false);
@@ -65,7 +63,6 @@ const SignInScreen = ({ navigation }) => {
   };
 
   const handleEmailFocus = () => {
-    // Clear error when email field is focused
     if (error) {
       setError('');
       setShowError(false);
@@ -85,7 +82,7 @@ const SignInScreen = ({ navigation }) => {
     if (await login(email, password)) {
       console.log(authToken);
       setLoading(false);
-      navigation.navigate('DashBoard'); // Have to fix: Navigate to Dashboard screen. to RoomData temporary
+      navigation.navigate('DashBoard'); 
     } else {
       setLoading(false);
       setError('Email address or password is incorrect');
@@ -95,7 +92,7 @@ const SignInScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
+      <StatusBar barStyle="dark-content" />
       <Text style={styles.header}>Welcome back 👋</Text>
       <View style={[styles.inputContainer, { borderColor: showError ? 'red' : '#ccc' }]}>
         <TextInput
@@ -104,8 +101,8 @@ const SignInScreen = ({ navigation }) => {
           value={email}
           onChangeText={setEmail}
           autoCapitalize='none'
-          onBlur={handleEmailBlur} // Track when email field loses focus
-          onFocus={handleEmailFocus} // Clear error when email field is focused
+          onBlur={handleEmailBlur}
+          onFocus={handleEmailFocus} 
           ref={emailInputRef}
         />
       </View>
@@ -117,8 +114,8 @@ const SignInScreen = ({ navigation }) => {
           value={password}
           onChangeText={setPassword}
           autoCapitalize='none'
-          onFocus={handlePasswordFocus} // Clear error when password field is focused
-          ref={passwordInputRef} // Assign reference to password input
+          onFocus={handlePasswordFocus} 
+          ref={passwordInputRef} 
         />
       </View>
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
@@ -145,7 +142,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
     padding: 10,
   },
   header: {
@@ -158,15 +155,15 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderWidth: 1,
     borderRadius: 16,
-    backgroundColor: '#F3F4F6',
-    borderColor: '#ccc',
+    backgroundColor: Colors.textfieldBG,
+    borderColor: Colors.border,
   },
   input: {
     padding: 10,
-    borderColor: '#ccc',
+    borderColor: Colors.border,
   },
   button: {
-    backgroundColor: '#535CE8',
+    backgroundColor: Colors.buttonColor,
     borderRadius: 26,
     marginTop: '5%',
     width: '90%',
@@ -175,19 +172,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonText: {
-    color: 'white',
+    color: Colors.white,
     fontSize: 18,
   },
   footerText: {
-    marginTop: 20,
     fontSize: 16,
+    fontWeight: '700',
+    color: Colors.black,
+    marginTop: 20,
   },
   signUpText: {
-    color: '#535CE8',
+    color: Colors.buttonColor,
     fontWeight: '700',
   },
   errorText: {
-    color: 'red',
+    color: Colors.error,
     marginBottom: 10,
   },
 });
