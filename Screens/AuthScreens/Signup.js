@@ -1,6 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { useAuth } from './AuthProvider';
+
+import { Colors } from '../Styles/Colors';
 
 const CreateAccount = ({ navigation }) => {
   const [name, setName] = useState('');
@@ -163,7 +165,7 @@ const CreateAccount = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 10,
@@ -173,18 +175,18 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderWidth: 1,
     borderRadius: 16,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: Colors.textfieldBG,
     borderColor: '#ccc',
   },
   input: {
     height: 43,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: Colors.textfieldBG,
     borderRadius: 16,
     padding: 10,
     marginTop: 5,
   },
   button: {
-    backgroundColor: '#535CE8',
+    backgroundColor: Colors.buttonColor,
     borderRadius: 26,
     paddingVertical: 12,
     width: '90%',
@@ -192,18 +194,18 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   buttonText: {
-    color: 'white',
+    color: Colors.white,
     fontSize: 18,
     fontWeight: '400',
   },
   footerText: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#171A1F',
+    color: Colors.black,
     marginTop: 20,
   },
   footerTextHighlight: {
-    color: '#535CE8',
+    color: Colors.buttonColor,
   },
 });
 
