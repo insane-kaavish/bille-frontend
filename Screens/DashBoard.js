@@ -84,10 +84,6 @@ const Dashboard = ({ navigation }) => {
     fetchPrediction();
   }, [authToken]);
 
-  const navigateToOverview = () => {
-    navigation.navigate("DashBoard");
-  };
-
   const navigateToPrediction = () => {
     navigation.navigate("Prediction");
   };
@@ -126,7 +122,7 @@ const Dashboard = ({ navigation }) => {
         </View>
 
         <View style={styles.cardsContainer}>
-          <View style={[styles.card, { backgroundColor: "#F1F2FDFF" }]}>
+          <View style={[styles.card, { backgroundColor: '#7C83ED' }]}>
             <Text style={styles.cardTitle}>Expected Bill</Text>
             <Text style={styles.cardAmount}>Rs. {totalCost}</Text>
             <Text style={styles.cardText}>Based on usage pattern</Text>
@@ -135,7 +131,7 @@ const Dashboard = ({ navigation }) => {
             </View>
           </View>
 
-          <View style={[styles.card, { backgroundColor: "#F1F2FDFF" }]}>
+          <View style={[styles.card, { backgroundColor: '#2ACCCF' }]}>
             <Text style={styles.cardTitle}>Per Unit Price</Text>
             <Text style={styles.cardAmount}>Rs. {perUnitCost}</Text>
             <Text style={styles.cardText}>Based on the slab rates</Text>
@@ -275,14 +271,14 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   cardTitle: {
-    color: "#171A1F",
+    color: "white",
     fontSize: 18,
     fontFamily: "Lato-Bold",
     fontWeight: "500",
     lineHeight: 22,
   },
   cardAmount: {
-    color: "#171A1F",
+    color: "white",
     fontSize: 28,
     fontFamily: "Lato-Bold",
     fontWeight: "500",
@@ -290,7 +286,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   cardText: {
-    color: "#171A1F",
+    color: "white",
     fontSize: 12,
     fontFamily: "Lato-Bold",
     fontWeight: "400",

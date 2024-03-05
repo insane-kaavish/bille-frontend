@@ -231,14 +231,14 @@ const App = () => {
             </Text>
           </View>
 
-          <View style={styles.unitDetails}>
+          {/* <View style={styles.unitDetails}>
             <Text style={styles.estimatedBill}>
-              Next Slab:{" "}
+              Current Slab:{" "}
               <Text style={{ color: "orange" }}>
-                {/* {" "} {slab ? slab.rate : 0} Pkr/unit */}
+              {Math.floor(data.units / 100) * 100}-{Math.floor(data.units / 100) * 100 + 99}
               </Text>
             </Text>
-          </View>
+          </View> */}
 
           <TouchableOpacity
             style={styles.detailsButton}
