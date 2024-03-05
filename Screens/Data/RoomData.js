@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,47 +7,63 @@ import {
   ScrollView,
   TextInput,
   SafeAreaView,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import ModalDropdown from 'react-native-modal-dropdown';
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import ModalDropdown from "react-native-modal-dropdown";
+import { useAuth } from "../AuthScreens/AuthProvider";
+import Config from "react-native-config";
 
-const applianceOptions = [
-  "TV",
-  "Refrigerator",
-  "Deep Freezer",
-  "Air Conditioner",
-  "Washing Machine",
-  "Microwave",
-  "Electric Oven",
-  "Electric Kettle",
-  "Electric Iron",
-  "Electric Heater",
-  "Electric Fan",
-  "Gaming Consoles",
-  "Desktop Computer",
-  "Electric Geyser",
-];
+// const API_URL = "https://app.bille.live";
+const API_URL = Config.API_URL;
 
-const subCategories = {
-  "Refrigerator": ["Single Door", "Double Door"],
-  "Iron": ["Dry Iron", "Steam Iron"],
-  "Air Conditioner": ["Window AC", "Split AC 1 Ton", "Split AC 1.5 Ton", "Split AC 2 Ton", "Split Inverter AC 1 Ton", "Split Inverter AC 1.5 Ton", "Split Inverter AC 2 Ton"],
-  "Deep Freezer": ["Small", "Medium", "Large"],
-  "Washing Machine": ["Semi-Automatic", "Automatic"],
-  "Television": ["CRT", "LCD", "LED", "Plasma"],
-  "Microwave": ["Solo", "Grill", "Convection"],
-  "Water Dispenser": ["Hot & Cold", "Normal"],
-  "Water Heater": ["Instant", "Storage"],
+const getCategories = async (token) => {
+  try {
+    const response = await fetch(`${API_URL}/categories/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+      },
+    });
+    if (response.status !== 200) return false;
+    return response.json();
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
 };
 
 const RoomData = () => {
-  const [rooms, setRooms] = useState([{ name: '', appliances: [{ name: '', usage: '' }] }]);
+  const [rooms, setRooms] = useState([
+    { alias: "", appliances: [{ category: "", sub_category: "", usage: "" }] },
+  ]);
   const [openRoomIndices, setOpenRoomIndices] = useState([0]);
+  const { authToken } = useAuth();
+  const [appliances, setAppliances] = useState([]);
+  const [subCategories, setSubCategories] = useState({});
   const navigation = useNavigation();
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const categoriesData = await getCategories(authToken);
+      if (categoriesData) {
+        // set appliances and subCategories
+        const appliances = categoriesData.map((category) => category.name);
+        setAppliances(appliances);
+        const subCategories = {};
+        categoriesData.forEach((category) => {
+          subCategories[category.name] = category.sub_categories;
+        });
+        setSubCategories(subCategories);
+      }
+    };
+    fetchCategories();
+    console.log(subCategories)
+  }, [authToken]);
+
   const addRoom = () => {
-    const newRoom = { name: '', appliances: [{ name: '', usage: '' }] };
+    const newRoom = { alias: "", appliances: [{ category: "", sub_category: "", usage: "" }] };
     setRooms([...rooms, newRoom]);
     setOpenRoomIndices([...openRoomIndices, rooms.length]);
   };
@@ -59,7 +75,7 @@ const RoomData = () => {
 
   const addAppliance = (roomIndex) => {
     const newRooms = [...rooms];
-    newRooms[roomIndex].appliances.push({ name: '', usage: '' });
+    newRooms[roomIndex].appliances.push({ category: "", sub_category: "", usage: "" });
     setRooms(newRooms);
   };
 
@@ -72,17 +88,17 @@ const RoomData = () => {
   const handleSubmit = () => {
     const roomsJson = JSON.stringify(rooms);
     console.log(roomsJson);
-    navigation.navigate('Home', { roomsData: rooms });
+    // navigation.navigate("Home", { roomsData: rooms });
   };
 
   const handleSkip = () => {
-    navigation.navigate('Home');
+    navigation.navigate("Home");
   };
 
   const toggleAccordion = (index) => {
     setOpenRoomIndices((currentIndices) => {
       if (currentIndices.includes(index)) {
-        return currentIndices.filter(i => i !== index);
+        return currentIndices.filter((i) => i !== index);
       } else {
         return [...currentIndices, index];
       }
@@ -91,7 +107,13 @@ const RoomData = () => {
 
   const setApplianceName = (roomIndex, applianceIndex, name) => {
     const newRooms = [...rooms];
-    newRooms[roomIndex].appliances[applianceIndex].name = name;
+    newRooms[roomIndex].appliances[applianceIndex].category = name;
+    setRooms(newRooms);
+  };
+
+  const setApplianceSubCategory = (roomIndex, applianceIndex, subCategory) => {
+    const newRooms = [...rooms];
+    newRooms[roomIndex].appliances[applianceIndex].sub_category = subCategory;
     setRooms(newRooms);
   };
 
@@ -103,7 +125,7 @@ const RoomData = () => {
 
   const setRoomName = (index, name) => {
     const newRooms = [...rooms];
-    newRooms[index].name = name;
+    newRooms[index].alias = name;
     setRooms(newRooms);
   };
 
@@ -111,45 +133,60 @@ const RoomData = () => {
     return (
       <View key={`appliance-${applianceIndex}`} style={styles.applianceItem}>
         <ModalDropdown
-          options={applianceOptions}
+          options={appliances}
           defaultValue="Appliance"
           style={styles.pickerStyle}
           textStyle={styles.dropdownTextStyle}
           dropdownStyle={styles.dropdownStyle}
-          onSelect={(index, value) => setApplianceName(roomIndex, applianceIndex, value)}
+          onSelect={(index, value) =>
+            setApplianceName(roomIndex, applianceIndex, value)
+          }
           defaultIndex={0}
         />
         <ModalDropdown
-          options={appliance.name && subCategories[appliance.name] ? subCategories[appliance.name] : ["Type"]}
-          defaultValue={appliance.name ? "Type" : "Select Type"}
+          options={
+            appliance.category && subCategories[appliance.category]
+              ? subCategories[appliance.category]
+              : ["Type"]
+          }
+          defaultValue={appliance.category ? "Type" : "Select Type"}
           style={styles.pickerStyle}
           textStyle={styles.dropdownTextStyle}
           dropdownStyle={styles.dropdownStyle}
-          onSelect={(index, value) => console.log(value)}
+          onSelect={(index, value) =>
+            setApplianceSubCategory(roomIndex, applianceIndex, value)
+          }
           defaultIndex={0}
         />
         <TextInput
           style={styles.usageInput}
-          onChangeText={(text) => setApplianceUsage(roomIndex, applianceIndex, text)}
+          onChangeText={(text) =>
+            setApplianceUsage(roomIndex, applianceIndex, text)
+          }
           value={appliance.usage}
           placeholder="Hours"
           keyboardType="numeric"
         />
-        <TouchableOpacity onPress={() => removeAppliance(roomIndex, applianceIndex)}>
+        <TouchableOpacity
+          onPress={() => removeAppliance(roomIndex, applianceIndex)}
+        >
           <Ionicons name="close-circle" size={24} color="red" />
         </TouchableOpacity>
       </View>
     );
-  };  
+  };
 
   const renderRooms = () => {
     return rooms.map((room, index) => (
       <View key={`room-${index}`} style={styles.roomWrapper}>
-        <TouchableOpacity style={styles.roomContainer} onPress={() => toggleAccordion(index)}>
+        <TouchableOpacity
+          style={styles.roomContainer}
+          onPress={() => toggleAccordion(index)}
+        >
           <TextInput
             style={styles.roomInput}
             onChangeText={(text) => setRoomName(index, text)}
-            value={room.name}
+            value={room.alias}
             placeholder="Enter Room Name: example 'bedroom'"
           />
           <TouchableOpacity onPress={() => removeRoom(index)}>
@@ -161,7 +198,10 @@ const RoomData = () => {
             {room.appliances.map((appliance, applianceIndex) =>
               renderAppliance(appliance, index, applianceIndex)
             )}
-            <TouchableOpacity style={styles.addApplianceButton} onPress={() => addAppliance(index)}>
+            <TouchableOpacity
+              style={styles.addApplianceButton}
+              onPress={() => addAppliance(index)}
+            >
               <Text style={styles.addApplianceText}>Add Appliances</Text>
             </TouchableOpacity>
           </View>
@@ -173,15 +213,26 @@ const RoomData = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.headerBar}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.header}>Bill-E Setup</Text>
-        <TouchableOpacity style={styles.logoutButton} onPress={() => navigation.reset({ index: 0, routes: [{ name: 'SignIn' }] })}>
+        <TouchableOpacity
+          style={styles.logoutButton}
+          onPress={() =>
+            navigation.reset({ index: 0, routes: [{ name: "SignIn" }] })
+          }
+        >
           <Ionicons name="log-out" size={24} color="black" />
         </TouchableOpacity>
       </View>
-      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.contentContainer}
+      >
         {renderRooms()}
         <TouchableOpacity style={styles.addRoomButton} onPress={addRoom}>
           <Text style={styles.addRoomButtonText}>Add More Rooms</Text>
@@ -202,7 +253,7 @@ const RoomData = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   container: {
     flex: 1,
@@ -210,53 +261,53 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     padding: 16,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
   headerBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between', // Adjust to distribute space between the items
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between", // Adjust to distribute space between the items
     paddingHorizontal: 10,
     paddingTop: 10,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomColor: "#ccc",
   },
   header: {
     fontSize: 26,
-    fontWeight: 'bold',
-    color: 'black',
-    fontFamily: 'Lato-Bold',
+    fontWeight: "bold",
+    color: "black",
+    fontFamily: "Lato-Bold",
   },
   roomWrapper: {
-    backgroundColor: '#f7f7f7',
+    backgroundColor: "#f7f7f7",
     borderRadius: 10,
     padding: 16,
     marginBottom: 16,
   },
   roomContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   roomInput: {
     flex: 1,
     borderWidth: 1,
-    borderColor: 'grey',
+    borderColor: "grey",
     borderRadius: 10,
     padding: 14,
     marginRight: 8,
     marginBottom: 10,
   },
   applianceItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 5,
     // justifyContent: 'space-between', // This will distribute space evenly between the items
   },
   pickerStyle: {
     flex: 1,
     borderWidth: 1,
-    borderColor: 'grey',
+    borderColor: "grey",
     borderRadius: 10,
     marginRight: 8,
     padding: 12,
@@ -265,82 +316,82 @@ const styles = StyleSheet.create({
   usageInput: {
     flex: 0.35,
     borderWidth: 1,
-    borderColor: 'grey',
+    borderColor: "grey",
     borderRadius: 10,
     paddingVertical: 8, // Reduce vertical padding to make the text box smaller
     paddingHorizontal: 10, // Reduce horizontal padding to make the text box smaller
     marginRight: 8,
     // marginLeft: 0.1,
-    width: '30%', // Adjust the width as needed
+    width: "30%", // Adjust the width as needed
     fontSize: 11,
   },
   addApplianceButton: {
-    backgroundColor: '#535CE8',
+    backgroundColor: "#535CE8",
     borderRadius: 20,
     padding: 10,
-    alignItems: 'center',
-    width: '50%',
-    alignSelf: 'center', // Add this to center the button within its parent
+    alignItems: "center",
+    width: "50%",
+    alignSelf: "center", // Add this to center the button within its parent
     marginTop: 10, // Add some margin at the top if needed
   },
   addApplianceText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
   addRoomButton: {
-    backgroundColor: '#535CE8',
+    backgroundColor: "#535CE8",
     borderRadius: 20,
     padding: 12,
-    alignItems: 'center',
-    width: '70%',
-    alignSelf: 'center',
+    alignItems: "center",
+    width: "70%",
+    alignSelf: "center",
   },
   addRoomButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
   submitButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
   dropdownStyle: {
-    width: '50%',
+    width: "50%",
     maxHeight: 100,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 5,
     marginTop: 10,
   },
   dropdownTextStyle: {
     fontSize: 13.5,
-    color: 'black',
+    color: "black",
     paddingHorizontal: 8,
     paddingVertical: 2,
   },
   buttonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingHorizontal: 35,
     marginBottom: 30,
   },
   skipButton: {
-    backgroundColor: 'red',
+    backgroundColor: "red",
     borderRadius: 20,
     padding: 12,
-    alignItems: 'center',
-    width: '45%',
+    alignItems: "center",
+    width: "45%",
   },
   skipButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
   submitButton: {
-    backgroundColor: '#535CE8',
+    backgroundColor: "#535CE8",
     borderRadius: 20,
     padding: 12,
-    alignItems: 'center',
-    width: '45%',
+    alignItems: "center",
+    width: "45%",
   },
 });
 
