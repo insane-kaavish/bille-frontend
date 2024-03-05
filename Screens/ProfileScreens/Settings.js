@@ -1,19 +1,15 @@
 import React from 'react';
-import { navigation,View, Text, StyleSheet, TouchableOpacity, Switch } from 'react-native';
+import { navigation,View, Text, StyleSheet, TouchableOpacity, Switch, Dimensions } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
   MenuProvider,
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
 } from 'react-native-popup-menu';
 import MenuComponent from '../Components/Menu';
 import NavBar from '../Components/NavBar';
 
+const height = Dimensions.get('window').height;
 
 const SettingsScreen = ({ navigation }) => {
-  // Placeholder for actual navigation or action calls
   const navigateToPrivacy = () => {
     navigation.navigate('Privacy');
     console.log('Navigate to Privacy')};
@@ -85,7 +81,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     paddingHorizontal: 10,
-    paddingTop: 10,
+    paddingTop: height * 0.001,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#ccc', 

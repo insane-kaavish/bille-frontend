@@ -110,6 +110,8 @@ const fillMissingMonths = (data, last12Months) => {
   return last12Months.map(month => data[month] ? data[month][0] : 0);
 };
 
+const height = Dimensions.get("window").height;
+
 const App = () => {
   const navigation = useNavigation();
   const [hoveredSlab, setHoveredSlab] = useState(null);
@@ -180,7 +182,7 @@ const App = () => {
               textAlign: "left",
             }}
           >
-            Bill-E Prediction Summary
+            Summary
           </Text>
         </View>
         <MenuComponent navigation={navigation} />
@@ -195,7 +197,7 @@ const App = () => {
               size={180}
               width={15}
               fill={fillPercentage}
-              tintColor="#4682B4"
+              tintColor="#535CE8"
               onAnimationComplete={() => console.log("onAnimationComplete")}
               backgroundColor="#F2F2F2"
               rotation={0}
@@ -289,7 +291,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
     paddingHorizontal: 10,
-    paddingTop: '10%',
+    paddingTop: height * 0.001,
     backgroundColor: "#fff",
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",

@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
-
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import Config from 'react-native-config';
 import { useAuth } from './AuthProvider';
 
 const CreateAccount = ({ navigation }) => {
@@ -9,42 +7,68 @@ const CreateAccount = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [keNumber, setKeNumber] = useState(''); // Add keNumber state
-  const [token, setToken] = useState([]);
-  const [isLoading, setLoading] = useState(false); // Add isLoading state
+  const [keNumber, setKeNumber] = useState('');
+  const [isLoading, setLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [touchedFields, setTouchedFields] = useState({
+    name: false,
+    email: false,
+    password: false,
+    confirmPassword: false,
+    keNumber: false,
+  });
   const { signup } = useAuth();
 
-  const handleFocus = () => {
-    setIsTyping(true); // Set isTyping to true when a text input is focused
+  useEffect(() => { 
+    const unsubscribe = navigation.addListener('focus', () => {
+      // Reset fields when screen comes into focus
+      setName('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+      setKeNumber('');
+      setTouchedFields({
+        name: false,
+        email: false,
+        password: false,
+        confirmPassword: false,
+        keNumber: false,
+      });
+    });
+  
+    return unsubscribe;
+  }, [navigation]);
+
+  const handleFocus = (field) => {
+    setIsTyping(true);
+    if (!touchedFields[field]) {
+      setTouchedFields((prevState) => ({ ...prevState, [field]: true }));
+    }
   };
 
-  // const handleBlur = () => {
-  //   setIsTyping(false); // Set isTyping to false when a text input is blurred
-  // };
+  const handleChange = () => {
+    setIsTyping(true);
+  };
 
-  const [error, setError] = useState('');
+  const handleBlur = (field) => {
+    if (field !== '' && !isTyping) {
+      setTouchedFields((prevState) => ({ ...prevState, [field]: true }));
+    }
+  };
 
   const handleSubmit = async () => {
-    setLoading(true); // Set isLoading to true when submitting
+    setLoading(true);
 
-    // Prepare the data to send
-    if (name === '' || email === '' || password === '' || confirmPassword === '') return;
-    setLoading(true); // Set isLoading to true when the sign-in button is pressed
     const data = {
       first_name: name,
       last_name: '',
       email: email,
       password: password,
       ke_num: keNumber,
-      // confirmPassword: confirmPassword,
     };
 
-    // Make the API call
     const response = await signup(data);
     if (response.status !== 201) {
-      const responseBody = await response.json();
-      setError(responseBody.error);
       setLoading(false);
       return;
     }
@@ -55,52 +79,45 @@ const CreateAccount = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* {!isTyping && <Text style={styles.header}>Bill-E</Text>} */}
-      {!isTyping &&<Text style={styles.title}>Create Account</Text>}
-
-      {/* Name Field */}
-      <View style={styles.inputContainer}>
-        {/* <Text style={styles.label}>Name</Text> */}
+      <View style={[styles.inputContainer, touchedFields.name && !isTyping && { borderColor: 'red' }]}>
         <TextInput
           style={styles.input}
           placeholder="Full Name"
           value={name}
           onChangeText={(text) => setName(text)}
-          onFocus={handleFocus}
-          // onBlur={handleBlur}
+          onFocus={() => handleFocus('name')}
+          onBlur={() => handleBlur('name')}
         />
       </View>
 
-      {/* Email Field */}
-      <View style={styles.inputContainer}>
-        {/* <Text style={styles.label}>Email</Text> */}
+      <View style={[styles.inputContainer, touchedFields.email && !isTyping && { borderColor: '#ccc' }]}>
         <TextInput
           style={styles.input}
           placeholder="Email Address"
           keyboardType="email-address"
           value={email}
-          onChangeText={(text) => setEmail(text)}
+          onChangeText={(text) => {
+            setEmail(text);
+            handleChange();
+          }}
           autoCapitalize='none'
-          onFocus={handleFocus}
-          // onBlur={handleBlur}
+          onFocus={() => handleFocus('email')}
+          onBlur={() => handleBlur('email')}
         />
       </View>
 
-      <View style={styles.inputContainer}>
-        {/* <Text style={styles.label}>Password</Text> */}
+      <View style={[styles.inputContainer, touchedFields.keNumber && !isTyping && { borderColor: 'red' }]}>
         <TextInput
           style={styles.input}
           placeholder="K-Electric Account Number"
           value={keNumber}
           onChangeText={(text) => setKeNumber(text)}
-          onFocus={handleFocus}
-          // onBlur={handleBlur}
+          onFocus={() => handleFocus('keNumber')}
+          onBlur={() => handleBlur('keNumber')}
         />
       </View>
 
-      {/* Password Field */}
-      <View style={styles.inputContainer}>
-        {/* <Text style={styles.label}>Password</Text> */}
+      <View style={[styles.inputContainer, touchedFields.password && !isTyping && { borderColor: 'red' }]}>
         <TextInput
           style={styles.input}
           placeholder="Password"
@@ -108,14 +125,12 @@ const CreateAccount = ({ navigation }) => {
           value={password}
           autoCapitalize='none'
           onChangeText={(text) => setPassword(text)}
-          onFocus={handleFocus}
-          // onBlur={handleBlur}
+          onFocus={() => handleFocus('password')}
+          onBlur={() => handleBlur('password')}
         />
       </View>
 
-      {/* Confirm Password Field */}
-      <View style={styles.inputContainer}>
-        {/* <Text style={styles.label}>Confirm Password</Text> */}
+      <View style={[styles.inputContainer, touchedFields.confirmPassword && !isTyping && { borderColor: 'red' }]}>
         <TextInput
           style={styles.input}
           placeholder="Confirm Password"
@@ -123,16 +138,14 @@ const CreateAccount = ({ navigation }) => {
           value={confirmPassword}
           autoCapitalize='none'
           onChangeText={(text) => setConfirmPassword(text)}
-          onFocus={handleFocus}
-          // onBlur={handleBlur}
+          onFocus={() => handleFocus('confirmPassword')}
+          onBlur={() => handleBlur('confirmPassword')}
         />
       </View>
-      {error !== '' && <Text style={styles.error}>{error}</Text>}
 
-      {/* Sign Up Button */}
       <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={isLoading}>
         {isLoading ? (
-          <ActivityIndicator color="white" /> // Show loading indicator when isLoading is true
+          <ActivityIndicator color="white" />
         ) : (
           <Text style={styles.buttonText}>Sign Up</Text>
         )}
@@ -155,27 +168,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 10,
   },
-  header: {
-    fontSize: 48,
-    fontWeight: '700',
-    color: '#171A1F',
-    position: 'absolute',
-    top: 47, 
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: '700',
-    color: '#171A1F',
-    marginTop: 125, // Adjust as per your layout
-  },
   inputContainer: {
     width: '90%',
-    marginVertical: 10, // Adjust as per your layout
-  },
-  label: {
-    color: '#424955',
-    fontSize: 16,
-    fontWeight: '700',
+    marginBottom: 15,
+    borderWidth: 1,
+    borderRadius: 16,
+    backgroundColor: '#F3F4F6',
+    borderColor: '#ccc',
   },
   input: {
     height: 43,
@@ -190,7 +189,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     width: '90%',
     alignItems: 'center',
-    marginTop: 20, // Adjust as per your layout
+    marginTop: 20,
   },
   buttonText: {
     color: 'white',
@@ -201,7 +200,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     color: '#171A1F',
-    marginTop: 20, // Adjust as per your layout
+    marginTop: 20,
   },
   footerTextHighlight: {
     color: '#535CE8',
