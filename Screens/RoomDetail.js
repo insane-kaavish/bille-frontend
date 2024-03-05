@@ -128,7 +128,9 @@ const RoomDetail = ({ route, navigation }) => {
         setRoomData(room);
         const updatedAppliances = room.appliances.map(appliance => ({
           ...appliance,
-          usage: `${appliance.Daily_usage}`
+          category: appliance.category,
+          subCategory: appliance.sub_category,
+          usage: `${appliance.daily_usage}` // Ensure to use the correct property name
         }));
         setAppliances(updatedAppliances);
       }
@@ -210,10 +212,11 @@ const RoomDetail = ({ route, navigation }) => {
                 value={appliance.usage}
                 placeholder="Enter Usage"
               />
-              <TouchableOpacity onPress={() => removeAppliance(index)}>
+              
+            </View>
+            <TouchableOpacity onPress={() => removeAppliance(index)}>
                 <Ionicons name="close-circle" size={24} color="red" />
               </TouchableOpacity>
-            </View>
           </View>
           
           
@@ -232,109 +235,206 @@ const RoomDetail = ({ route, navigation }) => {
   );
 };
 
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//   },
+//   scrollContainer: {
+//     flex: 1,
+//     paddingHorizontal: 10,
+//   },
+//   roomInfo: {
+//     marginTop: 20,
+//     backgroundColor: '#f9f9f9',
+//     borderRadius: 8,
+//     padding: 10,
+//     marginBottom: 20,
+//   },
+//   applianceRow: {
+//     // flexDirection: 'row',
+//     // justifyContent: 'space-between',
+//     // alignItems: 'center',
+//     marginBottom: 10,
+//   },
+//   dropdownContainer: {
+//     width: '45%', // Adjust width as needed
+//   },
+//   subCategoryContainer: {
+//     width: '45%', // Adjust width as needed
+//   },
+//   usageContainer: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//   },
+//   pickerStyle: {
+//     borderWidth: 1,
+//     borderColor: '#ccc',
+//     borderRadius: 8,
+//     padding: 10,
+//     width: '100%',
+//   },
+//   subCategoryPickerStyle: {
+//     borderWidth: 1,
+//     borderColor: '#ccc',
+//     borderRadius: 8,
+//     padding: 10,
+//     width: '100%',
+//   },
+//   usageInput: {
+//     borderWidth: 1,
+//     borderColor: '#ccc',
+//     borderRadius: 8,
+//     padding: 10,
+//     width: '45%', // Adjust width as needed
+//     marginLeft: 10, // Add left margin for spacing
+//   },
+//   removeButton: {
+//     padding: 10,
+//   },
+//   addButton: {
+//     backgroundColor: '#535CE8',
+//     borderRadius: 8,
+//     padding: 12,
+//     alignItems: 'center',
+//     marginTop: 10,
+//   },
+//   addButtonText: {
+//     color: '#fff',
+//     fontWeight: 'bold',
+//   },
+//   dropdownStyle: {
+//     backgroundColor: '#fff',
+//     borderRadius: 8,
+//     borderColor: '#ccc',
+//     borderWidth: 1,
+//   },
+//   saveButton: {
+//     position: 'absolute',
+//     bottom: '7%',
+//     zIndex: 1,
+//     paddingHorizontal: 100,
+//     paddingVertical: 12,
+//     backgroundColor: '#535CE8',
+//     borderRadius: 20,
+//     alignSelf: 'center',
+//   },
+//   saveButtonText: {
+//     color: '#fff',
+//     fontWeight: 'bold',
+//   },
+//   roominfocard: {
+//     paddingVertical: 10,
+//     borderBottomWidth: 1,
+//     borderBottomColor: '#ccc',
+//   },
+//   roomInfoText: {
+//     fontSize: 30,
+//     fontWeight: 'bold',
+//     marginBottom: 5,
+//   },
+//   roomAlias: {
+//     fontSize: 18,
+//     fontWeight: 'bold',
+//     marginBottom: 5,
+//   },
+// });
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
   },
   scrollContainer: {
     flex: 1,
-    paddingHorizontal: 10,
+    padding: 10,
   },
   roomInfo: {
-    marginTop: 20,
-    backgroundColor: '#f9f9f9',
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 20,
-  },
-  applianceRow: {
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
-    // alignItems: 'center',
-    marginBottom: 10,
-  },
-  dropdownContainer: {
-    width: '45%', // Adjust width as needed
-  },
-  subCategoryContainer: {
-    width: '45%', // Adjust width as needed
-  },
-  usageContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  pickerStyle: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    padding: 10,
-    width: '100%',
-  },
-  subCategoryPickerStyle: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    padding: 10,
-    width: '100%',
-  },
-  usageInput: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    padding: 10,
-    width: '45%', // Adjust width as needed
-    marginLeft: 10, // Add left margin for spacing
-  },
-  removeButton: {
-    padding: 10,
-  },
-  addButton: {
-    backgroundColor: '#535CE8',
-    borderRadius: 8,
-    padding: 12,
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  addButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  dropdownStyle: {
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    borderColor: '#ccc',
-    borderWidth: 1,
-  },
-  saveButton: {
-    position: 'absolute',
-    bottom: '7%',
-    zIndex: 1,
-    paddingHorizontal: 100,
-    paddingVertical: 12,
-    backgroundColor: '#535CE8',
-    borderRadius: 20,
-    alignSelf: 'center',
-  },
-  saveButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    backgroundColor: '#f7f7f7',
+    borderRadius: 10,
+    padding: 16,
+    marginBottom: 16,
   },
   roominfocard: {
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
   },
   roomInfoText: {
-    fontSize: 30,
+    fontSize: 26,
     fontWeight: 'bold',
-    marginBottom: 5,
+    color: 'black',
+    fontFamily: 'Lato-Bold',
   },
   roomAlias: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 5,
+    color: 'black',
+  },
+  applianceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between', 
+    marginBottom: 10,
+  },
+  pickerStyle: {
+    width: 100, // Set a fixed width for the dropdown
+    borderWidth: 1,
+    borderColor: 'grey',
+    borderRadius: 10,
+    marginRight: 8,
+    padding: 12,
+  },
+  subCategoryPickerStyle: {
+    width: 100, // Set a fixed width for the dropdown
+    borderWidth: 1,
+    borderColor: 'grey',
+    borderRadius: 10,
+    marginRight: 8,
+    padding: 12,
+  },
+  usageInput: {
+    width: 80, // Adjust width as needed
+    borderWidth: 1,
+    borderColor: 'grey',
+    borderRadius: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    fontSize: 14,
+  },
+  addButton: {
+    backgroundColor: '#535CE8',
+    borderRadius: 20,
+    padding: 10,
+    alignItems: 'center',
+    width: '50%',
+    alignSelf: 'center',
+    marginTop: 10,
+  },
+  addButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  saveButton: {
+    backgroundColor: '#535CE8',
+    bottom: '5%',
+    borderRadius: 20,
+    padding: 12,
+    alignItems: 'center',
+    width: '45%',
+    alignSelf: 'center',
+    marginBottom: 20,
+    borderRadius: 20,
+    // padding: 12,
+    // alignItems: 'center',
+    // width: '45%',
+  },
+  saveButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
+
 
 export default RoomDetail;
