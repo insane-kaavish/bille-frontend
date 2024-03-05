@@ -140,8 +140,13 @@ const RoomDetail = ({ route, navigation }) => {
   }, [roomId]);
   
 
+  const getSubcategoryOptions = (category) => {
+    const selectedAppliance = applianceOptions.find(appliance => appliance.name === category);
+    return selectedAppliance ? selectedAppliance.sub_categories : [];
+  };
+
   const addAppliance = () => {
-    setAppliances([...appliances, { name: '', usage: '' }]);
+    setAppliances([...appliances, { name: '',category: 'Appliance', subCategory:'Type',usage: '' }]);
   };
 
   const removeAppliance = (index) => {
@@ -164,30 +169,35 @@ const RoomDetail = ({ route, navigation }) => {
           {appliances.map((appliance, index) => (
             <View key={index} style={styles.applianceRow}>
             <View style={styles.dropdownContainer}>
-              <ModalDropdown
-                options={applianceOptions.map(appliance => appliance.name)}
-                defaultValue={appliance.category || "Select Appliance"}
-                style={styles.pickerStyle}
-                textStyle={{ color: 'black' }}
-                dropdownStyle={styles.dropdownStyle}
-                onSelect={(selectedIndex, value) => {
-                  const selectedAppliance = applianceOptions.find(appliance => appliance.name === value);
-                  if (selectedAppliance) {
-                    setAppliances(prevState => {
-                      const updatedAppliances = [...prevState];
-                      updatedAppliances[index].category = selectedAppliance.name;
-                      updatedAppliances[index].subCategory = selectedAppliance.sub_categories[0]; // Default to the first subcategory
-                      return updatedAppliances;
-                    });
-                  }
-                }}
-              />
+            <ModalDropdown
+              defaultIndex={0}
+              options={applianceOptions.map(appliance => appliance.name)}
+              defaultValue={appliance.category || "Appliance"}
+              defaultTextStyle={{ color: 'pink', opacity: 0.5}}
+              
+              style={styles.pickerStyle}
+              textStyle={{ color: 'black' }}
+              dropdownStyle={styles.dropdownStyle}
+              onSelect={(selectedIndex, value) => {
+                const selectedAppliance = applianceOptions.find(appliance => appliance.name === value);
+                if (selectedAppliance) {
+                  setAppliances(prevState => {
+                    const updatedAppliances = [...prevState];
+                    updatedAppliances[index].category = selectedAppliance.name;
+                    // Remove the automatic selection of subcategory here
+                    return updatedAppliances;
+                  });
+                }
+              }}
+            />
             </View>
             {appliances[index].category && (
               <View style={styles.subCategoryContainer}>
                 <ModalDropdown
-                  options={applianceOptions.find(appliance => appliance.name === appliances[index].category).sub_categories}
-                  defaultValue={appliances[index].subCategory || "Select Subcategory"}
+                  defaultIndex={0}
+                  options={getSubcategoryOptions(appliance.category)}
+                  placeholder="Subcategory"
+                  defaultValue={appliance.subCategory || "Subcategory"}
                   style={styles.subCategoryPickerStyle}
                   textStyle={{ color: 'black' }}
                   dropdownStyle={styles.dropdownStyle}
@@ -199,6 +209,7 @@ const RoomDetail = ({ route, navigation }) => {
                     });
                   }}
                 />
+
               </View>
             )}
             <View style={styles.usageContainer}>
@@ -210,7 +221,7 @@ const RoomDetail = ({ route, navigation }) => {
                   return updatedAppliances;
                 })}
                 value={appliance.usage}
-                placeholder="Enter Usage"
+                placeholder="Usage"
               />
               
             </View>
@@ -235,110 +246,6 @@ const RoomDetail = ({ route, navigation }) => {
   );
 };
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//   },
-//   scrollContainer: {
-//     flex: 1,
-//     paddingHorizontal: 10,
-//   },
-//   roomInfo: {
-//     marginTop: 20,
-//     backgroundColor: '#f9f9f9',
-//     borderRadius: 8,
-//     padding: 10,
-//     marginBottom: 20,
-//   },
-//   applianceRow: {
-//     // flexDirection: 'row',
-//     // justifyContent: 'space-between',
-//     // alignItems: 'center',
-//     marginBottom: 10,
-//   },
-//   dropdownContainer: {
-//     width: '45%', // Adjust width as needed
-//   },
-//   subCategoryContainer: {
-//     width: '45%', // Adjust width as needed
-//   },
-//   usageContainer: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//   },
-//   pickerStyle: {
-//     borderWidth: 1,
-//     borderColor: '#ccc',
-//     borderRadius: 8,
-//     padding: 10,
-//     width: '100%',
-//   },
-//   subCategoryPickerStyle: {
-//     borderWidth: 1,
-//     borderColor: '#ccc',
-//     borderRadius: 8,
-//     padding: 10,
-//     width: '100%',
-//   },
-//   usageInput: {
-//     borderWidth: 1,
-//     borderColor: '#ccc',
-//     borderRadius: 8,
-//     padding: 10,
-//     width: '45%', // Adjust width as needed
-//     marginLeft: 10, // Add left margin for spacing
-//   },
-//   removeButton: {
-//     padding: 10,
-//   },
-//   addButton: {
-//     backgroundColor: '#535CE8',
-//     borderRadius: 8,
-//     padding: 12,
-//     alignItems: 'center',
-//     marginTop: 10,
-//   },
-//   addButtonText: {
-//     color: '#fff',
-//     fontWeight: 'bold',
-//   },
-//   dropdownStyle: {
-//     backgroundColor: '#fff',
-//     borderRadius: 8,
-//     borderColor: '#ccc',
-//     borderWidth: 1,
-//   },
-//   saveButton: {
-//     position: 'absolute',
-//     bottom: '7%',
-//     zIndex: 1,
-//     paddingHorizontal: 100,
-//     paddingVertical: 12,
-//     backgroundColor: '#535CE8',
-//     borderRadius: 20,
-//     alignSelf: 'center',
-//   },
-//   saveButtonText: {
-//     color: '#fff',
-//     fontWeight: 'bold',
-//   },
-//   roominfocard: {
-//     paddingVertical: 10,
-//     borderBottomWidth: 1,
-//     borderBottomColor: '#ccc',
-//   },
-//   roomInfoText: {
-//     fontSize: 30,
-//     fontWeight: 'bold',
-//     marginBottom: 5,
-//   },
-//   roomAlias: {
-//     fontSize: 18,
-//     fontWeight: 'bold',
-//     marginBottom: 5,
-//   },
-// });
 
 const styles = StyleSheet.create({
   container: {
@@ -379,7 +286,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   pickerStyle: {
-    width: 100, // Set a fixed width for the dropdown
+    width: 120, // Set a fixed width for the dropdown
     borderWidth: 1,
     borderColor: 'grey',
     borderRadius: 10,
@@ -387,7 +294,7 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   subCategoryPickerStyle: {
-    width: 100, // Set a fixed width for the dropdown
+    width: 120, // Set a fixed width for the dropdown
     borderWidth: 1,
     borderColor: 'grey',
     borderRadius: 10,
@@ -395,7 +302,7 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   usageInput: {
-    width: 80, // Adjust width as needed
+    width: 40, // Adjust width as needed
     borderWidth: 1,
     borderColor: 'grey',
     borderRadius: 10,
