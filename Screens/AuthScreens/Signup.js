@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { useAuth } from './AuthProvider';
 
@@ -18,7 +18,26 @@ const CreateAccount = ({ navigation }) => {
     keNumber: false,
   });
   const { signup } = useAuth();
-  const [error, setError] = useState('');
+
+  useEffect(() => { 
+    const unsubscribe = navigation.addListener('focus', () => {
+      // Reset fields when screen comes into focus
+      setName('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+      setKeNumber('');
+      setTouchedFields({
+        name: false,
+        email: false,
+        password: false,
+        confirmPassword: false,
+        keNumber: false,
+      });
+    });
+  
+    return unsubscribe;
+  }, [navigation]);
 
   const handleFocus = (field) => {
     setIsTyping(true);
@@ -40,22 +59,6 @@ const CreateAccount = ({ navigation }) => {
   const handleSubmit = async () => {
     setLoading(true);
 
-    // Validate email only if it has been touched or if it has some text and is not in focus
-    if ((touchedFields.email || email !== '') && !validateEmail(email)) {
-      setError('Invalid email address');
-      setLoading(false);
-      return;
-    }
-
-    // Prepare the data to send
-    if (name === '' || email === '' || password === '' || confirmPassword === '') return;
-    if (!email.includes('@') || !email.includes('.com')) {
-      setError('Invalid email address');
-      setLoading(false);
-      return;
-    } else {
-      setError('');
-    }
     const data = {
       first_name: name,
       last_name: '',
@@ -64,11 +67,8 @@ const CreateAccount = ({ navigation }) => {
       ke_num: keNumber,
     };
 
-    // Make the API call
     const response = await signup(data);
     if (response.status !== 201) {
-      const responseBody = await response.json();
-      setError(responseBody.message); // Assuming the error message is in the `message` property
       setLoading(false);
       return;
     }
@@ -90,7 +90,7 @@ const CreateAccount = ({ navigation }) => {
         />
       </View>
 
-      <View style={[styles.inputContainer, touchedFields.email && !isTyping && { borderColor: 'red' }]}>
+      <View style={[styles.inputContainer, touchedFields.email && !isTyping && { borderColor: '#ccc' }]}>
         <TextInput
           style={styles.input}
           placeholder="Email Address"
@@ -98,7 +98,7 @@ const CreateAccount = ({ navigation }) => {
           value={email}
           onChangeText={(text) => {
             setEmail(text);
-            handleChange(); // Call handleChange to reset error when typing
+            handleChange();
           }}
           autoCapitalize='none'
           onFocus={() => handleFocus('email')}
@@ -130,7 +130,6 @@ const CreateAccount = ({ navigation }) => {
         />
       </View>
 
-      {/* Confirm Password Field */}
       <View style={[styles.inputContainer, touchedFields.confirmPassword && !isTyping && { borderColor: 'red' }]}>
         <TextInput
           style={styles.input}
@@ -143,7 +142,6 @@ const CreateAccount = ({ navigation }) => {
           onBlur={() => handleBlur('confirmPassword')}
         />
       </View>
-      {error !== '' && <Text style={styles.error}>{error}</Text>}
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={isLoading}>
         {isLoading ? (
@@ -206,10 +204,6 @@ const styles = StyleSheet.create({
   },
   footerTextHighlight: {
     color: '#535CE8',
-  },
-  error: {
-    color: 'red',
-    marginTop: 5,
   },
 });
 

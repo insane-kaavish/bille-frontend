@@ -6,23 +6,17 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import {
   MenuProvider,
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
 } from "react-native-popup-menu";
 
 import MenuComponent from "./Components/Menu";
 import NavBar from "./Components/NavBar";
 import { useAuth } from "./AuthScreens/AuthProvider";
 
-import Ionicons from "react-native-vector-icons/Ionicons";
-import FontAwesomeicons from "react-native-vector-icons/FontAwesome";
 import WeatherComponent from "./Components/Weather";
-import Config from "react-native-config";
 
 // const API_URL = Config.API_URL;
 const API_URL = 'https://app.bille.live';
@@ -68,6 +62,8 @@ const predictRequest = async (token) => {
     console.error("Error:", error);
   }
 };
+
+const height = Dimensions.get("window").height;
 
 const Dashboard = ({ navigation }) => {
   const { authToken } = useAuth();
@@ -195,7 +191,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
     paddingHorizontal: 10,
-    paddingTop: '10%',
+    paddingTop: height * 0.001,
     backgroundColor: "#fff",
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
@@ -333,7 +329,7 @@ const styles = StyleSheet.create({
   },
   RRText: {
     fontFamily: "Lato-Regular",
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "700",
     lineHeight: 30,
     color: "#323842",
@@ -363,7 +359,7 @@ const styles = StyleSheet.create({
   },
   MUGText: {
     fontFamily: "Lato-Regular",
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "700",
     lineHeight: 30,
     color: "#323842",

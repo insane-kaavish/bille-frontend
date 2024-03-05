@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, Dimensions } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { MenuProvider } from 'react-native-popup-menu';
 
 import MenuComponent from '../Components/Menu';
 import NavBar from '../Components/NavBar';
+
+const height = Dimensions.get('window').height;
 
 const Profile = ({ navigation }) => {
   const [editName, setEditName] = useState('Admin');
@@ -101,7 +103,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
-    paddingTop: 10,
+    paddingTop: height * 0.001,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, StatusBar, View, Text, TextInput, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { StyleSheet, StatusBar, View, Text, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useAuth } from './AuthProvider';
 
 const validateEmail = (email) => {

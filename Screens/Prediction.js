@@ -110,6 +110,8 @@ const fillMissingMonths = (data, last12Months) => {
   return last12Months.map(month => data[month] ? data[month][0] : 0);
 };
 
+const height = Dimensions.get("window").height;
+
 const App = () => {
   const navigation = useNavigation();
   const [hoveredSlab, setHoveredSlab] = useState(null);
@@ -289,7 +291,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
     paddingHorizontal: 10,
-    paddingTop: '10%',
+    paddingTop: height * 0.001,
     backgroundColor: "#fff",
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
