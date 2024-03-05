@@ -128,7 +128,9 @@ const RoomDetail = ({ route, navigation }) => {
         setRoomData(room);
         const updatedAppliances = room.appliances.map(appliance => ({
           ...appliance,
-          usage: `${appliance.Daily_usage}`
+          category: appliance.category,
+          subCategory: appliance.sub_category,
+          usage: `${appliance.daily_usage}` // Ensure to use the correct property name
         }));
         setAppliances(updatedAppliances);
       }
@@ -210,10 +212,11 @@ const RoomDetail = ({ route, navigation }) => {
                 value={appliance.usage}
                 placeholder="Enter Usage"
               />
-              <TouchableOpacity onPress={() => removeAppliance(index)}>
+              
+            </View>
+            <TouchableOpacity onPress={() => removeAppliance(index)}>
                 <Ionicons name="close-circle" size={24} color="red" />
               </TouchableOpacity>
-            </View>
           </View>
           
           
@@ -376,7 +379,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   pickerStyle: {
-    flex: 1,
+    width: 100, // Set a fixed width for the dropdown
     borderWidth: 1,
     borderColor: 'grey',
     borderRadius: 10,
@@ -384,7 +387,7 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   subCategoryPickerStyle: {
-    flex: 1,
+    width: 100, // Set a fixed width for the dropdown
     borderWidth: 1,
     borderColor: 'grey',
     borderRadius: 10,
@@ -415,17 +418,23 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     backgroundColor: '#535CE8',
+    bottom: '5%',
     borderRadius: 20,
     padding: 12,
     alignItems: 'center',
     width: '45%',
     alignSelf: 'center',
     marginBottom: 20,
+    borderRadius: 20,
+    // padding: 12,
+    // alignItems: 'center',
+    // width: '45%',
   },
   saveButtonText: {
     color: 'white',
     fontWeight: 'bold',
   },
 });
+
 
 export default RoomDetail;
