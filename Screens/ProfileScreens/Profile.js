@@ -21,6 +21,12 @@ const Profile = ({ navigation }) => {
     setIsEditing(false);
   };
 
+  const handleCancelPress = () => {
+    setEditName('Admin');
+    setEditEmail('admin@admin.com');
+    setIsEditing(false);
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <MenuProvider skipInstanceCheck={true} style={styles.container}>
@@ -71,7 +77,7 @@ const Profile = ({ navigation }) => {
             </View>
           </View>
 
-          <TouchableOpacity style={styles.editButton} onPress={handleEditPress}>
+          <TouchableOpacity style={styles.editButton} onPress={isEditing ? handleCancelPress : handleEditPress}>
             <Text style={styles.editButtonText}>{isEditing ? "Cancel" : "Edit Profile"}</Text>
           </TouchableOpacity>
         </View>
