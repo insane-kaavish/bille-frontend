@@ -11,24 +11,14 @@ const height = Dimensions.get('window').height;
 const Profile = ({ navigation }) => {
   const [editName, setEditName] = useState('Admin');
   const [editEmail, setEditEmail] = useState('admin@admin.com');
+  const [isEditing, setIsEditing] = useState(false);
 
-  const [isEditing, setIsEditing] = useState(null);
-
-  const handlePress = (fieldName) => {
-    setIsEditing(fieldName);
+  const handleEditPress = () => {
+    setIsEditing(true);
   };
 
-  const handleInputChange = (text, fieldName) => {
-    switch (fieldName) {
-      case 'editName':
-        setEditName(text);
-        break;
-      case 'editEmail':
-        setEditEmail(text);
-        break;
-      default:
-        break;
-    }
+  const handleSavePress = () => {
+    setIsEditing(false);
   };
 
   return (
@@ -43,23 +33,21 @@ const Profile = ({ navigation }) => {
 
         <View style={styles.content}>
           <View style={styles.field}>
-            <Text style={styles.fieldLabel}>Username</Text>
+            <Text style={styles.fieldLabel}>Name</Text>
             <View style={styles.inputContainer}>
               <TextInput
-                style={[styles.input, !isEditing && styles.disabledInput]}
+                style={[styles.input]}
                 value={editName}
-                onChangeText={(text) => handleInputChange(text, 'editName')}
-                editable={isEditing === 'editName'}
+                onChangeText={(text) => setEditName(text)}
+                editable={isEditing}
                 selectTextOnFocus={false}
                 placeholder="Edit Username"
               />
-              <Ionicons
-                name="create-outline"
-                size={20}
-                color="#535CE8"
-                style={styles.icon}
-                onPress={() => handlePress('editName')}
-              />
+              {isEditing && (
+                <TouchableOpacity onPress={handleSavePress}>
+                  <Ionicons name="checkmark" size={20} color="#535CE8" />
+                </TouchableOpacity>
+              )}
             </View>
           </View>
 
@@ -67,23 +55,25 @@ const Profile = ({ navigation }) => {
             <Text style={styles.fieldLabel}>Email</Text>
             <View style={styles.inputContainer}>
               <TextInput
-                style={[styles.input, !isEditing && styles.disabledInput]}
+                style={[styles.input]}
                 value={editEmail}
-                onChangeText={(text) => handleInputChange(text, 'editEmail')}
-                editable={isEditing === 'editEmail'}
+                onChangeText={(text) => setEditEmail(text)}
+                editable={isEditing}
                 selectTextOnFocus={false}
                 placeholder="Edit Email"
                 keyboardType="email-address"
               />
-              <Ionicons
-                name="create-outline"
-                size={20}
-                color="#535CE8"
-                style={styles.icon}
-                onPress={() => handlePress('editEmail')}
-              />
+              {isEditing && (
+                <TouchableOpacity onPress={handleSavePress}>
+                  <Ionicons name="checkmark" size={20} color="#535CE8" />
+                </TouchableOpacity>
+              )}
             </View>
           </View>
+
+          <TouchableOpacity style={styles.editButton} onPress={handleEditPress}>
+            <Text style={styles.editButtonText}>{isEditing ? "Cancel" : "Edit Profile"}</Text>
+          </TouchableOpacity>
         </View>
 
         <NavBar />
@@ -128,10 +118,12 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between', // Adjust alignment
     borderWidth: 1,
     borderColor: '#E0E0E0',
     borderRadius: 8,
     paddingHorizontal: 10,
+    backgroundColor: '#F3F4F6',
   },
   input: {
     flex: 1,
@@ -140,11 +132,18 @@ const styles = StyleSheet.create({
     color: '#333333',
     paddingVertical: 10,
   },
-  disabledInput: {
-    backgroundColor: '#F5F5F5',
+  editButton: {
+    backgroundColor: '#535CE8',
+    borderRadius: 20,
+    padding: 10,
+    alignItems: 'center',
+    width: '50%',
+    alignSelf: 'center',
+    marginTop: 10,
   },
-  icon: {
-    marginLeft: 10,
+  editButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
 

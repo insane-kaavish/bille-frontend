@@ -14,7 +14,6 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { useAuth } from "./AuthScreens/AuthProvider";
-import Config from "react-native-config";
 
 import { MenuProvider } from "react-native-popup-menu";
 
@@ -228,6 +227,15 @@ const App = () => {
               <Text style={{ color: "orange" }}>
                 {" "}
                 Pkr. {totalCost.toFixed(2)}
+              </Text>
+            </Text>
+          </View>
+
+          <View style={styles.unitDetails}>
+            <Text style={styles.estimatedBill}>
+              Next Slab:{" "}
+              <Text style={{ color: "orange" }}>
+                {/* {" "} {slab ? slab.rate : 0} Pkr/unit */}
               </Text>
             </Text>
           </View>
