@@ -10,8 +10,6 @@ const height = Dimensions.get('window').height;
 
 const Profile = ({ navigation }) => {
   const [editName, setEditName] = useState('Admin');
-  // const [editPassword, setEditPassword] = useState('********');
-  // const [editKENumber, setEditKENumber] = useState('040001633072');
   const [editEmail, setEditEmail] = useState('admin@admin.com');
 
   const [isEditing, setIsEditing] = useState(null);
@@ -44,45 +42,48 @@ const Profile = ({ navigation }) => {
         </View>
 
         <View style={styles.content}>
-          <TouchableOpacity
-            style={styles.card}
-            onPress={() => handlePress('editName')}
-          >
-            <TextInput
-              style={styles.input}
-              value={editName}
-              onChangeText={(text) => handleInputChange(text, 'editName')}
-              editable={isEditing === 'editName'}
-              selectTextOnFocus={false}
-            />
-            <Ionicons
-              name="create-outline"
-              size={20}
-              color="#000"
-              style={styles.icon}
-              onPress={() => handlePress('editName')}
-            />
-          </TouchableOpacity>
+          <View style={styles.field}>
+            <Text style={styles.fieldLabel}>Username</Text>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={[styles.input, !isEditing && styles.disabledInput]}
+                value={editName}
+                onChangeText={(text) => handleInputChange(text, 'editName')}
+                editable={isEditing === 'editName'}
+                selectTextOnFocus={false}
+                placeholder="Edit Username"
+              />
+              <Ionicons
+                name="create-outline"
+                size={20}
+                color="#535CE8"
+                style={styles.icon}
+                onPress={() => handlePress('editName')}
+              />
+            </View>
+          </View>
 
-          <TouchableOpacity
-            style={styles.card}
-            onPress={() => handlePress('editEmail')}
-          >
-            <TextInput
-              style={styles.input}
-              value={editEmail}
-              onChangeText={(text) => handleInputChange(text, 'editEmail')}
-              editable={isEditing === 'editEmail'}
-              selectTextOnFocus={false}
-            />
-            <Ionicons
-              name="create-outline"
-              size={20}
-              color="#000"
-              style={styles.icon}
-              onPress={() => handlePress('editEmail')}
-            />
-          </TouchableOpacity>
+          <View style={styles.field}>
+            <Text style={styles.fieldLabel}>Email</Text>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={[styles.input, !isEditing && styles.disabledInput]}
+                value={editEmail}
+                onChangeText={(text) => handleInputChange(text, 'editEmail')}
+                editable={isEditing === 'editEmail'}
+                selectTextOnFocus={false}
+                placeholder="Edit Email"
+                keyboardType="email-address"
+              />
+              <Ionicons
+                name="create-outline"
+                size={20}
+                color="#535CE8"
+                style={styles.icon}
+                onPress={() => handlePress('editEmail')}
+              />
+            </View>
+          </View>
         </View>
 
         <NavBar />
@@ -94,56 +95,56 @@ const Profile = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    padding: 10,
-    justifyContent: 'center', // Center content vertically
+    backgroundColor: '#FAFAFA',
+    paddingHorizontal: 20,
+    paddingTop: 20,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
-    paddingTop: height * 0.001,
-    backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomColor: '#E0E0E0',
+    paddingBottom: 10,
+    marginBottom: 20,
   },
   headerText: {
-    fontFamily: 'Lato-Bold',
+    fontFamily: "Lato-Bold",
     fontSize: 20,
-    color: '#171A1F',
-    textAlign: 'left',
+    color: "#171A1F",
   },
   content: {
     flex: 1,
-    justifyContent: 'center',
   },
-  card: {
+  field: {
+    marginBottom: 20,
+  },
+  fieldLabel: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 16,
+    color: '#333333',
+    marginBottom: 5,
+  },
+  inputContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 20,
-    marginVertical: 10,
-    backgroundColor: '#F5F5F5',
-    borderRadius: 10,
-    elevation: 3, // Add elevation for a card-like effect (Android)
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderRadius: 8,
+    paddingHorizontal: 10,
   },
   input: {
     flex: 1,
-    fontFamily: 'Lato-Bold',
-    fontSize: 18,
-    color: '#000',
-    paddingHorizontal: 10,
+    fontFamily: 'Roboto-Regular',
+    fontSize: 16,
+    color: '#333333',
+    paddingVertical: 10,
+  },
+  disabledInput: {
+    backgroundColor: '#F5F5F5',
   },
   icon: {
-    marginHorizontal: 10,
+    marginLeft: 10,
   },
 });
 

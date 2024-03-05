@@ -98,21 +98,13 @@ const Dashboard = ({ navigation }) => {
   return (
     <MenuProvider skipInstanceCheck={true} style={styles.container}>
       <View style={styles.header}>
-        <View style={{ flex: 1 }}>
-          <Text
-            style={{
-              fontFamily: "Lato-Bold",
-              fontSize: 20,
-              color: "#171A1F",
-              textAlign: "left",
-            }}
-          >
-            Bill-E Dashboard
-          </Text>
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={styles.headerText}>Bill-E Dashboard</Text>
           <WeatherComponent />
         </View>
         <MenuComponent navigation={navigation} />
       </View>
+
 
       <ScrollView style={styles.scrollContainer}>
         <TouchableOpacity style={styles.MC} onPress={navigateToPrediction}>
@@ -195,6 +187,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
+  },
+  headerText: {
+    fontFamily: 'Lato-Bold',
+    fontSize: 20,
+    color: '#171A1F',
+    marginRight: 10, // Adjust the spacing between text and WeatherComponent
   },
   scrollContainer: {
     flex: 1,
