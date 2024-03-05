@@ -170,6 +170,7 @@ const RoomDetail = ({ route, navigation }) => {
                 style={styles.pickerStyle}
                 textStyle={{ color: 'black' }}
                 dropdownStyle={styles.dropdownStyle}
+                defaultIndex={0}
                 onSelect={(selectedIndex, value) => {
                   const selectedAppliance = applianceOptions.find(appliance => appliance.name === value);
                   if (selectedAppliance) {
@@ -191,6 +192,7 @@ const RoomDetail = ({ route, navigation }) => {
                   style={styles.subCategoryPickerStyle}
                   textStyle={{ color: 'black' }}
                   dropdownStyle={styles.dropdownStyle}
+                  defaultIndex={0}
                   onSelect={(selectedIndex, value) => {
                     setAppliances(prevState => {
                       const updatedAppliances = [...prevState];
