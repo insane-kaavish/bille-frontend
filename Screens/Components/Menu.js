@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import {
-  MenuProvider,
   Menu,
   MenuOptions,
   MenuOption,
@@ -11,6 +10,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome from 'react-native-vector-icons/FontAwesome'; // Import modern icons
 
 import { useAuth } from '../AuthScreens/AuthProvider';
+
+const Divider = () => <View style={styles.divider} />;
 
 const MenuComponent = ({ navigation }) => {
   const { logout } = useAuth();
@@ -26,31 +27,34 @@ const MenuComponent = ({ navigation }) => {
         <MaterialCommunityIcons name="menu" size={30} color="black" style={styles.menuIcon} />
       </MenuTrigger>
       <MenuOptions style={styles.menuOptionsStyle}>
-    
         <MenuOption onSelect={() => navigation.navigate('Profile')}>
           <Text style={styles.menuOptionText}>
             Profile         
           </Text>
           <FontAwesome name="user" size={25} color="black" style={styles.menuOptionIcon}/>
         </MenuOption>
+        <Divider />
         <MenuOption onSelect={() => navigation.navigate('Settings')}>
           <Text style={styles.menuOptionText}>
             Settings
           </Text>
           <FontAwesome name="gear" size={25} color="black" style={styles.menuOptionIcon}/>
         </MenuOption>
+        <Divider />
         <MenuOption onSelect={() => navigation.navigate('HelpCenter')}>
           <Text style={styles.menuOptionText}>
             Help Center
           </Text>
           <FontAwesome name="question-circle" size={25} color="black" style={styles.menuOptionIcon}/>
         </MenuOption>
+        <Divider />
         <MenuOption onSelect={handleLogout}>
           <Text style={styles.menuOptionText}>
             Logout   
           </Text>
           <MaterialCommunityIcons name="logout" size={25} color="black" style={styles.menuOptionIcon}/>
         </MenuOption>
+        <Divider />
       </MenuOptions>
     </Menu>
   );
@@ -69,15 +73,19 @@ const styles = StyleSheet.create({
   menuOptionText: {
     textAlign: 'left',
     fontSize: 16,
-    fontFamily: 'Outfit-Bold',
-    marginLeft: 40, // Adjust this value based on the width of the icon
+    fontFamily: 'Roboto-Regular',
+    marginLeft: 45, // Adjust this value based on the width of the icon
   },
   menuOptionIcon: {
     marginLeft: 10,
     paddingVertical: -50,
     justifyContent: 'space-between',
-    top: -26,
+    top: -23,
     right: 0,
+  },
+  divider: {
+    height: 1, // Set a fixed height for the divider
+    // backgroundColor: '#7F8487',
   },
 });
 

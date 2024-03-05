@@ -37,6 +37,8 @@ const roomsRequest = async (token) => {
   }
 };
 
+const height = Dimensions.get("window").height;
+
 const RoomwisePrediction = () => {
   const navigation = useNavigation();
   const { authToken } = useAuth();
@@ -113,7 +115,7 @@ const RoomwisePrediction = () => {
             <ProgressChart
               data={data}
               // FIXME: Do not hard code dimensions!
-              width={Dimensions.get("window").width - 40}
+              width={Dimensions.get("window").width - 80}
               height={220}
               chartConfig={{
                 backgroundGradientFrom: "#ffffff",
@@ -162,7 +164,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
     paddingHorizontal: 10,
-    paddingTop: 10,
+    paddingTop: height * 0.001,
     backgroundColor: "#fff",
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
