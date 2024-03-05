@@ -56,8 +56,8 @@ const RoomwisePrediction = () => {
 
   const colors = [
     "#535CE8",
-    "#FE763E",
     "#2ACCCF",
+    "#FE763E",
     "#F1C932",
     "#7B48CC",
     "#DE3B40",
@@ -87,6 +87,11 @@ const RoomwisePrediction = () => {
     data: updatedRooms.map((room) => room.units / totalAllUnits),
     colors: updatedRooms.map((room) => room.color),
   };
+
+  // Sort the data in ascending order
+  data.labels.sort();
+  data.data.sort();
+  data.colors.sort();
   const navigateToRoomDetails = (roomId) => {
     navigation.navigate("RoomDetail", { roomId: roomId });
   };
@@ -127,6 +132,15 @@ const RoomwisePrediction = () => {
               hideLegend={true}
               withCustomBarColorFromData
             />
+            <View style={styles.unitDetails}>
+              <Text style={styles.estimatedBill}>
+                Total Predicted Units:{" "}
+                <Text style={{ color: "orange" }}>
+                  {" "}
+                  {totalAllUnits} Units
+                </Text>
+              </Text>
+            </View>
           </View>
         </View>
         {updatedRooms.map((room, index) => (
@@ -227,6 +241,25 @@ const styles = StyleSheet.create({
   roomUnits: {
     fontSize: 16,
     color: "#666",
+  },
+  unitDetails: {
+    backgroundColor: "#f9f9f9",
+    borderRadius: 8,
+    padding: 16,
+    margin: 16,
+    alignItems: "center",
+    elevation: 6, // for the main shadow
+    shadowColor: "#000", // color of the shadow
+    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
+    shadowOpacity: 0.6, // opacity of the shadow
+    shadowRadius: 1, // blur radius of the shadow
+  },
+  estimatedBill: {
+    fontSize: 20,
+    color: "#666",
+    textAlign: "center",
+    // marginBottom: 20,
+    fontFamily: "Lato-Bold",
   },
 });
 
