@@ -34,6 +34,24 @@ const getCategories = async (token) => {
   }
 };
 
+const sendData = async (data, token) => {
+  try {
+    const response = await fetch(`${API_URL}/input/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+    if (response.status !== 201) return false;
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
 const RoomData = () => {
   const [rooms, setRooms] = useState([
     { alias: "", appliances: [{ category: "", sub_category: "", usage: "" }] },
@@ -59,11 +77,13 @@ const RoomData = () => {
       }
     };
     fetchCategories();
-    console.log(subCategories)
   }, [authToken]);
 
   const addRoom = () => {
-    const newRoom = { alias: "", appliances: [{ category: "", sub_category: "", usage: "" }] };
+    const newRoom = {
+      alias: "",
+      appliances: [{ category: "", sub_category: "", usage: "" }],
+    };
     setRooms([...rooms, newRoom]);
     setOpenRoomIndices([...openRoomIndices, rooms.length]);
   };
@@ -75,7 +95,11 @@ const RoomData = () => {
 
   const addAppliance = (roomIndex) => {
     const newRooms = [...rooms];
-    newRooms[roomIndex].appliances.push({ category: "", sub_category: "", usage: "" });
+    newRooms[roomIndex].appliances.push({
+      category: "",
+      sub_category: "",
+      usage: 0,
+    });
     setRooms(newRooms);
   };
 
@@ -86,9 +110,14 @@ const RoomData = () => {
   };
 
   const handleSubmit = () => {
-    const roomsJson = JSON.stringify(rooms);
-    console.log(roomsJson);
-    // navigation.navigate("Home", { roomsData: rooms });
+    const data = { rooms: rooms };
+    console.log(data);
+    sendData(data, authToken).then((response) => {
+      if (response) {
+        navigation.navigate("Home");
+        console.log("Data sent successfully");
+      }
+    });
   };
 
   const handleSkip = () => {
