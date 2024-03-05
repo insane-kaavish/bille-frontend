@@ -201,6 +201,7 @@ const RoomDetail = ({ route, navigation }) => {
                   style={styles.subCategoryPickerStyle}
                   textStyle={{ color: 'black' }}
                   dropdownStyle={styles.dropdownStyle}
+                  defaultIndex={0}
                   onSelect={(selectedIndex, value) => {
                     setAppliances(prevState => {
                       const updatedAppliances = [...prevState];

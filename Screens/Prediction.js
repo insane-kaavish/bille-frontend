@@ -14,7 +14,6 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { useAuth } from "./AuthScreens/AuthProvider";
-import Config from "react-native-config";
 
 import { MenuProvider } from "react-native-popup-menu";
 
@@ -231,6 +230,15 @@ const App = () => {
               </Text>
             </Text>
           </View>
+
+          {/* <View style={styles.unitDetails}>
+            <Text style={styles.estimatedBill}>
+              Current Slab:{" "}
+              <Text style={{ color: "orange" }}>
+              {Math.floor(data.units / 100) * 100}-{Math.floor(data.units / 100) * 100 + 99}
+              </Text>
+            </Text>
+          </View> */}
 
           <TouchableOpacity
             style={styles.detailsButton}
