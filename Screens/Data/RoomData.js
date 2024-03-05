@@ -7,10 +7,7 @@ import {
   ScrollView,
   TextInput,
   SafeAreaView,
-  Platform,
-  StatusBar,
 } from 'react-native';
-// import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ModalDropdown from 'react-native-modal-dropdown';
@@ -32,6 +29,18 @@ const applianceOptions = [
   "Electric Geyser",
 ];
 
+const subCategories = {
+  "Refrigerator": ["Single Door", "Double Door"],
+  "Iron": ["Dry Iron", "Steam Iron"],
+  "Air Conditioner": ["Window AC", "Split AC 1 Ton", "Split AC 1.5 Ton", "Split AC 2 Ton", "Split Inverter AC 1 Ton", "Split Inverter AC 1.5 Ton", "Split Inverter AC 2 Ton"],
+  "Deep Freezer": ["Small", "Medium", "Large"],
+  "Washing Machine": ["Semi-Automatic", "Automatic"],
+  "Television": ["CRT", "LCD", "LED", "Plasma"],
+  "Microwave": ["Solo", "Grill", "Convection"],
+  "Water Dispenser": ["Hot & Cold", "Normal"],
+  "Water Heater": ["Instant", "Storage"],
+};
+
 const RoomData = () => {
   const [rooms, setRooms] = useState([{ name: '', appliances: [{ name: '', usage: '' }] }]);
   const [openRoomIndices, setOpenRoomIndices] = useState([0]);
@@ -40,18 +49,14 @@ const RoomData = () => {
   const addRoom = () => {
     const newRoom = { name: '', appliances: [{ name: '', usage: '' }] };
     setRooms([...rooms, newRoom]);
-    // Set the index of the new room to be open
     setOpenRoomIndices([...openRoomIndices, rooms.length]);
   };
 
   const removeRoom = (roomIndex) => {
     const newRooms = rooms.filter((_, index) => index !== roomIndex);
     setRooms(newRooms);
-    // if (roomIndex === activeRoomIndex) {
-    //   setActiveRoomIndex(null); // Or set it to 0 or any other existing index
-    // }
   };
-  
+
   const addAppliance = (roomIndex) => {
     const newRooms = [...rooms];
     newRooms[roomIndex].appliances.push({ name: '', usage: '' });
@@ -65,10 +70,8 @@ const RoomData = () => {
   };
 
   const handleSubmit = () => {
-    // Convert the rooms state to a JSON string
     const roomsJson = JSON.stringify(rooms);
-    console.log(roomsJson); // Log the JSON to the console
-    // Perform any other actions, such as navigation or sending the data to an API
+    console.log(roomsJson);
     navigation.navigate('Home', { roomsData: rooms });
   };
 
@@ -84,7 +87,7 @@ const RoomData = () => {
         return [...currentIndices, index];
       }
     });
-  };   
+  };
 
   const setApplianceName = (roomIndex, applianceIndex, name) => {
     const newRooms = [...rooms];
@@ -109,17 +112,27 @@ const RoomData = () => {
       <View key={`appliance-${applianceIndex}`} style={styles.applianceItem}>
         <ModalDropdown
           options={applianceOptions}
-          defaultValue="Select Appliance"
+          defaultValue="Appliance"
           style={styles.pickerStyle}
-          textStyle={{ color: 'black' }}
-          dropdownStyle={styles.dropdownStyle} // Add dropdownStyle prop
+          textStyle={styles.dropdownTextStyle}
+          dropdownStyle={styles.dropdownStyle}
           onSelect={(index, value) => setApplianceName(roomIndex, applianceIndex, value)}
+          defaultIndex={0}
+        />
+        <ModalDropdown
+          options={appliance.name && subCategories[appliance.name] ? subCategories[appliance.name] : ["Type"]}
+          defaultValue={appliance.name ? "Type" : "Select Type"}
+          style={styles.pickerStyle}
+          textStyle={styles.dropdownTextStyle}
+          dropdownStyle={styles.dropdownStyle}
+          onSelect={(index, value) => console.log(value)}
+          defaultIndex={0}
         />
         <TextInput
           style={styles.usageInput}
           onChangeText={(text) => setApplianceUsage(roomIndex, applianceIndex, text)}
           value={appliance.usage}
-          placeholder="Select Hours"
+          placeholder="Hours"
           keyboardType="numeric"
         />
         <TouchableOpacity onPress={() => removeAppliance(roomIndex, applianceIndex)}>
@@ -127,7 +140,7 @@ const RoomData = () => {
         </TouchableOpacity>
       </View>
     );
-  };
+  };  
 
   const renderRooms = () => {
     return rooms.map((room, index) => (
@@ -144,15 +157,15 @@ const RoomData = () => {
           </TouchableOpacity>
         </TouchableOpacity>
         {openRoomIndices.includes(index) && (
-        <View>
-          {room.appliances.map((appliance, applianceIndex) =>
-            renderAppliance(appliance, index, applianceIndex)
-          )}
-          <TouchableOpacity style={styles.addApplianceButton} onPress={() => addAppliance(index)}>
-            <Text style={styles.addApplianceText}>Add Appliances</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+          <View>
+            {room.appliances.map((appliance, applianceIndex) =>
+              renderAppliance(appliance, index, applianceIndex)
+            )}
+            <TouchableOpacity style={styles.addApplianceButton} onPress={() => addAppliance(index)}>
+              <Text style={styles.addApplianceText}>Add Appliances</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     ));
   };
@@ -183,7 +196,7 @@ const RoomData = () => {
         </TouchableOpacity>
       </View>
     </SafeAreaView>
-  );  
+  );
 };
 
 const styles = StyleSheet.create({
@@ -214,15 +227,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
     fontFamily: 'Lato-Bold',
-    // alignSelf: 'center',
-    // margin: 20, // Remove margin to center it horizontally
-  },
-  setupTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: 'black',
-    marginLeft: 16,
-    marginBottom: 20,
   },
   roomWrapper: {
     backgroundColor: '#f7f7f7',
@@ -239,18 +243,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'grey',
     borderRadius: 10,
-    padding: 12,
+    padding: 14,
     marginRight: 8,
-    marginBottom: 8,
-  },
-  applianceContainer: {
-    marginTop: 8,
+    marginBottom: 10,
   },
   applianceItem: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 5,
-    justifyContent: 'space-between', // This will distribute space evenly between the items
+    // justifyContent: 'space-between', // This will distribute space evenly between the items
   },
   pickerStyle: {
     flex: 1,
@@ -259,17 +260,19 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginRight: 8,
     padding: 12,
-    marginLeft: 8, // Add this if you want space on the left as well
-    marginRight: 4,
+    marginLeft: 0.5, // Add this if you want space on the left as well
   },
   usageInput: {
-    flex: 1,
+    flex: 0.35,
     borderWidth: 1,
     borderColor: 'grey',
     borderRadius: 10,
-    padding: 12,
-    marginRight: 8, // Ensure there's space on the right
-    marginLeft: 8, // Add this if you want space on the left as well
+    paddingVertical: 8, // Reduce vertical padding to make the text box smaller
+    paddingHorizontal: 10, // Reduce horizontal padding to make the text box smaller
+    marginRight: 8,
+    // marginLeft: 0.1,
+    width: '30%', // Adjust the width as needed
+    fontSize: 11,
   },
   addApplianceButton: {
     backgroundColor: '#535CE8',
@@ -290,7 +293,6 @@ const styles = StyleSheet.create({
     padding: 12,
     alignItems: 'center',
     width: '70%',
-    // height: '25%',
     alignSelf: 'center',
   },
   addRoomButtonText: {
@@ -302,12 +304,24 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   dropdownStyle: {
-    backgroundColor: 'gray', // Set the background color to gray
+    width: '50%',
+    maxHeight: 100,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  dropdownTextStyle: {
+    fontSize: 13.5,
+    color: 'black',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
   },
   buttonsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 35, // Adjust the paddingHorizontal value here
+    paddingHorizontal: 35,
     marginBottom: 30,
   },
   skipButton: {

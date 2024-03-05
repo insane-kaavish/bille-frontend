@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import {
   MenuProvider,
   Menu,
@@ -10,6 +10,7 @@ import {
 import MenuComponent from '../Components/Menu';
 import NavBar from '../Components/NavBar';
 
+const height = Dimensions.get('window').height;
 
 const HelpCenter = (navigation) => {
   return (
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     paddingHorizontal: 10,
-    paddingTop: 10,
+    paddingTop: height * 0.001,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#ccc', 
