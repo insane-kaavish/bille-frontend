@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   View,
@@ -15,73 +15,23 @@ import {
 import MenuComponent from "./Components/Menu";
 import NavBar from "./Components/NavBar";
 import { useAuth } from "./AuthScreens/AuthProvider";
+import { useBill } from "./Components/BillProvider";
 
 import WeatherComponent from "./Components/Weather";
 
 // const API_URL = Config.API_URL;
 const API_URL = 'https://app.bille.live';
 
-const currentDate = new Date();
-const currentMonth = currentDate.getMonth(); // Adding 1 because getMonth() returns zero-based month
-// Convert month to string such as Jan, Feb, etc.
-const monthNames = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-const currentMonthName = monthNames[currentMonth];
-
-const currentYear = currentDate.getFullYear();
-
-const predictRequest = async (token) => {
-  try {
-    const response = await fetch(`${API_URL}/predict/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token ? `Token ${token}` : "",
-      },
-      body: JSON.stringify({ month: currentMonthName, year: currentYear }),
-    });
-    if (!response.ok) {
-      throw new Error("Failed to fetch bill data");
-    }
-    const data = await response.json();
-    console.log(data);
-    return data;
-  } catch (error) {
-    console.error("Error:", error);
-  }
-};
-
 const height = Dimensions.get("window").height;
 
 const Dashboard = ({ navigation }) => {
   const { authToken } = useAuth();
-  const [units, setUnits] = React.useState(0);
-  const [totalCost, setTotalCost] = React.useState(0);
-  const [perUnitCost, setPerUnitCost] = React.useState(0);
-  const [loading, setLoading] = React.useState(true);
+  const { units, totalCost, perUnitCost, fetchPredictedData } = useBill();
 
-  React.useEffect(() => {
-    const fetchPrediction = async () => {
-      if (perUnitCost !== 0) return;
-      const data = await predictRequest(authToken);
-      setUnits(Math.round(data.units));
-      setTotalCost(Math.round(data.total_cost));
-      setPerUnitCost(Math.round(data.per_unit_cost));
-      setLoading(false);
-    };
-    fetchPrediction();
+  useEffect(() => {
+    if (perUnitCost === 0) {
+      fetchPredictedData();
+    }
   }, [authToken]);
 
   const navigateToPrediction = () => {

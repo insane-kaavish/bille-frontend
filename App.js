@@ -16,8 +16,9 @@ import Prediction from './Screens/Prediction';
 import ContactUs from './Screens/ProfileScreens/ContactUs';
 import Privacy from './Screens/ProfileScreens/Privacy';
 import RoomwisePrediction from './Screens/RoomwisePrediction';
-import { AuthProvider } from './Screens/AuthScreens/AuthProvider';
 import RoomDetail from './Screens/RoomDetail';
+import { AuthProvider } from './Screens/AuthScreens/AuthProvider';
+import { BillProvider } from './Screens/Components/BillProvider';
 
 import * as Font from 'expo-font';
 
@@ -42,6 +43,7 @@ const App = () => {
 
   return (
     <AuthProvider>
+      <BillProvider>
       <NavigationContainer>
       <Stack.Navigator initialRouteName="SignIn">
         <Stack.Screen
@@ -116,6 +118,7 @@ const App = () => {
         />
       </Stack.Navigator>
       </NavigationContainer>
+      </BillProvider>
     </AuthProvider>
   );
 };
