@@ -19,38 +19,32 @@ import { useBill } from "./Components/BillProvider";
 import { MenuProvider } from "react-native-popup-menu";
 
 // const API_URL = Config.API_URL;
-const API_URL = 'https://app.bille.live';
+const API_URL = "https://app.bille.live";
 const screenWidth = Dimensions.get("window").width;
-
 
 const height = Dimensions.get("window").height;
 
 const App = () => {
   const navigation = useNavigation();
-  const [hoveredSlab, setHoveredSlab] = useState(null);
   const { authToken } = useAuth();
-  const { units, totalCost, actualMonthly, predictedMonthly, labels, fetchMonthlyData, isMonthlyDataFetched } = useBill();
+  const {
+    units,
+    totalCost,
+    actualMonthly,
+    predictedMonthly,
+    labels,
+    fetchMonthlyData,
+    isMonthlyDataFetched,
+  } = useBill();
   const [fillPercentage, setFillPercentage] = useState(0);
-
-
-  // Function to handle hover event
-  const handleHover = (slab) => {
-    setHoveredSlab(slab);
-  };
-
-  // Function to handle mouse leave event
-  const handleMouseLeave = () => {
-    setHoveredSlab(null);
-  };
-
 
   useEffect(() => {
     const fetchData = async () => {
       if (isMonthlyDataFetched === false) {
-        console.log('Fetching monthly data')
+        console.log("Fetching monthly data");
         fetchMonthlyData();
       }
-      setFillPercentage((units % 100));
+      setFillPercentage(units % 100);
     };
     fetchData();
   }, [authToken]);
@@ -101,11 +95,10 @@ const App = () => {
               width={15}
               fill={fillPercentage}
               tintColor="#535CE8"
-              onAnimationComplete={() => console.log("onAnimationComplete")}
               backgroundColor="#F2F2F2"
-              rotation={0}
-              onMouseEnter={() => handleHover(slab)}
-              onMouseLeave={handleMouseLeave}
+              rotation={225}
+              lineCap="round"
+              arcSweepAngle={270}
             >
               {(fill) => (
                 <View style={styles.progressTextContainer}>
@@ -119,21 +112,9 @@ const App = () => {
           <View style={styles.unitDetails}>
             <Text style={styles.estimatedBill}>
               Estimated Bill:{" "}
-              <Text style={{ color: "orange" }}>
-                {" "}
-                Pkr. {totalCost}
-              </Text>
+              <Text style={{ color: "orange" }}> Pkr. {totalCost}</Text>
             </Text>
           </View>
-
-          {/* <View style={styles.unitDetails}>
-            <Text style={styles.estimatedBill}>
-              Current Slab:{" "}
-              <Text style={{ color: "orange" }}>
-              {Math.floor(data.units / 100) * 100}-{Math.floor(data.units / 100) * 100 + 99}
-              </Text>
-            </Text>
-          </View> */}
 
           <TouchableOpacity
             style={styles.detailsButton}
@@ -149,8 +130,6 @@ const App = () => {
               data={data}
               width={screenWidth * 1.5}
               height={300}
-              yAxisLabel=""
-              yAxisSuffix=""
               verticalLabelRotation={0}
               fromZero={true}
               segments={4}
@@ -161,20 +140,16 @@ const App = () => {
                 strokeWidth: 5,
                 barPercentage: 0.3,
                 propsForLabels: { fontsize: 2 },
-                withInnerLines: false, // Remove grid lines
                 decimalPlaces: 0,
-                // formatYLabel: (yLabel) => yLabel.toFixed(0),
                 yAxisInterval: 250,
-                decimalPlaces: 0,
               }}
               bezier
               style={{ marginVertical: 8, borderRadius: 16 }}
             />
           </ScrollView>
           <Text style={styles.graphDescription}>
-            Comparison between the{' '}
-            <Text style={{ color: 'blue' }}>actual</Text> and{' '}
-            <Text style={{ color: 'red' }}>predicted</Text> units.
+            Comparison between the <Text style={{ color: "blue" }}>actual</Text>{" "}
+            and <Text style={{ color: "red" }}>predicted</Text> units.
           </Text>
         </View>
       </ScrollView>

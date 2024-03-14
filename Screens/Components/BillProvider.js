@@ -128,7 +128,7 @@ export const BillProvider = ({ children }) => {
 	}
 
   return (
-    <BillContext.Provider value={{ actualMonthly, predictedMonthly, units, labels, totalCost, perUnitCost, fetchPredictedData, fetchMonthlyData }}>
+    <BillContext.Provider value={{ actualMonthly, predictedMonthly, units, labels, totalCost, perUnitCost, isMonthlyDataFetched, fetchPredictedData, fetchMonthlyData }}>
       {children}
     </BillContext.Provider>
   );
