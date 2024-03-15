@@ -9,16 +9,16 @@ import {
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
-import { MenuProvider } from "react-native-popup-menu";
 import { ProgressChart } from "react-native-chart-kit";
 
-import MenuComponent from "./Components/Menu";
+import Header from "./Components/Header";
 import NavBar from "./Components/NavBar";
 import { useAuth } from "./AuthScreens/AuthProvider";
 import Config from "react-native-config";
+import { StatusBar } from "expo-status-bar";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const API_URL = "https://app.bille.live";
-// const API_URL = Config.API_URL;
+const API_URL = Config.API_URL;
 
 const roomsRequest = async (token) => {
   try {
@@ -97,22 +97,11 @@ const RoomwisePrediction = () => {
   };
 
   return (
-    <MenuProvider skipInstanceCheck={true} style={styles.container}>
-      <View style={styles.header}>
-        <View style={{ flex: 1 }}>
-          <Text
-            style={{
-              fontFamily: "Lato-Bold",
-              fontSize: 20,
-              color: "#171A1F",
-              textAlign: "left",
-            }}
-          >
-            Room Overview
-          </Text>
-        </View>
-        <MenuComponent navigation={navigation} />
-      </View>
+    <>
+    <StatusBar style="auto" />
+    <SafeAreaView edges={["right", "top", "left"]} style={{ flex: 1 }}>
+        <Header screenName="Room Overview" navigation={navigation} />
+      <View style={styles.container}>
 
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.card}>
@@ -135,10 +124,7 @@ const RoomwisePrediction = () => {
             <View style={styles.unitDetails}>
               <Text style={styles.estimatedBill}>
                 Total Predicted Units:{" "}
-                <Text style={{ color: "orange" }}>
-                  {" "}
-                  {totalAllUnits} Units
-                </Text>
+                <Text style={{ color: "orange" }}> {totalAllUnits} Units</Text>
               </Text>
             </View>
           </View>
@@ -163,7 +149,9 @@ const RoomwisePrediction = () => {
         ))}
       </ScrollView>
       <NavBar />
-    </MenuProvider>
+    </View>
+    </SafeAreaView>
+    </>
   );
 };
 

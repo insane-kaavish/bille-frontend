@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import MenuComponent from "./Components/Menu";
+import Header from "./Components/Header";
 import NavBar from "./Components/NavBar";
 import { LineChart } from "react-native-chart-kit";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
@@ -17,6 +17,8 @@ import { useAuth } from "./AuthScreens/AuthProvider";
 import { useBill } from "./Components/BillProvider";
 
 import { MenuProvider } from "react-native-popup-menu";
+import { StatusBar } from "expo-status-bar";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 // const API_URL = Config.API_URL;
 const API_URL = "https://app.bille.live";
@@ -68,23 +70,12 @@ const App = () => {
   };
 
   return (
-    <MenuProvider skipInstanceCheck={true} style={styles.container}>
-      <View style={styles.header}>
-        <View style={{ flex: 1 }}>
-          <Text
-            style={{
-              fontFamily: "Lato-Bold",
-              fontSize: 20,
-              color: "#171A1F",
-              textAlign: "left",
-            }}
-          >
-            Summary
-          </Text>
-        </View>
-        <MenuComponent navigation={navigation} />
-      </View>
+    <>
+    <StatusBar style="auto" />
+    <SafeAreaView edges={["right", "top", "left"]} style={{ flex: 1 }}>
+      <Header screenName="Prediction" navigation={navigation} />
 
+    <View style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.predictionCard}>
           <TouchableWithoutFeedback
@@ -154,7 +145,9 @@ const App = () => {
         </View>
       </ScrollView>
       <NavBar />
-    </MenuProvider>
+    </View>
+    </SafeAreaView>
+    </>
   );
 };
 

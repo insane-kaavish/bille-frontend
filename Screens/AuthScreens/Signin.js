@@ -3,6 +3,7 @@ import { StyleSheet, StatusBar, View, Text, TextInput, TouchableOpacity, Activit
 import { useAuth } from './AuthProvider';
 
 import { Colors } from '../Styles/Colors';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const validateEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -91,8 +92,8 @@ const SignInScreen = ({ navigation }) => {
   }  
 
   return (
+    <>
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" />
       <Text style={styles.header}>Welcome back 👋</Text>
       <View style={[styles.inputContainer, { borderColor: showError ? 'red' : '#ccc' }]}>
         <TextInput
@@ -134,6 +135,7 @@ const SignInScreen = ({ navigation }) => {
         </Text>
       </Text>
     </View>
+    </>
   );
 };
 

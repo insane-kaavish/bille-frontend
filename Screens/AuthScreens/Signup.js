@@ -3,6 +3,8 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator 
 import { useAuth } from './AuthProvider';
 
 import { Colors } from '../Styles/Colors';
+import { StatusBar } from 'expo-status-bar';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const CreateAccount = ({ navigation }) => {
   const [name, setName] = useState('');
@@ -80,6 +82,9 @@ const CreateAccount = ({ navigation }) => {
   };
 
   return (
+    <>
+    <StatusBar style="auto" />
+    <SafeAreaView edges={["right", "top", "left"]} style={{ flex: 1 }}>
     <View style={styles.container}>
       <View style={[styles.inputContainer, touchedFields.name && !isTyping && { borderColor: 'red' }]}>
         <TextInput
@@ -159,6 +164,8 @@ const CreateAccount = ({ navigation }) => {
         </Text>
       </TouchableOpacity>
     </View>
+    </SafeAreaView>
+    </>
   );
 };
 

@@ -21,6 +21,9 @@ import { AuthProvider } from './Screens/AuthScreens/AuthProvider';
 import { BillProvider } from './Screens/Components/BillProvider';
 
 import * as Font from 'expo-font';
+import { MenuProvider } from 'react-native-popup-menu';
+import { StatusBar } from 'expo-status-bar';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator();
 
@@ -42,8 +45,12 @@ const App = () => {
   }, []);
 
   return (
+    <>
     <AuthProvider>
       <BillProvider>
+        <MenuProvider>
+          <StatusBar style="auto" />
+          <SafeAreaView edges={['right', 'top', 'left']} style={{ flex: 1 }}>
       <NavigationContainer>
       <Stack.Navigator initialRouteName="SignIn">
         <Stack.Screen
@@ -118,8 +125,11 @@ const App = () => {
         />
       </Stack.Navigator>
       </NavigationContainer>
+      </SafeAreaView>
+      </MenuProvider>
       </BillProvider>
     </AuthProvider>
+    </>
   );
 };
 

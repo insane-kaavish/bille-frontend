@@ -1,16 +1,27 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, Dimensions } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { MenuProvider } from 'react-native-popup-menu';
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Dimensions,
+} from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { MenuProvider } from "react-native-popup-menu";
 
-import MenuComponent from '../Components/Menu';
-import NavBar from '../Components/NavBar';
+import MenuComponent from "../Components/Header";
+import NavBar from "../Components/NavBar";
+import { StatusBar } from "expo-status-bar";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const height = Dimensions.get('window').height;
+const height = Dimensions.get("window").height;
 
 const Profile = ({ navigation }) => {
-  const [editName, setEditName] = useState('Admin');
-  const [editEmail, setEditEmail] = useState('admin@admin.com');
+  const [editName, setEditName] = useState("Admin");
+  const [editEmail, setEditEmail] = useState("admin@admin.com");
   const [isEditing, setIsEditing] = useState(false);
 
   const handleEditPress = () => {
@@ -22,21 +33,16 @@ const Profile = ({ navigation }) => {
   };
 
   const handleCancelPress = () => {
-    setEditName('Admin');
-    setEditEmail('admin@admin.com');
+    setEditName("Admin");
+    setEditEmail("admin@admin.com");
     setIsEditing(false);
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <MenuProvider skipInstanceCheck={true} style={styles.container}>
-        <View style={styles.header}>
-          <View style={{ flex: 1 }}> 
-            <Text style={styles.headerText}>Bill-E Profile</Text>
-          </View>
-          <MenuComponent navigation={navigation} />
-        </View>
-
+    <>
+    <StatusBar style="auto" />
+    <SafeAreaView edges={["right", "top", "left"]} style={{ flex: 1 }}>
+      {/* TODO: Screen style and touchable feedback thing removed add it back ig but tameez se  */}
         <View style={styles.content}>
           <View style={styles.field}>
             <Text style={styles.fieldLabel}>Name</Text>
@@ -77,30 +83,35 @@ const Profile = ({ navigation }) => {
             </View>
           </View>
 
-          <TouchableOpacity style={styles.editButton} onPress={isEditing ? handleCancelPress : handleEditPress}>
-            <Text style={styles.editButtonText}>{isEditing ? "Cancel" : "Edit Profile"}</Text>
+          <TouchableOpacity
+            style={styles.editButton}
+            onPress={isEditing ? handleCancelPress : handleEditPress}
+          >
+            <Text style={styles.editButtonText}>
+              {isEditing ? "Cancel" : "Edit Profile"}
+            </Text>
           </TouchableOpacity>
         </View>
 
         <NavBar />
-      </MenuProvider>
-    </TouchableWithoutFeedback>
+    </SafeAreaView>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAFAFA',
+    backgroundColor: "#FAFAFA",
     paddingHorizontal: 20,
     paddingTop: 20,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
+    borderBottomColor: "#E0E0E0",
     paddingBottom: 10,
     marginBottom: 20,
   },
@@ -116,40 +127,40 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   fieldLabel: {
-    fontFamily: 'Roboto-Regular',
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
-    color: '#333333',
+    color: "#333333",
     marginBottom: 5,
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between', // Adjust alignment
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between", // Adjust alignment
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: "#E0E0E0",
     borderRadius: 8,
     paddingHorizontal: 10,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: "#F3F4F6",
   },
   input: {
     flex: 1,
-    fontFamily: 'Roboto-Regular',
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
-    color: '#333333',
+    color: "#333333",
     paddingVertical: 10,
   },
   editButton: {
-    backgroundColor: '#535CE8',
+    backgroundColor: "#535CE8",
     borderRadius: 20,
     padding: 10,
-    alignItems: 'center',
-    width: '50%',
-    alignSelf: 'center',
+    alignItems: "center",
+    width: "50%",
+    alignSelf: "center",
     marginTop: 10,
   },
   editButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
 });
 
