@@ -8,12 +8,11 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "./Components/Header";
 import NavBar from "./Components/NavBar";
 import { useAuth } from "./AuthScreens/AuthProvider";
 import { useBill } from "./Components/BillProvider";
-import { StatusBar } from "expo-status-bar";
+import { GlobalStyles } from "./Styles/GlobalStyles";
 
 
 const height = Dimensions.get("window").height;
@@ -37,10 +36,8 @@ const Dashboard = ({ navigation }) => {
 
   return (
     <>
-      <StatusBar style="auto" />
-      <SafeAreaView edges={["right", "top", "left"]} style={{ flex: 1 }}>
         <Header screenName="Dashboard" navigation={navigation} />
-        <View style={styles.container}>
+        <View style={GlobalStyles.screenContainer}>
           <ScrollView style={styles.scrollContainer}>
             <TouchableOpacity style={styles.MC} onPress={navigateToPrediction}>
               <View style={styles.MCcircleContainer}>
@@ -104,33 +101,11 @@ const Dashboard = ({ navigation }) => {
           </ScrollView>
           <NavBar />
         </View>
-      </SafeAreaView>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    padding: 10,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    paddingHorizontal: 10,
-    paddingTop: height * 0.001,
-    backgroundColor: "#fff",
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-  },
-  headerText: {
-    fontFamily: "Lato-Bold",
-    fontSize: 20,
-    color: "#171A1F",
-    marginRight: 10, // Adjust the spacing between text and WeatherComponent
-  },
   scrollContainer: {
     flex: 1,
   },

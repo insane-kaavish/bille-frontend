@@ -7,25 +7,15 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import {
-  MenuProvider,
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-} from "react-native-popup-menu";
-import MenuComponent from "../Components/Header";
+import Header from "../Components/Header";
 import NavBar from "../Components/NavBar";
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const PrivacyPolicyScreen = () => {
   const navigation = useNavigation();
 
   return (
     <>
-      <StatusBar style="auto" />
-      <SafeAreaView edges={["right", "top", "left"]} style={{ flex: 1 }}>
+    <Header screenName="Privacy Policy" navigation={navigation} />
       <ScrollView style={styles.maincontainer}>
         {/* <Text style={styles.header}>Privacy Policy</Text> */}
 
@@ -90,7 +80,6 @@ const PrivacyPolicyScreen = () => {
       </ScrollView>
 
       <NavBar />
-      </SafeAreaView>
     </>
   );
 };

@@ -5,8 +5,13 @@ export const Colors = {
   border: '#ccc', 
   buttonColor: '#535CE8',
   error: 'red',
-  
-  
   placeholder: '#9CA3AF',
-  
+};
+
+export const GlobalStyles = {
+  screenContainer: {
+    flex: 1,
+    backgroundColor: Colors.white,
+    padding: 10,
+  },
 };

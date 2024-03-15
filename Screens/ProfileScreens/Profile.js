@@ -10,12 +10,9 @@ import {
   Dimensions,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { MenuProvider } from "react-native-popup-menu";
 
-import MenuComponent from "../Components/Header";
 import NavBar from "../Components/NavBar";
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaView } from "react-native-safe-area-context";
+import Header from "../Components/Header";
 
 const height = Dimensions.get("window").height;
 
@@ -40,10 +37,8 @@ const Profile = ({ navigation }) => {
 
   return (
     <>
-    <StatusBar style="auto" />
-    <SafeAreaView edges={["right", "top", "left"]} style={{ flex: 1 }}>
-      {/* TODO: Screen style and touchable feedback thing removed add it back ig but tameez se  */}
-        <View style={styles.content}>
+    <Header screenName="Profile" navigation={navigation} />
+    <View style={styles.content}>
           <View style={styles.field}>
             <Text style={styles.fieldLabel}>Name</Text>
             <View style={styles.inputContainer}>
@@ -94,7 +89,6 @@ const Profile = ({ navigation }) => {
         </View>
 
         <NavBar />
-    </SafeAreaView>
     </>
   );
 };

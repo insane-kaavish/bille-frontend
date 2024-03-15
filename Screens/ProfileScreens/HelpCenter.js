@@ -1,29 +1,16 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView, Dimensions } from "react-native";
-import { MenuProvider } from "react-native-popup-menu";
-import MenuComponent from "../Components/Header";
+import { Colors, GlobalStyles } from "../Styles/GlobalStyles";
 import NavBar from "../Components/NavBar";
+import Header from "../Components/Header";
 
 const height = Dimensions.get("window").height;
 
 const HelpCenter = ({ navigation }) => {
   return (
-    <MenuProvider skipInstanceCheck={true} style={styles.container}>
-      <View style={styles.header}>
-        <View style={{ flex: 1 }}>
-          <Text
-            style={{
-              fontFamily: "Lato-Bold",
-              fontSize: 20,
-              color: "#171A1F",
-              textAlign: "left",
-            }}
-          >
-            <Text>Help Center</Text>
-          </Text>
-        </View>
-        <MenuComponent navigation={navigation} />
-      </View>
+    <>
+    <Header screenName="Help Center" navigation={navigation} />
+    <View style={GlobalStyles.screenContainer}>
       <ScrollView style={styles.maincontainer}>
         {/* <Text style={styles.title}>Help Center</Text> */}
         <Text style={styles.subtitle}>About the App</Text>
@@ -50,9 +37,9 @@ const HelpCenter = ({ navigation }) => {
           you with the support you need.
         </Text>
       </ScrollView>
-
       <NavBar />
-    </MenuProvider>
+      </View>
+    </>
   );
 };
 

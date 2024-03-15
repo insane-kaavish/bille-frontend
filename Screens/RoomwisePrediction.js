@@ -15,10 +15,9 @@ import Header from "./Components/Header";
 import NavBar from "./Components/NavBar";
 import { useAuth } from "./AuthScreens/AuthProvider";
 import Config from "react-native-config";
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaView } from "react-native-safe-area-context";
 
-const API_URL = Config.API_URL;
+// const API_URL = Config.API_URL;
+const API_URL = "https://app.bille.live";
 
 const roomsRequest = async (token) => {
   try {
@@ -98,9 +97,7 @@ const RoomwisePrediction = () => {
 
   return (
     <>
-    <StatusBar style="auto" />
-    <SafeAreaView edges={["right", "top", "left"]} style={{ flex: 1 }}>
-        <Header screenName="Room Overview" navigation={navigation} />
+    <Header screenName="Room Overview" navigation={navigation} />
       <View style={styles.container}>
 
       <ScrollView style={styles.scrollContainer}>
@@ -150,7 +147,6 @@ const RoomwisePrediction = () => {
       </ScrollView>
       <NavBar />
     </View>
-    </SafeAreaView>
     </>
   );
 };

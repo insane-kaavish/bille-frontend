@@ -15,10 +15,7 @@ import {
 } from "react-native";
 import { useAuth } from "./AuthScreens/AuthProvider";
 import { useBill } from "./Components/BillProvider";
-
-import { MenuProvider } from "react-native-popup-menu";
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaView } from "react-native-safe-area-context";
+import Config from "react-native-config";
 
 // const API_URL = Config.API_URL;
 const API_URL = "https://app.bille.live";
@@ -71,9 +68,7 @@ const App = () => {
 
   return (
     <>
-    <StatusBar style="auto" />
-    <SafeAreaView edges={["right", "top", "left"]} style={{ flex: 1 }}>
-      <Header screenName="Prediction" navigation={navigation} />
+    <Header screenName="Prediction" navigation={navigation} />
 
     <View style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
@@ -146,7 +141,6 @@ const App = () => {
       </ScrollView>
       <NavBar />
     </View>
-    </SafeAreaView>
     </>
   );
 };
