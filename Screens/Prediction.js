@@ -74,7 +74,7 @@ const PredictionScreen = () => {
         <ScrollView style={styles.scrollContainer}>
           <View style={styles.predictionCard}>
             <TouchableWithoutFeedback
-              onPress={() => navigation.navigate("RoomwisePrediction")}
+              onPress={() => navigation.navigate("RoomOverview")}
             >
               <AnimatedCircularProgress
                 size={180}
@@ -104,7 +104,7 @@ const PredictionScreen = () => {
 
             <TouchableOpacity
               style={styles.detailsButton}
-              onPress={() => navigation.navigate("RoomwisePrediction")}
+              onPress={() => navigation.navigate("RoomOverview")}
             >
               <Text style={styles.detailsButtonText}>View Room Details</Text>
             </TouchableOpacity>

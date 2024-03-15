@@ -30,7 +30,7 @@ const DashboardScreen = ({ navigation }) => {
     navigation.navigate("Prediction");
   };
   const navigateToRoomWise = () => {
-    navigation.navigate("RoomwisePrediction");
+    navigation.navigate("RoomOverview");
   };
 
   return (
