@@ -8,19 +8,13 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import {
-  MenuProvider,
-} from "react-native-popup-menu";
-
-import MenuComponent from "./Components/Menu";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Header from "./Components/Header";
 import NavBar from "./Components/NavBar";
 import { useAuth } from "./AuthScreens/AuthProvider";
 import { useBill } from "./Components/BillProvider";
+import { StatusBar } from "expo-status-bar";
 
-import WeatherComponent from "./Components/Weather";
-
-// const API_URL = Config.API_URL;
-const API_URL = 'https://app.bille.live';
 
 const height = Dimensions.get("window").height;
 
@@ -42,79 +36,76 @@ const Dashboard = ({ navigation }) => {
   };
 
   return (
-    <MenuProvider skipInstanceCheck={true} style={styles.container}>
-      <View style={styles.header}>
-        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={styles.headerText}>Bill-E Dashboard</Text>
-          <WeatherComponent />
+    <>
+      <StatusBar style="auto" />
+      <SafeAreaView edges={["right", "top", "left"]} style={{ flex: 1 }}>
+        <Header screenName="Dashboard" navigation={navigation} />
+        <View style={styles.container}>
+          <ScrollView style={styles.scrollContainer}>
+            <TouchableOpacity style={styles.MC} onPress={navigateToPrediction}>
+              <View style={styles.MCcircleContainer}>
+                <View style={styles.MCinnermostCircleContainer}>
+                  <Image source={require("../extra/assets/OV.png")} />
+                </View>
+              </View>
+              <Text style={styles.MCtitle}>Current Units</Text>
+              <Text style={styles.MCdescription}>
+                Based on your current consumption data, your predicted units are{" "}
+                {units} and consider good.
+              </Text>
+              <Text style={styles.MCunitsCount}>{units}</Text>
+            </TouchableOpacity>
+
+            <View style={styles.HLcontainer}>
+              <Text style={styles.HLtitle}>Highlights</Text>
+            </View>
+
+            <View style={styles.cardsContainer}>
+              <View style={[styles.card, { backgroundColor: "#7C83ED" }]}>
+                <Text style={styles.cardTitle}>Expected Bill</Text>
+                <Text style={styles.cardAmount}>Rs. {totalCost}</Text>
+                <Text style={styles.cardText}>Based on usage pattern</Text>
+                <View style={styles.cardIconContainer}>
+                  <Image source={require("../extra/assets/c11.png")} />
+                </View>
+              </View>
+
+              <View style={[styles.card, { backgroundColor: "#2ACCCF" }]}>
+                <Text style={styles.cardTitle}>Per Unit Price</Text>
+                <Text style={styles.cardAmount}>Rs. {perUnitCost}</Text>
+                <Text style={styles.cardText}>Based on the slab rates</Text>
+                <View style={styles.cardIconContainer}>
+                  <Image source={require("../extra/assets/c12.png")} />
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.MRContainer}>
+              <Text style={styles.MRtext}>Monthly Report</Text>
+              <TouchableOpacity
+                style={styles.RRcontainer}
+                onPress={navigateToRoomWise}
+              >
+                <Text style={styles.RRText}>Room Report</Text>
+                <View style={styles.RRicon}>
+                  <Image source={require("../extra/assets/RRIcon.png")} />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.MUGcontainer}
+                onPress={navigateToPrediction}
+              >
+                <Text style={styles.MUGText}> Monthly Unit Graph</Text>
+                <View style={styles.MUGicon}>
+                  <Image source={require("../extra/assets/MUGIcon.png")} />
+                </View>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+          <NavBar />
         </View>
-        <MenuComponent navigation={navigation} />
-      </View>
-
-
-      <ScrollView style={styles.scrollContainer}>
-        <TouchableOpacity style={styles.MC} onPress={navigateToPrediction}>
-          <View style={styles.MCcircleContainer}>
-            <View style={styles.MCinnermostCircleContainer}>
-              <Image source={require("../extra/assets/OV.png")} />
-            </View>
-          </View>
-          <Text style={styles.MCtitle}>Current Units</Text>
-          <Text style={styles.MCdescription}>
-            Based on your current consumption data, your predicted units are{" "}
-            {units} and consider good.
-          </Text>
-          <Text style={styles.MCunitsCount}>{units}</Text>
-        </TouchableOpacity>
-
-        <View style={styles.HLcontainer}>
-          <Text style={styles.HLtitle}>Highlights</Text>
-        </View>
-
-        <View style={styles.cardsContainer}>
-          <View style={[styles.card, { backgroundColor: '#7C83ED' }]}>
-            <Text style={styles.cardTitle}>Expected Bill</Text>
-            <Text style={styles.cardAmount}>Rs. {totalCost}</Text>
-            <Text style={styles.cardText}>Based on usage pattern</Text>
-            <View style={styles.cardIconContainer}>
-              <Image source={require("../extra/assets/c11.png")} />
-            </View>
-          </View>
-
-          <View style={[styles.card, { backgroundColor: '#2ACCCF' }]}>
-            <Text style={styles.cardTitle}>Per Unit Price</Text>
-            <Text style={styles.cardAmount}>Rs. {perUnitCost}</Text>
-            <Text style={styles.cardText}>Based on the slab rates</Text>
-            <View style={styles.cardIconContainer}>
-              <Image source={require("../extra/assets/c12.png")} />
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.MRContainer}>
-          <Text style={styles.MRtext}>Monthly Report</Text>
-          <TouchableOpacity
-            style={styles.RRcontainer}
-            onPress={navigateToRoomWise}
-          >
-            <Text style={styles.RRText}>Room Report</Text>
-            <View style={styles.RRicon}>
-              <Image source={require("../extra/assets/RRIcon.png")} />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.MUGcontainer}
-            onPress={navigateToPrediction}
-          >
-            <Text style={styles.MUGText}> Monthly Unit Graph</Text>
-            <View style={styles.MUGicon}>
-              <Image source={require("../extra/assets/MUGIcon.png")} />
-            </View>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-      <NavBar />
-    </MenuProvider>
+      </SafeAreaView>
+    </>
   );
 };
 
@@ -135,9 +126,9 @@ const styles = StyleSheet.create({
     borderBottomColor: "#ccc",
   },
   headerText: {
-    fontFamily: 'Lato-Bold',
+    fontFamily: "Lato-Bold",
     fontSize: 20,
-    color: '#171A1F',
+    color: "#171A1F",
     marginRight: 10, // Adjust the spacing between text and WeatherComponent
   },
   scrollContainer: {
