@@ -152,7 +152,7 @@ const SigninScreen = ({ navigation }) => {
           Don't have an account?{" "}
           <Text
             style={styles.signUpText}
-            onPress={() => navigation.navigate("CreateAccount")}
+            onPress={() => navigation.navigate("Signup")}
           >
             Sign up
           </Text>

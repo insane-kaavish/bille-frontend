@@ -29,7 +29,7 @@ const DashboardScreen = ({ navigation }) => {
   const navigateToPrediction = () => {
     navigation.navigate("Prediction");
   };
-  const navigateToRoomWise = () => {
+  const navigateToRoomOverview = () => {
     navigation.navigate("RoomOverview");
   };
 
@@ -80,7 +80,7 @@ const DashboardScreen = ({ navigation }) => {
             <Text style={styles.MRtext}>Monthly Report</Text>
             <TouchableOpacity
               style={styles.RRcontainer}
-              onPress={navigateToRoomWise}
+              onPress={navigateToRoomOverview}
             >
               <Text style={styles.RRText}>Room Report</Text>
               <View style={styles.RRicon}>
