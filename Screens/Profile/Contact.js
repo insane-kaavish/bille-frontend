@@ -6,20 +6,13 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import {
-  MenuProvider,
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-} from "react-native-popup-menu";
 
-import MenuComponent from "../Components/Header";
-import NavBar from "../Components/NavBar";
+import Navbar from "../Components/Navbar";
+import Header from "../Components/Header";
 
-const ContactUsScreen = () => {
-  const navigation = useNavigation();
+import { GlobalStyles } from "../Styles/GlobalStyles";
+
+const ContactScreen = ({ navigation }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -36,30 +29,13 @@ const ContactUsScreen = () => {
     setName("");
     setEmail("");
     setMessage("");
-    navigation.goBack();
   };
 
   return (
-    <MenuProvider skipInstanceCheck={true} style={styles.container}>
-      <View style={styles.header}>
-        <View style={{ flex: 1 }}>
-          <Text
-            style={{
-              fontFamily: "Lato-Bold",
-              fontSize: 20,
-              color: "#171A1F",
-              textAlign: "left",
-            }}
-          >
-            <Text>Contact Us</Text>
-          </Text>
-        </View>
-        <MenuComponent navigation={navigation} />
-      </View>
+    <>
+      <Header screenName="Contact Us" navigation={navigation} />
 
-      <View style={styles.maincontainer}>
-        {/* <Text style={styles.header}>Contact Us</Text> */}
-
+      <View style={GlobalStyles.screenContainer}>
         <View style={styles.formContainer}>
           <Text style={styles.label}>Your Name:</Text>
           <TextInput
@@ -93,32 +69,12 @@ const ContactUsScreen = () => {
         </TouchableOpacity>
       </View>
 
-      <NavBar />
-    </MenuProvider>
+      <Navbar />
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    padding: 10,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    paddingHorizontal: 10,
-    paddingTop: 10,
-    backgroundColor: "#fff",
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-  },
-  maincontainer: {
-    flex: 1,
-    padding: 20,
-    justifyContent: "center",
-  },
   formContainer: {
     marginBottom: 20,
   },
@@ -149,4 +105,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ContactUsScreen;
+export default ContactScreen;

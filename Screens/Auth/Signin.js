@@ -17,7 +17,7 @@ const validateEmail = (email) => {
   return emailRegex.test(email);
 };
 
-const SignInScreen = ({ navigation }) => {
+const SigninScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setLoading] = useState(false);
@@ -90,7 +90,7 @@ const SignInScreen = ({ navigation }) => {
     if (await login(email, password)) {
       console.log(authToken);
       setLoading(false);
-      navigation.navigate("DashBoard");
+      navigation.navigate("Dashboard");
     } else {
       setLoading(false);
       setError("Email address or password is incorrect");
@@ -217,4 +217,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignInScreen;
+export default SigninScreen;

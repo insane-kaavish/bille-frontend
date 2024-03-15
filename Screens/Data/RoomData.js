@@ -11,10 +11,11 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import ModalDropdown from "react-native-modal-dropdown";
-import { useAuth } from "../AuthScreens/AuthProvider";
-import Config from "react-native-config";
+import { useAuth } from "../Auth/AuthProvider";
+// import Config from "react-native-config";
 
-const API_URL = Config.API_URL;
+// const API_URL = Config.API_URL;
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 const getCategories = async (token) => {
   try {
@@ -51,7 +52,7 @@ const sendData = async (data, token) => {
   }
 };
 
-const RoomData = () => {
+const RoomDataScreen = () => {
   const [rooms, setRooms] = useState([
     { alias: "", appliances: [{ category: "", sub_category: "", usage: "" }] },
   ]);
@@ -423,4 +424,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RoomData;
+export default RoomDataScreen;

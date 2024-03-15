@@ -1,22 +1,22 @@
-import React from 'react';
-import { TouchableOpacity, StyleSheet, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; // Import modern icons
-import { MaterialIcons } from '@expo/vector-icons';
+import React from "react";
+import { TouchableOpacity, StyleSheet, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"; // Import modern icons
+import { MaterialIcons } from "@expo/vector-icons";
 
-const NavBar = () => {
+const Navbar = () => {
   const navigation = useNavigation(); // Hook to access the navigation prop
 
   const navigateToOverview = () => {
-    navigation.navigate('DashBoard');
+    navigation.navigate("Dashboard");
   };
 
   const navigateToPrediction = () => {
-    navigation.navigate('Prediction');
+    navigation.navigate("Prediction");
   };
 
   const navigateToRoomWise = () => {
-    navigation.navigate('RoomwisePrediction');
+    navigation.navigate("RoomOverview");
   };
 
   return (
@@ -36,22 +36,22 @@ const NavBar = () => {
 
 const styles = StyleSheet.create({
   navBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     borderTopWidth: 1,
-    borderTopColor: '#EFEFEF',
+    borderTopColor: "#EFEFEF",
     paddingVertical: 10,
-    backgroundColor: '#FFFFFF',
-    position: 'absolute',
+    backgroundColor: "#FFFFFF",
+    position: "absolute",
     left: 0,
     right: 0,
     bottom: 0,
   },
   navtab: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
-export default NavBar;
+export default Navbar;

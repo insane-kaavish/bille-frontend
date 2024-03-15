@@ -1,15 +1,19 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
-import { useAuth } from '../AuthScreens/AuthProvider';
-
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from "react-native-popup-menu";
+import { useAuth } from "../Auth/AuthProvider";
 
 const Header = ({ screenName, navigation }) => {
   const { logout } = useAuth();
   const handleLogout = () => {
     logout();
-    navigation.navigate('SignIn');
+    navigation.navigate("SignIn");
   };
   return (
     <View style={styles.container}>
@@ -18,26 +22,28 @@ const Header = ({ screenName, navigation }) => {
         <MenuTrigger>
           <Ionicons name="menu" size={24} color="black" />
         </MenuTrigger>
-        <MenuOptions
-         style={styles.MenuOptions}>
+        <MenuOptions style={styles.MenuOptions}>
           <MenuOption
-            onSelect={() => navigation.navigate('Profile')}
+            onSelect={() => navigation.navigate("Profile")}
             text="Profile"
-            style={styles.MenuOption} />
+            style={styles.MenuOption}
+          />
           <MenuOption
-            onSelect={() => navigation.navigate('Settings')}
+            onSelect={() => navigation.navigate("Settings")}
             text="Settings"
-            style={styles.MenuOption} />
+            style={styles.MenuOption}
+          />
           <MenuOption
-            onSelect={() => navigation.navigate('HelpCenter')}
+            onSelect={() => navigation.navigate("HelpCenter")}
             text="Help Center"
-            style={styles.MenuOption} />
+            style={styles.MenuOption}
+          />
           <MenuOption
-            onSelect={() => navigation.navigate('ContactUs')}
+            onSelect={() => navigation.navigate("Contact")}
             text="Contact Us"
-            style={styles.MenuOption} />
-          <MenuOption
-            onSelect={handleLogout}>
+            style={styles.MenuOption}
+          />
+          <MenuOption onSelect={handleLogout}>
             <Text style={styles.logoutOption}>Logout</Text>
           </MenuOption>
         </MenuOptions>
@@ -48,19 +54,19 @@ const Header = ({ screenName, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: '7%',
-    backgroundColor: '#f8f8f8',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    position: 'relative',
+    height: "7%",
+    backgroundColor: "#f8f8f8",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    position: "relative",
   },
   screenName: {
     fontSize: 20,
-    marginLeft: '5%'
+    marginLeft: "5%",
   },
   menuIconContainer: {
-    marginRight: '5%'
+    marginRight: "5%",
   },
   MenuOptions: {
     padding: 10,
@@ -72,8 +78,8 @@ const styles = StyleSheet.create({
     fontSize: 16, // Adjusted for readability
   },
   logoutOption: {
-    color: 'red',
-  }
+    color: "red",
+  },
 });
 
 export default Header;

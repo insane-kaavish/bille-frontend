@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "./Components/Header";
-import NavBar from "./Components/NavBar";
+import Navbar from "./Components/Navbar";
 import { LineChart } from "react-native-chart-kit";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { useNavigation } from "@react-navigation/native";
@@ -13,16 +13,17 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
 } from "react-native";
-import { useAuth } from "./AuthScreens/AuthProvider";
+import { useAuth } from "./Auth/AuthProvider";
 import { useBill } from "./Components/BillProvider";
-import Config from "react-native-config";
+// import Config from "react-native-config";
 
-const API_URL = Config.API_URL;
+// const API_URL = Config.API_URL;
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
 const screenWidth = Dimensions.get("window").width;
 
 const height = Dimensions.get("window").height;
 
-const App = () => {
+const PredictionScreen = () => {
   const navigation = useNavigation();
   const { authToken } = useAuth();
   const {
@@ -67,79 +68,80 @@ const App = () => {
 
   return (
     <>
-    <Header screenName="Prediction" navigation={navigation} />
+      <Header screenName="Prediction" navigation={navigation} />
 
-    <View style={styles.container}>
-      <ScrollView style={styles.scrollContainer}>
-        <View style={styles.predictionCard}>
-          <TouchableWithoutFeedback
-            onPress={() => navigation.navigate("RoomwisePrediction")}
-          >
-            <AnimatedCircularProgress
-              size={180}
-              width={15}
-              fill={fillPercentage}
-              tintColor="#535CE8"
-              backgroundColor="#F2F2F2"
-              rotation={225}
-              lineCap="round"
-              arcSweepAngle={270}
+      <View style={styles.container}>
+        <ScrollView style={styles.scrollContainer}>
+          <View style={styles.predictionCard}>
+            <TouchableWithoutFeedback
+              onPress={() => navigation.navigate("RoomwisePrediction")}
             >
-              {(fill) => (
-                <View style={styles.progressTextContainer}>
-                  <Text style={styles.consumptionValue}>{units}</Text>
-                  <Text style={styles.consumptionUnit}>Predicted units</Text>
-                </View>
-              )}
-            </AnimatedCircularProgress>
-          </TouchableWithoutFeedback>
+              <AnimatedCircularProgress
+                size={180}
+                width={15}
+                fill={fillPercentage}
+                tintColor="#535CE8"
+                backgroundColor="#F2F2F2"
+                rotation={225}
+                lineCap="round"
+                arcSweepAngle={270}
+              >
+                {(fill) => (
+                  <View style={styles.progressTextContainer}>
+                    <Text style={styles.consumptionValue}>{units}</Text>
+                    <Text style={styles.consumptionUnit}>Predicted units</Text>
+                  </View>
+                )}
+              </AnimatedCircularProgress>
+            </TouchableWithoutFeedback>
 
-          <View style={styles.unitDetails}>
-            <Text style={styles.estimatedBill}>
-              Estimated Bill:{" "}
-              <Text style={{ color: "orange" }}> Pkr. {totalCost}</Text>
-            </Text>
+            <View style={styles.unitDetails}>
+              <Text style={styles.estimatedBill}>
+                Estimated Bill:{" "}
+                <Text style={{ color: "orange" }}> Pkr. {totalCost}</Text>
+              </Text>
+            </View>
+
+            <TouchableOpacity
+              style={styles.detailsButton}
+              onPress={() => navigation.navigate("RoomwisePrediction")}
+            >
+              <Text style={styles.detailsButtonText}>View Room Details</Text>
+            </TouchableOpacity>
           </View>
 
-          <TouchableOpacity
-            style={styles.detailsButton}
-            onPress={() => navigation.navigate("RoomwisePrediction")}
-          >
-            <Text style={styles.detailsButtonText}>View Room Details</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.graphCard}>
-          <ScrollView horizontal>
-            <LineChart
-              data={data}
-              width={screenWidth * 1.5}
-              height={300}
-              verticalLabelRotation={0}
-              fromZero={true}
-              segments={4}
-              chartConfig={{
-                backgroundGradientFrom: "#FFF",
-                backgroundGradientTo: "#FFF",
-                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                strokeWidth: 5,
-                barPercentage: 0.3,
-                propsForLabels: { fontsize: 2 },
-                decimalPlaces: 0,
-                yAxisInterval: 250,
-              }}
-              bezier
-              style={{ marginVertical: 8, borderRadius: 16 }}
-            />
-          </ScrollView>
-          <Text style={styles.graphDescription}>
-            Comparison between the <Text style={{ color: "blue" }}>actual</Text>{" "}
-            and <Text style={{ color: "red" }}>predicted</Text> units.
-          </Text>
-        </View>
-      </ScrollView>
-      <NavBar />
-    </View>
+          <View style={styles.graphCard}>
+            <ScrollView horizontal>
+              <LineChart
+                data={data}
+                width={screenWidth * 1.5}
+                height={300}
+                verticalLabelRotation={0}
+                fromZero={true}
+                segments={4}
+                chartConfig={{
+                  backgroundGradientFrom: "#FFF",
+                  backgroundGradientTo: "#FFF",
+                  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                  strokeWidth: 5,
+                  barPercentage: 0.3,
+                  propsForLabels: { fontsize: 2 },
+                  decimalPlaces: 0,
+                  yAxisInterval: 250,
+                }}
+                bezier
+                style={{ marginVertical: 8, borderRadius: 16 }}
+              />
+            </ScrollView>
+            <Text style={styles.graphDescription}>
+              Comparison between the{" "}
+              <Text style={{ color: "blue" }}>actual</Text> and{" "}
+              <Text style={{ color: "red" }}>predicted</Text> units.
+            </Text>
+          </View>
+        </ScrollView>
+        <Navbar />
+      </View>
     </>
   );
 };
@@ -268,4 +270,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default PredictionScreen;

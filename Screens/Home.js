@@ -1,16 +1,22 @@
-import React, { useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Animated, Image } from 'react-native';
-import { useAuth } from './AuthScreens/AuthProvider';
-import Config from 'react-native-config';
+import React, { useRef, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Animated,
+  Image,
+} from "react-native";
+import { useAuth } from "./Auth/AuthProvider";
 
-const API_URL = Config.API_URL;
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 const handleScrape = async (token) => {
   try {
     const response = await fetch(`${API_URL}/scrape/`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Token ${token}`,
       },
     });
@@ -25,14 +31,14 @@ const handleScrape = async (token) => {
 const checkStatus = async (token, task_id) => {
   try {
     const response = await fetch(`${API_URL}/task_status/?task_id=${task_id}`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Token ${token}`,
       },
     });
     const data = await response.json();
-    if (data.status === 'SUCCESS') {
+    if (data.status === "SUCCESS") {
       return true;
     }
     return false;
@@ -40,7 +46,6 @@ const checkStatus = async (token, task_id) => {
     console.error(error);
   }
 };
-
 
 const HomeScreen = ({ navigation }) => {
   const { authToken } = useAuth();
@@ -75,7 +80,7 @@ const HomeScreen = ({ navigation }) => {
           status = await checkStatus(authToken, task_id);
           if (status) {
             clearInterval(intervalId);
-            navigation.navigate('DashBoard');
+            navigation.navigate("Dashboard");
           }
         }, 15000);
       }
@@ -84,16 +89,20 @@ const HomeScreen = ({ navigation }) => {
   }, [authToken, navigation]);
 
   return (
-    <View style={[styles.container, { backgroundColor: '#535CE8' }]}>
+    <View style={[styles.container, { backgroundColor: "#535CE8" }]}>
       <View style={styles.backgroundCircle} />
       <Text style={styles.content}>
-        We are preparing the best experience for you. This may take a few minutes. {'\n\n'}
-        Meanwhile, enjoy watching our configuration assistant rushing to set your application for you.
+        We are preparing the best experience for you. This may take a few
+        minutes. {"\n\n"}
+        Meanwhile, enjoy watching our configuration assistant rushing to set
+        your application for you.
       </Text>
 
-      <Animated.View style={[styles.widget, { transform: [{ translateX: catPosition }] }]}>
+      <Animated.View
+        style={[styles.widget, { transform: [{ translateX: catPosition }] }]}
+      >
         <Image
-          source={require('../assets/Cat.gif')} 
+          source={require("../assets/Cat.gif")}
           style={{ width: 180, height: 150 }}
         />
       </Animated.View>
@@ -104,48 +113,48 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 20,
   },
   backgroundCircle: {
     width: 504,
     height: 462,
     borderRadius: 9999,
-    backgroundColor: 'white',
-    position: 'absolute',
+    backgroundColor: "white",
+    position: "absolute",
     top: -266,
   },
   content: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: 'white',
-    textAlign: 'center',
+    fontWeight: "bold",
+    color: "white",
+    textAlign: "center",
     marginTop: 30,
-    fontFamily: 'Lato-Bold',
+    fontFamily: "Lato-Bold",
     marginBottom: 30,
   },
   widget: {
     width: 100,
     height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 30,
   },
   button: {
-    width: '70%',
+    width: "70%",
     paddingVertical: 12,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 26,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 50,
   },
   buttonText: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#171A1F',
-    fontFamily: 'Lato-Bold',
+    fontWeight: "bold",
+    color: "#171A1F",
+    fontFamily: "Lato-Bold",
   },
 });
 

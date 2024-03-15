@@ -8,14 +8,14 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Header from "../Components/Header";
-import NavBar from "../Components/NavBar";
+import Navbar from "../Components/Navbar";
 
-const PrivacyPolicyScreen = () => {
+const PrivacyScreen = () => {
   const navigation = useNavigation();
 
   return (
     <>
-    <Header screenName="Privacy Policy" navigation={navigation} />
+      <Header screenName="Privacy Policy" navigation={navigation} />
       <ScrollView style={styles.maincontainer}>
         {/* <Text style={styles.header}>Privacy Policy</Text> */}
 
@@ -79,7 +79,7 @@ const PrivacyPolicyScreen = () => {
         </TouchableOpacity>
       </ScrollView>
 
-      <NavBar />
+      <Navbar />
     </>
   );
 };
@@ -136,4 +136,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PrivacyPolicyScreen;
+export default PrivacyScreen;

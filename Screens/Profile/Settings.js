@@ -7,7 +7,7 @@ import {
   Dimensions,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import NavBar from "../Components/NavBar";
+import Navbar from "../Components/Navbar";
 import Header from "../Components/Header";
 import { GlobalStyles } from "../Styles/GlobalStyles";
 
@@ -18,9 +18,9 @@ const SettingsScreen = ({ navigation }) => {
     navigation.navigate("Privacy");
     console.log("Navigate to Privacy");
   };
-  const navigateToContactUs = () => {
-    navigation.navigate("ContactUs");
-    console.log("Navigate to Contact Us");
+  const navigateToContact = () => {
+    navigation.navigate("Contact");
+    console.log("Navigate to Contact");
   };
 
   const navigateToNotifications = () => {
@@ -29,7 +29,7 @@ const SettingsScreen = ({ navigation }) => {
 
   return (
     <>
-    <Header screenName="Settings" navigation={navigation} />
+      <Header screenName="Settings" navigation={navigation} />
       <View style={GlobalStyles.screenContainer}>
         <TouchableOpacity
           style={styles.optionButton}
@@ -49,13 +49,13 @@ const SettingsScreen = ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.optionButton}
-          onPress={navigateToContactUs}
+          onPress={navigateToContact}
         >
           <Text style={styles.optionText}>Contact Us</Text>
           <Ionicons name="chevron-forward-outline" size={20} color="#000" />
         </TouchableOpacity>
       </View>
-      <NavBar />
+      <Navbar />
     </>
   );
 };

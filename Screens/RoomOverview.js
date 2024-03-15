@@ -12,11 +12,12 @@ import { useNavigation } from "@react-navigation/native";
 import { ProgressChart } from "react-native-chart-kit";
 
 import Header from "./Components/Header";
-import NavBar from "./Components/NavBar";
-import { useAuth } from "./AuthScreens/AuthProvider";
-import Config from "react-native-config";
+import Navbar from "./Components/Navbar";
+import { useAuth } from "./Auth/AuthProvider";
+// import Config from "react-native-config";
 
-const API_URL = Config.API_URL;
+// const API_URL = Config.API_URL;
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 const roomsRequest = async (token) => {
   try {
@@ -37,7 +38,7 @@ const roomsRequest = async (token) => {
 
 const height = Dimensions.get("window").height;
 
-const RoomwisePrediction = () => {
+const RoomOverviewScreen = () => {
   const navigation = useNavigation();
   const { authToken } = useAuth();
   const [rooms, setRooms] = React.useState([]);
@@ -96,56 +97,58 @@ const RoomwisePrediction = () => {
 
   return (
     <>
-    <Header screenName="Room Overview" navigation={navigation} />
+      <Header screenName="Room Overview" navigation={navigation} />
       <View style={styles.container}>
-
-      <ScrollView style={styles.scrollContainer}>
-        <View style={styles.card}>
-          <View style={styles.progressContainer}>
-            <ProgressChart
-              data={data}
-              // FIXME: Do not hard code dimensions!
-              width={Dimensions.get("window").width - 80}
-              height={220}
-              chartConfig={{
-                backgroundGradientFrom: "#ffffff",
-                backgroundGradientTo: "#ffffff",
-                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                strokeWidth: 5,
-              }}
-              style={{ borderRadius: 16, padding: 10 }}
-              hideLegend={true}
-              withCustomBarColorFromData
-            />
-            <View style={styles.unitDetails}>
-              <Text style={styles.estimatedBill}>
-                Total Predicted Units:{" "}
-                <Text style={{ color: "orange" }}> {totalAllUnits} Units</Text>
-              </Text>
+        <ScrollView style={styles.scrollContainer}>
+          <View style={styles.card}>
+            <View style={styles.progressContainer}>
+              <ProgressChart
+                data={data}
+                // FIXME: Do not hard code dimensions!
+                width={Dimensions.get("window").width - 80}
+                height={220}
+                chartConfig={{
+                  backgroundGradientFrom: "#ffffff",
+                  backgroundGradientTo: "#ffffff",
+                  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                  strokeWidth: 5,
+                }}
+                style={{ borderRadius: 16, padding: 10 }}
+                hideLegend={true}
+                withCustomBarColorFromData
+              />
+              <View style={styles.unitDetails}>
+                <Text style={styles.estimatedBill}>
+                  Total Predicted Units:{" "}
+                  <Text style={{ color: "orange" }}>
+                    {" "}
+                    {totalAllUnits} Units
+                  </Text>
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
-        {updatedRooms.map((room, index) => (
-          <TouchableOpacity
-            key={index}
-            style={styles.roomCard}
-            onPress={() => navigateToRoomDetails(room.id)}
-          >
-            <View
-              style={[styles.iconContainer, { backgroundColor: room.color }]}
+          {updatedRooms.map((room, index) => (
+            <TouchableOpacity
+              key={index}
+              style={styles.roomCard}
+              onPress={() => navigateToRoomDetails(room.id)}
             >
-              <Ionicons name={"home"} size={24} color="#fff" />
-            </View>
-            <View style={styles.roomDetails}>
-              <Text style={styles.roomName}>{room.alias}</Text>
-              <Text style={styles.roomUnits}>{`${room.units} Units`}</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={24} color="#C0C0C0" />
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-      <NavBar />
-    </View>
+              <View
+                style={[styles.iconContainer, { backgroundColor: room.color }]}
+              >
+                <Ionicons name={"home"} size={24} color="#fff" />
+              </View>
+              <View style={styles.roomDetails}>
+                <Text style={styles.roomName}>{room.alias}</Text>
+                <Text style={styles.roomUnits}>{`${room.units} Units`}</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={24} color="#C0C0C0" />
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+        <Navbar />
+      </View>
     </>
   );
 };
@@ -246,4 +249,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RoomwisePrediction;
+export default RoomOverviewScreen;

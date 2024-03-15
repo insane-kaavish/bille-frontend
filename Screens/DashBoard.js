@@ -9,15 +9,14 @@ import {
   Dimensions,
 } from "react-native";
 import Header from "./Components/Header";
-import NavBar from "./Components/NavBar";
-import { useAuth } from "./AuthScreens/AuthProvider";
+import Navbar from "./Components/Navbar";
+import { useAuth } from "./Auth/AuthProvider";
 import { useBill } from "./Components/BillProvider";
 import { GlobalStyles } from "./Styles/GlobalStyles";
 
-
 const height = Dimensions.get("window").height;
 
-const Dashboard = ({ navigation }) => {
+const DashboardScreen = ({ navigation }) => {
   const { authToken } = useAuth();
   const { units, totalCost, perUnitCost, fetchPredictedData } = useBill();
 
@@ -36,71 +35,71 @@ const Dashboard = ({ navigation }) => {
 
   return (
     <>
-        <Header screenName="Dashboard" navigation={navigation} />
-        <View style={GlobalStyles.screenContainer}>
-          <ScrollView style={styles.scrollContainer}>
-            <TouchableOpacity style={styles.MC} onPress={navigateToPrediction}>
-              <View style={styles.MCcircleContainer}>
-                <View style={styles.MCinnermostCircleContainer}>
-                  <Image source={require("../extra/assets/OV.png")} />
-                </View>
+      <Header screenName="Dashboard" navigation={navigation} />
+      <View style={GlobalStyles.screenContainer}>
+        <ScrollView style={styles.scrollContainer}>
+          <TouchableOpacity style={styles.MC} onPress={navigateToPrediction}>
+            <View style={styles.MCcircleContainer}>
+              <View style={styles.MCinnermostCircleContainer}>
+                <Image source={require("../extra/assets/OV.png")} />
               </View>
-              <Text style={styles.MCtitle}>Current Units</Text>
-              <Text style={styles.MCdescription}>
-                Based on your current consumption data, your predicted units are{" "}
-                {units} and consider good.
-              </Text>
-              <Text style={styles.MCunitsCount}>{units}</Text>
+            </View>
+            <Text style={styles.MCtitle}>Current Units</Text>
+            <Text style={styles.MCdescription}>
+              Based on your current consumption data, your predicted units are{" "}
+              {units} and consider good.
+            </Text>
+            <Text style={styles.MCunitsCount}>{units}</Text>
+          </TouchableOpacity>
+
+          <View style={styles.HLcontainer}>
+            <Text style={styles.HLtitle}>Highlights</Text>
+          </View>
+
+          <View style={styles.cardsContainer}>
+            <View style={[styles.card, { backgroundColor: "#7C83ED" }]}>
+              <Text style={styles.cardTitle}>Expected Bill</Text>
+              <Text style={styles.cardAmount}>Rs. {totalCost}</Text>
+              <Text style={styles.cardText}>Based on usage pattern</Text>
+              <View style={styles.cardIconContainer}>
+                <Image source={require("../extra/assets/c11.png")} />
+              </View>
+            </View>
+
+            <View style={[styles.card, { backgroundColor: "#2ACCCF" }]}>
+              <Text style={styles.cardTitle}>Per Unit Price</Text>
+              <Text style={styles.cardAmount}>Rs. {perUnitCost}</Text>
+              <Text style={styles.cardText}>Based on the slab rates</Text>
+              <View style={styles.cardIconContainer}>
+                <Image source={require("../extra/assets/c12.png")} />
+              </View>
+            </View>
+          </View>
+
+          <View style={styles.MRContainer}>
+            <Text style={styles.MRtext}>Monthly Report</Text>
+            <TouchableOpacity
+              style={styles.RRcontainer}
+              onPress={navigateToRoomWise}
+            >
+              <Text style={styles.RRText}>Room Report</Text>
+              <View style={styles.RRicon}>
+                <Image source={require("../extra/assets/RRIcon.png")} />
+              </View>
             </TouchableOpacity>
-
-            <View style={styles.HLcontainer}>
-              <Text style={styles.HLtitle}>Highlights</Text>
-            </View>
-
-            <View style={styles.cardsContainer}>
-              <View style={[styles.card, { backgroundColor: "#7C83ED" }]}>
-                <Text style={styles.cardTitle}>Expected Bill</Text>
-                <Text style={styles.cardAmount}>Rs. {totalCost}</Text>
-                <Text style={styles.cardText}>Based on usage pattern</Text>
-                <View style={styles.cardIconContainer}>
-                  <Image source={require("../extra/assets/c11.png")} />
-                </View>
+            <TouchableOpacity
+              style={styles.MUGcontainer}
+              onPress={navigateToPrediction}
+            >
+              <Text style={styles.MUGText}> Monthly Unit Graph</Text>
+              <View style={styles.MUGicon}>
+                <Image source={require("../extra/assets/MUGIcon.png")} />
               </View>
-
-              <View style={[styles.card, { backgroundColor: "#2ACCCF" }]}>
-                <Text style={styles.cardTitle}>Per Unit Price</Text>
-                <Text style={styles.cardAmount}>Rs. {perUnitCost}</Text>
-                <Text style={styles.cardText}>Based on the slab rates</Text>
-                <View style={styles.cardIconContainer}>
-                  <Image source={require("../extra/assets/c12.png")} />
-                </View>
-              </View>
-            </View>
-
-            <View style={styles.MRContainer}>
-              <Text style={styles.MRtext}>Monthly Report</Text>
-              <TouchableOpacity
-                style={styles.RRcontainer}
-                onPress={navigateToRoomWise}
-              >
-                <Text style={styles.RRText}>Room Report</Text>
-                <View style={styles.RRicon}>
-                  <Image source={require("../extra/assets/RRIcon.png")} />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.MUGcontainer}
-                onPress={navigateToPrediction}
-              >
-                <Text style={styles.MUGText}> Monthly Unit Graph</Text>
-                <View style={styles.MUGicon}>
-                  <Image source={require("../extra/assets/MUGIcon.png")} />
-                </View>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
-          <NavBar />
-        </View>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+        <Navbar />
+      </View>
     </>
   );
 };
@@ -285,4 +284,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Dashboard;
+export default DashboardScreen;
