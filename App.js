@@ -43,6 +43,9 @@ const App = () => {
         'Lato-Bold': require('./extra/fonts/Lato/Lato-Bold.ttf'),
         'Outfit-Bold': require('./extra/fonts/Outfit/static/Outfit-Bold.ttf'),
         'Outfit-Regular': require('./extra/fonts/Outfit/static/Outfit-Regular.ttf'),
+        'Roboto-Regular': require('./extra/fonts/Roboto/Roboto-Regular.ttf'),
+        'Roboto-Bold': require('./extra/fonts/Roboto/Roboto-Bold.ttf'),
+        'Roboto-Light': require('./extra/fonts/Roboto/Roboto-Light.ttf'),
       });
       setFontsLoaded(true);
     };
