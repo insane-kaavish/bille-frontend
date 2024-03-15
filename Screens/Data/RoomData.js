@@ -14,7 +14,6 @@ import ModalDropdown from "react-native-modal-dropdown";
 import { useAuth } from "../AuthScreens/AuthProvider";
 import Config from "react-native-config";
 
-// const API_URL = "https://app.bille.live";
 const API_URL = Config.API_URL;
 
 const getCategories = async (token) => {

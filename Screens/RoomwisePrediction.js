@@ -16,8 +16,7 @@ import NavBar from "./Components/NavBar";
 import { useAuth } from "./AuthScreens/AuthProvider";
 import Config from "react-native-config";
 
-// const API_URL = Config.API_URL;
-const API_URL = "https://app.bille.live";
+const API_URL = Config.API_URL;
 
 const roomsRequest = async (token) => {
   try {

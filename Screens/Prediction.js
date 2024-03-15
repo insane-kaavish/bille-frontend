@@ -17,8 +17,7 @@ import { useAuth } from "./AuthScreens/AuthProvider";
 import { useBill } from "./Components/BillProvider";
 import Config from "react-native-config";
 
-// const API_URL = Config.API_URL;
-const API_URL = "https://app.bille.live";
+const API_URL = Config.API_URL;
 const screenWidth = Dimensions.get("window").width;
 
 const height = Dimensions.get("window").height;

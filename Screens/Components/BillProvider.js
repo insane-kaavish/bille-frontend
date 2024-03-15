@@ -2,8 +2,7 @@ import React, { createContext, useState, useContext } from 'react';
 import Config from 'react-native-config';
 import { useAuth } from '../AuthScreens/AuthProvider';
 
-// const API_URL = Config.API_URL;
-const API_URL = 'https://app.bille.live';
+const API_URL = Config.API_URL;
 // Create a context with an empty object as the default value
 const BillContext = createContext({});
 
