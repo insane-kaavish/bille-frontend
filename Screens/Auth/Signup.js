@@ -11,6 +11,11 @@ import { useAuth } from "./AuthProvider";
 
 import { Colors, GlobalStyles } from "../Styles/GlobalStyles";
 
+const validateEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
 const SignupScreen = ({ navigation }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
