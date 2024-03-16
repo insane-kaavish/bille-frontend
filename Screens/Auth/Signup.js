@@ -191,7 +191,7 @@ const SignupScreen = ({ navigation }) => {
           )}
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Signin")}>
           <Text style={styles.footerText}>
             Already have an account?{" "}
             <Text style={styles.footerTextHighlight}>Login</Text>
