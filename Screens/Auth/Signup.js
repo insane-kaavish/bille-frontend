@@ -10,6 +10,7 @@ import {
 import { useAuth } from "./AuthProvider";
 
 import { Colors, GlobalStyles } from "../Styles/GlobalStyles";
+import { ScrollView } from "react-native";
 
 const validateEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -24,6 +25,8 @@ const SignupScreen = ({ navigation }) => {
   const [keNumber, setKeNumber] = useState("");
   const [isLoading, setLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [error, setError] = useState("");
+  const [showError, setShowError] = useState(false);
   const [touchedFields, setTouchedFields] = useState({
     name: false,
     email: false,
@@ -41,6 +44,8 @@ const SignupScreen = ({ navigation }) => {
       setPassword("");
       setConfirmPassword("");
       setKeNumber("");
+      setError("");
+      setShowError(false);
       setTouchedFields({
         name: false,
         email: false,
@@ -49,7 +54,6 @@ const SignupScreen = ({ navigation }) => {
         keNumber: false,
       });
     });
-
     return unsubscribe;
   }, [navigation]);
 
@@ -57,6 +61,14 @@ const SignupScreen = ({ navigation }) => {
     setIsTyping(true);
     if (!touchedFields[field]) {
       setTouchedFields((prevState) => ({ ...prevState, [field]: true }));
+    }
+    if (field === "name" && error) {
+      setError("");
+      setShowError(false);
+    }
+    if (field === "email" && error) {
+      setError("");
+      setShowError(false);
     }
   };
 
@@ -67,6 +79,16 @@ const SignupScreen = ({ navigation }) => {
   const handleBlur = (field) => {
     if (field !== "" && !isTyping) {
       setTouchedFields((prevState) => ({ ...prevState, [field]: true }));
+    }
+    if (field === "name" && (name.length > 30 && name !== "")) {
+      setError("Name cannot be more than 30 characters");
+      setShowError(true);
+    } else if (field === "email" && (!validateEmail(email) && email !== "")) {
+      setError("Please enter a valid email address");
+      setShowError(true);
+    } else {
+      setError("");
+      setShowError(false);
     }
   };
 
@@ -93,11 +115,13 @@ const SignupScreen = ({ navigation }) => {
 
   return (
     <>
-      <View style={[GlobalStyles.screenContainer, styles.container]}>
+      <ScrollView style={[GlobalStyles.screenContainer, styles.container]}
+      contentContainerStyle={styles.scrollViewContent}
+      >
         <View
           style={[
             styles.inputContainer,
-            touchedFields.name && !isTyping && { borderColor: "red" },
+            { borderColor: showError ? "red" : "#ccc"}
           ]}
         >
           <TextInput
@@ -109,17 +133,17 @@ const SignupScreen = ({ navigation }) => {
             onBlur={() => handleBlur("name")}
           />
         </View>
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
         <View
           style={[
             styles.inputContainer,
-            touchedFields.email && !isTyping && { borderColor: "#ccc" },
+            { borderColor: showError ? "red" : "#ccc"}
           ]}
         >
           <TextInput
             style={styles.input}
             placeholder="Email Address"
-            keyboardType="email-address"
             value={email}
             onChangeText={(text) => {
               setEmail(text);
@@ -130,6 +154,7 @@ const SignupScreen = ({ navigation }) => {
             onBlur={() => handleBlur("email")}
           />
         </View>
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
         <View
           style={[
@@ -156,7 +181,7 @@ const SignupScreen = ({ navigation }) => {
           <TextInput
             style={styles.input}
             placeholder="Password"
-            secureTextEntry
+            secureTextEntry 
             value={password}
             autoCapitalize="none"
             onChangeText={(text) => setPassword(text)}
@@ -202,7 +227,7 @@ const SignupScreen = ({ navigation }) => {
             <Text style={styles.footerTextHighlight}>Login</Text>
           </Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </>
   );
 };
@@ -211,8 +236,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.white,
-    alignItems: "center",
-    justifyContent: "center",
+    // alignItems: "center",
+    // justifyContent: "center",
     padding: 10,
   },
   inputContainer: {
@@ -221,14 +246,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 16,
     backgroundColor: Colors.textfieldBG,
-    borderColor: "#ccc",
+    borderColor: Colors.border,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: 'center', // Center vertically
+    alignItems: 'center', // Center horizontally
   },
   input: {
-    height: 43,
-    backgroundColor: Colors.textfieldBG,
-    borderRadius: 16,
     padding: 10,
-    marginTop: 5,
+    borderColor: Colors.border,
   },
   button: {
     backgroundColor: Colors.buttonColor,
@@ -253,6 +280,10 @@ const styles = StyleSheet.create({
     color: Colors.buttonColor,
     // underline
     textDecorationLine: "underline",
+  },
+  errorText: {
+    color: Colors.error,
+    marginBottom: 10,
   },
 });
 
