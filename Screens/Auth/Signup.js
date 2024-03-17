@@ -27,6 +27,16 @@ const SignupScreen = ({ navigation }) => {
   const [isTyping, setIsTyping] = useState(false);
   const [error, setError] = useState("");
   const [showError, setShowError] = useState(false);
+  const [NameError, setNameError] = useState("");
+  const [showNameError, setShowNameError] = useState(false);
+  const [EmailError, setEmailError] = useState("");
+  const [showEmailError, setShowEmailError] = useState(false);
+  const [KeNumberError, setKeNumberError] = useState("");
+  const [showKeNumberError, setShowKeNumberError] = useState(false);
+  const [PasswordError, setPasswordError] = useState("");
+  const [showPasswordError, setShowPasswordError] = useState(false);
+  const [ConfirmPasswordError, setConfirmPasswordError] = useState("");
+  const [showConfirmPasswordError, setShowConfirmPasswordError] = useState(false);
   const [touchedFields, setTouchedFields] = useState({
     name: false,
     email: false,
@@ -45,7 +55,17 @@ const SignupScreen = ({ navigation }) => {
       setConfirmPassword("");
       setKeNumber("");
       setError("");
+      setNameError("");
+      setEmailError("");
+      setKeNumberError("");
+      setPasswordError("");
+      setConfirmPasswordError("");
       setShowError(false);
+      setShowNameError(false);
+      setShowEmailError(false);
+      setShowKeNumberError(false);
+      setShowPasswordError(false);
+      setShowConfirmPasswordError(false);
       setTouchedFields({
         name: false,
         email: false,
@@ -57,18 +77,133 @@ const SignupScreen = ({ navigation }) => {
     return unsubscribe;
   }, [navigation]);
 
+  // Deal with error handling for the name field
+
+  const handleFocusName = (field) => {
+    setIsTyping(true);
+    if (!touchedFields[field]) {
+      setTouchedFields((prevState) => ({ ...prevState, [field]: true }));
+    }
+    if (field === "name" && NameError) {
+      setNameError("");
+      setShowNameError(false);
+    }
+  };
+
+  const handleBlurName = (field) => {
+    if (field !== "" && !isTyping) {
+      setTouchedFields((prevState) => ({ ...prevState, [field]: true }));
+    }
+    if (field === "name" && (name.length > 30 && name !== "")) {
+      setNameError("Name cannot be more than 30 characters");
+      setShowNameError(true);
+    } else {
+      setNameError("");
+      setShowNameError(false);
+    }
+  };
+
+  // Deal with error handling for the email field
+
+  const handleFocusEmail = (field) => {
+    setIsTyping(true);
+    if (!touchedFields[field]) {
+      setTouchedFields((prevState) => ({ ...prevState, [field]: true }));
+    }
+    if (field === "email" && EmailError) {
+      setEmailError("");
+      setShowEmailError(false);
+    }
+  };
+
+  const handleBlurEmail = (field) => {
+    if (field !== "" && !isTyping) {
+      setTouchedFields((prevState) => ({ ...prevState, [field]: true }));
+    }
+    if (field === "email" && email !== "" && !validateEmail(email)) {
+      setEmailError("Enter a valid email address");
+      setShowEmailError(true);
+    } else {
+      setEmailError("");
+      setShowEmailError(false);
+    }
+  };
+
+  // Deal with error handling for the keNumber field
+
   const handleFocus = (field) => {
     setIsTyping(true);
     if (!touchedFields[field]) {
       setTouchedFields((prevState) => ({ ...prevState, [field]: true }));
     }
-    if (field === "name" && error) {
-      setError("");
-      setShowError(false);
+    if (field === "keNumber" && KeNumberError) {
+      setKeNumberError("");
+      setShowKeNumberError(false);
     }
-    if (field === "email" && error) {
-      setError("");
-      setShowError(false);
+  };
+
+  const handleBlur = (field) => {
+    if (field !== "" && !isTyping) {
+      setTouchedFields((prevState) => ({ ...prevState, [field]: true }));
+    }
+    if (field === "keNumber" && keNumber !== "" && (keNumber.length !== 13 || !keNumber.startsWith("040"))) {
+      setKeNumberError("Enter a valid 13 digit account number starting with 040");
+      setShowKeNumberError(true);
+    } else {
+      setKeNumberError("");
+      setShowKeNumberError(false);
+    }
+  };
+
+  // Deal with error handling for the password field
+
+  const handleFocusPassword = (field) => {
+    setIsTyping(true);
+    if (!touchedFields[field]) {
+      setTouchedFields((prevState) => ({ ...prevState, [field]: true }));
+    }
+    if (field === "password" && PasswordError) {
+      setPasswordError("");
+      setShowPasswordError(false);
+    }
+  };
+
+  const handleBlurPassword = (field) => {
+    if (field !== "" && !isTyping) {
+      setTouchedFields((prevState) => ({ ...prevState, [field]: true }));
+    }
+    if (field === "password" && password !== "" && password.length < 8) {
+      setPasswordError("Password must be at least 8 characters long");
+      setShowPasswordError(true);
+    } else {
+      setPasswordError("");
+      setShowPasswordError(false);
+    }
+  };
+
+  // Deal with error handling for the confirmPassword field
+
+  const handleFocusConfirmPassword = (field) => {
+    setIsTyping(true);
+    if (!touchedFields[field]) {
+      setTouchedFields((prevState) => ({ ...prevState, [field]: true }));
+    }
+    if (field === "confirmPassword" && ConfirmPasswordError) {
+      setConfirmPasswordError("");
+      setShowConfirmPasswordError(false);
+    }
+  };
+
+  const handleBlurConfirmPassword = (field) => {
+    if (field !== "" && !isTyping) {
+      setTouchedFields((prevState) => ({ ...prevState, [field]: true }));
+    }
+    if (field === "confirmPassword" && (password !== "" || confirmPassword !== "") && confirmPassword !== password) {
+      setConfirmPasswordError("Passwords do not match");
+      setShowConfirmPasswordError(true);
+    } else {
+      setConfirmPasswordError("");
+      setShowConfirmPasswordError(false);
     }
   };
 
@@ -76,23 +211,23 @@ const SignupScreen = ({ navigation }) => {
     setIsTyping(true);
   };
 
-  const handleBlur = (field) => {
-    if (field !== "" && !isTyping) {
-      setTouchedFields((prevState) => ({ ...prevState, [field]: true }));
-    }
-    if (field === "name" && (name.length > 30 && name !== "")) {
-      setError("Name cannot be more than 30 characters");
-      setShowError(true);
-    } else if (field === "email" && (!validateEmail(email) && email !== "")) {
-      setError("Please enter a valid email address");
-      setShowError(true);
-    } else {
-      setError("");
-      setShowError(false);
-    }
-  };
-
   const handleSubmit = async () => {
+    if (name === "" || email === "" || password === "" || confirmPassword === "" || keNumber === "") {
+      console.log("Please fill in all fields")
+      setError("Please fill in all fields");
+      setShowError(true);
+      return;
+    }
+    if (NameError || EmailError || KeNumberError || PasswordError || ConfirmPasswordError) {
+      setShowNameError(true);
+      setShowEmailError(true);
+      setShowKeNumberError(true);
+      setShowPasswordError(true);
+      setShowConfirmPasswordError(true);
+      setError("Please fill in all fields correctly");
+      setShowError(true);
+      return;
+    }
     setLoading(true);
 
     const data = {
@@ -121,7 +256,7 @@ const SignupScreen = ({ navigation }) => {
         <View
           style={[
             styles.inputContainer,
-            { borderColor: showError ? "red" : "#ccc"}
+            { borderColor: showNameError ? "red" : "#ccc"}
           ]}
         >
           <TextInput
@@ -129,16 +264,16 @@ const SignupScreen = ({ navigation }) => {
             placeholder="Full Name"
             value={name}
             onChangeText={(text) => setName(text)}
-            onFocus={() => handleFocus("name")}
-            onBlur={() => handleBlur("name")}
+            onFocus={() => handleFocusName("name")}
+            onBlur={() => handleBlurName("name")}
           />
         </View>
-        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+        {NameError ? <Text style={styles.errorText}>{NameError}</Text> : null}
 
         <View
           style={[
             styles.inputContainer,
-            { borderColor: showError ? "red" : "#ccc"}
+            { borderColor: showEmailError ? "red" : "#ccc"}
           ]}
         >
           <TextInput
@@ -150,16 +285,16 @@ const SignupScreen = ({ navigation }) => {
               handleChange();
             }}
             autoCapitalize="none"
-            onFocus={() => handleFocus("email")}
-            onBlur={() => handleBlur("email")}
+            onFocus={() => handleFocusEmail("email")}
+            onBlur={() => handleBlurEmail("email")}
           />
         </View>
-        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+        {EmailError ? <Text style={styles.errorText}>{EmailError}</Text> : null}
 
         <View
           style={[
             styles.inputContainer,
-            touchedFields.keNumber && !isTyping && { borderColor: "red" },
+            { borderColor: showKeNumberError ? "red" : "#ccc"}
           ]}
         >
           <TextInput
@@ -171,11 +306,12 @@ const SignupScreen = ({ navigation }) => {
             onBlur={() => handleBlur("keNumber")}
           />
         </View>
+        {KeNumberError ? <Text style={styles.errorText}>{KeNumberError}</Text> : null}
 
         <View
           style={[
             styles.inputContainer,
-            touchedFields.password && !isTyping && { borderColor: "red" },
+            { borderColor: showPasswordError || showConfirmPasswordError? "red" : "#ccc"}
           ]}
         >
           <TextInput
@@ -185,16 +321,16 @@ const SignupScreen = ({ navigation }) => {
             value={password}
             autoCapitalize="none"
             onChangeText={(text) => setPassword(text)}
-            onFocus={() => handleFocus("password")}
-            onBlur={() => handleBlur("password")}
+            onFocus={() => handleFocusPassword("password")}
+            onBlur={() => handleBlurPassword("password")}
           />
         </View>
+        {PasswordError ? <Text style={styles.errorText}>{PasswordError}</Text> : null}
 
         <View
           style={[
             styles.inputContainer,
-            touchedFields.confirmPassword &&
-              !isTyping && { borderColor: "red" },
+            { borderColor: showConfirmPasswordError ? "red" : "#ccc"}
           ]}
         >
           <TextInput
@@ -204,11 +340,13 @@ const SignupScreen = ({ navigation }) => {
             value={confirmPassword}
             autoCapitalize="none"
             onChangeText={(text) => setConfirmPassword(text)}
-            onFocus={() => handleFocus("confirmPassword")}
-            onBlur={() => handleBlur("confirmPassword")}
+            onFocus={() => handleFocusConfirmPassword("confirmPassword")}
+            onBlur={() => handleBlurConfirmPassword("confirmPassword")}
           />
         </View>
+        {ConfirmPasswordError ? <Text style={styles.errorText}>{ConfirmPasswordError}</Text> : null}
 
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
         <TouchableOpacity
           style={styles.button}
           onPress={handleSubmit}
@@ -236,8 +374,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.white,
-    // alignItems: "center",
-    // justifyContent: "center",
     padding: 10,
   },
   inputContainer: {
@@ -272,7 +408,6 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 16,
-    // fontWeight: "700",
     color: Colors.black,
     marginTop: 20,
   },
