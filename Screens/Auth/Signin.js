@@ -10,7 +10,6 @@ import {
 import { useAuth } from "./AuthProvider";
 
 import { Colors, GlobalStyles } from "../Styles/GlobalStyles";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const validateEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -19,14 +18,14 @@ const validateEmail = (email) => {
 
 const SigninScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
+  const [emailTouched, setEmailTouched] = useState(false);
   const [password, setPassword] = useState("");
   const [isLoading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [showError, setShowError] = useState(false);
-  const [emailTouched, setEmailTouched] = useState(false);
+  const { authToken, login } = useAuth();
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
-  const { authToken, login } = useAuth();
+  const [error, setError] = useState("");
+  const [showError, setShowError] = useState(false);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -83,7 +82,6 @@ const SigninScreen = ({ navigation }) => {
       setShowError(true);
       return;
     }
-
     setLoading(true);
     console.log("Signing in...");
     console.log(email, password);
