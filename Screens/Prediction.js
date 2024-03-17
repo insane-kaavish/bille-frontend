@@ -21,6 +21,34 @@ import { useBill } from "./Components/BillProvider";
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 const screenWidth = Dimensions.get("window").width;
 
+const HorizontalLine = ({ selectedIndex, data, chartHeight, chartWidth, color }) => {
+  if (!data || !data.labels || !data.labels.length || isNaN(selectedIndex) || selectedIndex < 0 || selectedIndex >= data.labels.length) {
+    return null; // Return null if data or selectedIndex is invalid
+  }
+
+  // Calculate the y-coordinate based on the selected index
+  const y = (chartHeight / (data.labels.length - 1)) * selectedIndex;
+
+  // Calculate the left position to align the line with the center of the chart
+  const leftPosition = chartWidth / 2;
+
+  return (
+    <View style={{
+      position: 'absolute',
+      // left: leftPosition,
+      right: 0,
+      top: y - 0.5, // Adjust for half of the border width
+      borderTopWidth: 1,
+      borderTopColor: color || 'red',
+      width: '80%', // Adjust the width as needed
+      zIndex: 1, // Ensure the line is above the chart
+    }} />
+  );
+};
+
+
+
+
 const height = Dimensions.get("window").height;
 
 const PredictionScreen = () => {
@@ -35,7 +63,9 @@ const PredictionScreen = () => {
     fetchMonthlyData,
     isMonthlyDataFetched,
   } = useBill();
+  const [selectedIndex, setSelectedIndex] = useState(null); // State to track selected index
   const [fillPercentage, setFillPercentage] = useState(0);
+  const [selectedValue, setSelectedValue] = useState(null); // State to store selected value
 
   useEffect(() => {
     const fetchData = async () => {
@@ -112,31 +142,40 @@ const PredictionScreen = () => {
 
           <View style={styles.graphCard}>
             <ScrollView horizontal>
-              <LineChart
-                data={data}
-                width={screenWidth * 1.5}
-                height={300}
-                verticalLabelRotation={0}
-                fromZero={true}
-                segments={4}
-                chartConfig={{
-                  backgroundGradientFrom: "#FFF",
-                  backgroundGradientTo: "#FFF",
-                  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                  strokeWidth: 5,
-                  barPercentage: 0.3,
-                  propsForLabels: { fontsize: 2 },
-                  decimalPlaces: 0,
-                  yAxisInterval: 250,
-                }}
-                bezier
-                style={{ marginVertical: 8, borderRadius: 16 }}
-              />
+            <LineChart
+              data={data}
+              width={screenWidth * 1.5}
+              height={300}
+              verticalLabelRotation={0}
+              fromZero={true}
+              segments={4}
+              onDataPointClick={(data) => {
+                setSelectedIndex(data.index); // Update selected index on data point click
+                setSelectedValue(data.value); // Update selected value on data point click
+              }}
+              chartConfig={{
+                backgroundGradientFrom: "#FFF",
+                backgroundGradientTo: "#FFF",
+                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                strokeWidth: 5,
+                barPercentage: 0.3,
+                propsForLabels: { fontsize: 2 },
+                decimalPlaces: 0,
+                yAxisInterval: 250,
+              }}
+              bezier
+              style={{ marginVertical: 8, borderRadius: 16 }}
+            />
+            {/* Render the horizontal line */}
+            {/* <HorizontalLine value={50} width="80%" color="blue" chartHeight={300} selectedIndex={selectedIndex} data={data} /> */}
             </ScrollView>
             <Text style={styles.graphDescription}>
               Comparison between the{" "}
               <Text style={{ color: "blue" }}>actual</Text> and{" "}
               <Text style={{ color: "red" }}>predicted</Text> units.
+            </Text>
+            <Text style={styles.selectedValueText}>
+              Selected Value: {selectedValue !== null ? selectedValue.toFixed(2) : "-"}
             </Text>
           </View>
         </ScrollView>
