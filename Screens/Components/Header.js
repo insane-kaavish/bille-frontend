@@ -13,7 +13,7 @@ const Header = ({ screenName, navigation }) => {
   const { logout } = useAuth();
   const handleLogout = () => {
     logout();
-    navigation.navigate("SignIn");
+    navigation.navigate("Signin");
   };
   return (
     <View style={styles.container}>
