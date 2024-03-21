@@ -252,7 +252,7 @@ const RoomDataScreen = () => {
         <TouchableOpacity
           style={styles.logoutButton}
           onPress={() =>
-            navigation.reset({ index: 0, routes: [{ name: "SignIn" }] })
+            navigation.reset({ index: 0, routes: [{ name: "Signin" }] })
           }
         >
           <Ionicons name="log-out" size={24} color="black" />
