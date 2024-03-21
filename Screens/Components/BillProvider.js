@@ -149,6 +149,29 @@ export const BillProvider = ({ children }) => {
     setIsMonthlyDataFetched(true);
   };
 
+  const resetData = () => {
+    setUnits(0);
+    setTotalCost(0);
+    setPerUnitCost(0);
+    setLabels([
+      "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+    ]);
+    setActualMonthly([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,]);
+    setPredictedMonthly([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,]);
+    setIsMonthlyDataFetched(false);
+  };
+
   return (
     <BillContext.Provider
       value={{
@@ -161,6 +184,7 @@ export const BillProvider = ({ children }) => {
         isMonthlyDataFetched,
         fetchPredictedData,
         fetchMonthlyData,
+        resetData,
       }}
     >
       {children}
