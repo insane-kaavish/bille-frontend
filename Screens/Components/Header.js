@@ -8,11 +8,14 @@ import {
   MenuTrigger,
 } from "react-native-popup-menu";
 import { useAuth } from "../Auth/AuthProvider";
+import { useBill } from "./BillProvider";
 
 const Header = ({ screenName, navigation }) => {
   const { logout } = useAuth();
+  const { resetData } = useBill();
   const handleLogout = () => {
     logout();
+    resetData();
     navigation.navigate("Signin");
   };
   return (

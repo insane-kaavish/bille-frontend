@@ -21,9 +21,8 @@ const DashboardScreen = ({ navigation }) => {
   const { units, totalCost, perUnitCost, fetchPredictedData } = useBill();
 
   useEffect(() => {
-    if (perUnitCost === 0) {
-      fetchPredictedData();
-    }
+    console.log("Fetching predicted data")
+    fetchPredictedData();
   }, [authToken]);
 
   const navigateToPrediction = () => {
