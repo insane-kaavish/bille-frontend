@@ -5,16 +5,12 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Dimensions,
 } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
+
+import { Colors, GlobalStyles } from "../Styles/GlobalStyles";
 
 import Navbar from "../Components/Navbar";
 import Header from "../Components/Header";
-
-const height = Dimensions.get("window").height;
 
 const ProfileScreen = ({ navigation }) => {
   const [editName, setEditName] = useState("Admin");
@@ -27,6 +23,12 @@ const ProfileScreen = ({ navigation }) => {
 
   const handleSavePress = () => {
     setIsEditing(false);
+    if (editName !== "Admin") {
+      setEditName(editName);
+    }
+    if (editEmail !== "admin@admin.com") {
+      setEditEmail(editEmail);
+    }
   };
 
   const handleCancelPress = () => {
@@ -38,7 +40,7 @@ const ProfileScreen = ({ navigation }) => {
   return (
     <>
       <Header screenName="Profile" navigation={navigation} />
-      <View style={styles.content}>
+      <View style={GlobalStyles.screenContainer}>
         <View style={styles.field}>
           <Text style={styles.fieldLabel}>Name</Text>
           <View style={styles.inputContainer}>
@@ -50,11 +52,6 @@ const ProfileScreen = ({ navigation }) => {
               selectTextOnFocus={false}
               placeholder="Edit Username"
             />
-            {isEditing && (
-              <TouchableOpacity onPress={handleSavePress}>
-                <Ionicons name="checkmark" size={20} color="#535CE8" />
-              </TouchableOpacity>
-            )}
           </View>
         </View>
 
@@ -70,16 +67,17 @@ const ProfileScreen = ({ navigation }) => {
               placeholder="Edit Email"
               keyboardType="email-address"
             />
-            {isEditing && (
-              <TouchableOpacity onPress={handleSavePress}>
-                <Ionicons name="checkmark" size={20} color="#535CE8" />
-              </TouchableOpacity>
-            )}
           </View>
         </View>
 
+        {isEditing && (
+          <TouchableOpacity onPress={handleSavePress} style={styles.editButton}>
+            <Text style={styles.editButtonText}>Save changes</Text>
+          </TouchableOpacity>
+        )}
+
         <TouchableOpacity
-          style={styles.editButton}
+          style={[styles.editButton, { backgroundColor: isEditing ? "red" : "#535CE8" }]}
           onPress={isEditing ? handleCancelPress : handleEditPress}
         >
           <Text style={styles.editButtonText}>
@@ -119,17 +117,19 @@ const styles = StyleSheet.create({
   },
   field: {
     marginBottom: 20,
+    width: "90%",
+    alignSelf: "center",
+    borderColor: Colors.border,
   },
   fieldLabel: {
     fontFamily: "Roboto-Regular",
     fontSize: 16,
-    color: "#333333",
+    color: Colors.black,
     marginBottom: 5,
   },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between", // Adjust alignment
     borderWidth: 1,
     borderColor: "#E0E0E0",
     borderRadius: 8,
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: "Roboto-Regular",
     fontSize: 16,
-    color: "#333333",
+    color: Colors.black,
     paddingVertical: 10,
   },
   editButton: {
