@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -14,43 +14,18 @@ import { ProgressChart } from "react-native-chart-kit";
 import Header from "./Components/Header";
 import Navbar from "./Components/Navbar";
 import { useAuth } from "./Auth/AuthProvider";
-// import Config from "react-native-config";
-
-// const API_URL = Config.API_URL;
-const API_URL = process.env.EXPO_PUBLIC_API_URL;
-
-const roomsRequest = async (token) => {
-  try {
-    const response = await fetch(`${API_URL}/rooms/`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
-      },
-    });
-    if (response.status !== 200) return false;
-    return response.json();
-  } catch (error) {
-    console.error(error);
-    return false;
-  }
-};
+import { useRoom } from "./Components/RoomProvider";
 
 const height = Dimensions.get("window").height;
 
 const RoomOverviewScreen = () => {
   const navigation = useNavigation();
   const { authToken } = useAuth();
-  const [rooms, setRooms] = React.useState([]);
+  const { rooms, fetchRooms, setSelectedRoom, fetchCategories } = useRoom();
 
-  React.useEffect(() => {
-    const fetchRooms = async () => {
-      const roomsData = await roomsRequest(authToken);
-      if (roomsData) {
-        setRooms(roomsData);
-      }
-    };
+  useEffect(() => {
     fetchRooms();
+    fetchCategories();
   }, [authToken]);
 
   const colors = [
@@ -91,8 +66,9 @@ const RoomOverviewScreen = () => {
   data.labels.sort();
   data.data.sort();
   data.colors.sort();
-  const navigateToRoomDetails = (roomId) => {
-    navigation.navigate("RoomDetail", { roomId: roomId });
+  const navigateToRoomDetails = (room) => {
+    setSelectedRoom(room);
+    navigation.navigate("RoomDetail");
   };
 
   return (
@@ -132,7 +108,7 @@ const RoomOverviewScreen = () => {
             <TouchableOpacity
               key={index}
               style={styles.roomCard}
-              onPress={() => navigateToRoomDetails(room.id)}
+              onPress={() => navigateToRoomDetails(room)}
             >
               <View
                 style={[styles.iconContainer, { backgroundColor: room.color }]}
