@@ -9,7 +9,7 @@ export const useRoom = () => useContext(RoomContext);
 export const RoomProvider = ({ children }) => {
   const { authToken } = useAuth();
   const [rooms, setRooms] = useState([]);
-  const [applianceOptions, setApplianceOptions] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState(null);
 	const [room, setRoom] = useState(null);
 
@@ -32,9 +32,9 @@ export const RoomProvider = ({ children }) => {
     }
   };
 
-  const fetchAppliances = async () => {
+  const fetchCategories = async () => {
     try {
-      const response = await fetch(`${API_URL}/appliances/`, {
+      const response = await fetch(`${API_URL}/categories/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -42,10 +42,10 @@ export const RoomProvider = ({ children }) => {
         },
       });
       if (!response.ok) {
-        throw new Error("Failed to fetch appliances");
+        throw new Error("Failed to fetch categories");
       }
       const data = await response.json();
-      setApplianceOptions(data);
+      setCategories(data);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -115,11 +115,11 @@ export const RoomProvider = ({ children }) => {
       value={{
         rooms,
 				room,
-        applianceOptions,
+        categories,
         selectedRoom,
         setSelectedRoom,
         fetchRooms,
-        fetchAppliances,
+        fetchCategories,
         fetchRoom,
 				updateRoom,
 				deleteAppliance,
