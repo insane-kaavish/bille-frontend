@@ -73,8 +73,6 @@ const styles = StyleSheet.create({
   },
   MenuOptions: {
     padding: 10,
-    borderRadius: 10, // Rounded edges for the drawer
-    width: 250, // Decrease width of the drawer
   },
   MenuOption: {
     paddingVertical: 10, // Increase distance between options
