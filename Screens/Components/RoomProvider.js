@@ -4,13 +4,14 @@ import { useAuth } from "../Auth/AuthProvider";
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 const RoomContext = createContext({});
 
-const RoomProvider = ({ children }) => {
+export const useRoom = () => useContext(RoomContext);
+
+export const RoomProvider = ({ children }) => {
   const { authToken } = useAuth();
   const [rooms, setRooms] = useState([]);
-  const [appliances, setAppliances] = useState([]);
+  const [applianceOptions, setApplianceOptions] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState(null);
-  const [selectedAppliance, setSelectedAppliance] = useState(null);
-  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
+	const [room, setRoom] = useState(null);
 
   const fetchRooms = async () => {
     try {
@@ -44,7 +45,7 @@ const RoomProvider = ({ children }) => {
         throw new Error("Failed to fetch appliances");
       }
       const data = await response.json();
-      setAppliances(data);
+      setApplianceOptions(data);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -63,7 +64,7 @@ const RoomProvider = ({ children }) => {
         throw new Error("Failed to fetch room appliances");
       }
       const data = await response.json();
-      setAppliances(data);
+      setRoom(data);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -88,7 +89,7 @@ const RoomProvider = ({ children }) => {
     }
   };
 
-  const deleteApplicance = async (applianceId) => {
+  const deleteAppliance = async (applianceId) => {
     try {
       const response = await fetch(
         `${API_URL}/delete_appliance/?appliance_id${applianceId}`,
@@ -113,18 +114,15 @@ const RoomProvider = ({ children }) => {
     <RoomContext.Provider
       value={{
         rooms,
-        appliances,
+				room,
+        applianceOptions,
         selectedRoom,
-        selectedAppliance,
-        selectedSubCategory,
         setSelectedRoom,
-        setSelectedAppliance,
-        setSelectedSubCategory,
         fetchRooms,
         fetchAppliances,
         fetchRoom,
 				updateRoom,
-				deleteApplicance,
+				deleteAppliance,
       }}
     >
       {children}
