@@ -172,12 +172,12 @@ const RoomDetailScreen = ({ route, navigation }) => {
     <View style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.roomInfo}>
-          <View style={styles.roominfocard}>
+          {/* <View style={styles.roominfocard}>
             <Text style={styles.roomInfoText}>
-              {/* {roomData ? roomData.alias : ""} */}
+              {roomData ? roomData.alias : ""}
             </Text>
-            {/* <Text style={styles.roomAlias}>Room ID: {roomId}</Text> */}
-          </View>
+            <Text style={styles.roomAlias}>Room ID: {roomId}</Text>
+          </View> */}
           {appliances.map((appliance, index) => (
             <View key={index} style={styles.applianceRow}>
               <View style={styles.dropdownContainer}>
