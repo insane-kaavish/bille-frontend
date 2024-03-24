@@ -167,14 +167,16 @@ const RoomDetailScreen = ({ route, navigation }) => {
   };
 
   return (
+    <>
+    <Header screenName={roomData ? roomData.alias : ""} navigation={navigation} />
     <View style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.roomInfo}>
           <View style={styles.roominfocard}>
             <Text style={styles.roomInfoText}>
-              {roomData ? roomData.alias : ""}
+              {/* {roomData ? roomData.alias : ""} */}
             </Text>
-            <Text style={styles.roomAlias}>Room ID: {roomId}</Text>
+            {/* <Text style={styles.roomAlias}>Room ID: {roomId}</Text> */}
           </View>
           {appliances.map((appliance, index) => (
             <View key={index} style={styles.applianceRow}>
@@ -252,6 +254,7 @@ const RoomDetailScreen = ({ route, navigation }) => {
       </TouchableOpacity>
       <Navbar />
     </View>
+    </>
   );
 };
 
