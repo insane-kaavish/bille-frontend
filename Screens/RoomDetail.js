@@ -10,36 +10,10 @@ import {
 import Ionicons from "react-native-vector-icons/Ionicons";
 import ModalDropdown from "react-native-modal-dropdown";
 import Navbar from "./Components/Navbar";
+import Header from "./Components/Header";
 
 import { useRoom } from "./Components/RoomProvider";
 
-// Sample API data
-const apiData = [
-  {
-    id: 5,
-    tag: "LR",
-    alias: "Living Room",
-    appliances: [
-      {
-        id: 9,
-        alias: "Clothes Iron",
-        category: "Iron",
-        sub_category: "Steam Iron",
-        daily_usage: 3.0,
-        units: 5,
-      },
-      {
-        id: 10,
-        alias: "Fridge",
-        category: "Refrigerator",
-        sub_category: "Double Door",
-        daily_usage: 24.0,
-        units: 360,
-      },
-    ],
-    units: 365,
-  },
-];
 
 const RoomDetailScreen = ({ navigation }) => {
   const { room, categories, selectedRoom, fetchRoom, deleteAppliance, updateRoom, appliances, setAppliances, fetchRooms } = useRoom();
@@ -82,10 +56,12 @@ const RoomDetailScreen = ({ navigation }) => {
   };
 
   return (
+    <>
+    <Header screenName={roomData ? roomData.alias : ""} navigation={navigation} />
     <View style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.roomInfo}>
-          <View style={styles.roominfocard}>
+          {/* <View style={styles.roominfocard}>
             <Text style={styles.roomInfoText}>
               {room ? room.alias : ""}
             </Text>
@@ -168,6 +144,7 @@ const RoomDetailScreen = ({ navigation }) => {
       </TouchableOpacity>
       <Navbar />
     </View>
+    </>
   );
 };
 
