@@ -57,13 +57,13 @@ const App = () => {
 
   return (
     <>
+              <NavigationContainer>
       <AuthProvider>
         <BillProvider>
           <RoomProvider>
           <MenuProvider>
             <StatusBar style="auto" />
             <SafeAreaView edges={["right", "top", "left"]} style={{ flex: 1 }}>
-              <NavigationContainer>
               <Stack.Navigator
                   initialRouteName="Splash"
                   screenOptions={ScreenOptions}
@@ -83,12 +83,12 @@ const App = () => {
                   <Stack.Screen name="RoomOverview" component={RoomOverviewScreen} />
                   <Stack.Screen name="RoomDetail" component={RoomDetailScreen} />
                 </Stack.Navigator>
-              </NavigationContainer>
             </SafeAreaView>
           </MenuProvider>
           </RoomProvider>
         </BillProvider>
       </AuthProvider>
+              </NavigationContainer>
     </>
   );
 };

@@ -17,12 +17,12 @@ const SplashScreen = ({ navigation }) => {
 					setAuthToken(token);
 					setTimeout(() => {
 						navigation.navigate("Dashboard");
-					}, 3000); // 3 seconds delay
+					}, 1500); // 1.5 seconds delay
 					return;
 				}
 				setTimeout(() => {
 					navigation.navigate("Signin");
-				}, 3000); // 3 seconds delay
+				}, 1500); // 1.5 seconds delay
 			} catch (error) {
 				console.error("Error retrieving token:", error);
 			}

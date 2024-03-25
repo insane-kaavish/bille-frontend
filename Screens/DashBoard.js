@@ -23,7 +23,7 @@ const DashboardScreen = ({ navigation }) => {
   useEffect(() => {
     console.log("Fetching predicted data")
     fetchPredictedData();
-  }, []);
+  }, [authToken]);
 
   const navigateToPrediction = () => {
     navigation.navigate("Prediction");
