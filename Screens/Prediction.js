@@ -40,7 +40,7 @@ const PredictionScreen = ({ navigation }) => {
     console.log("Fetching monthly data");
     fetchMonthlyData();
     setFillPercentage(units % 100);
-  }, [authToken]);
+  }, []);
 
   const data = {
     labels: labels,

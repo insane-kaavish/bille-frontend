@@ -77,7 +77,7 @@ const RoomDataScreen = () => {
       }
     };
     fetchCategories();
-  }, [authToken]);
+  }, []);
 
   const addRoom = () => {
     const newRoom = {

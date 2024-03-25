@@ -64,8 +64,8 @@ const ProfileScreen = ({ navigation }) => {
       setName(`${data.first_name} ${data.last_name}`);
       setEmail(data.email);
     });
-  }, [authToken]);
-  
+  }, []);
+
   const handleSavePress = () => {
     setName(name);
     setEmail(email);

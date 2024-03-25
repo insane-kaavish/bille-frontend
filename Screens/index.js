@@ -13,6 +13,7 @@ export { default as RoomDetailScreen } from "./RoomDetail";
 export { default as RoomOverviewScreen } from "./RoomOverview";
 export { default as RoomDataScreen } from "./Data/RoomData";
 export { default as DataInputScreen } from "./Data/DataInput";
+export { default as SplashScreen } from "./Splash";
 
 // import all the components
 export { default as Navbar } from "./Components/Navbar";
