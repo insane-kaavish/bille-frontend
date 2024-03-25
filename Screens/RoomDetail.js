@@ -39,23 +39,14 @@ const apiData = [
     ],
     units: 365,
   },
-  // Add more rooms as needed
 ];
 
-// const applianceOptions = [
-//   "TV", "Refrigerator", "Deep Freezer", "Air Conditioner", "Washing Machine", "Microwave",
-//   "Electric Oven", "Electric Kettle", "Electric Iron", "Electric Heater", "Electric Fan",
-//   "Gaming Consoles", "Desktop Computer", "Electric Geyser",
-// ];
-
 const RoomDetailScreen = ({ navigation }) => {
-  const { room, categories, selectedRoom, fetchRoom } = useRoom();
-  // const [roomData, setRoomData] = useState(null);
-  const [appliances, setAppliances] = useState([]);
+  const { room, categories, selectedRoom, fetchRoom, deleteAppliance, updateRoom, appliances, setAppliances, fetchRooms } = useRoom();
+  const [deletedAppliances, setDeletedAppliances] = useState([]);
 
   useEffect(() => {
     fetchRoom(selectedRoom.id);
-    setAppliances(room?.appliances || []);
   }, [selectedRoom.id]);
 
   const getSubcategoryOptions = (category) => {
@@ -68,17 +59,26 @@ const RoomDetailScreen = ({ navigation }) => {
   const addAppliance = () => {
     setAppliances([
       ...appliances,
-      { name: "", category: "Appliance", subCategory: "Type", usage: "" },
+      { alias: "", category: "Appliance", sub_category: "Type", daily_usage: "0" },
     ]);
   };
 
   const removeAppliance = (index) => {
     const updatedAppliances = appliances.filter((_, i) => i !== index);
     setAppliances(updatedAppliances);
+    setDeletedAppliances([...deletedAppliances, appliances[index]]);
   };
 
   const saveData = () => {
-    console.log("Data saved successfully:", appliances);
+    const data = {
+      ...room,
+      appliances: appliances,
+    };
+    console.log("Updated room data:", data)
+    updateRoom(data);
+    deletedAppliances.forEach((appliance) => deleteAppliance(appliance.id));
+    navigation.goBack();
+    fetchRooms();
   };
 
   return (
@@ -131,7 +131,7 @@ const RoomDetailScreen = ({ navigation }) => {
                     onSelect={(selectedIndex, value) => {
                       setAppliances((prevState) => {
                         const updatedAppliances = [...prevState];
-                        updatedAppliances[index].subCategory = value;
+                        updatedAppliances[index].sub_category = value;
                         return updatedAppliances;
                       });
                     }}
@@ -148,8 +148,9 @@ const RoomDetailScreen = ({ navigation }) => {
                       return updatedAppliances;
                     })
                   }
-                  value={appliance.daily_usage}
+                  value={`${appliance.daily_usage}`}
                   placeholder="Usage"
+                  keyboardType="numeric"
                 />
               </View>
               <TouchableOpacity onPress={() => removeAppliance(index)}>

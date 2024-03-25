@@ -21,12 +21,14 @@ const height = Dimensions.get("window").height;
 const RoomOverviewScreen = () => {
   const navigation = useNavigation();
   const { authToken } = useAuth();
-  const { rooms, fetchRooms, setSelectedRoom, fetchCategories } = useRoom();
+  const { rooms, fetchRooms, setSelectedRoom, fetchCategories, selectedRoom, setRoom, setAppliances } = useRoom();
 
   useEffect(() => {
     fetchRooms();
     fetchCategories();
-  }, [authToken]);
+    setRoom(null);
+    setAppliances([]);
+  }, [selectedRoom, authToken]);
 
   const colors = [
     "#535CE8",
@@ -40,26 +42,15 @@ const RoomOverviewScreen = () => {
     "#379AE6",
   ];
 
-  const assignColors = (rooms) => {
-    const assignedColors = [];
-    rooms.forEach((room, index) => {
-      assignedColors.push({ ...room, color: colors[index] });
-    });
-    return assignedColors;
-  };
-
-  // Assign colors to rooms
-  const updatedRooms = assignColors(rooms);
-
-  const totalAllUnits = updatedRooms.reduce(
+  const totalUnits = rooms.reduce(
     (total, room) => total + room.units,
     0
   );
 
   const data = {
-    labels: updatedRooms.map((room) => room.alias),
-    data: updatedRooms.map((room) => room.units / totalAllUnits),
-    colors: updatedRooms.map((room) => room.color),
+    labels: rooms.map((room) => room.alias),
+    data: rooms.map((room) => room.units / totalUnits),
+    colors: rooms.map((room) => colors[rooms.indexOf(room)]),
   };
 
   // Sort the data in ascending order
@@ -98,20 +89,20 @@ const RoomOverviewScreen = () => {
                   Total Predicted Units:{" "}
                   <Text style={{ color: "orange" }}>
                     {" "}
-                    {totalAllUnits} Units
+                    {totalUnits} Units
                   </Text>
                 </Text>
               </View>
             </View>
           </View>
-          {updatedRooms.map((room, index) => (
+          {rooms.map((room, index) => (
             <TouchableOpacity
               key={index}
               style={styles.roomCard}
               onPress={() => navigateToRoomDetails(room)}
             >
               <View
-                style={[styles.iconContainer, { backgroundColor: room.color }]}
+                style={[styles.iconContainer, { backgroundColor: colors[rooms.indexOf(room)] }]}
               >
                 <Ionicons name={"home"} size={24} color="#fff" />
               </View>
