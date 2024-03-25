@@ -132,7 +132,10 @@ const RoomOverviewScreen = () => {
             <TouchableOpacity
               key={index}
               style={styles.roomCard}
-              onPress={() => navigateToRoomDetails(room.id)}
+              onPress={() => 
+                // console.log("Room ID: ", room.id) ||
+                navigateToRoomDetails(room.id)
+              }
             >
               <View
                 style={[styles.iconContainer, { backgroundColor: room.color }]}

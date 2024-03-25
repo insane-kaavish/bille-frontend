@@ -10,6 +10,13 @@ import {
 import Ionicons from "react-native-vector-icons/Ionicons";
 import ModalDropdown from "react-native-modal-dropdown";
 import Navbar from "./Components/Navbar";
+import { useAuth } from "./Auth/AuthProvider";
+import Header from "./Components/Header";
+
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
+
+
+
 
 const applianceOptions = [
   {
@@ -59,33 +66,7 @@ const applianceOptions = [
 ];
 
 // Sample API data
-const apiData = [
-  {
-    id: 5,
-    tag: "LR",
-    alias: "Living Room",
-    appliances: [
-      {
-        id: 9,
-        alias: "Clothes Iron",
-        category: "Iron",
-        sub_category: "Steam Iron",
-        daily_usage: 3.0,
-        units: 5,
-      },
-      {
-        id: 10,
-        alias: "Fridge",
-        category: "Refrigerator",
-        sub_category: "Double Door",
-        daily_usage: 24.0,
-        units: 360,
-      },
-    ],
-    units: 365,
-  },
-  // Add more rooms as needed
-];
+
 
 // const applianceOptions = [
 //   "TV", "Refrigerator", "Deep Freezer", "Air Conditioner", "Washing Machine", "Microwave",
@@ -97,24 +78,70 @@ const RoomDetailScreen = ({ route, navigation }) => {
   const { roomId } = route.params;
   const [roomData, setRoomData] = useState(null);
   const [appliances, setAppliances] = useState([]);
+  const { authToken } = useAuth();
 
+  const roomRequest = async (token) => {
+    try {
+      const response = await fetch(`${API_URL}/room/?room_id=${roomId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+      });
+      if (response.status !== 200) throw new Error("Failed to fetch data");
+      return response.json();
+    } catch (error) {
+      console.error(error);
+      return null; // Return null on error
+    }
+  };
+  
   useEffect(() => {
     const fetchData = async () => {
-      const room = apiData.find((room) => room.id === roomId);
-      if (room) {
-        setRoomData(room);
-        const updatedAppliances = room.appliances.map((appliance) => ({
-          ...appliance,
-          category: appliance.category,
-          subCategory: appliance.sub_category,
-          usage: `${appliance.daily_usage}`, // Ensure to use the correct property name
-        }));
-        setAppliances(updatedAppliances);
+      try {
+        console.log("Fetching data for roomId:", roomId);
+        const apiData = await roomRequest(authToken);
+        console.log("Received data:", apiData);
+        if (apiData) {
+          setRoomData(apiData);
+          const updatedAppliances = apiData.appliances.map((appliance) => ({
+            ...appliance,
+            category: appliance.category,
+            subCategory: appliance.sub_category,
+            usage: `${appliance.daily_usage}`, // Ensure to use the correct property name
+          }));
+          setAppliances(updatedAppliances);
+        }
+  
+        // Check if apiData is an array and not empty
+      //   if (Array.isArray(apiData) && apiData.length > 0) {
+      //     const room = apiData.find((room) => room.id === roomId);
+      //     console.log("Room data:", room);
+  
+      //     if (room) {
+      //       setRoomData(room);
+      //       const updatedAppliances = room.appliances.map((appliance) => ({
+      //         ...appliance,
+      //         category: appliance.category,
+      //         subCategory: appliance.sub_category,
+      //         usage: `${appliance.daily_usage}`, // Ensure to use the correct property name
+      //       }));
+      //       setAppliances(updatedAppliances);
+      //     } else {
+      //       console.log("Room not found for roomId:", roomId);
+      //     }
+      //   } else {
+      //     console.log("Empty or invalid API response");
+      //   }
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
     };
-
+  
     fetchData();
-  }, [roomId]);
+  }, [roomId]); // Ensure useEffect runs when roomId changes
+  
 
   const getSubcategoryOptions = (category) => {
     const selectedAppliance = applianceOptions.find(
@@ -140,15 +167,17 @@ const RoomDetailScreen = ({ route, navigation }) => {
   };
 
   return (
+    <>
+    <Header screenName={roomData ? roomData.alias : ""} navigation={navigation} />
     <View style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.roomInfo}>
-          <View style={styles.roominfocard}>
+          {/* <View style={styles.roominfocard}>
             <Text style={styles.roomInfoText}>
               {roomData ? roomData.alias : ""}
             </Text>
             <Text style={styles.roomAlias}>Room ID: {roomId}</Text>
-          </View>
+          </View> */}
           {appliances.map((appliance, index) => (
             <View key={index} style={styles.applianceRow}>
               <View style={styles.dropdownContainer}>
@@ -225,6 +254,7 @@ const RoomDetailScreen = ({ route, navigation }) => {
       </TouchableOpacity>
       <Navbar />
     </View>
+    </>
   );
 };
 
