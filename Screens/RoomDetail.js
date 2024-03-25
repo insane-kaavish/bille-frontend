@@ -57,16 +57,10 @@ const RoomDetailScreen = ({ navigation }) => {
 
   return (
     <>
-    <Header screenName={roomData ? roomData.alias : ""} navigation={navigation} />
+    <Header screenName={room ? room.alias : ""} navigation={navigation} />
     <View style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.roomInfo}>
-          {/* <View style={styles.roominfocard}>
-            <Text style={styles.roomInfoText}>
-              {room ? room.alias : ""}
-            </Text>
-            <Text style={styles.roomAlias}>Room ID: {selectedRoom.id}</Text>
-          </View>
           {appliances.map((appliance, index) => (
             <View key={index} style={styles.applianceRow}>
               <View style={styles.dropdownContainer}>
