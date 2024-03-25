@@ -10,141 +10,21 @@ import {
 import Ionicons from "react-native-vector-icons/Ionicons";
 import ModalDropdown from "react-native-modal-dropdown";
 import Navbar from "./Components/Navbar";
-import { useAuth } from "./Auth/AuthProvider";
 import Header from "./Components/Header";
 
-const API_URL = process.env.EXPO_PUBLIC_API_URL;
+import { useRoom } from "./Components/RoomProvider";
 
 
+const RoomDetailScreen = ({ navigation }) => {
+  const { room, categories, selectedRoom, fetchRoom, deleteAppliance, updateRoom, appliances, setAppliances, fetchRooms } = useRoom();
+  const [deletedAppliances, setDeletedAppliances] = useState([]);
 
-
-const applianceOptions = [
-  {
-    name: "Refrigerator",
-    sub_categories: ["Single Door", "Double Door"],
-  },
-  {
-    name: "Iron",
-    sub_categories: ["Dry Iron", "Steam Iron"],
-  },
-  {
-    name: "Air Conditioner",
-    sub_categories: [
-      "Window AC",
-      "Split AC 1 Ton",
-      "Split AC 1.5 Ton",
-      "Split AC 2 Ton",
-      "Split Inverter AC 1 Ton",
-      "Split Inverter AC 1.5 Ton",
-      "Split Inverter AC 2 Ton",
-    ],
-  },
-  {
-    name: "Deep Freezer",
-    sub_categories: ["Small", "Medium", "Large"],
-  },
-  {
-    name: "Washing Machine",
-    sub_categories: ["Semi-Automatic", "Automatic"],
-  },
-  {
-    name: "Television",
-    sub_categories: ["CRT", "LCD", "LED", "Plasma"],
-  },
-  {
-    name: "Microwave Oven",
-    sub_categories: ["Solo", "Grill", "Convection"],
-  },
-  {
-    name: "Water Dispenser",
-    sub_categories: ["Hot & Cold", "Normal"],
-  },
-  {
-    name: "Water Heater",
-    sub_categories: ["Instant", "Storage"],
-  },
-];
-
-// Sample API data
-
-
-// const applianceOptions = [
-//   "TV", "Refrigerator", "Deep Freezer", "Air Conditioner", "Washing Machine", "Microwave",
-//   "Electric Oven", "Electric Kettle", "Electric Iron", "Electric Heater", "Electric Fan",
-//   "Gaming Consoles", "Desktop Computer", "Electric Geyser",
-// ];
-
-const RoomDetailScreen = ({ route, navigation }) => {
-  const { roomId } = route.params;
-  const [roomData, setRoomData] = useState(null);
-  const [appliances, setAppliances] = useState([]);
-  const { authToken } = useAuth();
-
-  const roomRequest = async (token) => {
-    try {
-      const response = await fetch(`${API_URL}/room/?room_id=${roomId}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${token}`,
-        },
-      });
-      if (response.status !== 200) throw new Error("Failed to fetch data");
-      return response.json();
-    } catch (error) {
-      console.error(error);
-      return null; // Return null on error
-    }
-  };
-  
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        console.log("Fetching data for roomId:", roomId);
-        const apiData = await roomRequest(authToken);
-        console.log("Received data:", apiData);
-        if (apiData) {
-          setRoomData(apiData);
-          const updatedAppliances = apiData.appliances.map((appliance) => ({
-            ...appliance,
-            category: appliance.category,
-            subCategory: appliance.sub_category,
-            usage: `${appliance.daily_usage}`, // Ensure to use the correct property name
-          }));
-          setAppliances(updatedAppliances);
-        }
-  
-        // Check if apiData is an array and not empty
-      //   if (Array.isArray(apiData) && apiData.length > 0) {
-      //     const room = apiData.find((room) => room.id === roomId);
-      //     console.log("Room data:", room);
-  
-      //     if (room) {
-      //       setRoomData(room);
-      //       const updatedAppliances = room.appliances.map((appliance) => ({
-      //         ...appliance,
-      //         category: appliance.category,
-      //         subCategory: appliance.sub_category,
-      //         usage: `${appliance.daily_usage}`, // Ensure to use the correct property name
-      //       }));
-      //       setAppliances(updatedAppliances);
-      //     } else {
-      //       console.log("Room not found for roomId:", roomId);
-      //     }
-      //   } else {
-      //     console.log("Empty or invalid API response");
-      //   }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-  
-    fetchData();
-  }, [roomId]); // Ensure useEffect runs when roomId changes
-  
+    fetchRoom(selectedRoom.id);
+  }, [selectedRoom.id]);
 
   const getSubcategoryOptions = (category) => {
-    const selectedAppliance = applianceOptions.find(
+    const selectedAppliance = categories.find(
       (appliance) => appliance.name === category
     );
     return selectedAppliance ? selectedAppliance.sub_categories : [];
@@ -153,17 +33,26 @@ const RoomDetailScreen = ({ route, navigation }) => {
   const addAppliance = () => {
     setAppliances([
       ...appliances,
-      { name: "", category: "Appliance", subCategory: "Type", usage: "" },
+      { alias: "", category: "Appliance", sub_category: "Type", daily_usage: "0" },
     ]);
   };
 
   const removeAppliance = (index) => {
     const updatedAppliances = appliances.filter((_, i) => i !== index);
     setAppliances(updatedAppliances);
+    setDeletedAppliances([...deletedAppliances, appliances[index]]);
   };
 
   const saveData = () => {
-    console.log("Data saved successfully:", appliances);
+    const data = {
+      ...room,
+      appliances: appliances,
+    };
+    console.log("Updated room data:", data)
+    updateRoom(data);
+    deletedAppliances.forEach((appliance) => deleteAppliance(appliance.id));
+    navigation.goBack();
+    fetchRooms();
   };
 
   return (
@@ -174,23 +63,23 @@ const RoomDetailScreen = ({ route, navigation }) => {
         <View style={styles.roomInfo}>
           {/* <View style={styles.roominfocard}>
             <Text style={styles.roomInfoText}>
-              {roomData ? roomData.alias : ""}
+              {room ? room.alias : ""}
             </Text>
-            <Text style={styles.roomAlias}>Room ID: {roomId}</Text>
-          </View> */}
+            <Text style={styles.roomAlias}>Room ID: {selectedRoom.id}</Text>
+          </View>
           {appliances.map((appliance, index) => (
             <View key={index} style={styles.applianceRow}>
               <View style={styles.dropdownContainer}>
                 <ModalDropdown
                   defaultIndex={0}
-                  options={applianceOptions.map((appliance) => appliance.name)}
+                  options={categories.map((appliance) => appliance.name)}
                   defaultValue={appliance.category || "Appliance"}
                   defaultTextStyle={{ color: "pink", opacity: 0.5 }}
                   style={styles.pickerStyle}
                   textStyle={{ color: "black" }}
                   dropdownStyle={styles.dropdownStyle}
                   onSelect={(selectedIndex, value) => {
-                    const selectedAppliance = applianceOptions.find(
+                    const selectedAppliance = categories.find(
                       (appliance) => appliance.name === value
                     );
                     if (selectedAppliance) {
@@ -211,14 +100,14 @@ const RoomDetailScreen = ({ route, navigation }) => {
                     defaultIndex={0}
                     options={getSubcategoryOptions(appliance.category)}
                     placeholder="Subcategory"
-                    defaultValue={appliance.subCategory || "Subcategory"}
+                    defaultValue={appliance.sub_category || "Subcategory"}
                     style={styles.subCategoryPickerStyle}
                     textStyle={{ color: "black" }}
                     dropdownStyle={styles.dropdownStyle}
                     onSelect={(selectedIndex, value) => {
                       setAppliances((prevState) => {
                         const updatedAppliances = [...prevState];
-                        updatedAppliances[index].subCategory = value;
+                        updatedAppliances[index].sub_category = value;
                         return updatedAppliances;
                       });
                     }}
@@ -231,12 +120,13 @@ const RoomDetailScreen = ({ route, navigation }) => {
                   onChangeText={(text) =>
                     setAppliances((prevState) => {
                       const updatedAppliances = [...prevState];
-                      updatedAppliances[index].usage = text;
+                      updatedAppliances[index].daily_usage = text;
                       return updatedAppliances;
                     })
                   }
-                  value={appliance.usage}
+                  value={`${appliance.daily_usage}`}
                   placeholder="Usage"
+                  keyboardType="numeric"
                 />
               </View>
               <TouchableOpacity onPress={() => removeAppliance(index)}>

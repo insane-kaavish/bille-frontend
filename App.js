@@ -21,6 +21,7 @@ import {
 
 import { AuthProvider } from "./Screens/Auth/AuthProvider";
 import { BillProvider } from "./Screens/Components/BillProvider";
+import { RoomProvider } from "./Screens/Components/RoomProvider";
 
 import * as Font from "expo-font";
 import { MenuProvider } from "react-native-popup-menu";
@@ -57,6 +58,7 @@ const App = () => {
     <>
       <AuthProvider>
         <BillProvider>
+          <RoomProvider>
           <MenuProvider>
             <StatusBar style="auto" />
             <SafeAreaView edges={["right", "top", "left"]} style={{ flex: 1 }}>
@@ -82,6 +84,7 @@ const App = () => {
               </NavigationContainer>
             </SafeAreaView>
           </MenuProvider>
+          </RoomProvider>
         </BillProvider>
       </AuthProvider>
     </>
