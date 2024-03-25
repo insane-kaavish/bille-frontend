@@ -1,9 +1,6 @@
 import React, { createContext, useState, useContext } from 'react';
-import Config from 'react-native-config';
 
-// const API_URL = Config.API_URL;
-const API_URL = 'https://app.bille.live';
-// Create a context with an empty object as the default value
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
 const AuthContext = createContext({});
 
 const handleSignUp = async (data) => {
@@ -25,6 +22,7 @@ const handleSignUp = async (data) => {
 
 const handleLogin = async (email, password) => {
   try {
+    console.log("API_URL", API_URL);
     const response = await fetch(`${API_URL}/login/`, {
       method: 'POST',
       headers: {

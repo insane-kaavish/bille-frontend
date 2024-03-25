@@ -8,7 +8,7 @@ const DataComplete = ({navigation}) => {
 
       <TouchableOpacity
         // style={{ width: 348, height: 50, marginTop: 40, backgroundColor: '#535CE8', borderRadius: 26, overflow: 'hidden', justifyContent: 'center', alignItems: 'center' }}
-        onPress={()=>navigation.navigate('DashBoard')}
+        onPress={()=>navigation.navigate('Dashboard')}
         style={styles.readyButton}
       >
         <Text style={styles.readyText}>Ready</Text>

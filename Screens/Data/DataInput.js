@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import {ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
-import { useAuth } from '../AuthScreens/AuthProvider';
+import { useAuth } from '../Auth/AuthProvider';
 // import { ScrollView } from 'react-native-web';
 
 const { width, height } = Dimensions.get('window');
 
-const DataInput = ({ navigation }) => {
+const DataInputScreen = ({ navigation }) => {
   // State hooks for input fields
   const [numOfPeople, setNumOfPeople] = useState('');
   const [stayatHomeOccupant, setStayatHomeOccupants] = useState('');
@@ -152,4 +152,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DataInput;
+export default DataInputScreen;
