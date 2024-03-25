@@ -12,6 +12,7 @@ export const RoomProvider = ({ children }) => {
   const [categories, setCategories] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState(null);
 	const [room, setRoom] = useState(null);
+  const [appliances, setAppliances] = useState([]);
 
   const fetchRooms = async () => {
     try {
@@ -65,6 +66,7 @@ export const RoomProvider = ({ children }) => {
       }
       const data = await response.json();
       setRoom(data);
+      setAppliances(data.appliances);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -72,7 +74,7 @@ export const RoomProvider = ({ children }) => {
 
   const updateRoom = async (roomData) => {
     try {
-      const response = await fetch(`${API_URL}/update_room`, {
+      const response = await fetch(`${API_URL}/update_room/?room_id=${roomData.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -92,7 +94,7 @@ export const RoomProvider = ({ children }) => {
   const deleteAppliance = async (applianceId) => {
     try {
       const response = await fetch(
-        `${API_URL}/delete_appliance/?appliance_id${applianceId}`,
+        `${API_URL}/delete_appliance/?appliance_id=+${applianceId}`,
         {
           method: "DELETE",
           headers: {
@@ -117,12 +119,15 @@ export const RoomProvider = ({ children }) => {
 				room,
         categories,
         selectedRoom,
+        appliances,
         setSelectedRoom,
         fetchRooms,
         fetchCategories,
         fetchRoom,
 				updateRoom,
 				deleteAppliance,
+        setAppliances,
+        setRoom,
       }}
     >
       {children}
