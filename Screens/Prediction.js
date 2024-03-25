@@ -23,8 +23,7 @@ const screenWidth = Dimensions.get("window").width;
 
 const height = Dimensions.get("window").height;
 
-const PredictionScreen = () => {
-  const navigation = useNavigation();
+const PredictionScreen = ({ navigation }) => {
   const { authToken } = useAuth();
   const {
     units,
@@ -38,14 +37,9 @@ const PredictionScreen = () => {
   const [fillPercentage, setFillPercentage] = useState(0);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (isMonthlyDataFetched === false) {
-        console.log("Fetching monthly data");
-        fetchMonthlyData();
-      }
-      setFillPercentage(units % 100);
-    };
-    fetchData();
+    console.log("Fetching monthly data");
+    fetchMonthlyData();
+    setFillPercentage(units % 100);
   }, [authToken]);
 
   const data = {
