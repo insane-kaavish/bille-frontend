@@ -1,8 +1,8 @@
 import React, { createContext, useState, useContext } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../Auth/AuthProvider";
-// import Config from "react-native-config";
 
-// const API_URL = Config.API_URL;
+
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 // Create a context with an empty object as the default value
 const BillContext = createContext({});
@@ -61,6 +61,9 @@ const monthlyRequest = async (token, is_predicted = "False") => {
         },
       }
     );
+    if (response.status === 401) {
+      throw new Error("Unauthorized");
+    }
     if (!response.ok) {
       throw new Error("Failed to fetch monthly data");
     }
@@ -104,6 +107,7 @@ const getLabels = () => {
 export const useBill = () => useContext(BillContext);
 
 export const BillProvider = ({ children }) => {
+  const navigation = useNavigation();
   const { authToken } = useAuth();
   const [units, setUnits] = useState(0);
   const [totalCost, setTotalCost] = useState(0);
@@ -131,10 +135,16 @@ export const BillProvider = ({ children }) => {
   const [isMonthlyDataFetched, setIsMonthlyDataFetched] = useState(false);
 
   const fetchPredictedData = async () => {
-    const data = await predictRequest(authToken);
-    setUnits(data.units);
-    setTotalCost(data.total_cost);
-    setPerUnitCost(data.per_unit_cost);
+    try {
+      const data = await predictRequest(authToken);
+      setUnits(data.units);
+      setTotalCost(data.total_cost);
+      setPerUnitCost(data.per_unit_cost);
+    }
+    catch (error) {
+      console.log("Error:", error)
+      navigation.navigate("Sigin");
+    }
   };
 
   const fetchMonthlyData = async () => {

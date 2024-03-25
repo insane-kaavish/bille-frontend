@@ -17,6 +17,7 @@ import {
   RoomOverviewScreen,
   RoomDataScreen,
   DataInputScreen,
+  SplashScreen,
 } from "./Screens";
 
 import { AuthProvider } from "./Screens/Auth/AuthProvider";
@@ -56,17 +57,18 @@ const App = () => {
 
   return (
     <>
+              <NavigationContainer>
       <AuthProvider>
         <BillProvider>
           <RoomProvider>
           <MenuProvider>
             <StatusBar style="auto" />
             <SafeAreaView edges={["right", "top", "left"]} style={{ flex: 1 }}>
-              <NavigationContainer>
-                <Stack.Navigator
-                  initialRouteName="SignIn"
+              <Stack.Navigator
+                  initialRouteName="Splash"
                   screenOptions={ScreenOptions}
                 >
+                  <Stack.Screen name="Splash" component={SplashScreen} />
                   <Stack.Screen name="Signin" component={SigninScreen} />
                   <Stack.Screen name="Signup" component={SignupScreen} />
                   <Stack.Screen name="RoomData" component={RoomDataScreen} />
@@ -81,12 +83,12 @@ const App = () => {
                   <Stack.Screen name="RoomOverview" component={RoomOverviewScreen} />
                   <Stack.Screen name="RoomDetail" component={RoomDetailScreen} />
                 </Stack.Navigator>
-              </NavigationContainer>
             </SafeAreaView>
           </MenuProvider>
           </RoomProvider>
         </BillProvider>
       </AuthProvider>
+              </NavigationContainer>
     </>
   );
 };

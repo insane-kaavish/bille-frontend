@@ -1,4 +1,5 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 const AuthContext = createContext({});
@@ -6,15 +7,14 @@ const AuthContext = createContext({});
 const handleSignUp = async (data) => {
   try {
     const response = await fetch(`${API_URL}/signup/`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     });
     return response;
-  }
-  catch (error) {
+  } catch (error) {
     console.error(error);
     return false;
   }
@@ -24,9 +24,9 @@ const handleLogin = async (email, password) => {
   try {
     console.log("API_URL", API_URL);
     const response = await fetch(`${API_URL}/login/`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
     });
@@ -40,10 +40,11 @@ const handleLogin = async (email, password) => {
 
 const handleAuth = async (email, password) => {
   try {
-    const response = await fetch(`${API_URL}/api-token-auth/`, { // Add this line to fetch the token from the API
-      method: 'POST',
+    const response = await fetch(`${API_URL}/api-token-auth/`, {
+      // Add this line to fetch the token from the API
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
     });
@@ -64,6 +65,7 @@ export const AuthProvider = ({ children }) => {
       const token = await handleAuth(email, password);
       if (token) {
         setAuthToken(token);
+        AsyncStorage.setItem('authToken', token);
         return true;
       }
     }
@@ -80,10 +82,11 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setAuthToken(null); // Clear the token on logout
+    AsyncStorage.removeItem('authToken'); // Remove token from storage
   };
 
   return (
-    <AuthContext.Provider value={{ authToken, login, logout, signup }}>
+    <AuthContext.Provider value={{ authToken, setAuthToken, login, logout, signup }}>
       {children}
     </AuthContext.Provider>
   );
