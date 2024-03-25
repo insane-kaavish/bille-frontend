@@ -197,8 +197,7 @@ const SignupScreen = ({ navigation }) => {
     setLoading(true);
 
     const data = {
-      first_name: name,
-      last_name: "",
+      name: name,
       email: email,
       password: password,
       ke_num: keNumber,
