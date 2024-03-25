@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -11,29 +11,65 @@ import { Colors, GlobalStyles } from "../Styles/GlobalStyles";
 
 import Navbar from "../Components/Navbar";
 import Header from "../Components/Header";
+import { useAuth } from "../Auth/AuthProvider";
+
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
+
+const fetchUser = async (authToken) => {
+  try {
+    const response = await fetch(`${API_URL}/user/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authToken ? `Token ${authToken}` : "",
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Failed to fetch user");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
+const updateUser = async (authToken, data) => {
+  try {
+    const response = await fetch(`${API_URL}/update_user/`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authToken ? `Token ${authToken}` : "",
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      throw new Error("Failed to update user data");
+    }
+    console.log("User data updated successfully");
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
 
 const ProfileScreen = ({ navigation }) => {
-  const [editName, setEditName] = useState("Admin");
-  const [editEmail, setEditEmail] = useState("admin@admin.com");
+  const [name, setName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const { authToken } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
 
-  const handleEditPress = () => {
-    setIsEditing(true);
-  };
-
+  useEffect(() => {
+    fetchUser(authToken).then((data) => {
+      setName(`${data.first_name} ${data.last_name}`);
+      setEmail(data.email);
+    });
+  }, [authToken]);
+  
   const handleSavePress = () => {
-    setIsEditing(false);
-    if (editName !== "Admin") {
-      setEditName(editName);
-    }
-    if (editEmail !== "admin@admin.com") {
-      setEditEmail(editEmail);
-    }
-  };
-
-  const handleCancelPress = () => {
-    setEditName("Admin");
-    setEditEmail("admin@admin.com");
+    setName(name);
+    setEmail(email);
+    updateUser(authToken, { name, email });
     setIsEditing(false);
   };
 
@@ -46,11 +82,11 @@ const ProfileScreen = ({ navigation }) => {
           <View style={styles.inputContainer}>
             <TextInput
               style={[styles.input]}
-              value={editName}
-              onChangeText={(text) => setEditName(text)}
+              value={name}
+              onChangeText={(text) => setName(text)}
               editable={isEditing}
               selectTextOnFocus={false}
-              placeholder="Edit Username"
+              placeholder="Name"
             />
           </View>
         </View>
@@ -60,11 +96,11 @@ const ProfileScreen = ({ navigation }) => {
           <View style={styles.inputContainer}>
             <TextInput
               style={[styles.input]}
-              value={editEmail}
-              onChangeText={(text) => setEditEmail(text)}
+              value={email}
+              onChangeText={(text) => setEmail(text)}
               editable={isEditing}
               selectTextOnFocus={false}
-              placeholder="Edit Email"
+              placeholder="Email"
               keyboardType="email-address"
             />
           </View>
@@ -77,8 +113,13 @@ const ProfileScreen = ({ navigation }) => {
         )}
 
         <TouchableOpacity
-          style={[styles.editButton, { backgroundColor: isEditing ? "red" : "#535CE8" }]}
-          onPress={isEditing ? handleCancelPress : handleEditPress}
+          style={[
+            styles.editButton,
+            { backgroundColor: isEditing ? "red" : "#535CE8" },
+          ]}
+          onPress={() =>
+            setIsEditing(!isEditing)
+          }
         >
           <Text style={styles.editButtonText}>
             {isEditing ? "Cancel" : "Edit Profile"}
