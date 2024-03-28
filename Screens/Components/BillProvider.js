@@ -143,7 +143,7 @@ export const BillProvider = ({ children }) => {
     }
     catch (error) {
       console.log("Error:", error)
-      navigation.navigate("Sigin");
+      navigation.navigate("Signin");
     }
   };
 
