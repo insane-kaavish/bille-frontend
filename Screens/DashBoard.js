@@ -77,6 +77,7 @@ const DashboardScreen = ({ navigation }) => {
 
           <View style={styles.MRContainer}>
             <Text style={styles.MRtext}>Monthly Report</Text>
+          </View>
             <TouchableOpacity
               style={styles.RRcontainer}
               onPress={navigateToRoomOverview}
@@ -90,12 +91,11 @@ const DashboardScreen = ({ navigation }) => {
               style={styles.MUGcontainer}
               onPress={navigateToPrediction}
             >
-              <Text style={styles.MUGText}> Monthly Unit Graph</Text>
+              <Text style={styles.MUGText}> Monthly{"\n"}   Units</Text>
               <View style={styles.MUGicon}>
                 <Image source={require("../extra/assets/MUGIcon.png")} />
               </View>
             </TouchableOpacity>
-          </View>
         </ScrollView>
         <Navbar />
       </View>
@@ -108,8 +108,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   MC: {
-    width: 348,
-    height: 144,
+    width: "90%",
+    height: "20%",
     alignSelf: "center",
     justifyContent: "center",
     marginTop: "6%",
@@ -122,14 +122,14 @@ const styles = StyleSheet.create({
     shadowRadius: 1, // blur radius of the shadow
   },
   MCcircleContainer: {
-    left: 259,
-    top: -1,
-    position: "absolute",
+    left: "74%",
+    top: "13%",
+    position: "relative",
   },
   MCtitle: {
-    left: 20,
-    top: 8,
-    position: "absolute",
+    left: "5%",
+    top: "-30%",
+    position: "relative",
     color: "#171A1F",
     fontSize: 18,
     fontFamily: "Lato-Bold",
@@ -137,10 +137,10 @@ const styles = StyleSheet.create({
     lineHeight: 28,
   },
   MCdescription: {
-    width: 198,
-    left: 20,
-    top: 40,
-    position: "absolute",
+    width: "50%",
+    left: "5%",
+    top: "-25%",
+    position: "relative",
     color: "#171A1F",
     fontSize: 14,
     fontFamily: "Lato-Bold",
@@ -148,8 +148,8 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
   MCunitsCount: {
-    left: 276,
-    top: 12,
+    left: "78.5%",
+    top: "7.5%",
     position: "absolute",
     color: "white",
     fontSize: 24,
@@ -174,22 +174,21 @@ const styles = StyleSheet.create({
   cardsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 20,
-    paddingHorizontal: 10,
+    marginTop: "7.5%",
+    paddingHorizontal: "4%",
   },
   card: {
     width: "48%",
-    height: 180,
+    height: "175%",
     backgroundColor: "#F1F2FD",
     borderRadius: 16,
-    padding: 10,
+    padding: "3%",
   },
   cardTitle: {
     color: "white",
     fontSize: 18,
     fontFamily: "Lato-Bold",
     fontWeight: "500",
-    lineHeight: 22,
   },
   cardAmount: {
     color: "white",
@@ -197,7 +196,6 @@ const styles = StyleSheet.create({
     fontFamily: "Lato-Bold",
     fontWeight: "500",
     lineHeight: 36,
-    marginTop: 10,
   },
   cardText: {
     color: "white",
@@ -206,16 +204,16 @@ const styles = StyleSheet.create({
     fontWeight: "400",
   },
   cardIconContainer: {
-    width: 66,
-    height: 66,
+    width: "40%",
+    height: "40%",
     position: "absolute",
     right: 10,
     bottom: 10,
   },
   MRContainer: {
-    marginLeft: "3%", // Aligning "Monthly Report" with "Highlights"
-    marginTop: "5%", // Adjust the margin as needed
-    justifyContent: "space-between",
+    marginLeft: "3.5%", // Aligning "Monthly Report" with "Highlights"
+    marginTop: "20%", // Adjust the margin as needed
+    padding: "1.5%", // Adjust the padding as needed
   },
   MRtext: {
     color: "#171A1F",
@@ -225,8 +223,9 @@ const styles = StyleSheet.create({
     lineHeight: 30,
   },
   RRcontainer: {
-    width: "45.5%",
-    height: 91,
+    width: "44%",
+    height: "15%",
+    left: "3.5%",
     backgroundColor: "#F1F2FDFF",
     borderRadius: 16,
     elevation: 6, // for the main shadow
@@ -237,26 +236,24 @@ const styles = StyleSheet.create({
   },
   RRText: {
     fontFamily: "Lato-Regular",
-    fontSize: 18,
+    top: "5%",
+    fontSize: 22,
     fontWeight: "700",
     lineHeight: 30,
     color: "#323842",
     flexWrap: "wrap",
     marginLeft: "40%", // Adjust the left margin to center the text
-    marginTop: 13, // Adjust the margin as needed
+    marginTop: "10%", // Adjust the margin as needed
   },
   RRicon: {
-    // position: 'absolute',
-    left: "5%", // Adjust the left position as needed
-    top: "-60%", // Adjust the top position as needed
-    // transform: [{ translateY: -40 }], // Centering the icon vertically
+    left: "6%", // Adjust the left position as needed
+    top: "-48%",  // Adjust the top position as needed
   },
   MUGcontainer: {
-    // position: 'absolute',
-    top: "-42.95%",
-    left: "51%",
-    width: "45.5%", // Match the width of the cards
-    height: 91,
+    width: "44%",
+    height: "15%",
+    left: "52.25%",
+    top: "-15%",
     backgroundColor: "#F1F2FDFF", // white
     borderRadius: 16,
     elevation: 6, // for the main shadow
@@ -267,19 +264,18 @@ const styles = StyleSheet.create({
   },
   MUGText: {
     fontFamily: "Lato-Regular",
-    fontSize: 18,
+    top: "5%", // Adjust the top position as needed
+    fontSize: 22,
     fontWeight: "700",
     lineHeight: 30,
     color: "#323842",
     flexWrap: "wrap",
     marginLeft: "40%", // Adjust the left margin to center the text
-    marginTop: 13, // Adjust the margin as needed
+    marginTop: "10%", // Adjust the margin as needed
   },
   MUGicon: {
-    // position: 'absolute',
-    left: "5%", // Adjust the left position as needed
-    top: "-65%", // Adjust the top position as needed
-    // transform: [{ translateY: -40 }], // Centering the icon vertically
+    left: "8%", // Adjust the left position as needed
+    top: "-50%", // Adjust the top position as needed
   },
 });
 
