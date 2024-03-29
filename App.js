@@ -18,6 +18,7 @@ import {
   RoomDataScreen,
   DataInputScreen,
   SplashScreen,
+  NotificationScreen,
 } from "./Screens";
 
 import { AuthProvider } from "./Screens/Auth/AuthProvider";
@@ -82,6 +83,8 @@ const App = () => {
                   <Stack.Screen name="Privacy" component={PrivacyScreen} />
                   <Stack.Screen name="RoomOverview" component={RoomOverviewScreen} />
                   <Stack.Screen name="RoomDetail" component={RoomDetailScreen} />
+                  <Stack.Screen name="DataInput" component={DataInputScreen} />
+                  <Stack.Screen name="Notifications" component={NotificationScreen} />
                 </Stack.Navigator>
             </SafeAreaView>
           </MenuProvider>

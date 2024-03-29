@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet,TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import {
   Menu,
@@ -21,6 +21,12 @@ const Header = ({ screenName, navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.screenName}>{screenName}</Text>
+      <TouchableOpacity 
+      style={styles.notifIconContainer}
+      onPress={() => navigation.navigate("Notifications")}
+      >
+        <Ionicons name="notifications" size={24} color="black" />
+      </TouchableOpacity>
       <Menu style={styles.menuIconContainer}>
         <MenuTrigger>
           <Ionicons name="menu" size={24} color="black" />
@@ -67,6 +73,9 @@ const styles = StyleSheet.create({
   screenName: {
     fontSize: 20,
     marginLeft: "5%",
+  },
+  notifIconContainer: {
+    marginRight: "-40%",
   },
   menuIconContainer: {
     marginRight: "5%",
