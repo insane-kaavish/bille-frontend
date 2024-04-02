@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const WeatherComponent = () => {
+const Weather = () => {
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(true);
   const API_KEY = "2fce26b3009e0a66de8c0a0223800869";
@@ -94,4 +94,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WeatherComponent;
+export default Weather;
