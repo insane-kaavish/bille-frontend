@@ -68,17 +68,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    position: "relative",
+    // position: "relative",
+    paddingHorizontal: "5%",
   },
   screenName: {
     fontSize: 20,
-    marginLeft: "5%",
+    width: "45%"
   },
   notifIconContainer: {
-    marginRight: "-40%",
+    marginRight: "-20%",
   },
   menuIconContainer: {
-    marginRight: "5%",
+    // marginRight: "5%",
   },
   MenuOptions: {
     padding: 10,

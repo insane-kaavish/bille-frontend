@@ -15,6 +15,7 @@ import Header from "./Components/Header";
 import Navbar from "./Components/Navbar";
 import { useAuth } from "./Auth/AuthProvider";
 import { useRoom } from "./Components/RoomProvider";
+import { GlobalStyles } from "./Styles/GlobalStyles";
 
 const height = Dimensions.get("window").height;
 
@@ -65,7 +66,7 @@ const RoomOverviewScreen = () => {
   return (
     <>
       <Header screenName="Room Overview" navigation={navigation} />
-      <View style={styles.container}>
+      <View style={GlobalStyles.screenContainer}>
         <ScrollView style={styles.scrollContainer}>
           <View style={styles.card}>
             <View style={styles.progressContainer}>
