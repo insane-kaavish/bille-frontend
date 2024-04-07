@@ -295,8 +295,8 @@ const DashboardScreen = ({ navigation }) => {
           </View>
         </Modal>
 
-                {/* Empty space to ensure content is not hidden behind navbar */}
-                <View style={{ height: 80 }} />
+        {/* Empty space to ensure content is not hidden behind navbar */}
+        <View style={{ height: 80 }} />
         </ScrollView>
         <Navbar />
       </View>
