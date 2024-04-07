@@ -5,6 +5,8 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 
 import Navbar from "../Components/Navbar";
@@ -35,39 +37,48 @@ const ContactScreen = ({ navigation }) => {
     <>
       <Header screenName="Contact Us" navigation={navigation} />
 
-      <View style={GlobalStyles.screenContainer}>
-        <View style={styles.formContainer}>
-          <Text style={styles.label}>Your Name:</Text>
-          <TextInput
-            style={styles.input}
-            value={name}
-            onChangeText={(text) => setName(text)}
-            placeholder="Enter your name"
-          />
+      <KeyboardAvoidingView
+        style={{ flex: 1, backgroundColor: "#F8F8F8" }}
+        behavior="padding"
+      >
+        <ScrollView
+          contentContainerStyle={GlobalStyles.screenContainer}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.formContainer}>
+            <Text style={styles.label}>Your Name:</Text>
+            <TextInput
+              style={styles.input}
+              value={name}
+              onChangeText={(text) => setName(text)}
+              placeholder="Enter your name"
+            />
 
-          <Text style={styles.label}>Your Email:</Text>
-          <TextInput
-            style={styles.input}
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-            placeholder="Enter your email"
-            keyboardType="email-address"
-          />
+            <Text style={styles.label}>Your Email:</Text>
+            <TextInput
+              style={styles.input}
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+              placeholder="Enter your email"
+              keyboardType="email-address"
+            />
 
-          <Text style={styles.label}>Your Message:</Text>
-          <TextInput
-            style={[styles.input, { height: 100 }]}
-            value={message}
-            onChangeText={(text) => setMessage(text)}
-            placeholder="Enter your message"
-            multiline
-          />
-        </View>
+            <Text style={styles.label}>Your Message:</Text>
+            <TextInput
+              style={[styles.input, styles.messageInput]}
+              value={message}
+              onChangeText={(text) => setMessage(text)}
+              placeholder="Enter your message"
+              multiline
+              numberOfLines={4}
+            />
+          </View>
 
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>Submit</Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Submit</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
 
       <Navbar />
     </>
@@ -76,23 +87,31 @@ const ContactScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   formContainer: {
-    marginBottom: 20,
+    marginHorizontal: 20,
+    marginTop: 20,
   },
   label: {
     fontSize: 16,
     marginBottom: 5,
+    color: "#333333",
   },
   input: {
     height: 40,
-    borderColor: "gray",
+    borderColor: "#CCCCCC",
     borderWidth: 1,
-    padding: 10,
-    marginBottom: 10,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    marginBottom: 20,
+    backgroundColor: "#FFFFFF",
+  },
+  messageInput: {
+    height: 100,
+    paddingTop: 10,
   },
   button: {
     backgroundColor: "#535CE8",
     borderRadius: 20,
-    padding: 12,
+    paddingVertical: 12,
     alignItems: "center",
     width: "70%",
     alignSelf: "center",
