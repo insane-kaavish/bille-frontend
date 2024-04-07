@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   Dimensions,
   Modal,
-  TouchableWithoutFeedback,
 } from "react-native";
 import Header from "./Components/Header";
 import Navbar from "./Components/Navbar";
@@ -114,7 +113,7 @@ const DashboardScreen = ({ navigation }) => {
     <>
       <Header screenName="Dashboard" navigation={navigation} />
       <View style={GlobalStyles.screenContainer}>
-        <ScrollView style={{flex: 1, padding:"5%"}}>
+        <ScrollView style={{flex: 1, padding:"2%"}}>
           <View style={{ flexDirection: "column"}}>
 
             <View style={[styles.BackgroundContainer, {height: height * 0.2, backgroundColor: "#F1F2FDFF"}]}>
@@ -215,7 +214,8 @@ const DashboardScreen = ({ navigation }) => {
           <View style={styles.Lastcontainer}>
             <Text style={[styles.HLtitle, { fontWeight: 'bold' }]}>Conservation Tips</Text>
           </View>
-          <ScrollView horizontal={true} style={styles.graphCard}>
+          <ScrollView horizontal={true} contentContainerStyle={styles.scrollViewContainer}>
+           
             {/* Container 1 */}
             <TouchableOpacity onPress={() => handleRecommendationPress("Inverter Air Conditioner")} style={[styles.recommendationContainer, { backgroundColor: "#F1F2FD" }]}>
               <Text style={[styles.containerTitle, { fontSize: 18, marginTop: 10 }]}>Inverter Air Conditioner</Text>
@@ -273,27 +273,27 @@ const DashboardScreen = ({ navigation }) => {
             {/* Add more containers as needed */}
           </ScrollView>
 
-{/* Modal for Expanded Recommendation */}
-<Modal
-  animationType="slide"
-  transparent={true}
-  visible={modalVisible}
-  onRequestClose={() => setModalVisible(false)}
->
-  <View style={styles.centeredView}>
-    <View style={styles.modalView}>
-      <Text style={styles.modalTitle}>{modalContent.title}</Text>
-      <Text style={styles.modalText}>{modalContent.subtitle}</Text>
-      <Text style={styles.modalText}>{modalContent.details}</Text>
-      <TouchableOpacity
-        onPress={() => setModalVisible(false)}
-        style={styles.closeButton}
-      >
-        <Text style={styles.closeButtonText}>Close</Text>
-      </TouchableOpacity>
-    </View>
-  </View>
-</Modal>
+        {/* Modal for Expanded Recommendation */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalTitle}>{modalContent.title}</Text>
+              <Text style={styles.modalText}>{modalContent.subtitle}</Text>
+              <Text style={styles.modalText}>{modalContent.details}</Text>
+              <TouchableOpacity
+                onPress={() => setModalVisible(false)}
+                style={styles.closeButton}
+              >
+                <Text style={styles.closeButtonText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
 
 
         </ScrollView>
@@ -307,7 +307,12 @@ const styles = StyleSheet.create({
   BackgroundContainer: {
     width: "100%",
     borderRadius: 16,
-    position: "relative"
+    position: "relative",
+    marginBottom: "4%",
+  },
+  scrollViewContainer: {
+    flexDirection: 'row',
+    paddingHorizontal: 0, // Add padding as needed
   },
   container: {
     flex: 1,
@@ -316,7 +321,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   Lastcontainer: {
-    marginBottom: 20,
+    marginBottom: "1%",
   },
   HLtitle: {
     fontSize: 24,
@@ -326,7 +331,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   recommendationContainer: {
-    width: 300,
+    width: 250,
     marginRight: 20,
     padding: 15,
     borderRadius: 10,
