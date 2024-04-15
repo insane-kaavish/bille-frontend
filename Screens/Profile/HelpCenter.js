@@ -15,7 +15,7 @@ const HelpCenterScreen = ({ navigation }) => {
             Bill-E is an intuitive app designed to help you manage and track your utility expenses. With real-time data analytics, Bill-E offers insights into your consumption patterns, helping you make informed decisions to reduce your monthly bills. Whether you're looking to monitor electricity, water, or gas usage, Bill-E provides a comprehensive overview of your utility consumption and expenses.
           </Text>
           <Text style={styles.paragraph}>
-            In addition to tracking, Bill-E also provides predictive analysis based on your past usage to forecast future bills, allowing for better budgeting and expense planning. Our goal is to empower users with the knowledge to save on their utilities and promote a more sustainable lifestyle.
+            In addition to tracking Bill-E also provides predictive analysis based on your past usage to forecast future bills, allowing for better budgeting and expense planning. Our goal is to empower users with the knowledge to save on their utilities and promote a more sustainable lifestyle.
           </Text>
 
           <Text style={styles.subtitle}>Need Assistance?</Text>
