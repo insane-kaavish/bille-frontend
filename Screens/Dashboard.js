@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import {
   Image,
   View,
@@ -26,7 +27,8 @@ const DashboardScreen = ({ navigation }) => {
     title: "",
     subtitle: "",
     details: "",
-  });
+  } 
+);
 
 
   useEffect(() => {
@@ -112,10 +114,11 @@ const DashboardScreen = ({ navigation }) => {
   return (
     <>
       <Header screenName="Dashboard" navigation={navigation} />
+      
       <View style={GlobalStyles.screenContainer}>
         <ScrollView style={{flex: 1, padding:"2%"}}>
           <View style={{ flexDirection: "column"}}>
-
+            
             <View style={[styles.BackgroundContainer, {height: height * 0.2, backgroundColor: "#F1F2FDFF"}]}>
               <TouchableOpacity onPress={navigateToPrediction}>
 
