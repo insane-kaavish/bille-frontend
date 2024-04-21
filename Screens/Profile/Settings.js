@@ -31,10 +31,10 @@ const SettingsScreen = ({ navigation }) => {
             onPress={navigateToNotifications}
           >
             <View style={styles.optionContent}>
-              <Ionicons name="notifications" size={24} color="#535CE8" />
+              <Ionicons name="notifications" size={24} color="#007AFF" />
               <Text style={styles.optionText}>Enable Notifications</Text>
             </View>
-            <Ionicons name="chevron-forward-outline" size={20} color="#535CE8" />
+            <Ionicons name="chevron-forward-outline" size={20} color="#007AFF" />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -42,10 +42,10 @@ const SettingsScreen = ({ navigation }) => {
             onPress={navigateToPrivacy}
           >
             <View style={styles.optionContent}>
-              <Ionicons name="lock-closed" size={24} color="#535CE8" />
+              <Ionicons name="lock-closed" size={24} color="#007AFF" />
               <Text style={styles.optionText}>Privacy</Text>
             </View>
-            <Ionicons name="chevron-forward-outline" size={20} color="#535CE8" />
+            <Ionicons name="chevron-forward-outline" size={20} color="#007AFF" />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -53,10 +53,10 @@ const SettingsScreen = ({ navigation }) => {
             onPress={navigateToContact}
           >
             <View style={styles.optionContent}>
-              <Ionicons name="mail" size={24} color="#535CE8" />
+              <Ionicons name="mail" size={24} color="#007AFF" />
               <Text style={styles.optionText}>Contact Us</Text>
             </View>
-            <Ionicons name="chevron-forward-outline" size={20} color="#535CE8" />
+            <Ionicons name="chevron-forward-outline" size={20} color="#007AFF" />
           </TouchableOpacity>
         </View>
       </View>
@@ -68,12 +68,16 @@ const SettingsScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#FFF",
-    borderRadius: 10,
+    borderRadius: 24,
     padding: 20,
-    elevation: 3,
     marginBottom: 20,
     marginLeft: 10,
     marginRight: 10,
+    shadowColor: "#rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 6 },  // Reduced height for a closer shadow
+    shadowOpacity: 0.5,  // Lower opacity for a softer appearance
+    shadowRadius: 8,  // Increased radius to blur edges more
+    elevation: 6,  // Adjust elevation for Android to match visual consistency
   },
   optionButton: {
     flexDirection: "row",
@@ -88,10 +92,11 @@ const styles = StyleSheet.create({
   optionContent: {
     flexDirection: "row",
     alignItems: "center",
+    fontFamily: "Lato-Regular",
   },
   optionText: {
     fontSize: 18,
-    color: "#333333",
+    // color: "#007AFF",
     marginLeft: 10,
   },
 });

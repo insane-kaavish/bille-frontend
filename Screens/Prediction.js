@@ -1,59 +1,41 @@
 import React, { useEffect, useState } from "react";
-import Header from "./Components/Header";
-import Navbar from "./Components/Navbar";
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Dimensions, TouchableWithoutFeedback } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { useNavigation } from "@react-navigation/native";
-import {
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Dimensions,
-  TouchableWithoutFeedback,
-} from "react-native";
+import Header from "./Components/Header";
+import Navbar from "./Components/Navbar";
 import { useAuth } from "./Auth/AuthProvider";
 import { useBill } from "./Components/BillProvider";
-// import Config from "react-native-config";
+import { Ionicons } from '@expo/vector-icons';
 
-// const API_URL = Config.API_URL;
-const API_URL = process.env.EXPO_PUBLIC_API_URL;
+
 const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
 
-const height = Dimensions.get("window").height;
-
-const PredictionScreen = ({ navigation }) => {
+const PredictionScreen = () => {
+  const navigation = useNavigation();
   const { authToken } = useAuth();
-  const {
-    units,
-    totalCost,
-    actualMonthly,
-    predictedMonthly,
-    labels,
-    fetchMonthlyData,
-    isMonthlyDataFetched,
-  } = useBill();
+  const { units, totalCost, actualMonthly, predictedMonthly, labels, fetchMonthlyData } = useBill();
   const [fillPercentage, setFillPercentage] = useState(0);
 
   useEffect(() => {
-    console.log("Fetching monthly data");
     fetchMonthlyData();
     setFillPercentage(units % 100);
   }, []);
 
   const data = {
-    labels: labels,
+    labels,
     datasets: [
       {
         data: actualMonthly,
-        color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`, // Adjust the blue color here
+        color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`,
         strokeWidth: 2,
         label: "Actual Units",
       },
       {
         data: predictedMonthly,
-        color: (opacity = 1) => `rgba(255, 0, 0, ${opacity})`, // Adjust the red color here
+        color: (opacity = 1) => `rgba(255, 0, 0, ${opacity})`,
         strokeWidth: 2,
         label: "Predicted Units",
       },
@@ -63,24 +45,21 @@ const PredictionScreen = ({ navigation }) => {
   return (
     <>
       <Header screenName="Prediction" navigation={navigation} />
-
       <View style={styles.container}>
         <ScrollView style={styles.scrollContainer}>
           <View style={styles.predictionCard}>
-            <TouchableWithoutFeedback
-              onPress={() => navigation.navigate("RoomOverview")}
-            >
+            <TouchableWithoutFeedback onPress={() => navigation.navigate("RoomOverview")}>
               <AnimatedCircularProgress
-                size={180}
-                width={15}
+                size={240} // Increased size for better visibility
+                width={9} // Wider progress bar
                 fill={fillPercentage}
-                tintColor="#535CE8"
-                backgroundColor="#F2F2F2"
+                tintColor="#007AFF"
+                backgroundColor="#E5E5EA"
                 rotation={225}
                 lineCap="round"
                 arcSweepAngle={270}
               >
-                {(fill) => (
+                {fill => (
                   <View style={styles.progressTextContainer}>
                     <Text style={styles.consumptionValue}>{units}</Text>
                     <Text style={styles.consumptionUnit}>Predicted units</Text>
@@ -88,22 +67,16 @@ const PredictionScreen = ({ navigation }) => {
                 )}
               </AnimatedCircularProgress>
             </TouchableWithoutFeedback>
+            <Text style={styles.estimatedBill}>
+              Estimated Bill: <Text style={{ color: "#007AFF" }}>Pkr {totalCost}</Text>
+            </Text>
 
-            <View style={styles.unitDetails}>
-              <Text style={styles.estimatedBill}>
-                Estimated Bill:{" "}
-                <Text style={{ color: "orange" }}> Pkr. {totalCost}</Text>
-              </Text>
-            </View>
-
-            <TouchableOpacity
-              style={styles.detailsButton}
-              onPress={() => navigation.navigate("RoomOverview")}
-            >
-              <Text style={styles.detailsButtonText}>View Room Details</Text>
+            <TouchableOpacity style={styles.detailsButton}   onPress={() => navigation.navigate("RoomOverview")} >
+            <Ionicons name="eye" size={20} color="white" />
+            
+              <Text style={styles.detailsButtonText}>   View Room Details</Text>
             </TouchableOpacity>
           </View>
-
           <View style={styles.graphCard}>
             <ScrollView horizontal>
               <LineChart
@@ -111,26 +84,30 @@ const PredictionScreen = ({ navigation }) => {
                 width={screenWidth * 1.5}
                 height={300}
                 verticalLabelRotation={0}
-                fromZero={true}
+                fromZero
                 segments={4}
                 chartConfig={{
                   backgroundGradientFrom: "#FFF",
                   backgroundGradientTo: "#FFF",
-                  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                  strokeWidth: 5,
-                  barPercentage: 0.3,
-                  propsForLabels: { fontsize: 2 },
                   decimalPlaces: 0,
-                  yAxisInterval: 250,
+                  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                  labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                  style: {
+                    borderRadius: 16,
+                  },
+                  propsForDots: {
+                    r: "4",
+                    strokeWidth: "2",
+                    stroke: "#ffa726"
+                  }
                 }}
                 bezier
                 style={{ marginVertical: 8, borderRadius: 16 }}
               />
             </ScrollView>
             <Text style={styles.graphDescription}>
-              Comparison between the{" "}
-              <Text style={{ color: "blue" }}>actual</Text> and{" "}
-              <Text style={{ color: "red" }}>predicted</Text> units.
+              Comparison between the <Text style={{ color: "blue" }}>actual</Text> and
+              <Text style={{ color: "red" }}> predicted</Text> units.
             </Text>
           </View>
         </ScrollView>
@@ -145,122 +122,102 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     padding: 10,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    paddingHorizontal: 10,
-    paddingTop: height * 0.001,
-    backgroundColor: "#fff",
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
+    alignItems: 'center', // Center children horizontally
+    justifyContent: 'center', // Center children vertically
+  
   },
   scrollContainer: {
     flex: 1,
   },
   predictionCard: {
-    backgroundColor: "#f9f9f9",
-    borderRadius: 8,
-    padding: 16,
-    margin: 16,
+    backgroundColor: "#ffffff", // Maintaining a light background for contrast
+    borderRadius: 40, // Softening corners further for a more modern, elegant look
+    padding: 30, // Increasing padding to enhance the card's spacious feel
+    marginHorizontal: 20, // Applying horizontal margin for better layout spacing
+    marginVertical: 10, // Reducing vertical margin to tighten up the design
     alignItems: "center",
-    elevation: 6, // for the main shadow
-    shadowColor: "#000", // color of the shadow
-    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
-    shadowOpacity: 0.3, // opacity of the shadow
-    shadowRadius: 1, // blur radius of the shadow
+    shadowColor: "rgba(0,0,0,0.5)", // Softening shadow color for a more subtle effect
+    shadowOffset: { width: 0, height: 10 }, // Lifting the shadow for a deeper depth illusion
+    shadowOpacity: 0.1, // Lowering opacity for a finer shadow
+    shadowRadius: 20, // Increasing radius for a smoother fade of shadows
+    elevation: 20, // Enhancing elevation for a pronounced floating effect
   },
+  
   consumptionValue: {
-    fontSize: 48,
-    color: "#000",
-    fontFamily: "Lato-Bold",
+    fontSize: 40,
+    color: "#007AFF",
+    fontFamily: "Lato-Regular", // Bold font for emphasis
     textAlign: "center",
   },
   consumptionUnit: {
     fontSize: 18,
     color: "#666",
-    fontFamily: "Lato-Bold",
+    fontFamily: "Lato-Bold", // Regular font for a softer look
     textAlign: "center",
   },
   estimatedBill: {
-    fontSize: 20,
-    color: "#666",
-    textAlign: "center",
-    // marginBottom: 20,
-    fontFamily: "Lato-Bold",
+    fontSize: 22, // Increase the font size for better readability
+    color: "#333", // A standard dark color for the main text for high contrast
+    fontFamily: "Lato-Regular", // Maintaining a clean, professional font style
+    textAlign: "center", // Ensuring the text is centered aligns with modern design trends
+    // fontWeight: "bold", // Bold font weight for the label "Estimated Bill" to stand out
+    marginVertical: 20, // Providing more vertical space around the text for a cleaner look
+    textShadowColor: 'rgba(0, 0, 0, 0.1)', // A subtle shadow for depth
+    textShadowOffset: { width: 1, height: 1 }, // Light shadow offset for subtle text lifting
+    textShadowRadius: 2, // Soft blur radius for the shadow to enhance readability
   },
+  
+  
   detailsButton: {
-    backgroundColor: "#535CE8",
-    borderRadius: 20,
+    backgroundColor: "#007AFF",
+    borderRadius: 22,
     padding: 12,
-    alignItems: "center",
     width: "70%",
     alignSelf: "center",
-    marginVertical: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 2,
+    opacity: 0.9, // Default lower opacity
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    
+
   },
   detailsButtonText: {
-    color: "white",
-    fontFamily: "Lato-Bold",
-  },
-  progressTextContainer: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: [{ translateX: -60 }, { translateY: -40 }], // Adjust these values based on the size of your progress circle
-    alignItems: "center",
-  },
-  progressText: {
-    fontSize: 48, // Adjust the font size as needed
-    fontFamily: "Lato-Bold",
-    textAlign: "center", // Center the text horizontally
-    textShadowColor: "rgba(0, 0, 0, 0.5)", // Shadow color
-    textShadowOffset: { width: 1, height: 1 }, // Shadow offset
-    textShadowRadius: 2, // Shadow radius
+    color: "#fff",
+    fontSize: 13,
+    fontFamily: "Lato-Bold", // Bold font for emphasis
+    textAlign: "center",
   },
   graphCard: {
-    backgroundColor: "#f9f9f9",
-    borderRadius: 1,
-    paddingVertical: 16,
-    paddingHorizontal: 16,
+    backgroundColor: "#ffffff",
+    borderRadius: 40,
+    padding: 20,
     marginHorizontal: 16,
     marginTop: 10,
     marginBottom: 70,
-    elevation: 6, // for the main shadow
-    shadowColor: "#000", // color of the shadow
-    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
-    shadowOpacity: 0.3, // opacity of the shadow
-    shadowRadius: 1, // blur radius of the shadow
+    shadowColor: "rgba(0,0,0,0.5=9)", // Softening shadow color for a more subtle effect
+    shadowOffset: { width: 0, height: 10 }, // Lifting the shadow for a deeper depth illusion
+    shadowOpacity: 0.9, // Lowering opacity for a finer shadow
+    shadowRadius: 29, // Increasing radius for a smoother fade of shadows
+    elevation: 30, // Enhancing elevation for a pronounced floating effect
   },
   graphDescription: {
     fontSize: 14,
     color: "#666",
     textAlign: "center",
+    fontFamily: "Lato-Regular",
     marginTop: 10,
-    fontFamily: "Lato-Bold",
   },
-  slabRatesContainer: {
+  progressTextContainer: {
     position: "absolute",
-    bottom: -40,
-    width: "100%",
+    top: "50%",
+    left: "50%",
+    transform: [{ translateX: -70 }, { translateY: -40 }], // Centered text alignment
     alignItems: "center",
-  },
-  slabRateText: {
-    fontFamily: "Lato-Bold",
-    fontSize: 16,
-    color: "#666",
-  },
-  unitDetails: {
-    backgroundColor: "#f9f9f9",
-    borderRadius: 8,
-    padding: 16,
-    margin: 16,
-    alignItems: "center",
-    elevation: 6, // for the main shadow
-    shadowColor: "#000", // color of the shadow
-    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
-    shadowOpacity: 0.6, // opacity of the shadow
-    shadowRadius: 1, // blur radius of the shadow
   },
 });
 
