@@ -43,11 +43,14 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginTop: 15,
     marginBottom: 10,
+    color: "#007AFF",
+    fontFamily: "Lato-Bold",
   },
   paragraph: {
     fontSize: 18,
     marginBottom: 20,
     lineHeight: 28,
+    fontFamily: "Lato-Regular",
   },
 });
 

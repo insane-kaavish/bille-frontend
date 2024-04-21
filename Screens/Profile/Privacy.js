@@ -84,10 +84,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
     color: "#007AFF",
+    fontFamily: "Lato-Bold",
   },
   sectionText: {
     fontSize: 16,
     color: "#424955",
+    fontFamily: "Lato-Regular",
   },
   backButton: {
     backgroundColor: "#007AFF",
@@ -103,6 +105,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
+    fontFamily: "Lato-Bold",
   },
 });
 
