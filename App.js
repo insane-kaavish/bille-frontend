@@ -28,6 +28,7 @@ import * as Font from "expo-font";
 import { MenuProvider } from "react-native-popup-menu";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AddRoomScreen from "./Screens/AddRoom";
 
 const Stack = createNativeStackNavigator();
 
@@ -81,7 +82,9 @@ const App = () => {
                   <Stack.Screen name="Contact" component={ContactScreen} />
                   <Stack.Screen name="Privacy" component={PrivacyScreen} />
                   <Stack.Screen name="RoomOverview" component={RoomOverviewScreen} />
+                  <Stack.Screen name="AddRoom" component={AddRoomScreen} />
                   <Stack.Screen name="RoomDetail" component={RoomDetailScreen} />
+                  
                 </Stack.Navigator>
             </SafeAreaView>
           </MenuProvider>
