@@ -112,8 +112,7 @@ const DashboardScreen = ({ navigation }) => {
               <Text style={styles.cardTitle}>Current Units</Text>
               <Text style={styles.cardValue}>{units}</Text>
               <Text style={styles.cardDescription}>
-                Based on your current consumption data, your predicted units are {units} and considered good.
-              </Text>
+              Your current consumption data suggests that your predicted units are {units}, which is deemed satisfactory.              </Text>
             </TouchableOpacity>
           </View>
           {/* Billing Information Container */}
