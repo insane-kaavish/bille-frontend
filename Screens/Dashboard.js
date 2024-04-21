@@ -1,44 +1,34 @@
 import React, { useEffect, useState } from "react";
-
-import {
-  Image,
-  View,
-  StyleSheet,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  Dimensions,
-  Modal,
-} from "react-native";
+import { View, StyleSheet, ScrollView, Text, TouchableOpacity, Modal } from "react-native";
+import { FontAwesome5 } from "@expo/vector-icons";
 import Header from "./Components/Header";
 import Navbar from "./Components/Navbar";
 import { useAuth } from "./Auth/AuthProvider";
 import { useBill } from "./Components/BillProvider";
 import { GlobalStyles } from "./Styles/GlobalStyles";
 
-const { height } = Dimensions.get("window");
-
+// get width
+import { Dimensions } from "react-native";
+const { width } = Dimensions.get("window");
 const DashboardScreen = ({ navigation }) => {
   const { authToken } = useAuth();
   const { units, totalCost, perUnitCost, fetchPredictedData } = useBill();
 
-  const [modalVisible, setModalVisible] = useState(false); // Added modalVisible state
+  const [modalVisible, setModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState({
     title: "",
     subtitle: "",
     details: "",
-  } 
-);
-
+  });
 
   useEffect(() => {
-    console.log("Fetching predicted data")
     fetchPredictedData();
   }, [authToken]);
 
   const navigateToPrediction = () => {
     navigation.navigate("Prediction");
   };
+
   const navigateToRoomOverview = () => {
     navigation.navigate("RoomOverview");
   };
@@ -109,313 +99,263 @@ const DashboardScreen = ({ navigation }) => {
     }
     setModalVisible(true);
   };
-  
 
   return (
     <>
-      <Header screenName="Dashboard" navigation={navigation} />
-      
+     <Header screenName="Dashboard" navigation={navigation} />
       <View style={GlobalStyles.screenContainer}>
-        <ScrollView style={{flex: 1, padding:"2%"}}>
-          <View style={{ flexDirection: "column"}}>
-            
-            <View style={[styles.BackgroundContainer, {height: height * 0.2, backgroundColor: "#F1F2FDFF"}]}>
-              <TouchableOpacity onPress={navigateToPrediction}>
-
-                <View>
-                  <Text style={ {top:"25%", left:"5%", fontFamily:"Lato-Bold", fontSize:24} }>Current Units</Text>
-                </View>
-
-                <View style={ {left:"70%", bottom:"15%"} }>
-                    <Image source={require("../extra/assets/OV.png")} />
-                    <View>
-                      <Text style={ {left:"3%", bottom:"200%", fontFamily:"Lato-Bold", fontSize:24, color:"white"} }> {units} </Text>
-                    </View>
-                </View>
-
-                <View>
-                  <Text style={ {width:"70%" ,bottom:"90%", left:"5%", fontFamily:"Lato-Regular", fontSize:18, justifyContent:"center"} }>
-                    Based on your current consumption data, your predicted units are{" "}
-                    {units} and consider good.
-                  </Text>
-                </View>
-
+        <ScrollView style={styles.container}>
+          {/* Current Units Card */}
+          <View style={styles.section}>
+            <TouchableOpacity style={styles.card} onPress={navigateToPrediction}>
+              <Text style={styles.cardTitle}>Current Units</Text>
+              <Text style={styles.cardValue}>{units}</Text>
+              <Text style={styles.cardDescription}>
+                Based on your current consumption data, your predicted units are {units} and considered good.
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {/* Billing Information Container */}
+          <View style={styles.billingContainer}>
+            <TouchableOpacity style={styles.card} onPress={navigateToRoomOverview}>
+              <Text style={styles.cardTitle}>Expected Bill</Text>
+              <Text style={styles.cardValue}>Rs. {totalCost}</Text>
+              <Text style={styles.cardDescription}>Based on usage pattern</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.card} onPress={navigateToRoomOverview}>
+              <Text style={styles.cardTitle}>Price per Unit</Text>
+              <Text style={styles.cardValue}>Rs. {perUnitCost}</Text>
+              <Text style={styles.cardDescription}>Average cost per unit</Text>
+            </TouchableOpacity>
+          </View>
+          {/* Monthly Report Section */}
+          <View style={styles.monthlyReportContainer}>
+            <Text style={styles.sectionTitle}>Monthly Report</Text>
+            <View style={styles.reportContainer}>
+              <TouchableOpacity style={styles.reportCard} onPress={navigateToRoomOverview}>
+                <FontAwesome5 name="building" size={24} color="#007AFF" />
+                <Text style={styles.reportText}>Room Report</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.reportCard} onPress={navigateToPrediction}>
+                <FontAwesome5 name="chart-bar" size={24} color="#28a745" />
+                <Text style={styles.reportText}>Monthly Units</Text>
               </TouchableOpacity>
             </View>
-
-            <View style={[styles.BackgroundContainer, {height: height * 0.285, backgroundColor: "white"}]}>
-
-              <View style= {{}}>
-                <Text style={ styles.HeadingContainer }>Highlights</Text>
-              </View>
-
-              <View style={ {flexDirection:"row", justifyContent: "space-between"} }>
-                <View style={[styles.CardContainer, { backgroundColor: "#7C83ED" }]}>
-                  <Text style={ [styles.HighlightsCardText, {fontSize: 18} ] }>Expected Bill:</Text>
-                  <Text style={ [styles.HighlightsCardText, {fontSize: 28, lineHeight: 40} ] }>Rs. {totalCost}</Text>
-                  <Text style={ [styles.HighlightsCardText, {fontSize: 16} ] }>Based on usage pattern</Text>
-
-                  <View style={ {left:"60%"} }>
-                    <Image source={require("../extra/assets/c11.png")} />
-                  </View>
-
-                </View>
-
-                <View style={[styles.CardContainer, {backgroundColor: "#2ACCCF" }]}>
-                  <Text style={ [styles.HighlightsCardText, {fontSize: 18} ] }>Per Unit Price:</Text>
-                  <Text style={ [styles.HighlightsCardText, {fontSize: 28, lineHeight: 40} ] }>Rs. {perUnitCost}</Text>
-                  <Text style={ [styles.HighlightsCardText, {fontSize: 16} ] }>Based on the slab rates </Text>
-
-                  <View style={ {left:"60%"} }>
-                    <Image source={require("../extra/assets/c12.png")} />
-                  </View>
-
-                </View>
-
-              </View>
-
-            </View>
-
-            <View style={[styles.BackgroundContainer, {height: height * 0.16, backgroundColor: "white",}]}>
-              <View style= { {} }>
-                <Text style={ styles.HeadingContainer }>Monthly Report</Text>
-              </View>
-
-              <View style={ {flexDirection:"row", justifyContent: "space-between"} }>
-                <TouchableOpacity style={[styles.CardContainer, styles.MonthlyReportButton]} onPress={navigateToRoomOverview}>
-
-                  <View style={{ flexDirection: "row", alignItems:"center"}}> 
-                    <Text style={ {width:"70%", fontFamily: "Lato-Bold", fontSize: 24} }>Room Report</Text>
-
-                    <View style={ {} }>
-                      <Image source={require("../extra/assets/RRIcon.png")} />
-                    </View>
-                  </View>
-
-                </TouchableOpacity>
-
-                <TouchableOpacity style={[styles.CardContainer, styles.MonthlyReportButton]} onPress={navigateToPrediction}>
-                  
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Text style={{fontFamily: "Lato-Bold", fontSize: 24 }}>Monthly{"\n"}Units</Text>
-                    
-                    <View style={{}}>
-                      <Image source={require("../extra/assets/MUGIcon.png")} />
-                    </View>
-                  </View>
-
-                </TouchableOpacity>
-
-
-              </View>
-
-            </View>
-
           </View>
-
-          {/* Electricity Conservation tips */}
-          <View style={styles.Lastcontainer}>
-            <Text style={[styles.HLtitle, { fontWeight: 'bold' }]}>Conservation Tips</Text>
+          {/* Conservation Tips */}
+          <View style={styles.tipsContainer}>
+            <Text style={styles.sectionTitle}>Conservation Tips</Text>
+            <ScrollView horizontal={true} contentContainerStyle={styles.tipsScrollContainer}>
+            <TouchableOpacity onPress={() => handleRecommendationPress("Inverter Air Conditioner")} style={styles.recommendationContainer}>
+                <FontAwesome5 name="snowflake" size={30} color="#007AFF" />
+                <Text style={styles.containerTitle}>Inverter Air Conditioner</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => handleRecommendationPress("LED Lighting")} style={styles.recommendationContainer}>
+                <FontAwesome5 name="lightbulb" size={30} color="#007AFF" />
+                <Text style={styles.containerTitle}>LED Lighting</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => handleRecommendationPress("Heat Rejection and Insulation Sheets")} style={styles.recommendationContainer}>
+                <FontAwesome5 name="sun" size={30} color="#007AFF" />
+                <Text style={styles.containerTitle}>Heat Rejection and Insulation Sheets</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => handleRecommendationPress("Energy-Intensive Appliances")} style={styles.recommendationContainer}>
+                <FontAwesome5 name="plug" size={30} color="#007AFF" />
+                <Text style={styles.containerTitle}>Energy-Intensive Appliances</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => handleRecommendationPress("Energy Efficient UPS")} style={styles.recommendationContainer}>
+                <FontAwesome5 name="battery-three-quarters" size={30} color="#007AFF" />
+                <Text style={styles.containerTitle}>Energy Efficient UPS</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => handleRecommendationPress("Phantom Energy Consumption")} style={styles.recommendationContainer}>
+                <FontAwesome5 name="ghost" size={30} color="#007AFF" />
+                <Text style={styles.containerTitle}>Phantom Energy Consumption</Text>
+              </TouchableOpacity>
+            </ScrollView>
           </View>
-          <ScrollView horizontal={true} contentContainerStyle={styles.scrollViewContainer}>
-           
-            {/* Container 1 */}
-            <TouchableOpacity onPress={() => handleRecommendationPress("Inverter Air Conditioner")} style={[styles.recommendationContainer, { backgroundColor: "#F1F2FD" }]}>
-              <Text style={[styles.containerTitle, { fontSize: 18, marginTop: 10 }]}>Inverter Air Conditioner</Text>
-              <Text style={[styles.containerSubTitle, { fontSize: 16 }]}>Did you know?</Text>
-              <Text numberOfLines={2} ellipsizeMode="tail" style={[styles.containerText, { fontSize: 16, marginTop: 5 }]}>
-                Inverter air conditioners can save up to 50% of your annual electricity consumption compared to conventional AC units.
-              </Text>
-            </TouchableOpacity>
-            
-            {/* Container 2 */}
-            <TouchableOpacity onPress={() => handleRecommendationPress("LED Lighting")} style={[styles.recommendationContainer, { backgroundColor: "#FFE3E3" }]}>
-              <Text style={[styles.containerTitle, { fontSize: 18, marginTop: 10 }]}>LED Lighting</Text>
-              <Text style={[styles.containerSubTitle, { fontSize: 16 }]}>Did you know?</Text>
-              <Text numberOfLines={2} ellipsizeMode="tail" style={[styles.containerText, { fontSize: 16, marginTop: 5 }]}>
-                LED lights can save up to 75% of your annual energy consumption and last up to 25 times longer than incandescent lights.
-              </Text>
-            </TouchableOpacity>
-
-            {/* Container 3 */}
-            <TouchableOpacity onPress={() => handleRecommendationPress("Heat Rejection and Insulation Sheets")} style={[styles.recommendationContainer, { backgroundColor: "#C4F2E6" }]}>
-              <Text style={[styles.containerTitle, { fontSize: 18, marginTop: 10 }]}>Heat Rejection and Insulation Sheets</Text>
-              <Text style={[styles.containerSubTitle, { fontSize: 16 }]}>Did you know?</Text>
-              <Text numberOfLines={2} ellipsizeMode="tail" style={[styles.containerText, { fontSize: 16, marginTop: 5 }]}>
-                Heat rejection and insulation sheets can reduce up to 78% of the sun's heat from entering your home, thereby reducing cooling costs.
-              </Text>
-            </TouchableOpacity>
-
-            {/* Container 4 */}
-            <TouchableOpacity onPress={() => handleRecommendationPress("Energy-Intensive Appliances")} style={[styles.recommendationContainer, { backgroundColor: "#FFD6A5" }]}>
-              <Text style={[styles.containerTitle, { fontSize: 18, marginTop: 10 }]}>Energy-Intensive Appliances</Text>
-              <Text style={[styles.containerSubTitle, { fontSize: 16 }]}>Did you know?</Text>
-              <Text numberOfLines={2} ellipsizeMode="tail" style={[styles.containerText, { fontSize: 16, marginTop: 5 }]}>
-                Old energy-intensive appliances cost an average homeowner up to 45% on their annual consumption.
-              </Text>
-            </TouchableOpacity>
-
-            {/* Container 5 */}
-            <TouchableOpacity onPress={() => handleRecommendationPress("Energy Efficient UPS")} style={[styles.recommendationContainer, { backgroundColor: "#FFDDDD" }]}>
-              <Text style={[styles.containerTitle, { fontSize: 18, marginTop: 10 }]}>Energy Efficient UPS</Text>
-              <Text style={[styles.containerSubTitle, { fontSize: 16 }]}>Did you know?</Text>
-              <Text numberOfLines={2} ellipsizeMode="tail" style={[styles.containerText, { fontSize: 16, marginTop: 5 }]}>
-                Energy-efficient UPS can reduce your annual energy loss by up to 55%.
-              </Text>
-            </TouchableOpacity>
-
-            {/* Container 6 */}
-            <TouchableOpacity onPress={() => handleRecommendationPress("Phantom Energy Consumption")} style={[styles.recommendationContainer, { backgroundColor: "#C2E5FC" }]}>
-              <Text style={[styles.containerTitle, { fontSize: 18, marginTop: 10 }]}>Phantom Energy Consumption</Text>
-              <Text style={[styles.containerSubTitle, { fontSize: 16 }]}>Did you know?</Text>
-              <Text numberOfLines={2} ellipsizeMode="tail" style={[styles.containerText, { fontSize: 16, marginTop: 5 }]}>
-                Phantom energy, which is unconsumed or wasted energy, contributes up to 10% of your annual electricity bill.
-              </Text>
-            </TouchableOpacity>
-            
-            {/* Add more containers as needed */}
-          </ScrollView>
-
-        {/* Modal for Expanded Recommendation */}
+        </ScrollView>
+        <Navbar />
         <Modal
           animationType="slide"
           transparent={true}
           visible={modalVisible}
           onRequestClose={() => setModalVisible(false)}
         >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalTitle}>{modalContent.title}</Text>
-              <Text style={styles.modalText}>{modalContent.subtitle}</Text>
-              <Text style={styles.modalText}>{modalContent.details}</Text>
-              <TouchableOpacity
-                onPress={() => setModalVisible(false)}
-                style={styles.closeButton}
-              >
-                <Text style={styles.closeButtonText}>Close</Text>
-              </TouchableOpacity>
-            </View>
+          <View style={styles.modalView}>
+            <Text style={styles.modalTitle}>{modalContent.title}</Text>
+            <Text style={styles.modalSubtitle}>{modalContent.subtitle}</Text>
+            <Text style={styles.modalText}>{modalContent.details}</Text>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
           </View>
         </Modal>
-
-        {/* Empty space to ensure content is not hidden behind navbar */}
-        <View style={{ height: 80 }} />
-        </ScrollView>
-        <Navbar />
+        <View style={{ height: 50 }} />
       </View>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  BackgroundContainer: {
-    width: "100%",
-    borderRadius: 16,
-    position: "relative",
-    marginBottom: "4%",
-  },
-  scrollViewContainer: {
-    flexDirection: 'row',
-    paddingHorizontal: 0, // Add padding as needed
-  },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    paddingHorizontal: 20,
-    paddingTop: 20,
+    padding: 20,
   },
-  Lastcontainer: {
-    marginBottom: "1%",
+  section: {
+    marginBottom: 20,
   },
-  HLtitle: {
-    fontSize: 24,
+  billingContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 20,
+  },
+  card: {
+    backgroundColor: "#ffffff",
+    borderRadius: 12,
+    padding: 20,
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 10,
+    flex: 1,
+    marginHorizontal: 5,
+
+  },
+  cardTitle: {
+    fontFamily: "Lato-Bold",
+    fontSize: 16,
     marginBottom: 10,
   },
-  graphCard: {
-    flexDirection: 'row',
+  cardValue: {
+    fontFamily: "Lato-Bold",
+    fontSize: 24,
+    color: "#007AFF",
+    marginBottom: 10,
+  },
+  cardDescription: {
+    fontFamily: "Lato-Regular",
+    fontSize: 14,
+    color: "#666",
+  },
+  monthlyReportContainer: {
+    marginBottom: 20,
+  },
+  reportContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 0, // Adding padding to ensure some space around the cards
+    marginBottom: -10,       // Space below the container for clean separation
+    marginTop: 10,           // Space above the container to distinguish from previous content
+  },
+  reportCard: {
+    backgroundColor: "#ffffff",
+    borderRadius: 10,
+    padding: 24,
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    flex: 1, // Utilizing flex to fill available space
+    marginHorizontal: 5, // Spacing between the two cards
+    maxWidth: '46%', // Decreasing the max width to make the cards more compact
+  },
+  reportText: {
+    fontFamily: "Lato-Bold",
+    fontSize: 18,
+    color: "#333",
+    marginTop: 5, // Space between icon and text
+  },
+  tipsContainer: {
+    marginBottom: 20,
+  },
+  tipsScrollContainer: {
+    paddingHorizontal: 10,
   },
   recommendationContainer: {
-    width: 250,
-    marginRight: 20,
-    padding: 15,
-    borderRadius: 10,
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 20,
+    marginRight: 10,
+    alignItems: "center",
+    width: 200,
   },
   containerTitle: {
-    fontWeight: 'bold',
+    fontFamily: "Lato-Bold",
+    fontSize: 20,
+    textAlign: "center",
   },
-  containerSubTitle: {
-    marginTop: 5,
-  },
-  containerText: {
-    marginTop: 5,
-  },
-    centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
-
   modalView: {
-    margin: 20,
+    margin: 20, // Ensure there's some space around the modal to not touch the edges of the screen
     backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
+    borderRadius: 20, // Soften the edges with a rounded border
+    padding: 25, // Generous padding for internal spacing
+    alignItems: "center", // Center-align items for a polished look
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 2
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
+    shadowOpacity: 0.25, // Slightly pronounced shadows for a pop-out effect
+    shadowRadius: 3.84,
+    elevation: 5, // Elevation for Android to simulate depth
+    justifyContent: "center", // Center the modal content vertically
+    position: 'absolute',  // Positions the modal view absolutely relative to its parent
+    top: '50%',            // Places the top edge of the modal at the center of the parent
+    left: '50%',           // Places the left edge of the modal at the center of the parent
+    transform: [{ translateX: -Dimensions.get('window').width * 0.5 }, // Shifts the modal to the left by 40% of the screen width
+                { translateY: -Dimensions.get('window').height * 0.31 }] 
   },
   modalTitle: {
-    marginBottom: 15,
-    textAlign: "center",
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: 24,  // Increased font size for greater emphasis
+    fontFamily: "Lato-Bold",  // Ensuring the font is bold
+    color: "#005b96",  // A strong but not overwhelming color
+    marginBottom: 20,  // Increased bottom margin to separate from body text
+    textAlign: "center",  // Centered text to match the modal's alignment
+  },
+// modal subtitle
+  modalSubtitle: {
+    fontSize: 18,  // Slightly smaller font size for body text to differentiate from the title
+    fontFamily: "Lato-Bold",  // Regular font style for easy reading
+    color: "#333",  // Standard dark color for good readability
+    marginBottom: 15,  // Consistent spacing between paragraphs or text blocks
+    lineHeight: 24,  // Increased line height for better readability
+    textAlign: "justify",  // Justify alignment for a cleaner, more formal presentation
   },
   modalText: {
-    marginBottom: 15,
-    fontSize: 18,
-    textAlign: "center",
+    fontSize: 16,  // Slightly smaller font size for body text to differentiate from the title
+    fontFamily: "Lato-Regular",  // Regular font style for easy reading
+    color: "#333",  // Standard dark color for good readability
+    marginBottom: 15,  // Consistent spacing between paragraphs or text blocks
+    lineHeight: 24,  // Increased line height for better readability
+    textAlign: "justify",  // Justify alignment for a cleaner, more formal presentation
   },
   closeButton: {
-    marginTop: 20,
-    padding: 10,
-    borderRadius: 10,
-    backgroundColor: "#2196F3",
+    marginTop: 20, // Space above the button to separate it from the last text element
+    backgroundColor: "#007AFF", // Bright, clickable color indicating interactivity
+    borderRadius: 10, // Rounded button edges
+    paddingVertical: 10, // Vertical padding for a taller button
+    paddingHorizontal: 20, // Horizontal padding for wider button area
+    elevation: 2, // Subtle elevation for a tactile feel on Android
   },
   closeButtonText: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  CardContainer: {
-    width: "48%",
-    borderRadius: 16,
-    padding: "3%",
-  },
-  HeadingContainer: {
-    top:"25%", 
-    fontFamily:"Lato-Bold", 
-    fontSize:24, 
-    paddingBottom: "5%"
-  },
-  HighlightsCardText: {
-    color: "white",
+    fontSize: 18,
     fontFamily: "Lato-Bold",
+    color: "white", // White text on a blue button for high contrast
+    textAlign: "center", // Center text within the button
   },
-  MonthlyReportButton: {
-    backgroundColor: "#F1F2FDFF", 
-    elevation: 2, 
-    shadowColor: "#000", 
-    shadowOpacity: 0.2, 
-    shadowRadius: 1
-  }
-  
+  sectionTitle: {
+    fontFamily: "Lato-Bold", // Ensuring the title is bold for emphasis
+    fontSize: 20,            // A moderate size for clear readability
+    color: '#333',           // Dark grey for a subtle, strong impression
+    marginBottom: 15,        // Space below the title to separate from content
+    marginTop: 20,           // Space above the title to distinguish from previous content
+  },
 });
 
 export default DashboardScreen;
