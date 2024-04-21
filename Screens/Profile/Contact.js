@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 5,
     color: "black",
-    fontFamily: "Lato-regular",
+    fontFamily: "Lato-Regular",
   },
   input: {
     flex: 1,
