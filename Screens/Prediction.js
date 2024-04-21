@@ -50,11 +50,11 @@ const PredictionScreen = () => {
           <View style={styles.predictionCard}>
             <TouchableWithoutFeedback onPress={() => navigation.navigate("RoomOverview")}>
               <AnimatedCircularProgress
-                size={280} // Increased size for better visibility
-                width={20} // Wider progress bar
+                size={240} // Increased size for better visibility
+                width={9} // Wider progress bar
                 fill={fillPercentage}
-                tintColor="#00e0ff"
-                backgroundColor="#3d5875"
+                tintColor="#007AFF"
+                backgroundColor="#E5E5EA"
                 rotation={225}
                 lineCap="round"
                 arcSweepAngle={270}
@@ -68,13 +68,13 @@ const PredictionScreen = () => {
               </AnimatedCircularProgress>
             </TouchableWithoutFeedback>
             <Text style={styles.estimatedBill}>
-              Estimated Bill: <Text style={{ color: "#4CAF50" }}>Pkr {totalCost}</Text>
+              Estimated Bill: <Text style={{ color: "#007AFF" }}>Pkr {totalCost}</Text>
             </Text>
 
             <TouchableOpacity style={styles.detailsButton}   onPress={() => navigation.navigate("RoomOverview")} >
             <Ionicons name="eye" size={20} color="white" />
             
-              <Text style={styles.detailsButtonText}> View Room Details</Text>
+              <Text style={styles.detailsButtonText}>   View Room Details</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.graphCard}>
@@ -96,7 +96,7 @@ const PredictionScreen = () => {
                     borderRadius: 16,
                   },
                   propsForDots: {
-                    r: "6",
+                    r: "4",
                     strokeWidth: "2",
                     stroke: "#ffa726"
                   }
@@ -130,47 +130,49 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   predictionCard: {
-    backgroundColor: "#ffffff", // Lighter background for better contrast
-    borderRadius: 12, // Rounded corners for a softer look
-    padding: 24, // More padding for a spacious layout
-    margin: 20,
+    backgroundColor: "#ffffff", // Maintaining a light background for contrast
+    borderRadius: 40, // Softening corners further for a more modern, elegant look
+    padding: 30, // Increasing padding to enhance the card's spacious feel
+    marginHorizontal: 20, // Applying horizontal margin for better layout spacing
+    marginVertical: 10, // Reducing vertical margin to tighten up the design
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 10, // More prominent elevation for a "floating" effect
+    shadowColor: "rgba(0,0,0,0.5)", // Softening shadow color for a more subtle effect
+    shadowOffset: { width: 0, height: 10 }, // Lifting the shadow for a deeper depth illusion
+    shadowOpacity: 0.1, // Lowering opacity for a finer shadow
+    shadowRadius: 20, // Increasing radius for a smoother fade of shadows
+    elevation: 20, // Enhancing elevation for a pronounced floating effect
   },
+  
   consumptionValue: {
-    fontSize: 48,
-    color: "#000",
-    fontFamily: "Arial",
+    fontSize: 40,
+    color: "#007AFF",
+    fontFamily: "Lato-Regular", // Bold font for emphasis
     textAlign: "center",
   },
   consumptionUnit: {
     fontSize: 18,
     color: "#666",
-    fontFamily: "Arial",
+    fontFamily: "Lato-Bold", // Regular font for a softer look
     textAlign: "center",
   },
   estimatedBill: {
-    fontSize: 23,
-    color: "#37474F", // Deep blue-grey, elegant and less stark
-    textAlign: "center",
-    fontFamily: "Arial",
-    // make bold 
-    // fontWeight: "bold",
-    marginVertical: 20,
-    textShadowColor: 'rgba(0, 0, 0, 0.2)', // Softer shadow for a subtle depth effect
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 1, // Less blur for cleaner text appearance
+    fontSize: 22, // Increase the font size for better readability
+    color: "#333", // A standard dark color for the main text for high contrast
+    fontFamily: "Lato-Regular", // Maintaining a clean, professional font style
+    textAlign: "center", // Ensuring the text is centered aligns with modern design trends
+    // fontWeight: "bold", // Bold font weight for the label "Estimated Bill" to stand out
+    marginVertical: 20, // Providing more vertical space around the text for a cleaner look
+    textShadowColor: 'rgba(0, 0, 0, 0.1)', // A subtle shadow for depth
+    textShadowOffset: { width: 1, height: 1 }, // Light shadow offset for subtle text lifting
+    textShadowRadius: 2, // Soft blur radius for the shadow to enhance readability
   },
   
+  
   detailsButton: {
-    backgroundColor: "#00e0ff",
-    borderRadius: 20,
+    backgroundColor: "#007AFF",
+    borderRadius: 22,
     padding: 12,
-    width: "80%",
+    width: "70%",
     alignSelf: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -186,28 +188,28 @@ const styles = StyleSheet.create({
   },
   detailsButtonText: {
     color: "#fff",
-    fontSize: 16,
-    fontFamily: "Arial",
+    fontSize: 13,
+    fontFamily: "Lato-Bold", // Bold font for emphasis
     textAlign: "center",
   },
   graphCard: {
     backgroundColor: "#ffffff",
-    borderRadius: 16,
+    borderRadius: 40,
     padding: 20,
     marginHorizontal: 16,
     marginTop: 10,
     marginBottom: 70,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 10,
+    shadowColor: "rgba(0,0,0,0.5=9)", // Softening shadow color for a more subtle effect
+    shadowOffset: { width: 0, height: 10 }, // Lifting the shadow for a deeper depth illusion
+    shadowOpacity: 0.9, // Lowering opacity for a finer shadow
+    shadowRadius: 29, // Increasing radius for a smoother fade of shadows
+    elevation: 30, // Enhancing elevation for a pronounced floating effect
   },
   graphDescription: {
     fontSize: 14,
     color: "#666",
     textAlign: "center",
-    fontFamily: "Arial",
+    fontFamily: "Lato-Regular",
     marginTop: 10,
   },
   progressTextContainer: {
