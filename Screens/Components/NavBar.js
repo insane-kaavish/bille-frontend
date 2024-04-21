@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, StyleSheet, View } from "react-native";
+import { TouchableOpacity, StyleSheet, View, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -21,13 +21,13 @@ const Navbar = () => {
   return (
     <View style={styles.navBar}>
       <TouchableOpacity onPress={navigateToOverview} style={styles.navtab}>
-        <MaterialIcons name="home" size={28} color="#666" />
+        <MaterialIcons name="dashboard" size={28} color="#007AFF" />
       </TouchableOpacity>
       <TouchableOpacity onPress={navigateToPrediction} style={styles.navtab}>
-        <MaterialIcons name="bar-chart" size={28} color="#666" />
+        <MaterialIcons name="insights" size={28} color="#007AFF" />
       </TouchableOpacity>
       <TouchableOpacity onPress={navigateToRoomWise} style={styles.navtab}>
-        <MaterialIcons name="meeting-room" size={28} color="#666" />
+        <MaterialIcons name="meeting-room" size={28} color="#007AFF" />
       </TouchableOpacity>
     </View>
   );
