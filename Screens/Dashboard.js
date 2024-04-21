@@ -193,7 +193,8 @@ const DashboardScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </Modal>
-        <View style={{ height: 30 }} />
+        <View style={{ height: 10 }} />
+
       </View>
     </>
   );
@@ -203,7 +204,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    paddingBottom: 40,
+    paddingBottom: 10,
     paddingTop: 1,
   },
   section: {
@@ -216,14 +217,14 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: "#ffffff",
-    borderRadius: 12,
+    borderRadius: 24,
     padding: 20,
     marginBottom: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },  // Reduced height for a closer shadow
-    shadowOpacity: 0.08,  // Lower opacity for a softer appearance
-    shadowRadius: 8,  // Increased radius to blur edges more
-    elevation: 8,  // Adjust elevation for Android to match visual consistency
+    shadowColor: "rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 10 },  // Reduced height for a closer shadow
+    shadowOpacity: 0.5,  // Lower opacity for a softer appearance
+    shadowRadius: 20,  // Increased radius to blur edges more
+    elevation: 10,  // Adjust elevation for Android to match visual consistency
     flex: 1,
     marginHorizontal: 5,
   },
@@ -245,6 +246,7 @@ const styles = StyleSheet.create({
   },
   monthlyReportContainer: {
     marginBottom: 20,
+    marginTop: -10,
   },
   reportContainer: {
     flexDirection: "row",
@@ -255,14 +257,14 @@ const styles = StyleSheet.create({
   },
   reportCard: {
     backgroundColor: "#ffffff",
-    borderRadius: 10,
+    borderRadius: 24,
     padding: 24,
     marginBottom: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 3,
+    shadowColor: "#rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 10 },  // Reduced height for a closer shadow
+    shadowOpacity: 0.5,  // Lower opacity for a softer appearance
+    shadowRadius: 20,  // Increased radius to blur edges more
+    elevation: 10,  // Adjust elevation for Android to match visual consistency
     flex: 1, // Utilizing flex to fill available space
     marginHorizontal: 5, // Spacing between the two cards
     maxWidth: '46%', // Decreasing the max width to make the cards more compact
@@ -284,16 +286,17 @@ const styles = StyleSheet.create({
   recommendationContainer: {
     backgroundColor: "#fff",  // Soft gray for a subtle, sleek look
     borderRadius: 24,  // RECOMMENDATIONS CORNERS SETTING
-    padding: 17,  // Adjusted padding for better spacing inside the card
-    marginRight: 15,  // Right margin adjusted for consistency
+    padding: 20,  // Adjusted padding for better spacing inside the card
+    marginRight: 21,  // Right margin adjusted for consistency
     alignItems: "center",
     justifyContent: "center",  // Center content vertically and horizontally
     width: 220,  // Adjusted width for a bit more space
     elevation: 4,  // Subtle shadow for depth
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,  // Soften the shadow
-    shadowOpacity: 0.1,  // Very light shadow for a clean effect
+    shadowColor: "#rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 6 },  // Reduced height for a closer shadow
+    shadowOpacity: 0.5,  // Lower opacity for a softer appearance
+    shadowRadius: 8,  // Increased radius to blur edges more
+    elevation: 4,  // Adjust elevation for Android to match visual consistency
   },
   containerTitle: {
     fontFamily: "Lato-Bold",
@@ -309,13 +312,10 @@ const styles = StyleSheet.create({
     padding: 25, // Generous padding for internal spacing
     alignItems: "center", // Center-align items for a polished look
     shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25, // Slightly pronounced shadows for a pop-out effect
-    shadowRadius: 3.84,
-    elevation: 5, // Elevation for Android to simulate depth
+    shadowOffset: { width: 0, height: 4 },  // Reduced height for a closer shadow
+    shadowOpacity: 0.5,  // Lower opacity for a softer appearance
+    shadowRadius: 20,  // Increased radius to blur edges more
+    elevation: 10,  // Adjust elevation for Android to match visual consistency
     justifyContent: "center", // Center the modal content vertically
     position: 'absolute',  // Positions the modal view absolutely relative to its parent
     top: '50%',            // Places the top edge of the modal at the center of the parent
