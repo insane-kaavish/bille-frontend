@@ -47,8 +47,8 @@ const Header = ({ screenName, navigation }) => {
             <Text style={styles.menuText}>Contact Us</Text>
           </MenuOption>
           <MenuOption onSelect={handleLogout} style={styles.menuOption}>
-            <Ionicons name="exit-outline" color="red" />
-            <Text style={styles.menuTextLogout}>Logout</Text>
+            <Ionicons name="exit-outline" size={22} color="#666" />
+            <Text style={[styles.menuText, styles.logoutText]}>Logout</Text>
           </MenuOption>
         </MenuOptions>
       </Menu>
@@ -89,27 +89,25 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 8,
     shadowOpacity: 0.2,
-    shadowRadius: 10,
+    shadowRadius: 5,
     shadowColor: "#000",
     shadowOffset: { height: 3, width: 0 },
-    elevation: 5
+    elevation: 5,
   },
   menuOption: {
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 12,
-    paddingLeft: 10
+    paddingLeft: 10,
   },
   menuText: {
     fontSize: 18,
     marginLeft: 10,
-    color: "#666",
+    color: "#333",
   },
-  menuTextLogout: {
-    fontSize: 18,
-    marginLeft: 10,
+  logoutText: {
     color: "red",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
 });
 
