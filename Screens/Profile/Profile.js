@@ -76,7 +76,7 @@ const ProfileScreen = ({ navigation }) => {
           <View style={styles.field}>
             <Text style={styles.fieldLabel}>Name</Text>
             <View style={styles.inputContainer}>
-              <AntDesign name="user" size={24} color="#535CE8" style={styles.icon} />
+              <AntDesign name="user" size={24} color="#007AFF" style={styles.icon} />
               <TextInput
                 style={[styles.input]}
                 value={name}
@@ -91,7 +91,7 @@ const ProfileScreen = ({ navigation }) => {
           <View style={styles.field}>
             <Text style={styles.fieldLabel}>Email</Text>
             <View style={styles.inputContainer}>
-              <AntDesign name="mail" size={24} color="#535CE8" style={styles.icon} />
+              <AntDesign name="mail" size={24} color="#007AFF" style={styles.icon} />
               <TextInput
                 style={[styles.input]}
                 value={email}
@@ -113,7 +113,7 @@ const ProfileScreen = ({ navigation }) => {
           <TouchableOpacity
             style={[
               styles.editButton,
-              { backgroundColor: isEditing ? "red" : "#535CE8" },
+              { backgroundColor: isEditing ? "red" : "#007AFF" },
             ]}
             onPress={() => setIsEditing(!isEditing)}
           >
@@ -132,15 +132,20 @@ const ProfileScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#FFF",
-    borderRadius: 10,
+    borderRadius: 24,
     padding: 20,
     elevation: 3,
     marginBottom: 20,
     marginRight: 10,
     marginLeft: 10,
+    shadowColor: "#rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 6 },  // Reduced height for a closer shadow
+    shadowOpacity: 0.5,  // Lower opacity for a softer appearance
+    shadowRadius: 8,  // Increased radius to blur edges more
+    elevation: 6,  // Adjust elevation for Android to match visual consistency
   },
   cardTitle: {
-    fontFamily: "Roboto-Bold",
+    fontFamily: "Lato-Bold",
     fontSize: 20,
     color: Colors.black,
     marginBottom: 20,
@@ -151,7 +156,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   fieldLabel: {
-    fontFamily: "Roboto-Regular",
+    fontFamily: "Lato-Regular",
     fontSize: 16,
     color: Colors.black,
     marginBottom: 5,
@@ -162,7 +167,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#E0E0E0",
+    borderColor: "#007AFF",
     borderRadius: 8,
     paddingHorizontal: 10,
     backgroundColor: "#F3F4F6",
@@ -172,14 +177,14 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    fontFamily: "Roboto-Regular",
+    fontFamily: "Lato-Regular",
     fontSize: 16,
     color: Colors.black,
     paddingVertical: 10,
   },
   editButton: {
-    backgroundColor: "#535CE8",
-    borderRadius: 20,
+    backgroundColor: "#007AFF",
+    borderRadius: 16,
     padding: 10,
     alignItems: "center",
     width: "50%",
@@ -187,8 +192,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   editButtonText: {
+    fontFamily: "Lato-Bold",
+    fontSize: 16,
     color: "white",
-    fontWeight: "bold",
+    // fontWeight: "bold",
   },
 });
 
