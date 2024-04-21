@@ -49,8 +49,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: Colors.primary,
     textAlign: 'center',
-    textTransform: 'uppercase',
-    letterSpacing: 1,
   },
   iconStyle: {
     marginTop: 20,
