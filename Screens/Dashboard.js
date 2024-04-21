@@ -105,6 +105,7 @@ const DashboardScreen = ({ navigation }) => {
      <Header screenName="Dashboard" navigation={navigation} />
       <View style={GlobalStyles.screenContainer}>
         <ScrollView style={styles.container}>
+        <View style={{ height: 10 }} />
           {/* Current Units Card */}
           <View style={styles.section}>
             <TouchableOpacity style={styles.card} onPress={navigateToPrediction}>
@@ -192,7 +193,7 @@ const DashboardScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </Modal>
-        <View style={{ height: 50 }} />
+        <View style={{ height: 30 }} />
       </View>
     </>
   );
@@ -202,6 +203,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    paddingBottom: 40,
+    paddingTop: 1,
   },
   section: {
     marginBottom: 20,
@@ -217,13 +220,12 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 10,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 10,
+    shadowOffset: { width: 0, height: 2 },  // Reduced height for a closer shadow
+    shadowOpacity: 0.08,  // Lower opacity for a softer appearance
+    shadowRadius: 8,  // Increased radius to blur edges more
+    elevation: 8,  // Adjust elevation for Android to match visual consistency
     flex: 1,
     marginHorizontal: 5,
-
   },
   cardTitle: {
     fontFamily: "Lato-Bold",
@@ -259,7 +261,7 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowRadius: 10,
     elevation: 3,
     flex: 1, // Utilizing flex to fill available space
     marginHorizontal: 5, // Spacing between the two cards
@@ -272,22 +274,32 @@ const styles = StyleSheet.create({
     marginTop: 5, // Space between icon and text
   },
   tipsContainer: {
-    marginBottom: 20,
+    marginBottom: 50,
+    // marginTop: 20,  // Added top margin for better spacing from previous content
   },
   tipsScrollContainer: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 10,  // Ensure there's padding on the sides of the scroll view
+    paddingVertical: 5,   // Padding above and below the scroll view
   },
   recommendationContainer: {
-    backgroundColor: "#fff",
-    borderRadius: 12,
-    padding: 20,
-    marginRight: 10,
+    backgroundColor: "#fff",  // Soft gray for a subtle, sleek look
+    borderRadius: 24,  // RECOMMENDATIONS CORNERS SETTING
+    padding: 17,  // Adjusted padding for better spacing inside the card
+    marginRight: 15,  // Right margin adjusted for consistency
     alignItems: "center",
-    width: 200,
+    justifyContent: "center",  // Center content vertically and horizontally
+    width: 220,  // Adjusted width for a bit more space
+    elevation: 4,  // Subtle shadow for depth
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 6,  // Soften the shadow
+    shadowOpacity: 0.1,  // Very light shadow for a clean effect
   },
   containerTitle: {
     fontFamily: "Lato-Bold",
-    fontSize: 20,
+    fontSize: 16,  // Slightly reduced size for a more refined look
+    color: "#333",  // Dark color for better readability
+    marginTop: 8,  // Top margin to space out text from the icon
     textAlign: "center",
   },
   modalView: {
@@ -314,7 +326,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 24,  // Increased font size for greater emphasis
     fontFamily: "Lato-Bold",  // Ensuring the font is bold
-    color: "#005b96",  // A strong but not overwhelming color
+    color: "#007AFF",  // A strong but not overwhelming color
     marginBottom: 20,  // Increased bottom margin to separate from body text
     textAlign: "center",  // Centered text to match the modal's alignment
   },
