@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Platform } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import {
   Menu,
@@ -21,7 +21,10 @@ const Header = ({ screenName, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.screenName} accessibilityRole="header">{screenName}</Text>
+      <View style={styles.titleContainer}>
+        <Text style={styles.appName}>Bill-E</Text>
+        <Text style={styles.screenName}>{screenName}</Text>
+      </View>
       <Menu>
         <MenuTrigger>
           <Ionicons name="menu" size={28} color="#333" accessibilityLabel="Open menu"/>
@@ -44,7 +47,7 @@ const Header = ({ screenName, navigation }) => {
             <Text style={styles.menuText}>Contact Us</Text>
           </MenuOption>
           <MenuOption onSelect={handleLogout} style={styles.menuOption}>
-            <Ionicons name="exit-outline" size={22} color="red" />
+            <Ionicons name="exit-outline" color="red" />
             <Text style={styles.menuTextLogout}>Logout</Text>
           </MenuOption>
         </MenuOptions>
@@ -56,7 +59,7 @@ const Header = ({ screenName, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     height: 60,
-    backgroundColor: "#FFF", // set the background color to white
+    backgroundColor: "#FFF",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -65,14 +68,21 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowColor: "#000",
     shadowOffset: { height: 3, width: 0 },
-    elevation: 3, // for Android
-    borderBottomWidth: Platform.OS === 'ios' ? 1 : 0,
-    borderBottomColor: "#ccc"
+    elevation: 3,
   },
-  screenName: {
-    fontSize: 24,
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  appName: {
+    fontSize: 20,
     color: "#333",
     fontWeight: "bold",
+    marginRight: 10,
+  },
+  screenName: {
+    fontSize: 18,
+    color: "#666",
   },
   menuOptions: {
     padding: 5,
