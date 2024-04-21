@@ -45,7 +45,6 @@ const SplashScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   logoText: {
     marginTop: '40%',
-    fontFamily: 'Arial',
     fontSize: 48,
     fontWeight: 'bold',
     color: Colors.primary,
