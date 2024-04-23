@@ -135,6 +135,10 @@ export const BillProvider = ({ children }) => {
   const [isMonthlyDataFetched, setIsMonthlyDataFetched] = useState(false);
 
   const fetchPredictedData = async () => {
+    if (!authToken) {
+      navigation.navigate("Signin");
+      return;
+    }
     try {
       const data = await predictRequest(authToken);
       setUnits(data.units);
