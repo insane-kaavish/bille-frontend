@@ -290,7 +290,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",  // Center content vertically and horizontally
     width: 220,  // Adjusted width for a bit more space
-    elevation: 4,  // Subtle shadow for depth
     shadowColor: "#rgba(0,0,0,0.5)",
     shadowOffset: { width: 0, height: 6 },  // Reduced height for a closer shadow
     shadowOpacity: 0.5,  // Lower opacity for a softer appearance
