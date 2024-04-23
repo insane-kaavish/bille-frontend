@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
-import { ProgressChart } from "react-native-chart-kit";
+import { ProgressChart, PieChart } from "react-native-chart-kit";
 
 import Header from "./Components/Header";
 import Navbar from "./Components/Navbar";
@@ -21,7 +21,20 @@ const height = Dimensions.get("window").height;
 const RoomOverviewScreen = () => {
   const navigation = useNavigation();
   const { authToken } = useAuth();
-  const { rooms, fetchRooms, setSelectedRoom, fetchCategories, selectedRoom, setRoom, setAppliances } = useRoom();
+  const {
+    rooms,
+    fetchRooms,
+    setSelectedRoom,
+    fetchCategories,
+    selectedRoom,
+    setRoom,
+    setAppliances,
+  } = useRoom();
+  const [activeIndex, setActiveIndex] = useState(null);
+  const [tooltipData, setTooltipData] = useState({
+    roomName: "",
+    percentage: "",
+  });
 
   useEffect(() => {
     fetchRooms();
@@ -42,24 +55,42 @@ const RoomOverviewScreen = () => {
     "#379AE6",
   ];
 
-  const totalUnits = rooms.reduce(
-    (total, room) => total + room.units,
-    0
-  );
+  const totalUnits = rooms.reduce((total, room) => total + room.units, 0);
 
-  const data = {
-    labels: rooms.map((room) => room.alias),
-    data: rooms.map((room) => room.units / totalUnits),
-    colors: rooms.map((room) => colors[rooms.indexOf(room)]),
-  };
-
-  // Sort the data in ascending order
-  data.labels.sort();
-  data.data.sort();
-  data.colors.sort();
+  const data = rooms.length > 0 ? rooms.map((room, index) => ({
+    name: room.alias,
+    population: room.units,
+    color: colors[index % colors.length],
+    legendFontColor: "#7F7F7F",
+    legendFontSize: 15
+  })) : [];
+  
   const navigateToRoomDetails = (room) => {
     setSelectedRoom(room);
     navigation.navigate("RoomDetail");
+  };
+
+  const handleArcPress = (index) => {
+    const room = rooms[index];
+    const percentage = ((room.units / totalUnits) * 100).toFixed(2);
+    setTooltipData({ roomName: room.alias, percentage });
+    setActiveIndex(index);
+  };
+
+  const chartConfig = {
+    backgroundGradientFrom: "#fff",
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: "#fff",
+    backgroundGradientToOpacity: 0.5,
+    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false, // optional
+    propsForDots: {
+      r: "6",
+      strokeWidth: "2",
+      stroke: "#ffa726"
+    }
   };
 
   return (
@@ -69,28 +100,28 @@ const RoomOverviewScreen = () => {
         <ScrollView style={styles.scrollContainer}>
           <View style={styles.card}>
             <View style={styles.progressContainer}>
-              <ProgressChart
+              {data && rooms.length !== 0 && (<PieChart
                 data={data}
-                // FIXME: Do not hard code dimensions!
-                width={Dimensions.get("window").width - 80}
+                width={220}
                 height={220}
-                chartConfig={{
-                  backgroundGradientFrom: "#ffffff",
-                  backgroundGradientTo: "#ffffff",
-                  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                  strokeWidth: 5,
-                }}
-                style={{ borderRadius: 16, padding: 10 }}
-                hideLegend={true}
-                withCustomBarColorFromData
-              />
+                center={[50, 0]}
+                chartConfig={chartConfig}
+                accessor={"population"}
+                hasLegend={false}
+                backgroundColor={"transparent"}
+                onPress={(index) => handleArcPress(index)}
+              />)}
+              {activeIndex !== null && (
+                <View style={styles.tooltip}>
+                  <Text style={styles.tooltipText}>
+                    {tooltipData.roomName}: {tooltipData.percentage}%
+                  </Text>
+                </View>
+              )}
               <View style={styles.unitDetails}>
                 <Text style={styles.estimatedBill}>
                   Total Predicted Units:{" "}
-                  <Text style={{ color: "orange" }}>
-                    {" "}
-                    {totalUnits} Units
-                  </Text>
+                  <Text style={{ color: "orange" }}> {totalUnits} Units</Text>
                 </Text>
               </View>
             </View>
@@ -102,7 +133,10 @@ const RoomOverviewScreen = () => {
               onPress={() => navigateToRoomDetails(room)}
             >
               <View
-                style={[styles.iconContainer, { backgroundColor: colors[rooms.indexOf(room)] }]}
+                style={[
+                  styles.iconContainer,
+                  { backgroundColor: colors[rooms.indexOf(room)] },
+                ]}
               >
                 <Ionicons name={"home"} size={24} color="#fff" />
               </View>
@@ -213,6 +247,19 @@ const styles = StyleSheet.create({
     textAlign: "center",
     // marginBottom: 20,
     fontFamily: "Lato-Bold",
+  },
+  tooltip: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: [{ translateX: -100 }, { translateY: -30 }],
+    backgroundColor: "rgba(0,0,0,0.75)",
+    borderRadius: 10,
+    padding: 10,
+  },
+  tooltipText: {
+    color: "white",
+    textAlign: "center",
   },
 });
 
