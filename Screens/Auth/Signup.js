@@ -320,14 +320,14 @@ const SignupScreen = ({ navigation }) => {
           {isLoading ? (
             <ActivityIndicator color="white" />
           ) : (
-            <Text style={styles.buttonText}>Sign Up</Text>
+            <Text style={styles.buttonText}>Sign up</Text>
           )}
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("Signin")}>
           <Text style={styles.footerText}>
             Already have an account?{" "}
-            <Text style={styles.footerTextHighlight}>Sign In</Text>
+            <Text style={styles.footerTextHighlight}>Sign in</Text>
           </Text>
         </TouchableOpacity>
       </ScrollView>

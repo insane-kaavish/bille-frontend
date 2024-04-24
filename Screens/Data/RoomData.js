@@ -7,14 +7,13 @@ import {
   ScrollView,
   TextInput,
   SafeAreaView,
+  ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import ModalDropdown from "react-native-modal-dropdown";
 import { useAuth } from "../Auth/AuthProvider";
-// import Config from "react-native-config";
 
-// const API_URL = Config.API_URL;
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 const getCategories = async (token) => {
@@ -48,11 +47,12 @@ const sendData = async (data, token) => {
     return true;
   } catch (error) {
     console.error(error);
+    setLoading(false);
     return false;
   }
 };
 
-const RoomDataScreen = () => {
+const RoomDataScreen = ({ navigation }) => {
   const [rooms, setRooms] = useState([
     { alias: "", appliances: [{ category: "", sub_category: "", usage: "" }] },
   ]);
@@ -60,7 +60,7 @@ const RoomDataScreen = () => {
   const { authToken } = useAuth();
   const [appliances, setAppliances] = useState([]);
   const [subCategories, setSubCategories] = useState({});
-  const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -110,10 +110,12 @@ const RoomDataScreen = () => {
   };
 
   const handleSubmit = () => {
+    setLoading(true);
     const data = { rooms: rooms };
     console.log(data);
     sendData(data, authToken).then((response) => {
       if (response) {
+        setLoading(false);
         navigation.navigate("Home");
         console.log("Data sent successfully");
       }
@@ -268,11 +270,19 @@ const RoomDataScreen = () => {
         </TouchableOpacity>
       </ScrollView>
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
+        <TouchableOpacity style={styles.skipButton} onPress={handleSkip} disabled={loading}>
           <Text style={styles.skipButtonText}>Skip</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-          <Text style={styles.submitButtonText}>Submit</Text>
+        <TouchableOpacity
+          style={styles.submitButton}
+          onPress={handleSubmit}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            <Text style={styles.submitButtonText}>Submit</Text>
+          )}
         </TouchableOpacity>
       </View>
     </SafeAreaView>
