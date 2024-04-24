@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { useAuth } from '../Auth/AuthProvider';
-// import { ScrollView } from 'react-native-web';
 
 const { width, height } = Dimensions.get('window');
 

@@ -9,14 +9,33 @@ import {
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
-import { ProgressChart, PieChart } from "react-native-chart-kit";
 
 import Header from "./Components/Header";
 import Navbar from "./Components/Navbar";
 import { useAuth } from "./Auth/AuthProvider";
 import { useRoom } from "./Components/RoomProvider";
+import { 
+  WidgetContainer,
+  Container,
+  SingleItemContainer,
+  ColorIcon,
+  Label, } from "./Styles";
+import Pie from "./Components/DonutChart";
 
 const height = Dimensions.get("window").height;
+
+const getInnerText = (index, dataAsset) =>
+  index < 0
+    ? {
+        index: -1,
+        text: `Javascript Skills
+%100`
+      }
+    : {
+        index,
+        text: `${dataAsset[index].name}
+%${dataAsset[index].population}`
+      };
 
 const RoomOverviewScreen = () => {
   const navigation = useNavigation();
@@ -30,11 +49,12 @@ const RoomOverviewScreen = () => {
     setRoom,
     setAppliances,
   } = useRoom();
-  const [activeIndex, setActiveIndex] = useState(null);
-  const [tooltipData, setTooltipData] = useState({
-    roomName: "",
-    percentage: "",
-  });
+  const [selectedPie, setSelectedPie] = useState(getInnerText(-1, data));
+
+  const onPieItemSelected = newIndex => () =>
+    setSelectedPie(
+      getInnerText(newIndex === selectedPie.index ? -1 : newIndex, data)
+    );
 
   useEffect(() => {
     fetchRooms();
@@ -57,42 +77,22 @@ const RoomOverviewScreen = () => {
 
   const totalUnits = rooms.reduce((total, room) => total + room.units, 0);
 
-  const data = rooms.length > 0 ? rooms.map((room, index) => ({
-    name: room.alias,
-    population: room.units,
-    color: colors[index % colors.length],
-    legendFontColor: "#7F7F7F",
-    legendFontSize: 15
-  })) : [];
-  
+  const data =
+    rooms.length > 0
+      ? rooms.map((room, index) => ({
+          name: room.alias,
+          population: parseInt(room.units) / totalUnits * 100,
+          color: colors[index % colors.length],
+          legendFontColor: "#7F7F7F",
+          legendFontSize: 15,
+        }))
+      : [];
+
   const navigateToRoomDetails = (room) => {
     setSelectedRoom(room);
     navigation.navigate("RoomDetail");
   };
-
-  const handleArcPress = (index) => {
-    const room = rooms[index];
-    const percentage = ((room.units / totalUnits) * 100).toFixed(2);
-    setTooltipData({ roomName: room.alias, percentage });
-    setActiveIndex(index);
-  };
-
-  const chartConfig = {
-    backgroundGradientFrom: "#fff",
-    backgroundGradientFromOpacity: 0,
-    backgroundGradientTo: "#fff",
-    backgroundGradientToOpacity: 0.5,
-    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-    strokeWidth: 2, // optional, default 3
-    barPercentage: 0.5,
-    useShadowColorFromDataset: false, // optional
-    propsForDots: {
-      r: "6",
-      strokeWidth: "2",
-      stroke: "#ffa726"
-    }
-  };
-
+  
   return (
     <>
       <Header screenName="Room Overview" navigation={navigation} />
@@ -100,23 +100,33 @@ const RoomOverviewScreen = () => {
         <ScrollView style={styles.scrollContainer}>
           <View style={styles.card}>
             <View style={styles.progressContainer}>
-              {data && rooms.length !== 0 && (<PieChart
-                data={data}
-                width={220}
-                height={220}
-                center={[50, 0]}
-                chartConfig={chartConfig}
-                accessor={"population"}
-                hasLegend={false}
-                backgroundColor={"transparent"}
-                onPress={(index) => handleArcPress(index)}
-              />)}
-              {activeIndex !== null && (
-                <View style={styles.tooltip}>
-                  <Text style={styles.tooltipText}>
-                    {tooltipData.roomName}: {tooltipData.percentage}%
-                  </Text>
-                </View>
+              {data && rooms.length !== 0 && (
+                <WidgetContainer>
+                <Pie
+                  pieSize={200}
+                  onItemSelected={onPieItemSelected}
+                  size={200}
+                  data={data}
+                  value={selectedPie}
+                />
+                <Container>
+                  {data
+                    .sort((a, b) => (a.population < b.population ? 1 : -1))
+                    .map((item, index) => (
+                      <TouchableOpacity
+                        key={item.name}
+                        onPress={onPieItemSelected(index)}
+                      >
+                        <SingleItemContainer>
+                          <ColorIcon color={data[index].color} />
+                          <Label isActive={index === selectedPie.index}>
+                            {item.name}
+                          </Label>
+                        </SingleItemContainer>
+                      </TouchableOpacity>
+                    ))}
+                </Container>
+              </WidgetContainer>
               )}
               <View style={styles.unitDetails}>
                 <Text style={styles.estimatedBill}>
@@ -247,19 +257,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     // marginBottom: 20,
     fontFamily: "Lato-Bold",
-  },
-  tooltip: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: [{ translateX: -100 }, { translateY: -30 }],
-    backgroundColor: "rgba(0,0,0,0.75)",
-    borderRadius: 10,
-    padding: 10,
-  },
-  tooltipText: {
-    color: "white",
-    textAlign: "center",
   },
 });
 
