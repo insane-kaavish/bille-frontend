@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, StatusBar, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { useAuth } from "./Auth/AuthProvider";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Colors, GlobalStyles } from "./Styles/GlobalStyles";
@@ -35,7 +35,6 @@ const SplashScreen = ({ navigation }) => {
 
   return (
     <TouchableOpacity activeOpacity={1} onPress={handleScreenPress} style={GlobalStyles.screenContainer}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.primary} />
       <Text style={styles.logoText}>Bill-E</Text>
       <MaterialIcons name="pets" size={60} color="#007AFF" style={styles.iconStyle} />
     </TouchableOpacity>

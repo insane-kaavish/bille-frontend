@@ -58,17 +58,12 @@ const Header = ({ screenName, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 60,
+    height: '7%',
     backgroundColor: "#FFF",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    shadowColor: "#000",
-    shadowOffset: { height: 3, width: 0 },
-    elevation: 3,
   },
   titleContainer: {
     flexDirection: "row",

@@ -143,7 +143,7 @@ const SigninScreen = ({ navigation }) => {
           {isLoading ? (
             <ActivityIndicator color="white" />
           ) : (
-            <Text style={styles.buttonText}>Sign In</Text>
+            <Text style={styles.buttonText}>Sign in</Text>
           )}
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
