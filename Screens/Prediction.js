@@ -68,7 +68,7 @@ const PredictionScreen = () => {
               </AnimatedCircularProgress>
             </TouchableWithoutFeedback>
             <Text style={styles.estimatedBill}>
-              Estimated Bill: <Text style={{ color: "#007AFF" }}>Pkr {totalCost}</Text>
+              Estimated Bill: <Text style={{ color: "#007AFF", fontFamily:"Lato-Bold" }}>Pkr {totalCost}</Text>
             </Text>
 
             <TouchableOpacity style={styles.detailsButton}   onPress={() => navigation.navigate("RoomOverview")} >
@@ -156,22 +156,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   estimatedBill: {
-    fontSize: 22, // Increase the font size for better readability
-    color: "#333", // A standard dark color for the main text for high contrast
-    fontFamily: "Lato-Regular", // Maintaining a clean, professional font style
-    textAlign: "center", // Ensuring the text is centered aligns with modern design trends
-    // fontWeight: "bold", // Bold font weight for the label "Estimated Bill" to stand out
-    marginVertical: 20, // Providing more vertical space around the text for a cleaner look
-    textShadowColor: 'rgba(0, 0, 0, 0.1)', // A subtle shadow for depth
-    textShadowOffset: { width: 1, height: 1 }, // Light shadow offset for subtle text lifting
-    textShadowRadius: 2, // Soft blur radius for the shadow to enhance readability
+    fontSize: 20,
+    fontWeight: 'normal',
+    fontFamily: "Lato-Regular",
+    color: "#666",
+    textAlign: "center",
+    paddingVertical: 20,
+    marginTop:-15
   },
-  
-  
   detailsButton: {
     backgroundColor: "#007AFF",
-    borderRadius: 22,
-    padding: 12,
+    borderRadius: 36,
+    padding: 14,
     width: "70%",
     alignSelf: "center",
     shadowColor: "#000",
@@ -188,7 +184,7 @@ const styles = StyleSheet.create({
   },
   detailsButtonText: {
     color: "#fff",
-    fontSize: 13,
+    fontSize: 14,
     fontFamily: "Lato-Bold", // Bold font for emphasis
     textAlign: "center",
   },
