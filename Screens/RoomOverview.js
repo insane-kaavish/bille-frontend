@@ -42,10 +42,7 @@ const RoomOverviewScreen = () => {
     "#379AE6",
   ];
 
-  const totalUnits = rooms.reduce(
-    (total, room) => total + room.units,
-    0
-  );
+  const totalUnits = rooms.reduce((total, room) => total + room.units, 0);
 
   const data = {
     labels: rooms.map((room) => room.alias),
@@ -53,69 +50,53 @@ const RoomOverviewScreen = () => {
     colors: rooms.map((room) => colors[rooms.indexOf(room)]),
   };
 
-  // Sort the data in ascending order
-  data.labels.sort();
-  data.data.sort();
-  data.colors.sort();
-  const navigateToRoomDetails = (room) => {
-    setSelectedRoom(room);
-    navigation.navigate("RoomDetail");
-  };
-
   return (
     <>
       <Header screenName="Room Overview" navigation={navigation} />
-      <View style={styles.container}>
-        <ScrollView style={styles.scrollContainer}>
-          <View style={styles.card}>
-            <View style={styles.progressContainer}>
-              <ProgressChart
-                data={data}
-                // FIXME: Do not hard code dimensions!
-                width={Dimensions.get("window").width - 80}
-                height={220}
-                chartConfig={{
-                  backgroundGradientFrom: "#ffffff",
-                  backgroundGradientTo: "#ffffff",
-                  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                  strokeWidth: 5,
-                }}
-                style={{ borderRadius: 16, padding: 10 }}
-                hideLegend={true}
-                withCustomBarColorFromData
-              />
-              <View style={styles.unitDetails}>
-                <Text style={styles.estimatedBill}>
-                  Total Predicted Units:{" "}
-                  <Text style={{ color: "orange" }}>
-                    {" "}
-                    {totalUnits} Units
-                  </Text>
-                </Text>
-              </View>
+      <ScrollView style={styles.container}>
+        <View style={styles.card}>
+          <ProgressChart
+            data={data}
+            width={Dimensions.get("window").width * 0.9}
+            height={220}
+            chartConfig={{
+              backgroundGradientFrom: "#f8f9fa",
+              backgroundGradientTo: "#e9ecef",
+              color: (opacity = 1) => `rgba(33, 37, 41, ${opacity})`,
+              strokeWidth: 2, // Thinner line for the chart
+              barPercentage: 0.5,
+            }}
+            style={{ alignItems: 'center', borderRadius: 18, padding: 8, paddingRight: 15,  }}
+            hideLegend={false}
+            withCustomBarColorFromData
+          />
+          <Text style={styles.estimatedBill}>
+            Total Predicted Units: <Text style={{ color: "orange",  fontFamily: "Lato-Bold" }}>
+              {totalUnits} Units
+            </Text>
+          </Text>
+        </View>
+        {rooms.map((room, index) => (
+          <TouchableOpacity
+            key={index}
+            style={styles.roomCard}
+            onPress={() => {
+              setSelectedRoom(room);
+              navigation.navigate("RoomDetail");
+            }}
+          >
+            <View style={[styles.iconContainer, { backgroundColor: colors[rooms.indexOf(room)] }]}>
+              <Ionicons name={"home"} size={24} color="#fff" />
             </View>
-          </View>
-          {rooms.map((room, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.roomCard}
-              onPress={() => navigateToRoomDetails(room)}
-            >
-              <View
-                style={[styles.iconContainer, { backgroundColor: colors[rooms.indexOf(room)] }]}
-              >
-                <Ionicons name={"home"} size={24} color="#fff" />
-              </View>
-              <View style={styles.roomDetails}>
-                <Text style={styles.roomName}>{room.alias}</Text>
-                <Text style={styles.roomUnits}>{`${room.units} Units`}</Text>
-              </View>
-              <Ionicons name="chevron-forward" size={24} color="#C0C0C0" />
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-        <Navbar />
-      </View>
+            <View style={styles.roomDetails}>
+              <Text style={styles.roomName}>{room.alias}</Text>
+              <Text style={styles.roomUnits}>{`${room.units} Units`}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={24} color="#C0C0C0" />
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+      <Navbar />
     </>
   );
 };
@@ -126,53 +107,32 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 10,
   },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    paddingHorizontal: 10,
-    paddingTop: height * 0.001,
-    backgroundColor: "#fff",
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-  },
-  scrollContainer: {
-    flex: 1,
-  },
   card: {
     backgroundColor: "#fff",
-    borderRadius: 10,
-    padding: 10,
+    borderRadius: 16,
+    paddingVertical: 20,
+    paddingHorizontal: 10,
     marginVertical: 10,
     marginHorizontal: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  progressContainer: {
-    alignItems: "center",
-    marginBottom: 10,
-    elevation: 3,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.3,
-    shadowRadius: 1,
+    shadowColor: "rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 10 }, // Reduced height for a closer shadow
+    shadowOpacity: 0.5, // Lower opacity for a softer appearance
+    shadowRadius: 20, // Increased radius to blur edges more
+    elevation: 7  , // Adjust elevation for Android to match visual consistency
   },
   roomCard: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#fff",
-    borderRadius: 10,
-    padding: 15,
-    marginVertical: 5,
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 10,
     marginHorizontal: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowColor: "rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 10 }, // Reduced height for a closer shadow
+    shadowOpacity: 0.5, // Lower opacity for a softer appearance
+    shadowRadius: 20, // Increased radius to blur edges more
+    elevation: 6, // Adjust elevation for Android to match visual consistency
   },
   iconContainer: {
     width: 40,
@@ -185,34 +145,26 @@ const styles = StyleSheet.create({
   roomDetails: {
     flex: 1,
     justifyContent: "center",
+    
   },
   roomName: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#000",
+    fontFamily: "Lato-Regular"
   },
   roomUnits: {
     fontSize: 16,
     color: "#666",
-  },
-  unitDetails: {
-    backgroundColor: "#f9f9f9",
-    borderRadius: 8,
-    padding: 16,
-    margin: 16,
-    alignItems: "center",
-    elevation: 6, // for the main shadow
-    shadowColor: "#000", // color of the shadow
-    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
-    shadowOpacity: 0.6, // opacity of the shadow
-    shadowRadius: 1, // blur radius of the shadow
+    fontFamily: "Lato-Regular"
   },
   estimatedBill: {
-    fontSize: 20,
+    fontSize: 18,
+    fontWeight: 'normal',
+    fontFamily: "Lato-Regular",
     color: "#666",
     textAlign: "center",
-    // marginBottom: 20,
-    fontFamily: "Lato-Bold",
+    paddingVertical: 20,
   },
 });
 
