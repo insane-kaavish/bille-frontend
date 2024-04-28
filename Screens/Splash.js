@@ -42,17 +42,41 @@ const SplashScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  logoText: {
-    marginTop: '40%',
-    fontSize: 48,
-    fontWeight: 'bold',
-    color: Colors.primary,
-    textAlign: 'center',
-  },
-  iconStyle: {
-    marginTop: 20,
-    alignSelf: 'center'
-  },
+	container: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+		backgroundColor: "#fff",
+	},
+	upperCircle: {
+		width: "100%",
+		height: "100%",
+		left: "-40%",
+		top: "-75%",
+		position: 'absolute',
+		backgroundColor: '#535CE8', // Change 'light-blue' to 'lightblue'
+		borderRadius: 999,
+	},
+	lowerCircle: {
+		width: "100%",
+		height: "100%",
+		right: "-40%",
+		top: "75%",
+		position: 'absolute',
+		backgroundColor: '#535CE8', // Change 'light-blue' to 'lightblue'
+		borderRadius: 999,
+	},
+	congratulationsText: {
+		width: "100%",
+		left: "7%",
+		top: "30%",
+		position: 'absolute',
+		color: 'black',
+		fontSize: 32,
+		fontWeight: '600',
+		lineHeight: 48,
+		textAlign: 'left',
+	},
 });
 
 export default SplashScreen;
