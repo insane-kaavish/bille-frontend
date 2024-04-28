@@ -1,0 +1,32 @@
+{
+  "Inverter Air Conditioner": {
+    "title": "Inverter Air Conditioner",
+    "subtitle": "Did you know?",
+    "details": "Inverter air conditioners can save up to 50% of your annual electricity consumption compared to conventional AC units.\n\nEnergy-saving tip:\nTo save energy, set your AC thermostat to 26°C and regularly clean and replace its filters."
+  },
+  "LED Lighting": {
+    "title": "LED Lighting",
+    "subtitle": "Did you know?",
+    "details": "LED lights can save up to 75% of your annual energy consumption and last up to 25 times longer than incandescent lights.\n\nEnergy-saving tip:\nTo conserve energy more efficiently, install smart home technology and draw your curtains during the day to utilize sunlight."
+  },
+  "Heat Rejection and Insulation Sheets": {
+    "title": "Heat Rejection and Insulation Sheets",
+    "subtitle": "Did you know?",
+    "details": "Heat rejection and insulation sheets can reduce up to 78% of the sun's heat from entering your home, thereby reducing cooling costs.\n\nEnergy-saving tip:\nKeep your home cool and create a comfortable space for your family by installing heat rejection and insulation sheets."
+  },
+  "Energy-Intensive Appliances": {
+    "title": "Energy-Intensive Appliances",
+    "subtitle": "Did you know?",
+    "details": "Old energy-intensive appliances cost an average homeowner up to 45% on their annual consumption.\n\nEnergy-saving tip:\nWhen buying appliances, look for the Energy Star label that identifies products in terms of energy efficiency. Make the smart switch to energy-efficient appliances. If you are using energy-intensive appliances, use them during off-peak hours (10 pm to 6 am) to reduce your consumption load."
+  },
+  "Energy Efficient UPS": {
+    "title": "Energy Efficient UPS",
+    "subtitle": "Did you know?",
+    "details": "Energy-efficient UPS can reduce your annual energy loss by up to 55%.\n\nEnergy-saving tip:\nWhen buying a UPS, look for the Energy Star label that identifies products by their efficiency. Servicing equipment regularly ensures optimal efficiency."
+  },
+  "Phantom Energy Consumption": {
+    "title": "Phantom Energy Consumption",
+    "subtitle": "Did you know?",
+    "details": "Phantom energy, which is unconsumed or wasted energy, contributes up to 10% of your annual electricity bill.\n\nEnergy-saving tip:\nIt is best to unplug electronic devices and kitchen appliances when not in use to save energy."
+  }
+}

@@ -1,49 +1,44 @@
-import react, { useEffect } from "react";
-import { View, Image, StyleSheet, StatusBar, Animated, Text } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { useAuth } from "./Auth/AuthProvider";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Header from "./Components/Header";
-import { GlobalStyles } from "./Styles/GlobalStyles";
+import { Colors, GlobalStyles } from "./Styles/GlobalStyles";
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';  // Ensure this is properly imported
 
 const SplashScreen = ({ navigation }) => {
-  const { authToken, setAuthToken } = useAuth();
+  const { setAuthToken } = useAuth();
+  const [localToken, setLocalToken] = useState(null); // Local state to hold the token
 
-	useEffect(() => {
-		const checkUserToken = async () => {
-			try {
-				const token = await AsyncStorage.getItem("authToken");
-				console.log("Async token: ", token);
-				if (token) {
-					// Token exists, navigate to Dashboard
-					setAuthToken(token);
-					setTimeout(() => {
-						navigation.navigate("Dashboard");
-					}, 1500); // 1.5 seconds delay
-					return;
-				}
-				setTimeout(() => {
-					navigation.navigate("Signin");
-				}, 1500); // 1.5 seconds delay
-			} catch (error) {
-				console.error("Error retrieving token:", error);
-			}
-		};
-		checkUserToken();
-	}, [authToken]);
+  useEffect(() => {
+    const checkUserToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem("authToken");
+        console.log("Async token: ", token);
+        if (token) {
+          setAuthToken(token);
+          setLocalToken(token); // Set the token in local state
+        }
+        setTimeout(() => {
+          navigation.navigate(token ? "Dashboard" : "Signin"); // Use the token to decide navigation
+        }, 1000); // 1 second delay
+      } catch (error) {
+        console.error("Error retrieving token:", error);
+      }
+    };
+    checkUserToken();
+  }, []);
 
-	return (
-		<>
-		<View style={GlobalStyles.screenContainer}>
-			<View style={styles.upperCircle} />
-			{/* <View style={styles.lowerCircle} /> */}
-			<Text style={styles.congratulationsText}>
-				Congratulations!🎉{'\n'}
-				You've just unlocked smarter energy management.{'\n\n'}
-				Get ready to take control and start saving now!
-			</Text>
-		</View>
-		</>
-	);
+  const handleScreenPress = () => {
+    // Directly navigate based on the token stored in local state
+    navigation.navigate(localToken ? "Dashboard" : "Signin");
+  };
+
+  return (
+    <TouchableOpacity activeOpacity={1} onPress={handleScreenPress} style={GlobalStyles.screenContainer}>
+      <Text style={styles.logoText}>Bill-E</Text>
+      <MaterialIcons name="pets" size={60} color="#007AFF" style={styles.iconStyle} />
+    </TouchableOpacity>
+  );
 };
 
 const styles = StyleSheet.create({

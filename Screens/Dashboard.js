@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, ScrollView, Text, TouchableOpacity, Modal } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  Modal,
+} from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Header from "./Components/Header";
 import Navbar from "./Components/Navbar";
@@ -9,7 +16,6 @@ import { GlobalStyles } from "./Styles/GlobalStyles";
 
 // get width
 import { Dimensions } from "react-native";
-const { width } = Dimensions.get("window");
 const DashboardScreen = ({ navigation }) => {
   const { authToken } = useAuth();
   const { units, totalCost, perUnitCost, fetchPredictedData } = useBill();
@@ -20,6 +26,8 @@ const DashboardScreen = ({ navigation }) => {
     subtitle: "",
     details: "",
   });
+
+  const conservationTips = require("../assets/conservationTips.json");
 
   useEffect(() => {
     fetchPredictedData();
@@ -34,95 +42,54 @@ const DashboardScreen = ({ navigation }) => {
   };
 
   const handleRecommendationPress = (title) => {
-    switch (title) {
-      case "Inverter Air Conditioner":
-        setModalContent({
-          title: "Inverter Air Conditioner",
-          subtitle: "Did you know?",
-          details:
-            "Inverter air conditioners can save up to 50% of your annual electricity consumption compared to conventional AC units.\n\n" +
-            "Energy-saving tip:\nTo save energy, set your AC thermostat to 26°C and regularly clean and replace its filters.",
-        });
-        break;
-      case "LED Lighting":
-        setModalContent({
-          title: "LED Lighting",
-          subtitle: "Did you know?",
-          details:
-            "LED lights can save up to 75% of your annual energy consumption and last up to 25 times longer than incandescent lights.\n\n" +
-            "Energy-saving tip:\nTo conserve energy more efficiently, install smart home technology and draw your curtains during the day to utilize sunlight.",
-        });
-        break;
-      case "Heat Rejection and Insulation Sheets":
-        setModalContent({
-          title: "Heat Rejection and Insulation Sheets",
-          subtitle: "Did you know?",
-          details:
-            "Heat rejection and insulation sheets can reduce up to 78% of the sun's heat from entering your home, thereby reducing cooling costs.\n\n" +
-            "Energy-saving tip:\nKeep your home cool and create a comfortable space for your family by installing heat rejection and insulation sheets.",
-        });
-        break;
-      case "Energy-Intensive Appliances":
-        setModalContent({
-          title: "Energy-Intensive Appliances",
-          subtitle: "Did you know?",
-          details:
-            "Old energy-intensive appliances cost an average homeowner up to 45% on their annual consumption.\n\n" +
-            "Energy-saving tip:\nWhen buying appliances, look for the Energy Star label that identifies products in terms of energy efficiency. Make the smart switch to energy-efficient appliances. If you are using energy-intensive appliances, use them during off-peak hours (10 pm to 6 am) to reduce your consumption load.",
-        });
-        break;
-      case "Energy Efficient UPS":
-        setModalContent({
-          title: "Energy Efficient UPS",
-          subtitle: "Did you know?",
-          details:
-            "Energy-efficient UPS can reduce your annual energy loss by up to 55%.\n\n" +
-            "Energy-saving tip:\nWhen buying a UPS, look for the Energy Star label that identifies products by their efficiency. Servicing equipment regularly ensures optimal efficiency.",
-        });
-        break;
-      case "Phantom Energy Consumption":
-        setModalContent({
-          title: "Phantom Energy Consumption",
-          subtitle: "Did you know?",
-          details:
-            "Phantom energy, which is unconsumed or wasted energy, contributes up to 10% of your annual electricity bill.\n\n" +
-            "Energy-saving tip:\nIt is best to unplug electronic devices and kitchen appliances when not in use to save energy.",
-        });
-        break;
-      default:
-        setModalContent({
-          title: "",
-          subtitle: "",
-          details: "",
-        });
-        break;
+    const tip = conservationTips[title];
+    if (tip) {
+      setModalContent(tip);
+    } else {
+      // Handle the case where the title is not found
+      setModalContent({
+        title: "",
+        subtitle: "",
+        details: "",
+      });
     }
     setModalVisible(true);
   };
 
   return (
     <>
-     <Header screenName="Dashboard" navigation={navigation} />
+      <Header screenName="Dashboard" navigation={navigation} />
       <View style={GlobalStyles.screenContainer}>
         <ScrollView style={styles.container}>
-        <View style={{ height: 10 }} />
+          <View style={{ height: 10 }} />
           {/* Current Units Card */}
           <View style={styles.section}>
-            <TouchableOpacity style={styles.card} onPress={navigateToPrediction}>
+            <TouchableOpacity
+              style={styles.card}
+              onPress={navigateToPrediction}
+            >
               <Text style={styles.cardTitle}>Current Units</Text>
               <Text style={styles.cardValue}>{units}</Text>
               <Text style={styles.cardDescription}>
-              Your current consumption data suggests that your predicted units are {units}, which is deemed satisfactory.              </Text>
+                Your current consumption data suggests that your predicted units
+                are {units}, which is deemed satisfactory.{" "}
+              </Text>
             </TouchableOpacity>
           </View>
           {/* Billing Information Container */}
           <View style={styles.billingContainer}>
-            <TouchableOpacity style={styles.card} onPress={navigateToRoomOverview}>
+            <TouchableOpacity
+              style={styles.card}
+              onPress={navigateToRoomOverview}
+            >
               <Text style={styles.cardTitle}>Expected Bill</Text>
               <Text style={styles.cardValue}>Rs. {totalCost}</Text>
               <Text style={styles.cardDescription}>Based on usage pattern</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.card} onPress={navigateToRoomOverview}>
+            <TouchableOpacity
+              style={styles.card}
+              onPress={navigateToRoomOverview}
+            >
               <Text style={styles.cardTitle}>Price per Unit</Text>
               <Text style={styles.cardValue}>Rs. {perUnitCost}</Text>
               <Text style={styles.cardDescription}>Average cost per unit</Text>
@@ -132,11 +99,17 @@ const DashboardScreen = ({ navigation }) => {
           <View style={styles.monthlyReportContainer}>
             <Text style={styles.sectionTitle}>Monthly Report</Text>
             <View style={styles.reportContainer}>
-              <TouchableOpacity style={styles.reportCard} onPress={navigateToRoomOverview}>
+              <TouchableOpacity
+                style={styles.reportCard}
+                onPress={navigateToRoomOverview}
+              >
                 <FontAwesome5 name="building" size={24} color="#007AFF" />
                 <Text style={styles.reportText}>Room Report</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.reportCard} onPress={navigateToPrediction}>
+              <TouchableOpacity
+                style={styles.reportCard}
+                onPress={navigateToPrediction}
+              >
                 <FontAwesome5 name="chart-bar" size={24} color="#28a745" />
                 <Text style={styles.reportText}>Monthly Units</Text>
               </TouchableOpacity>
@@ -145,31 +118,20 @@ const DashboardScreen = ({ navigation }) => {
           {/* Conservation Tips */}
           <View style={styles.tipsContainer}>
             <Text style={styles.sectionTitle}>Conservation Tips</Text>
-            <ScrollView horizontal={true} contentContainerStyle={styles.tipsScrollContainer}>
-            <TouchableOpacity onPress={() => handleRecommendationPress("Inverter Air Conditioner")} style={styles.recommendationContainer}>
-                <FontAwesome5 name="snowflake" size={30} color="#007AFF" />
-                <Text style={styles.containerTitle}>Inverter Air Conditioner</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleRecommendationPress("LED Lighting")} style={styles.recommendationContainer}>
-                <FontAwesome5 name="lightbulb" size={30} color="#007AFF" />
-                <Text style={styles.containerTitle}>LED Lighting</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleRecommendationPress("Heat Rejection and Insulation Sheets")} style={styles.recommendationContainer}>
-                <FontAwesome5 name="sun" size={30} color="#007AFF" />
-                <Text style={styles.containerTitle}>Heat Rejection and Insulation Sheets</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleRecommendationPress("Energy-Intensive Appliances")} style={styles.recommendationContainer}>
-                <FontAwesome5 name="plug" size={30} color="#007AFF" />
-                <Text style={styles.containerTitle}>Energy-Intensive Appliances</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleRecommendationPress("Energy Efficient UPS")} style={styles.recommendationContainer}>
-                <FontAwesome5 name="battery-three-quarters" size={30} color="#007AFF" />
-                <Text style={styles.containerTitle}>Energy Efficient UPS</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleRecommendationPress("Phantom Energy Consumption")} style={styles.recommendationContainer}>
-                <FontAwesome5 name="ghost" size={30} color="#007AFF" />
-                <Text style={styles.containerTitle}>Phantom Energy Consumption</Text>
-              </TouchableOpacity>
+            <ScrollView
+              horizontal={true}
+              contentContainerStyle={styles.tipsScrollContainer}
+            >
+              {Object.keys(conservationTips).map((title, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={styles.recommendationContainer}
+                  onPress={() => handleRecommendationPress(title)}
+                >
+                  <FontAwesome5 name="lightbulb" size={24} color="#007AFF" />
+                  <Text style={styles.containerTitle}>{title}</Text>
+                </TouchableOpacity>
+              ))}
             </ScrollView>
           </View>
         </ScrollView>
@@ -193,7 +155,6 @@ const DashboardScreen = ({ navigation }) => {
           </View>
         </Modal>
         <View style={{ height: 10 }} />
-
       </View>
     </>
   );
@@ -202,7 +163,7 @@ const DashboardScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 10, 
     paddingBottom: 10,
     paddingTop: 1,
   },
@@ -220,10 +181,10 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 10,
     shadowColor: "rgba(0,0,0,0.5)",
-    shadowOffset: { width: 0, height: 10 },  // Reduced height for a closer shadow
-    shadowOpacity: 0.5,  // Lower opacity for a softer appearance
-    shadowRadius: 20,  // Increased radius to blur edges more
-    elevation: 10,  // Adjust elevation for Android to match visual consistency
+    shadowOffset: { width: 0, height: 10 }, // Reduced height for a closer shadow
+    shadowOpacity: 0.5, // Lower opacity for a softer appearance
+    shadowRadius: 20, // Increased radius to blur edges more
+    elevation: 10, // Adjust elevation for Android to match visual consistency
     flex: 1,
     marginHorizontal: 5,
   },
@@ -251,8 +212,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 0, // Adding padding to ensure some space around the cards
-    marginBottom: -10,       // Space below the container for clean separation
-    marginTop: 10,           // Space above the container to distinguish from previous content
+    marginBottom: -10, // Space below the container for clean separation
+    marginTop: 10, // Space above the container to distinguish from previous content
   },
   reportCard: {
     backgroundColor: "#ffffff",
@@ -260,13 +221,13 @@ const styles = StyleSheet.create({
     padding: 24,
     marginBottom: 10,
     shadowColor: "#rgba(0,0,0,0.5)",
-    shadowOffset: { width: 0, height: 10 },  // Reduced height for a closer shadow
-    shadowOpacity: 0.5,  // Lower opacity for a softer appearance
-    shadowRadius: 20,  // Increased radius to blur edges more
-    elevation: 10,  // Adjust elevation for Android to match visual consistency
+    shadowOffset: { width: 0, height: 10 }, // Reduced height for a closer shadow
+    shadowOpacity: 0.5, // Lower opacity for a softer appearance
+    shadowRadius: 20, // Increased radius to blur edges more
+    elevation: 10, // Adjust elevation for Android to match visual consistency
     flex: 1, // Utilizing flex to fill available space
     marginHorizontal: 5, // Spacing between the two cards
-    maxWidth: '46%', // Decreasing the max width to make the cards more compact
+    maxWidth: "46%", // Decreasing the max width to make the cards more compact
   },
   reportText: {
     fontFamily: "Lato-Bold",
@@ -279,29 +240,28 @@ const styles = StyleSheet.create({
     // marginTop: 20,  // Added top margin for better spacing from previous content
   },
   tipsScrollContainer: {
-    paddingHorizontal: 10,  // Ensure there's padding on the sides of the scroll view
-    paddingVertical: 5,   // Padding above and below the scroll view
+    paddingHorizontal: 10, // Ensure there's padding on the sides of the scroll view
+    paddingVertical: 5, // Padding above and below the scroll view
   },
   recommendationContainer: {
-    backgroundColor: "#fff",  // Soft gray for a subtle, sleek look
-    borderRadius: 24,  // RECOMMENDATIONS CORNERS SETTING
-    padding: 20,  // Adjusted padding for better spacing inside the card
-    marginRight: 21,  // Right margin adjusted for consistency
+    backgroundColor: "#fff", // Soft gray for a subtle, sleek look
+    borderRadius: 24, // RECOMMENDATIONS CORNERS SETTING
+    padding: 20, // Adjusted padding for better spacing inside the card
+    marginRight: 21, // Right margin adjusted for consistency
     alignItems: "center",
-    justifyContent: "center",  // Center content vertically and horizontally
-    width: 220,  // Adjusted width for a bit more space
-    elevation: 4,  // Subtle shadow for depth
+    justifyContent: "center", // Center content vertically and horizontally
+    width: 220, // Adjusted width for a bit more space
     shadowColor: "#rgba(0,0,0,0.5)",
-    shadowOffset: { width: 0, height: 6 },  // Reduced height for a closer shadow
-    shadowOpacity: 0.5,  // Lower opacity for a softer appearance
-    shadowRadius: 8,  // Increased radius to blur edges more
-    elevation: 4,  // Adjust elevation for Android to match visual consistency
+    shadowOffset: { width: 0, height: 6 }, // Reduced height for a closer shadow
+    shadowOpacity: 0.5, // Lower opacity for a softer appearance
+    shadowRadius: 8, // Increased radius to blur edges more
+    elevation: 4, // Adjust elevation for Android to match visual consistency
   },
   containerTitle: {
     fontFamily: "Lato-Bold",
-    fontSize: 16,  // Slightly reduced size for a more refined look
-    color: "#333",  // Dark color for better readability
-    marginTop: 8,  // Top margin to space out text from the icon
+    fontSize: 16, // Slightly reduced size for a more refined look
+    color: "#333", // Dark color for better readability
+    marginTop: 8, // Top margin to space out text from the icon
     textAlign: "center",
   },
   modalView: {
@@ -311,40 +271,42 @@ const styles = StyleSheet.create({
     padding: 25, // Generous padding for internal spacing
     alignItems: "center", // Center-align items for a polished look
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },  // Reduced height for a closer shadow
-    shadowOpacity: 0.5,  // Lower opacity for a softer appearance
-    shadowRadius: 20,  // Increased radius to blur edges more
-    elevation: 10,  // Adjust elevation for Android to match visual consistency
+    shadowOffset: { width: 0, height: 4 }, // Reduced height for a closer shadow
+    shadowOpacity: 0.5, // Lower opacity for a softer appearance
+    shadowRadius: 20, // Increased radius to blur edges more
+    elevation: 10, // Adjust elevation for Android to match visual consistency
     justifyContent: "center", // Center the modal content vertically
-    position: 'absolute',  // Positions the modal view absolutely relative to its parent
-    top: '50%',            // Places the top edge of the modal at the center of the parent
-    left: '50%',           // Places the left edge of the modal at the center of the parent
-    transform: [{ translateX: -Dimensions.get('window').width * 0.5 }, // Shifts the modal to the left by 40% of the screen width
-                { translateY: -Dimensions.get('window').height * 0.31 }] 
+    position: "absolute", // Positions the modal view absolutely relative to its parent
+    top: "50%", // Places the top edge of the modal at the center of the parent
+    left: "50%", // Places the left edge of the modal at the center of the parent
+    transform: [
+      { translateX: -Dimensions.get("window").width * 0.5 }, // Shifts the modal to the left by 40% of the screen width
+      { translateY: -Dimensions.get("window").height * 0.31 },
+    ],
   },
   modalTitle: {
-    fontSize: 24,  // Increased font size for greater emphasis
-    fontFamily: "Lato-Bold",  // Ensuring the font is bold
-    color: "#007AFF",  // A strong but not overwhelming color
-    marginBottom: 20,  // Increased bottom margin to separate from body text
-    textAlign: "center",  // Centered text to match the modal's alignment
+    fontSize: 24, // Increased font size for greater emphasis
+    fontFamily: "Lato-Bold", // Ensuring the font is bold
+    color: "#007AFF", // A strong but not overwhelming color
+    marginBottom: 20, // Increased bottom margin to separate from body text
+    textAlign: "center", // Centered text to match the modal's alignment
   },
-// modal subtitle
+  // modal subtitle
   modalSubtitle: {
-    fontSize: 18,  // Slightly smaller font size for body text to differentiate from the title
-    fontFamily: "Lato-Bold",  // Regular font style for easy reading
-    color: "#333",  // Standard dark color for good readability
-    marginBottom: 15,  // Consistent spacing between paragraphs or text blocks
-    lineHeight: 24,  // Increased line height for better readability
-    textAlign: "justify",  // Justify alignment for a cleaner, more formal presentation
+    fontSize: 18, // Slightly smaller font size for body text to differentiate from the title
+    fontFamily: "Lato-Bold", // Regular font style for easy reading
+    color: "#333", // Standard dark color for good readability
+    marginBottom: 15, // Consistent spacing between paragraphs or text blocks
+    lineHeight: 24, // Increased line height for better readability
+    textAlign: "justify", // Justify alignment for a cleaner, more formal presentation
   },
   modalText: {
-    fontSize: 16,  // Slightly smaller font size for body text to differentiate from the title
-    fontFamily: "Lato-Regular",  // Regular font style for easy reading
-    color: "#333",  // Standard dark color for good readability
-    marginBottom: 15,  // Consistent spacing between paragraphs or text blocks
-    lineHeight: 24,  // Increased line height for better readability
-    textAlign: "justify",  // Justify alignment for a cleaner, more formal presentation
+    fontSize: 16, // Slightly smaller font size for body text to differentiate from the title
+    fontFamily: "Lato-Regular", // Regular font style for easy reading
+    color: "#333", // Standard dark color for good readability
+    marginBottom: 15, // Consistent spacing between paragraphs or text blocks
+    lineHeight: 24, // Increased line height for better readability
+    textAlign: "justify", // Justify alignment for a cleaner, more formal presentation
   },
   closeButton: {
     marginTop: 20, // Space above the button to separate it from the last text element
@@ -362,10 +324,10 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontFamily: "Lato-Bold", // Ensuring the title is bold for emphasis
-    fontSize: 20,            // A moderate size for clear readability
-    color: '#333',           // Dark grey for a subtle, strong impression
-    marginBottom: 15,        // Space below the title to separate from content
-    marginTop: 20,           // Space above the title to distinguish from previous content
+    fontSize: 20, // A moderate size for clear readability
+    color: "#333", // Dark grey for a subtle, strong impression
+    marginBottom: 15, // Space below the title to separate from content
+    marginTop: 20, // Space above the title to distinguish from previous content
   },
 });
 

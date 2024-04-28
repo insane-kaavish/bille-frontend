@@ -215,9 +215,9 @@ const SignupScreen = ({ navigation }) => {
 
   return (
     <>
-      <ScrollView style={[GlobalStyles.screenContainer, styles.container]}
-      contentContainerStyle={styles.scrollViewContent}
-      >
+      <ScrollView style={[GlobalStyles.screenContainer, styles.container]}contentContainerStyle={styles.scrollViewContent}>
+      <Text style={styles.header}>Welcome! Create Your Account👋</Text>
+
         <View
           style={[
             styles.inputContainer,
@@ -320,14 +320,14 @@ const SignupScreen = ({ navigation }) => {
           {isLoading ? (
             <ActivityIndicator color="white" />
           ) : (
-            <Text style={styles.buttonText}>Sign Up</Text>
+            <Text style={styles.buttonText}>Sign up</Text>
           )}
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("Signin")}>
           <Text style={styles.footerText}>
             Already have an account?{" "}
-            <Text style={styles.footerTextHighlight}>Login</Text>
+            <Text style={styles.footerTextHighlight}>Sign in</Text>
           </Text>
         </TouchableOpacity>
       </ScrollView>
@@ -340,6 +340,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.white,
     padding: 10,
+  },
+  header: {
+    fontSize: 32,
+    fontWeight: "700",
+    marginBottom: 20,
   },
   inputContainer: {
     width: "90%",
