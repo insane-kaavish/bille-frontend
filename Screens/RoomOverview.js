@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
-import { ProgressChart } from "react-native-chart-kit";
+import { PieChart } from "react-native-chart-kit"; // Import PieChart
 
 import Header from "./Components/Header";
 import Navbar from "./Components/Navbar";
@@ -44,38 +44,40 @@ const RoomOverviewScreen = () => {
 
   const totalUnits = rooms.reduce((total, room) => total + room.units, 0);
 
-  const data = {
-    labels: rooms.map((room) => room.alias),
-    data: rooms.map((room) => room.units / totalUnits),
-    colors: rooms.map((room) => colors[rooms.indexOf(room)]),
-  };
+  const data = rooms.map((room, index) => ({
+    name: room.alias,
+    units: room.units,
+    color: colors[index % colors.length],
+    legendFontColor: "#7F7F7F",
+    legendFontSize: 15,
+  }));
 
   return (
     <>
       <Header screenName="Room Overview" navigation={navigation} />
       <ScrollView style={styles.container}>
-        <View style={styles.card}>
-          <ProgressChart
-            data={data}
-            width={Dimensions.get("window").width * 0.9}
-            height={220}
-            chartConfig={{
-              backgroundGradientFrom: "#f8f9fa",
-              backgroundGradientTo: "#e9ecef",
-              color: (opacity = 1) => `rgba(33, 37, 41, ${opacity})`,
-              strokeWidth: 2, // Thinner line for the chart
-              barPercentage: 0.5,
-            }}
-            style={{ alignItems: 'center', borderRadius: 18, padding: 8, paddingRight: 15,  }}
-            hideLegend={false}
-            withCustomBarColorFromData
-          />
-          <Text style={styles.estimatedBill}>
-            Total Predicted Units: <Text style={{ color: "orange",  fontFamily: "Lato-Bold" }}>
-              {totalUnits} Units
-            </Text>
-          </Text>
-        </View>
+      <View style={styles.card}>
+      <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+        <PieChart
+          data={data}
+          width={Dimensions.get("window").width*0.9}
+          height={200}
+          chartConfig={{
+            color: (opacity = 1) => `rgba(33, 37, 41, ${opacity})`,
+          }}
+          accessor={"units"}
+          backgroundColor={"transparent"}
+          paddingLeft={"10"}
+          center={[0, 0]}
+          absolute={false}
+        />
+      </ScrollView>
+      <Text style={styles.estimatedBill}>
+        Total Predicted Units: <Text style={{ color: "orange", fontFamily: "Lato-Bold" }}>
+          {totalUnits} Units
+        </Text>
+      </Text>
+    </View>
         {rooms.map((room, index) => (
           <TouchableOpacity
             key={index}
@@ -85,7 +87,7 @@ const RoomOverviewScreen = () => {
               navigation.navigate("RoomDetail");
             }}
           >
-            <View style={[styles.iconContainer, { backgroundColor: colors[rooms.indexOf(room)] }]}>
+            <View style={[styles.iconContainer, { backgroundColor: colors[index % colors.length] }]}>
               <Ionicons name={"home"} size={24} color="#fff" />
             </View>
             <View style={styles.roomDetails}>
@@ -97,9 +99,12 @@ const RoomOverviewScreen = () => {
         ))}
       </ScrollView>
       <Navbar />
+      <View style={{ height: 60 }} />
+
     </>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -109,22 +114,24 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: "#fff",
-    borderRadius: 16,
+    borderRadius: 24,
     paddingVertical: 20,
     paddingHorizontal: 10,
     marginVertical: 10,
     marginHorizontal: 5,
     shadowColor: "rgba(0,0,0,0.5)",
-    shadowOffset: { width: 0, height: 10 }, // Reduced height for a closer shadow
-    shadowOpacity: 0.5, // Lower opacity for a softer appearance
-    shadowRadius: 20, // Increased radius to blur edges more
-    elevation: 7  , // Adjust elevation for Android to match visual consistency
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 5,
+    shadowRadius: 20,
+    elevation: 7,
+    minHeight: 300, // Set a minimum height or adjust as needed
   },
+  
   roomCard: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#fff",
-    borderRadius: 16,
+    borderRadius: 24,
     padding: 20,
     marginBottom: 10,
     marginHorizontal: 5,
