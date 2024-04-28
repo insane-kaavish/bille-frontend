@@ -56,6 +56,20 @@ const DashboardScreen = ({ navigation }) => {
     setModalVisible(true);
   };
 
+  useEffect(() => {
+    fetchPredictedData();
+    fetchBillDetails(); // You might need to create this function to fetch billing details
+  }, [authToken]);
+  
+  const fetchBillDetails = () => {
+    // Assume this function fetches detailed billing information
+    setModalContent({
+      title: "Detailed Bill Breakdown",
+      subtitle: "Complete billing information based on your usage pattern",
+      details: `Total Cost: Rs. ${totalCost}\nUnit Cost: Rs. ${perUnitCost}\nTaxes: [Calculated Taxes]\nDiscounts: [Applicable Discounts]`
+    });
+  };
+
   return (
     <>
       <Header screenName="Dashboard" navigation={navigation} />
@@ -78,14 +92,17 @@ const DashboardScreen = ({ navigation }) => {
           </View>
           {/* Billing Information Container */}
           <View style={styles.billingContainer}>
-            <TouchableOpacity
-              style={styles.card}
-              onPress={navigateToRoomOverview}
-            >
-              <Text style={styles.cardTitle}>Expected Bill</Text>
-              <Text style={styles.cardValue}>Rs. {totalCost}</Text>
-              <Text style={styles.cardDescription}>Based on usage pattern</Text>
-            </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => {
+              setModalVisible(true);
+              fetchBillDetails(); // Ensure the billing details are updated each time the modal is opened
+            }}
+          >
+            <Text style={styles.cardTitle}>Expected Bill</Text>
+            <Text style={styles.cardValue}>Rs. {totalCost}</Text>
+            <Text style={styles.cardDescription}>Based on usage pattern</Text>
+          </TouchableOpacity>
             <TouchableOpacity
               style={styles.card}
               onPress={navigateToRoomOverview}
@@ -329,6 +346,7 @@ const styles = StyleSheet.create({
     marginBottom: 15, // Space below the title to separate from content
     marginTop: 20, // Space above the title to distinguish from previous content
   },
+  
 });
 
 export default DashboardScreen;
