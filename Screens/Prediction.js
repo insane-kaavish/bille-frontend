@@ -8,7 +8,7 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
 } from "react-native";
-import { LineChart } from "react-native-chart-kit";
+import { BarChart } from "react-native-chart-kit";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { useNavigation } from "@react-navigation/native";
 import Header from "./Components/Header";
@@ -30,21 +30,34 @@ const PredictionScreen = () => {
     setFillPercentage(units % 100);
   }, []);
 
-  // Prepare the datasets for the chart
-  const actualData = actualMonthly ? actualMonthly.slice(0, -1) : [];
-  const predictedData = predictedMonthly && predictedMonthly.length > 0
-    ? new Array(labels.length - 1).fill(null).concat(predictedMonthly.slice(-1))
-    : [];
+  const actualData = actualMonthly ? actualMonthly.slice(-11) : [];
+  const predictedData = predictedMonthly ? predictedMonthly.slice(-1) : [];
 
   const data = {
-    labels: labels || [], // Ensure labels is always an array
+    labels: labels.slice(-12),
     datasets: [
       {
-        data: actualData.concat(predictedData.slice(-1)), // Merge actual and predicted data
-        color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`, // Blue color
-        strokeWidth: 2,
+        data: actualData.concat(predictedData),
+        colors: actualData.concat(predictedData).map((_, index) => (opacity = 1) =>
+          index === actualData.concat(predictedData).length - 1
+            ? `gray` 
+            : `blue` 
+        ),
       },
     ],
+  };
+
+  const chartConfig = {
+    backgroundGradientFrom: "#fff",
+    backgroundGradientTo: "#fff",
+    decimalPlaces: 0,
+    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // Solid black for labels and axes
+    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // Consistent label color
+    style: {
+      borderRadius: 16,
+    },
+    useShadowColor: false, // Disable shadow color'
+    showValuesOnTopOfBars: true,
   };
 
   return (
@@ -87,24 +100,15 @@ const PredictionScreen = () => {
 
           <View style={styles.graphCard}>
             <ScrollView horizontal>
-              <LineChart
+              <BarChart
                 data={data}
                 width={screenWidth * 1.5}
                 height={300}
-                verticalLabelRotation={0}
                 fromZero
-                segments={4}
-                chartConfig={{
-                  backgroundGradientFrom: "#FFF",
-                  backgroundGradientTo: "#FFF",
-                  decimalPlaces: 0,
-                  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                  labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                  style: {
-                    borderRadius: 16,
-                  },
-                }}
-                bezier
+                segments={2}
+                withCustomBarColorFromData={true} // Enable custom colors from `data.datasets.colors`
+                verticalLabelRotation={0}
+                chartConfig={chartConfig} // Solid background and label colors
                 style={{ marginVertical: 8, borderRadius: 16 }}
               />
             </ScrollView>

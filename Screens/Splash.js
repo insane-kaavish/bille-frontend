@@ -78,7 +78,6 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		color: 'black',
 		fontSize: 32,
-		fontFamily: 'Lato-Bold',
 		fontWeight: '600',
 		lineHeight: 48,
 		textAlign: 'left',
