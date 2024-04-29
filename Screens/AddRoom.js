@@ -45,7 +45,7 @@ const AddRoomScreen = ({ navigation }) => {
   
     try {
       addRoom(roomData);  // Assuming 'addRoom' sends the room data to your API
-      console.log('New room data:', roomData);
+      // console.log('New room data:', roomData);
       fetchRooms();
       navigation.goBack();
     } catch (error) {
@@ -121,7 +121,7 @@ const AddRoomScreen = ({ navigation }) => {
           </TouchableOpacity>
         </ScrollView>
         <TouchableOpacity style={styles.saveButton} onPress={saveData}>
-          <Text style={styles.saveButtonText}>Save</Text>
+          <Text style={styles.saveButtonText}>Add Room</Text>
         </TouchableOpacity>
         <Navbar />
       </View>
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: 10,
-    padding: 10,
+    // padding: 10,
   },
   dropdownStyle: {
     width: 120, // Match width from RoomDetailScreen
@@ -160,27 +160,27 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginRight: 8,
     padding: 12,
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
   },
-  dropdownTextStyle: {
-    fontSize: 14,
-    textAlign: 'center',
-    color: 'black', // Ensure text color is consistent
-  },
-  dropdownMenuStyle: {
-    borderWidth: 1,
-    borderColor: 'grey',
-    borderRadius: 10,
-  },
+  // dropdownTextStyle: {
+  //   fontSize: 14,
+  //   textAlign: 'center',
+  //   color: 'black', // Ensure text color is consistent
+  // },
+  // dropdownMenuStyle: {
+  //   borderWidth: 1,
+  //   borderColor: 'grey',
+  //   borderRadius: 10,
+  // },
   usageInput: {
-    width: 100, // Consistent width as in RoomDetailScreen
+    width: 40, // Consistent width as in RoomDetailScreen
     borderWidth: 1,
     borderColor: 'grey',
     borderRadius: 10,
     paddingVertical: 8,
     paddingHorizontal: 10,
     fontSize: 14,
-    marginRight: 10,
+    // marginRight: 10,
   },
   addButton: {
     backgroundColor: '#535CE8',
@@ -198,6 +198,7 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     backgroundColor: '#535CE8',
+    bottom: '5%',
     borderRadius: 20,
     padding: 12,
     alignItems: 'center',
@@ -208,7 +209,7 @@ const styles = StyleSheet.create({
   saveButtonText: {
     color: 'white',
     fontSize: 16,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
   },
 });
 
