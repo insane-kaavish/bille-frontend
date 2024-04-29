@@ -91,6 +91,29 @@ export const RoomProvider = ({ children }) => {
     }
   };
 
+  const addRoom = async (roomData) => {
+    try {
+      const response = await fetch(`${API_URL}/add_room/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Token ${authToken}`
+        },
+        body: JSON.stringify(roomData)
+      });
+      const newRoom = await response.json();
+      if (response.ok) {
+        setRooms(prevRooms => [...prevRooms, newRoom]);  // Update state with new room
+        return newRoom;  // Optionally return the new room
+      } else {
+        throw new Error('Failed to create room');
+      }
+    } catch (error) {
+      console.error('Add room failed:', error);
+      throw error;  // Rethrow or handle error as needed
+    }
+  };
+
   const deleteAppliance = async (applianceId) => {
     try {
       const response = await fetch(
@@ -125,6 +148,7 @@ export const RoomProvider = ({ children }) => {
         fetchCategories,
         fetchRoom,
 				updateRoom,
+        addRoom,
 				deleteAppliance,
         setAppliances,
         setRoom,
