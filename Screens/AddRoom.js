@@ -46,8 +46,8 @@ const AddRoomScreen = ({ navigation }) => {
     try {
       addRoom(roomData);  // Assuming 'addRoom' sends the room data to your API
       console.log('New room data:', roomData);
-      navigation.goBack();
       fetchRooms();
+      navigation.goBack();
     } catch (error) {
       console.error("Failed to add room", error);
       // Optionally handle error, e.g., show an alert to the user

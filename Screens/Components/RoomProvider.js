@@ -102,12 +102,10 @@ export const RoomProvider = ({ children }) => {
         body: JSON.stringify(roomData)
       });
       const newRoom = await response.json();
-      if (response.ok) {
-        setRooms(prevRooms => [...prevRooms, newRoom]);  // Update state with new room
-        return newRoom;  // Optionally return the new room
-      } else {
-        throw new Error('Failed to create room');
+      if (!response.ok) {
+        throw new Error('Failed to add room');
       }
+      console.log('Room added successfully:', newRoom);
     } catch (error) {
       console.error('Add room failed:', error);
       throw error;  // Rethrow or handle error as needed
