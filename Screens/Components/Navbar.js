@@ -1,4 +1,6 @@
 import React from "react";
+
+
 import { TouchableOpacity, StyleSheet, View, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -37,8 +39,8 @@ const styles = StyleSheet.create({
   navBar: {
     flexDirection: "row",
     justifyContent: "space-around",
-    borderTopWidth: 0.2,
-    borderTopColor: "#E0E0E0",
+    borderTopWidth: 1,
+    borderTopColor: "#EFEFEF",
     paddingVertical: 10,
     backgroundColor: "#FFFFFF",
     position: "absolute",

@@ -11,6 +11,7 @@ export { default as HelpCenterScreen } from "./Profile/HelpCenter";
 export { default as PredictionScreen } from "./Prediction";
 export { default as RoomDetailScreen } from "./RoomDetail";
 export { default as RoomOverviewScreen } from "./RoomOverview";
+export { default as AddRoom } from "./AddRoom";
 export { default as RoomDataScreen } from "./Data/RoomData";
 export { default as DataInputScreen } from "./Data/DataInput";
 export { default as SplashScreen } from "./Splash";

@@ -53,6 +53,7 @@ const RoomOverviewScreen = () => {
     colors: rooms.map((room) => colors[rooms.indexOf(room)]),
   };
 
+
   // Sort the data in ascending order
   data.labels.sort();
   data.data.sort();
@@ -60,6 +61,9 @@ const RoomOverviewScreen = () => {
   const navigateToRoomDetails = (room) => {
     setSelectedRoom(room);
     navigation.navigate("RoomDetail");
+  };
+  const navigateToAddRoom = () => {
+    navigation.navigate("AddRoom");
   };
 
   return (
@@ -113,7 +117,12 @@ const RoomOverviewScreen = () => {
               <Ionicons name="chevron-forward" size={24} color="#C0C0C0" />
             </TouchableOpacity>
           ))}
+          
         </ScrollView>
+        <TouchableOpacity style={styles.addroomButton} onPress={navigateToAddRoom}>
+          <Text style={styles.addroomButtonText}>Add room</Text>
+        </TouchableOpacity>
+        
         <Navbar />
       </View>
     </>
@@ -213,6 +222,24 @@ const styles = StyleSheet.create({
     textAlign: "center",
     // marginBottom: 20,
     fontFamily: "Lato-Bold",
+  },
+  addroomButton: {
+    backgroundColor: "#535CE8",
+    bottom: "5%",
+    borderRadius: 20,
+    padding: 12,
+    alignItems: "center",
+    width: "45%",
+    alignSelf: "center",
+    marginBottom: 20,
+    borderRadius: 20,
+    // padding: 12,
+    // alignItems: 'center',
+    // width: '45%',
+  },
+  addroomButtonText: {
+    color: "white",
+    fontWeight: "bold",
   },
 });
 
