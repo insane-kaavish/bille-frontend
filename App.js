@@ -26,7 +26,6 @@ import { RoomProvider } from "./Screens/Components/RoomProvider";
 
 import * as Font from "expo-font";
 import { MenuProvider } from "react-native-popup-menu";
-import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AddRoomScreen from "./Screens/AddRoom";
 
@@ -42,13 +41,13 @@ const App = () => {
   useEffect(() => {
     const loadFonts = async () => {
       await Font.loadAsync({
-        'Lato-Regular': require('./extra/fonts/Lato/Lato-Regular.ttf'),
-        'Lato-Bold': require('./extra/fonts/Lato/Lato-Bold.ttf'),
-        'Outfit-Bold': require('./extra/fonts/Outfit/static/Outfit-Bold.ttf'),
-        'Outfit-Regular': require('./extra/fonts/Outfit/static/Outfit-Regular.ttf'),
-        'Roboto-Regular': require('./extra/fonts/Roboto/Roboto-Regular.ttf'),
-        'Roboto-Bold': require('./extra/fonts/Roboto/Roboto-Bold.ttf'),
-        'Roboto-Light': require('./extra/fonts/Roboto/Roboto-Light.ttf'),
+        "Lato-Regular": require("./extra/fonts/Lato/Lato-Regular.ttf"),
+        "Lato-Bold": require("./extra/fonts/Lato/Lato-Bold.ttf"),
+        "Outfit-Bold": require("./extra/fonts/Outfit/static/Outfit-Bold.ttf"),
+        "Outfit-Regular": require("./extra/fonts/Outfit/static/Outfit-Regular.ttf"),
+        "Roboto-Regular": require("./extra/fonts/Roboto/Roboto-Regular.ttf"),
+        "Roboto-Bold": require("./extra/fonts/Roboto/Roboto-Bold.ttf"),
+        "Roboto-Light": require("./extra/fonts/Roboto/Roboto-Light.ttf"),
       });
       setFontsLoaded(true);
     };
@@ -58,16 +57,14 @@ const App = () => {
 
   return (
     <>
-              <NavigationContainer>
-      <AuthProvider>
-        <BillProvider>
-          <RoomProvider>
-          <MenuProvider>
-            <StatusBar style="auto" />
-            <SafeAreaView edges={["right", "top", "left"]} style={{ flex: 1 }}>
-              <Stack.Navigator
-                  initialRouteName="Splash"
-                  screenOptions={ScreenOptions}
+      <NavigationContainer>
+        <AuthProvider>
+          <BillProvider>
+            <RoomProvider>
+              <MenuProvider>
+                <SafeAreaView
+                  edges={["right", "top", "left"]}
+                  style={{ flex: 1 }}
                 >
                   <Stack.Screen name="Splash" component={SplashScreen} />
                   <Stack.Screen name="Signin" component={SigninScreen} />
@@ -92,6 +89,47 @@ const App = () => {
         </BillProvider>
       </AuthProvider>
               </NavigationContainer>
+                  <Stack.Navigator
+                    initialRouteName="Splash"
+                    screenOptions={ScreenOptions}
+                  >
+                    <Stack.Screen name="Splash" component={SplashScreen} />
+                    <Stack.Screen name="Signin" component={SigninScreen} />
+                    <Stack.Screen name="Signup" component={SignupScreen} />
+                    <Stack.Screen name="RoomData" component={RoomDataScreen} />
+                    <Stack.Screen name="Home" component={HomeScreen} />
+                    <Stack.Screen
+                      name="Dashboard"
+                      component={DashboardScreen}
+                    />
+                    <Stack.Screen name="Profile" component={ProfileScreen} />
+                    <Stack.Screen name="Settings" component={SettingsScreen} />
+                    <Stack.Screen
+                      name="HelpCenter"
+                      component={HelpCenterScreen}
+                    />
+                    <Stack.Screen
+                      name="Prediction"
+                      component={PredictionScreen}
+                    />
+                    <Stack.Screen name="Contact" component={ContactScreen} />
+                    <Stack.Screen name="Privacy" component={PrivacyScreen} />
+                    <Stack.Screen
+                      name="RoomOverview"
+                      component={RoomOverviewScreen}
+                    />
+                        <Stack.Screen name="AddRoom" component={AddRoomScreen} />
+                    <Stack.Screen
+                      name="RoomDetail"
+                      component={RoomDetailScreen}
+                    />
+                  </Stack.Navigator>
+                </SafeAreaView>
+              </MenuProvider>
+            </RoomProvider>
+          </BillProvider>
+        </AuthProvider>
+      </NavigationContainer>
     </>
   );
 };

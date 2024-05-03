@@ -29,7 +29,7 @@ const ContactScreen = ({ navigation }) => {
           <View style={styles.formContainer}>
             <Text style={styles.label}>Your Name:</Text>
             <View style={styles.inputContainer}>
-              <AntDesign name="user" size={24} color="#535CE8" />
+              <AntDesign name="user" size={24} color="#007AFF" />
               <TextInput
                 style={styles.input}
                 value={name}
@@ -40,7 +40,7 @@ const ContactScreen = ({ navigation }) => {
 
             <Text style={styles.label}>Your Email:</Text>
             <View style={styles.inputContainer}>
-              <AntDesign name="mail" size={24} color="#535CE8" />
+              <AntDesign name="mail" size={24} color="#007AFF" />
               <TextInput
                 style={styles.input}
                 value={email}
@@ -52,7 +52,7 @@ const ContactScreen = ({ navigation }) => {
 
             <Text style={styles.label}>Your Message:</Text>
             <View style={[styles.inputContainer, { height: 100 }]}>
-              <AntDesign name="form" size={24} color="#535CE8" />
+              <AntDesign name="form" size={24} color="#007AFF" />
               <TextInput
                 style={[styles.input, { height: 80 }]}
                 value={message}
@@ -76,15 +76,20 @@ const ContactScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#FFF",
-    borderRadius: 10,
+    borderRadius: 24,
     padding: 20,
     elevation: 3,
     marginBottom: 20,
     marginLeft: 10,
     marginRight: 10,
+    shadowColor: "#rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 6 },  // Reduced height for a closer shadow
+    shadowOpacity: 0.5,  // Lower opacity for a softer appearance
+    shadowRadius: 8,  // Increased radius to blur edges more
+    elevation: 6,  // Adjust elevation for Android to match visual consistency
   },
   cardTitle: {
-    fontFamily: "Roboto-Bold",
+    fontFamily: "Lato-Bold",
     fontSize: 20,
     color: "black",
     marginBottom: 20,
@@ -101,11 +106,18 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#E0E0E0",
+    fontFamily: "Lato-Regular",
+    shadowColor: "#rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 6 },  // Reduced height for a closer shadow
+    shadowOpacity: 0.5,  // Lower opacity for a softer appearance
+    shadowRadius: 8,  // Increased radius to blur edges more
+    elevation: 1,  // Adjust elevation for Android to match visual consistency
   },
   label: {
     fontSize: 16,
     marginBottom: 5,
     color: "black",
+    fontFamily: "Lato-Regular",
   },
   input: {
     flex: 1,
@@ -113,20 +125,22 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     fontSize: 16,
     color: "black",
+    fontFamily: "Lato-Regular",
   },
   button: {
-    backgroundColor: "#535CE8",
-    borderRadius: 20,
-    paddingVertical: 12,
+    backgroundColor: "#007AFF",
+    borderRadius: 19,
+    padding: 14,
     alignItems: "center",
-    width: "50%",
+    width: "40%",
     alignSelf: "center",
     elevation: 3,
   },
   buttonText: {
     color: "white",
     fontSize: 18,
-    fontWeight: "bold",
+    // fontWeight: "bold",
+    fontFamily: "Lato-Regular",
   },
 });
 

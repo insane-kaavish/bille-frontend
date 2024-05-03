@@ -83,25 +83,29 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10,
-    color: "#535CE8",
+    color: "#007AFF",
+    fontFamily: "Lato-Bold",
   },
   sectionText: {
     fontSize: 16,
     color: "#424955",
+    fontFamily: "Lato-Regular",
   },
   backButton: {
-    backgroundColor: "#535CE8",
-    borderRadius: 20,
+    backgroundColor: "#007AFF",
+    borderRadius: 24,
     paddingVertical: 12,
     alignItems: "center",
     width: "70%",
     alignSelf: "center",
     marginVertical: 20,
+    maxWidth: 200,
   },
   backButtonText: {
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
+    fontFamily: "Lato-Bold",
   },
 });
 
