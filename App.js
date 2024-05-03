@@ -66,29 +66,6 @@ const App = () => {
                   edges={["right", "top", "left"]}
                   style={{ flex: 1 }}
                 >
-                  <Stack.Screen name="Splash" component={SplashScreen} />
-                  <Stack.Screen name="Signin" component={SigninScreen} />
-                  <Stack.Screen name="Signup" component={SignupScreen} />
-                  <Stack.Screen name="RoomData" component={RoomDataScreen} />
-                  <Stack.Screen name="Home" component={HomeScreen} />
-                  <Stack.Screen name="Dashboard" component={DashboardScreen} />
-                  <Stack.Screen name="Profile" component={ProfileScreen} />
-                  <Stack.Screen name="Settings" component={SettingsScreen} />
-                  <Stack.Screen name="HelpCenter" component={HelpCenterScreen} />
-                  <Stack.Screen name="Prediction" component={PredictionScreen} />
-                  <Stack.Screen name="Contact" component={ContactScreen} />
-                  <Stack.Screen name="Privacy" component={PrivacyScreen} />
-                  <Stack.Screen name="RoomOverview" component={RoomOverviewScreen} />
-                  <Stack.Screen name="AddRoom" component={AddRoomScreen} />
-                  <Stack.Screen name="RoomDetail" component={RoomDetailScreen} />
-                  
-                </Stack.Navigator>
-            </SafeAreaView>
-          </MenuProvider>
-          </RoomProvider>
-        </BillProvider>
-      </AuthProvider>
-              </NavigationContainer>
                   <Stack.Navigator
                     initialRouteName="Splash"
                     screenOptions={ScreenOptions}
