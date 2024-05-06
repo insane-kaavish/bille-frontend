@@ -32,12 +32,11 @@ const currentYear = currentDate.getFullYear();
 const predictRequest = async (token) => {
   try {
     const response = await fetch(`${API_URL}/predict/`, {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: token ? `Token ${token}` : "",
       },
-      body: JSON.stringify({ month: currentMonthName, year: currentYear }),
     });
     if (!response.ok) {
       throw new Error("Failed to fetch bill data");
