@@ -39,7 +39,7 @@ const predictRequest = async (token) => {
       },
     });
     if (!response.ok) {
-      throw new Error("Failed to fetch bill data");
+      console.log("Error: Failed to fetch bill data");
     }
     const data = await response.json();
     return data;
@@ -164,9 +164,11 @@ export const BillProvider = ({ children }) => {
     }
     try {
       const data = await predictRequest(authToken);
-      setUnits(data.units);
-      setTotalCost(data.total_cost);
-      setPerUnitCost(data.per_unit_cost);
+      if (data) {
+        setUnits(data.units);
+        setTotalCost(data.total_cost);
+        setPerUnitCost(data.per_unit_cost);
+      }
     }
     catch (error) {
       console.log("Error:", error)
