@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e08011a0-6d51-4fda-92b1-4cd26fe65de1" name="Changes" comment="" />
+    <list default="true" id="e08011a0-6d51-4fda-92b1-4cd26fe65de1" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Screens/Components/BillProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/Components/BillProvider.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/Dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/Prediction.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/Prediction.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/Splash.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/Splash.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,10 +24,10 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 2
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="2eHMU8h6a9U6WEZslQolDjDTZ9E" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -34,7 +39,12 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true"
+    "cidr.known.project.marker": "true",
+    "last_opened_file_path": "C:/Users/ali/Documents/Kaavish/bille-frontend/android",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "AndroidSdkUpdater"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
