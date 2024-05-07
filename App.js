@@ -16,7 +16,6 @@ import {
   RoomDetailScreen,
   RoomOverviewScreen,
   RoomDataScreen,
-  DataInputScreen,
   SplashScreen,
 } from "./Screens";
 
