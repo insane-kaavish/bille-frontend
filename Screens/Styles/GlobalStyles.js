@@ -3,11 +3,16 @@ export const Colors = {
   black: '#000000',
   textfieldBG: '#F3F4F6',
   border: '#ccc', 
-  buttonColor: '#535CE8',
+  buttonColor: '#007AFF',
   error: 'red',
   placeholder: '#9CA3AF',
+  color: '#007AFF',
 };
 
+export const Fonts = {
+  regular: 'Lato-Regular',
+  bold: 'Lato-Bold',
+};
 export const GlobalStyles = {
   screenContainer: {
     flex: 1,

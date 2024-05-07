@@ -1,9 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Header from "./Components/Header";
-import Navbar from "./Components/Navbar";
-import { LineChart } from "react-native-chart-kit";
-import { AnimatedCircularProgress } from "react-native-circular-progress";
-import { useNavigation } from "@react-navigation/native";
 import {
   StyleSheet,
   View,
@@ -13,69 +8,71 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
 } from "react-native";
+import { BarChart } from "react-native-chart-kit";
+import { AnimatedCircularProgress } from "react-native-circular-progress";
+import { useNavigation } from "@react-navigation/native";
+import Header from "./Components/Header";
+import Navbar from "./Components/Navbar";
+import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "./Auth/AuthProvider";
 import { useBill } from "./Components/BillProvider";
-// import Config from "react-native-config";
 
-// const API_URL = Config.API_URL;
-const API_URL = process.env.EXPO_PUBLIC_API_URL;
 const screenWidth = Dimensions.get("window").width;
 
-const height = Dimensions.get("window").height;
-
-const PredictionScreen = ({ navigation }) => {
+const PredictionScreen = () => {
+  const navigation = useNavigation();
   const { authToken } = useAuth();
-  const {
-    units,
-    totalCost,
-    actualMonthly,
-    predictedMonthly,
-    labels,
-    fetchMonthlyData,
-    isMonthlyDataFetched,
-  } = useBill();
+  const { units, totalCost, actualMonthly, predictedMonthly, labels, fetchMonthlyData } = useBill();
   const [fillPercentage, setFillPercentage] = useState(0);
 
   useEffect(() => {
-    console.log("Fetching monthly data");
     fetchMonthlyData();
     setFillPercentage(units % 100);
   }, []);
 
+  const actualData = actualMonthly ? actualMonthly.slice(-11) : [];
+  const predictedData = predictedMonthly ? predictedMonthly.slice(-1) : [];
+
   const data = {
-    labels: labels,
+    labels: labels.slice(-12),
     datasets: [
       {
-        data: actualMonthly,
-        color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`, // Adjust the blue color here
-        strokeWidth: 2,
-        label: "Actual Units",
-      },
-      {
-        data: predictedMonthly,
-        color: (opacity = 1) => `rgba(255, 0, 0, ${opacity})`, // Adjust the red color here
-        strokeWidth: 2,
-        label: "Predicted Units",
+        data: actualData.concat(predictedData),
+        colors: actualData.concat(predictedData).map((_, index) => (opacity = 1) =>
+          index === actualData.concat(predictedData).length - 1
+            ? `gray` 
+            : `blue` 
+        ),
       },
     ],
+  };
+
+  const chartConfig = {
+    backgroundGradientFrom: "#fff",
+    backgroundGradientTo: "#fff",
+    decimalPlaces: 0,
+    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // Solid black for labels and axes
+    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // Consistent label color
+    style: {
+      borderRadius: 16,
+    },
+    useShadowColor: false, // Disable shadow color'
+    showValuesOnTopOfBars: true,
   };
 
   return (
     <>
       <Header screenName="Prediction" navigation={navigation} />
-
       <View style={styles.container}>
         <ScrollView style={styles.scrollContainer}>
           <View style={styles.predictionCard}>
-            <TouchableWithoutFeedback
-              onPress={() => navigation.navigate("RoomOverview")}
-            >
+            <TouchableWithoutFeedback onPress={() => navigation.navigate("RoomOverview")}>
               <AnimatedCircularProgress
-                size={180}
-                width={15}
+                size={240}
+                width={9}
                 fill={fillPercentage}
-                tintColor="#535CE8"
-                backgroundColor="#F2F2F2"
+                tintColor="#007AFF"
+                backgroundColor="#E5E5EA"
                 rotation={225}
                 lineCap="round"
                 arcSweepAngle={270}
@@ -88,51 +85,39 @@ const PredictionScreen = ({ navigation }) => {
                 )}
               </AnimatedCircularProgress>
             </TouchableWithoutFeedback>
-
-            <View style={styles.unitDetails}>
-              <Text style={styles.estimatedBill}>
-                Estimated Bill:{" "}
-                <Text style={{ color: "orange" }}> Pkr. {totalCost}</Text>
-              </Text>
-            </View>
+            <Text style={styles.estimatedBill}>
+              Estimated Bill: <Text style={{ color: "#007AFF" }}>PKR {totalCost}</Text>
+            </Text>
 
             <TouchableOpacity
               style={styles.detailsButton}
               onPress={() => navigation.navigate("RoomOverview")}
             >
-              <Text style={styles.detailsButtonText}>View Room Details</Text>
+              <Ionicons name="eye" size={20} color="white" />
+              <Text style={styles.detailsButtonText}> View Room Details</Text>
             </TouchableOpacity>
           </View>
 
           <View style={styles.graphCard}>
             <ScrollView horizontal>
-              <LineChart
+              <BarChart
                 data={data}
                 width={screenWidth * 1.5}
                 height={300}
+                fromZero
+                segments={2}
+                withCustomBarColorFromData={true} // Enable custom colors from `data.datasets.colors`
                 verticalLabelRotation={0}
-                fromZero={true}
-                segments={4}
-                chartConfig={{
-                  backgroundGradientFrom: "#FFF",
-                  backgroundGradientTo: "#FFF",
-                  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                  strokeWidth: 5,
-                  barPercentage: 0.3,
-                  propsForLabels: { fontsize: 2 },
-                  decimalPlaces: 0,
-                  yAxisInterval: 250,
-                }}
-                bezier
+                chartConfig={chartConfig} // Solid background and label colors
                 style={{ marginVertical: 8, borderRadius: 16 }}
               />
             </ScrollView>
             <Text style={styles.graphDescription}>
-              Comparison between the{" "}
-              <Text style={{ color: "blue" }}>actual</Text> and{" "}
-              <Text style={{ color: "red" }}>predicted</Text> units.
+              Comparison between the <Text style={{ color: "blue" }}>actual</Text> and 
+              <Text style={{ color: "red" }}> predicted</Text> units.
             </Text>
           </View>
+
         </ScrollView>
         <Navbar />
       </View>
@@ -145,36 +130,29 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     padding: 10,
-  },
-  header: {
-    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-end",
-    paddingHorizontal: 10,
-    paddingTop: height * 0.001,
-    backgroundColor: "#fff",
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
+    justifyContent: "center",
   },
   scrollContainer: {
     flex: 1,
   },
   predictionCard: {
-    backgroundColor: "#f9f9f9",
-    borderRadius: 8,
-    padding: 16,
-    margin: 16,
+    backgroundColor: "#ffffff",
+    borderRadius: 40,
+    padding: 30,
+    marginHorizontal: 20,
+    marginVertical: 10,
     alignItems: "center",
-    elevation: 6, // for the main shadow
-    shadowColor: "#000", // color of the shadow
-    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
-    shadowOpacity: 0.3, // opacity of the shadow
-    shadowRadius: 1, // blur radius of the shadow
+    shadowColor: "rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+    elevation: 20,
   },
   consumptionValue: {
-    fontSize: 48,
-    color: "#000",
-    fontFamily: "Lato-Bold",
+    fontSize: 40,
+    color: "#007AFF",
+    fontFamily: "Lato-Regular",
     textAlign: "center",
   },
   consumptionUnit: {
@@ -184,83 +162,59 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   estimatedBill: {
-    fontSize: 20,
-    color: "#666",
+    fontSize: 22,
+    color: "#333",
     textAlign: "center",
-    // marginBottom: 20,
-    fontFamily: "Lato-Bold",
-  },
-  detailsButton: {
-    backgroundColor: "#535CE8",
-    borderRadius: 20,
-    padding: 12,
-    alignItems: "center",
-    width: "70%",
-    alignSelf: "center",
+    fontFamily: "Lato-Regular",
     marginVertical: 20,
   },
-  detailsButtonText: {
-    color: "white",
-    fontFamily: "Lato-Bold",
-  },
-  progressTextContainer: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: [{ translateX: -60 }, { translateY: -40 }], // Adjust these values based on the size of your progress circle
+  detailsButton: {
+    backgroundColor: "#007AFF",
+    borderRadius: 22,
+    padding: 12,
+    width: "70%",
+    alignSelf: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 2,
+    flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
   },
-  progressText: {
-    fontSize: 48, // Adjust the font size as needed
+  detailsButtonText: {
+    color: "#fff",
+    fontSize: 13,
     fontFamily: "Lato-Bold",
-    textAlign: "center", // Center the text horizontally
-    textShadowColor: "rgba(0, 0, 0, 0.5)", // Shadow color
-    textShadowOffset: { width: 1, height: 1 }, // Shadow offset
-    textShadowRadius: 2, // Shadow radius
+    textAlign: "center",
   },
   graphCard: {
-    backgroundColor: "#f9f9f9",
-    borderRadius: 1,
-    paddingVertical: 16,
-    paddingHorizontal: 16,
+    backgroundColor: "#ffffff",
+    borderRadius: 40,
+    padding: 20,
     marginHorizontal: 16,
     marginTop: 10,
     marginBottom: 70,
-    elevation: 6, // for the main shadow
-    shadowColor: "#000", // color of the shadow
-    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
-    shadowOpacity: 0.3, // opacity of the shadow
-    shadowRadius: 1, // blur radius of the shadow
+    shadowColor: "rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.9,
+    shadowRadius: 29,
+    elevation: 30,
   },
   graphDescription: {
     fontSize: 14,
     color: "#666",
     textAlign: "center",
+    fontFamily: "Lato-Regular",
     marginTop: 10,
-    fontFamily: "Lato-Bold",
   },
-  slabRatesContainer: {
+  progressTextContainer: {
     position: "absolute",
-    bottom: -40,
-    width: "100%",
+    top: "50%",
+    left: "50%",
+    transform: [{ translateX: -70 }, { translateY: -40 }],
     alignItems: "center",
-  },
-  slabRateText: {
-    fontFamily: "Lato-Bold",
-    fontSize: 16,
-    color: "#666",
-  },
-  unitDetails: {
-    backgroundColor: "#f9f9f9",
-    borderRadius: 8,
-    padding: 16,
-    margin: 16,
-    alignItems: "center",
-    elevation: 6, // for the main shadow
-    shadowColor: "#000", // color of the shadow
-    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
-    shadowOpacity: 0.6, // opacity of the shadow
-    shadowRadius: 1, // blur radius of the shadow
   },
 });
 

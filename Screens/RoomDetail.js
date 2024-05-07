@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
   },
   addButtonText: {
     color: "white",
-    fontWeight: "bold",
+    // fontWeight: "bold",
   },
   saveButton: {
     backgroundColor: "#535CE8",
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
   },
   saveButtonText: {
     color: "white",
-    fontWeight: "bold",
+    // fontWeight: "bold",
   },
 });
 

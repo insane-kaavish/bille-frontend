@@ -1,285 +1,333 @@
 import React, { useEffect, useState } from "react";
 import {
-  Image,
   View,
   StyleSheet,
   ScrollView,
   Text,
   TouchableOpacity,
-  Dimensions,
+  Modal,
 } from "react-native";
+import { FontAwesome5 } from "@expo/vector-icons";
 import Header from "./Components/Header";
 import Navbar from "./Components/Navbar";
 import { useAuth } from "./Auth/AuthProvider";
 import { useBill } from "./Components/BillProvider";
 import { GlobalStyles } from "./Styles/GlobalStyles";
 
-const height = Dimensions.get("window").height;
-
+// get width
+import { Dimensions } from "react-native";
 const DashboardScreen = ({ navigation }) => {
   const { authToken } = useAuth();
   const { units, totalCost, perUnitCost, fetchPredictedData } = useBill();
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalContent, setModalContent] = useState({
+    title: "",
+    subtitle: "",
+    details: "",
+  });
+
+  const conservationTips = require("../assets/conservationTips.json");
+
   useEffect(() => {
-    console.log("Fetching predicted data")
     fetchPredictedData();
   }, [authToken]);
 
   const navigateToPrediction = () => {
     navigation.navigate("Prediction");
   };
+
   const navigateToRoomOverview = () => {
     navigation.navigate("RoomOverview");
+  };
+
+  const handleRecommendationPress = (title) => {
+    const tip = conservationTips[title];
+    if (tip) {
+      setModalContent(tip);
+    } else {
+      // Handle the case where the title is not found
+      setModalContent({
+        title: "",
+        subtitle: "",
+        details: "",
+      });
+    }
+    setModalVisible(true);
   };
 
   return (
     <>
       <Header screenName="Dashboard" navigation={navigation} />
       <View style={GlobalStyles.screenContainer}>
-        <ScrollView style={styles.scrollContainer}>
-          <TouchableOpacity style={styles.MC} onPress={navigateToPrediction}>
-            <View style={styles.MCcircleContainer}>
-              <View style={styles.MCinnermostCircleContainer}>
-                <Image source={require("../extra/assets/OV.png")} />
-              </View>
-            </View>
-            <Text style={styles.MCtitle}>Current Units</Text>
-            <Text style={styles.MCdescription}>
-              Based on your current consumption data, your predicted units are{" "}
-              {units} and consider good.
-            </Text>
-            <Text style={styles.MCunitsCount}>{units}</Text>
-          </TouchableOpacity>
-
-          <View style={styles.HLcontainer}>
-            <Text style={styles.HLtitle}>Highlights</Text>
-          </View>
-
-          <View style={styles.cardsContainer}>
-            <View style={[styles.card, { backgroundColor: "#7C83ED" }]}>
-              <Text style={styles.cardTitle}>Expected Bill</Text>
-              <Text style={styles.cardAmount}>Rs. {totalCost}</Text>
-              <Text style={styles.cardText}>Based on usage pattern</Text>
-              <View style={styles.cardIconContainer}>
-                <Image source={require("../extra/assets/c11.png")} />
-              </View>
-            </View>
-
-            <View style={[styles.card, { backgroundColor: "#2ACCCF" }]}>
-              <Text style={styles.cardTitle}>Per Unit Price</Text>
-              <Text style={styles.cardAmount}>Rs. {perUnitCost}</Text>
-              <Text style={styles.cardText}>Based on the slab rates</Text>
-              <View style={styles.cardIconContainer}>
-                <Image source={require("../extra/assets/c12.png")} />
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.MRContainer}>
-            <Text style={styles.MRtext}>Monthly Report</Text>
+        <ScrollView style={styles.container}>
+          <View style={{ height: 10 }} />
+          {/* Current Units Card */}
+          <View style={styles.section}>
             <TouchableOpacity
-              style={styles.RRcontainer}
-              onPress={navigateToRoomOverview}
-            >
-              <Text style={styles.RRText}>Room Report</Text>
-              <View style={styles.RRicon}>
-                <Image source={require("../extra/assets/RRIcon.png")} />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.MUGcontainer}
+              style={styles.card}
               onPress={navigateToPrediction}
             >
-              <Text style={styles.MUGText}> Monthly Unit Graph</Text>
-              <View style={styles.MUGicon}>
-                <Image source={require("../extra/assets/MUGIcon.png")} />
-              </View>
+              <Text style={styles.cardTitle}>Current Units</Text>
+              <Text style={styles.cardValue}>{units}</Text>
+              <Text style={styles.cardDescription}>
+                Your current consumption data suggests that your predicted units
+                are {units}, which is deemed satisfactory.{" "}
+              </Text>
             </TouchableOpacity>
+          </View>
+          {/* Billing Information Container */}
+          <View style={styles.billingContainer}>
+            <TouchableOpacity
+              style={styles.card}
+              onPress={navigateToRoomOverview}
+            >
+              <Text style={styles.cardTitle}>Expected Bill</Text>
+              <Text style={styles.cardValue}>Rs. {totalCost}</Text>
+              <Text style={styles.cardDescription}>Based on usage pattern</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.card}
+              onPress={navigateToRoomOverview}
+            >
+              <Text style={styles.cardTitle}>Price per Unit</Text>
+              <Text style={styles.cardValue}>Rs. {perUnitCost}</Text>
+              <Text style={styles.cardDescription}>Average cost per unit</Text>
+            </TouchableOpacity>
+          </View>
+          {/* Monthly Report Section */}
+          <View style={styles.monthlyReportContainer}>
+            <Text style={styles.sectionTitle}>Monthly Report</Text>
+            <View style={styles.reportContainer}>
+              <TouchableOpacity
+                style={styles.reportCard}
+                onPress={navigateToRoomOverview}
+              >
+                <FontAwesome5 name="building" size={24} color="#007AFF" />
+                <Text style={styles.reportText}>Room Report</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.reportCard}
+                onPress={navigateToPrediction}
+              >
+                <FontAwesome5 name="chart-bar" size={24} color="#28a745" />
+                <Text style={styles.reportText}>Monthly Units</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          {/* Conservation Tips */}
+          <View style={styles.tipsContainer}>
+            <Text style={styles.sectionTitle}>Conservation Tips</Text>
+            <ScrollView
+              horizontal={true}
+              contentContainerStyle={styles.tipsScrollContainer}
+            >
+              {Object.keys(conservationTips).map((title, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={styles.recommendationContainer}
+                  onPress={() => handleRecommendationPress(title)}
+                >
+                  <FontAwesome5 name="lightbulb" size={24} color="#007AFF" />
+                  <Text style={styles.containerTitle}>{title}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
           </View>
         </ScrollView>
         <Navbar />
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.modalView}>
+            <Text style={styles.modalTitle}>{modalContent.title}</Text>
+            <Text style={styles.modalSubtitle}>{modalContent.subtitle}</Text>
+            <Text style={styles.modalText}>{modalContent.details}</Text>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+        <View style={{ height: 10 }} />
       </View>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollContainer: {
+  container: {
     flex: 1,
+    padding: 10, 
+    paddingBottom: 10,
+    paddingTop: 1,
   },
-  MC: {
-    width: 348,
-    height: 144,
-    alignSelf: "center",
-    justifyContent: "center",
-    marginTop: "6%",
-    backgroundColor: "#F1F2FDFF",
-    borderRadius: 16,
-    elevation: 6, // for the main shadow
-    shadowColor: "#000", // color of the shadow
-    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
-    shadowOpacity: 0.3, // opacity of the shadow
-    shadowRadius: 1, // blur radius of the shadow
+  section: {
+    marginBottom: 20,
   },
-  MCcircleContainer: {
-    left: 259,
-    top: -1,
-    position: "absolute",
-  },
-  MCtitle: {
-    left: 20,
-    top: 8,
-    position: "absolute",
-    color: "#171A1F",
-    fontSize: 18,
-    fontFamily: "Lato-Bold",
-    fontWeight: "600",
-    lineHeight: 28,
-  },
-  MCdescription: {
-    width: 198,
-    left: 20,
-    top: 40,
-    position: "absolute",
-    color: "#171A1F",
-    fontSize: 14,
-    fontFamily: "Lato-Bold",
-    fontWeight: "400",
-    lineHeight: 22,
-  },
-  MCunitsCount: {
-    left: 276,
-    top: 12,
-    position: "absolute",
-    color: "white",
-    fontSize: 24,
-    fontFamily: "Lato-Bold",
-    fontWeight: "700",
-    lineHeight: 36,
-    alignContent: "center",
-    textAlign: "center",
-    transform: [{ translateX: -1.75 }],
-  },
-  HLcontainer: {
-    left: "5%",
-    top: "3%",
-  },
-  HLtitle: {
-    color: "#171A1F",
-    fontSize: 20,
-    fontFamily: "Lato-Bold",
-    fontWeight: "600",
-    lineHeight: 30,
-  },
-  cardsContainer: {
+  billingContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 20,
-    paddingHorizontal: 10,
+    marginBottom: 20,
   },
   card: {
-    width: "48%",
-    height: 180,
-    backgroundColor: "#F1F2FD",
-    borderRadius: 16,
-    padding: 10,
+    backgroundColor: "#ffffff",
+    borderRadius: 24,
+    padding: 20,
+    marginBottom: 10,
+    shadowColor: "rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 10 }, // Reduced height for a closer shadow
+    shadowOpacity: 0.5, // Lower opacity for a softer appearance
+    shadowRadius: 20, // Increased radius to blur edges more
+    elevation: 10, // Adjust elevation for Android to match visual consistency
+    flex: 1,
+    marginHorizontal: 5,
   },
   cardTitle: {
-    color: "white",
-    fontSize: 18,
     fontFamily: "Lato-Bold",
-    fontWeight: "500",
-    lineHeight: 22,
+    fontSize: 16,
+    marginBottom: 10,
   },
-  cardAmount: {
-    color: "white",
-    fontSize: 28,
+  cardValue: {
     fontFamily: "Lato-Bold",
-    fontWeight: "500",
-    lineHeight: 36,
-    marginTop: 10,
+    fontSize: 24,
+    color: "#007AFF",
+    marginBottom: 10,
   },
-  cardText: {
-    color: "white",
-    fontSize: 12,
-    fontFamily: "Lato-Bold",
-    fontWeight: "400",
+  cardDescription: {
+    fontFamily: "Lato-Regular",
+    fontSize: 14,
+    color: "#666",
   },
-  cardIconContainer: {
-    width: 66,
-    height: 66,
-    position: "absolute",
-    right: 10,
-    bottom: 10,
+  monthlyReportContainer: {
+    marginBottom: 20,
+    marginTop: -10,
   },
-  MRContainer: {
-    marginLeft: "3%", // Aligning "Monthly Report" with "Highlights"
-    marginTop: "5%", // Adjust the margin as needed
+  reportContainer: {
+    flexDirection: "row",
     justifyContent: "space-between",
+    paddingHorizontal: 0, // Adding padding to ensure some space around the cards
+    marginBottom: -10, // Space below the container for clean separation
+    marginTop: 10, // Space above the container to distinguish from previous content
   },
-  MRtext: {
-    color: "#171A1F",
-    fontSize: 20,
+  reportCard: {
+    backgroundColor: "#ffffff",
+    borderRadius: 24,
+    padding: 24,
+    marginBottom: 10,
+    shadowColor: "#rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 10 }, // Reduced height for a closer shadow
+    shadowOpacity: 0.5, // Lower opacity for a softer appearance
+    shadowRadius: 20, // Increased radius to blur edges more
+    elevation: 10, // Adjust elevation for Android to match visual consistency
+    flex: 1, // Utilizing flex to fill available space
+    marginHorizontal: 5, // Spacing between the two cards
+    maxWidth: "46%", // Decreasing the max width to make the cards more compact
+  },
+  reportText: {
     fontFamily: "Lato-Bold",
-    fontWeight: "600",
-    lineHeight: 30,
-  },
-  RRcontainer: {
-    width: "45.5%",
-    height: 91,
-    backgroundColor: "#F1F2FDFF",
-    borderRadius: 16,
-    elevation: 6, // for the main shadow
-    shadowColor: "#000", // color of the shadow
-    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
-    shadowOpacity: 0.3, // opacity of the shadow
-    shadowRadius: 1, // blur radius of the shadow
-  },
-  RRText: {
-    fontFamily: "Lato-Regular",
     fontSize: 18,
-    fontWeight: "700",
-    lineHeight: 30,
-    color: "#323842",
-    flexWrap: "wrap",
-    marginLeft: "40%", // Adjust the left margin to center the text
-    marginTop: 13, // Adjust the margin as needed
+    color: "#333",
+    marginTop: 5, // Space between icon and text
   },
-  RRicon: {
-    // position: 'absolute',
-    left: "5%", // Adjust the left position as needed
-    top: "-60%", // Adjust the top position as needed
-    // transform: [{ translateY: -40 }], // Centering the icon vertically
+  tipsContainer: {
+    marginBottom: 50,
+    // marginTop: 20,  // Added top margin for better spacing from previous content
   },
-  MUGcontainer: {
-    // position: 'absolute',
-    top: "-42.95%",
-    left: "51%",
-    width: "45.5%", // Match the width of the cards
-    height: 91,
-    backgroundColor: "#F1F2FDFF", // white
-    borderRadius: 16,
-    elevation: 6, // for the main shadow
-    shadowColor: "#000", // color of the shadow
-    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
-    shadowOpacity: 0.3, // opacity of the shadow
-    shadowRadius: 1, // blur radius of the shadow
+  tipsScrollContainer: {
+    paddingHorizontal: 10, // Ensure there's padding on the sides of the scroll view
+    paddingVertical: 5, // Padding above and below the scroll view
   },
-  MUGText: {
-    fontFamily: "Lato-Regular",
+  recommendationContainer: {
+    backgroundColor: "#fff", // Soft gray for a subtle, sleek look
+    borderRadius: 24, // RECOMMENDATIONS CORNERS SETTING
+    padding: 20, // Adjusted padding for better spacing inside the card
+    marginRight: 21, // Right margin adjusted for consistency
+    alignItems: "center",
+    justifyContent: "center", // Center content vertically and horizontally
+    width: 220, // Adjusted width for a bit more space
+    shadowColor: "#rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 6 }, // Reduced height for a closer shadow
+    shadowOpacity: 0.5, // Lower opacity for a softer appearance
+    shadowRadius: 8, // Increased radius to blur edges more
+    elevation: 4, // Adjust elevation for Android to match visual consistency
+  },
+  containerTitle: {
+    fontFamily: "Lato-Bold",
+    fontSize: 16, // Slightly reduced size for a more refined look
+    color: "#333", // Dark color for better readability
+    marginTop: 8, // Top margin to space out text from the icon
+    textAlign: "center",
+  },
+  modalView: {
+    margin: 20, // Ensure there's some space around the modal to not touch the edges of the screen
+    backgroundColor: "white",
+    borderRadius: 20, // Soften the edges with a rounded border
+    padding: 25, // Generous padding for internal spacing
+    alignItems: "center", // Center-align items for a polished look
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 }, // Reduced height for a closer shadow
+    shadowOpacity: 0.5, // Lower opacity for a softer appearance
+    shadowRadius: 20, // Increased radius to blur edges more
+    elevation: 10, // Adjust elevation for Android to match visual consistency
+    justifyContent: "center", // Center the modal content vertically
+    position: "absolute", // Positions the modal view absolutely relative to its parent
+    top: "50%", // Places the top edge of the modal at the center of the parent
+    left: "50%", // Places the left edge of the modal at the center of the parent
+    transform: [
+      { translateX: -Dimensions.get("window").width * 0.5 }, // Shifts the modal to the left by 40% of the screen width
+      { translateY: -Dimensions.get("window").height * 0.31 },
+    ],
+  },
+  modalTitle: {
+    fontSize: 24, // Increased font size for greater emphasis
+    fontFamily: "Lato-Bold", // Ensuring the font is bold
+    color: "#007AFF", // A strong but not overwhelming color
+    marginBottom: 20, // Increased bottom margin to separate from body text
+    textAlign: "center", // Centered text to match the modal's alignment
+  },
+  // modal subtitle
+  modalSubtitle: {
+    fontSize: 18, // Slightly smaller font size for body text to differentiate from the title
+    fontFamily: "Lato-Bold", // Regular font style for easy reading
+    color: "#333", // Standard dark color for good readability
+    marginBottom: 15, // Consistent spacing between paragraphs or text blocks
+    lineHeight: 24, // Increased line height for better readability
+    textAlign: "justify", // Justify alignment for a cleaner, more formal presentation
+  },
+  modalText: {
+    fontSize: 16, // Slightly smaller font size for body text to differentiate from the title
+    fontFamily: "Lato-Regular", // Regular font style for easy reading
+    color: "#333", // Standard dark color for good readability
+    marginBottom: 15, // Consistent spacing between paragraphs or text blocks
+    lineHeight: 24, // Increased line height for better readability
+    textAlign: "justify", // Justify alignment for a cleaner, more formal presentation
+  },
+  closeButton: {
+    marginTop: 20, // Space above the button to separate it from the last text element
+    backgroundColor: "#007AFF", // Bright, clickable color indicating interactivity
+    borderRadius: 10, // Rounded button edges
+    paddingVertical: 10, // Vertical padding for a taller button
+    paddingHorizontal: 20, // Horizontal padding for wider button area
+    elevation: 2, // Subtle elevation for a tactile feel on Android
+  },
+  closeButtonText: {
     fontSize: 18,
-    fontWeight: "700",
-    lineHeight: 30,
-    color: "#323842",
-    flexWrap: "wrap",
-    marginLeft: "40%", // Adjust the left margin to center the text
-    marginTop: 13, // Adjust the margin as needed
+    fontFamily: "Lato-Bold",
+    color: "white", // White text on a blue button for high contrast
+    textAlign: "center", // Center text within the button
   },
-  MUGicon: {
-    // position: 'absolute',
-    left: "5%", // Adjust the left position as needed
-    top: "-65%", // Adjust the top position as needed
-    // transform: [{ translateY: -40 }], // Centering the icon vertically
+  sectionTitle: {
+    fontFamily: "Lato-Bold", // Ensuring the title is bold for emphasis
+    fontSize: 20, // A moderate size for clear readability
+    color: "#333", // Dark grey for a subtle, strong impression
+    marginBottom: 15, // Space below the title to separate from content
+    marginTop: 20, // Space above the title to distinguish from previous content
   },
 });
 

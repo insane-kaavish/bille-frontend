@@ -32,12 +32,11 @@ const currentYear = currentDate.getFullYear();
 const predictRequest = async (token) => {
   try {
     const response = await fetch(`${API_URL}/predict/`, {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: token ? `Token ${token}` : "",
       },
-      body: JSON.stringify({ month: currentMonthName, year: currentYear }),
     });
     if (!response.ok) {
       throw new Error("Failed to fetch bill data");
@@ -135,6 +134,10 @@ export const BillProvider = ({ children }) => {
   const [isMonthlyDataFetched, setIsMonthlyDataFetched] = useState(false);
 
   const fetchPredictedData = async () => {
+    if (!authToken) {
+      navigation.navigate("Signin");
+      return;
+    }
     try {
       const data = await predictRequest(authToken);
       setUnits(data.units);
@@ -143,7 +146,7 @@ export const BillProvider = ({ children }) => {
     }
     catch (error) {
       console.log("Error:", error)
-      navigation.navigate("Sigin");
+      navigation.navigate("Signin");
     }
   };
 
