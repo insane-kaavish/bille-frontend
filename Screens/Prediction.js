@@ -22,7 +22,7 @@ const screenWidth = Dimensions.get("window").width;
 const PredictionScreen = () => {
   const navigation = useNavigation();
   const { authToken } = useAuth();
-  const { units, totalCost, actualMonthly, predictedMonthly, labels, fetchMonthlyData } = useBill();
+  const { units, totalCost, actualMonthly, predictedMonthly, barGraph, labels, fetchMonthlyData } = useBill();
   const [fillPercentage, setFillPercentage] = useState(0);
 
   useEffect(() => {
@@ -30,18 +30,15 @@ const PredictionScreen = () => {
     setFillPercentage(units % 100);
   }, []);
 
-  const actualData = actualMonthly ? actualMonthly.slice(-11) : [];
-  const predictedData = predictedMonthly ? predictedMonthly.slice(-1) : [];
-
   const data = {
-    labels: labels.slice(-12),
+    labels: labels,
     datasets: [
       {
-        data: actualData.concat(predictedData),
-        colors: actualData.concat(predictedData).map((_, index) => (opacity = 1) =>
-          index === actualData.concat(predictedData).length - 1
+        data: barGraph,
+        colors: barGraph.map((_, index) => (opacity = 1) =>
+          index === barGraph.length - 1
             ? `gray` 
-            : `blue` 
+            : `#007AFF` 
         ),
       },
     ],
@@ -113,8 +110,8 @@ const PredictionScreen = () => {
               />
             </ScrollView>
             <Text style={styles.graphDescription}>
-              Comparison between the <Text style={{ color: "blue" }}>actual</Text> and 
-              <Text style={{ color: "red" }}> predicted</Text> units.
+              <Text style={{ color: "#007AFF" }}>Actual</Text> and 
+              <Text style={{ color: "gray" }}> Predicted</Text> units.
             </Text>
           </View>
 
