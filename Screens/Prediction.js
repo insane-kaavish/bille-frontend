@@ -26,6 +26,7 @@ const PredictionScreen = () => {
   const [fillPercentage, setFillPercentage] = useState(0);
 
   useEffect(() => {
+    console.log("Prediction screen mounted")
     fetchMonthlyData();
     setFillPercentage(units % 100);
   }, []);

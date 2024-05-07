@@ -170,25 +170,29 @@ export const BillProvider = ({ children }) => {
     }
     catch (error) {
       console.log("Error:", error)
-      navigation.navigate("Signin");
     }
   };
 
   const fetchMonthlyData = async () => {
-    const last12Months = getLast12Months();
-    const actualValues = await monthlyRequest(authToken, "False");
-    const predictedValues = await monthlyRequest(authToken, "True");
-    const actualData = fillMissingMonths(actualValues, last12Months);
-    const predictedData = fillMissingMonths(predictedValues, last12Months);
-    const barGraphData = await barGraphRequest(authToken);
-    console.log(barGraphData)
-    setBarGraph(barGraphData.units.slice(-12));
-    setPredictionMonth(barGraphData.month);
-    setPredictionYear(barGraphData.year);
-    setActualMonthly(actualData);
-    setPredictedMonthly(predictedData);
-    setLabels(getLabels(barGraphData.month - 1, barGraphData.year));
-    setIsMonthlyDataFetched(true);
+    try {
+      const last12Months = getLast12Months();
+      const actualValues = await monthlyRequest(authToken, "False");
+      const predictedValues = await monthlyRequest(authToken, "True");
+      const actualData = fillMissingMonths(actualValues, last12Months);
+      const predictedData = fillMissingMonths(predictedValues, last12Months);
+      const barGraphData = await barGraphRequest(authToken);
+      console.log(barGraphData)
+      setBarGraph(barGraphData.units.slice(-12));
+      setPredictionMonth(barGraphData.month);
+      setPredictionYear(barGraphData.year);
+      setActualMonthly(actualData);
+      setPredictedMonthly(predictedData);
+      setLabels(getLabels(barGraphData.month - 1, barGraphData.year));
+      setIsMonthlyDataFetched(true);
+    }
+    catch (error) {
+      console.log("Error:", error)
+    }
   };
 
   const resetData = () => {
