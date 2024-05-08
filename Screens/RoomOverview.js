@@ -61,6 +61,10 @@ const RoomOverviewScreen = () => {
     return "home"; // Default icon
   };
 
+  const navigateToAddRoom = () => {
+    navigation.navigate("AddRoom");
+  };
+
   return (
     <>
       <Header screenName="Room Overview" navigation={navigation} />
@@ -116,6 +120,9 @@ const RoomOverviewScreen = () => {
         ))}
         <View style={{ height: 80 }} /> 
       </ScrollView>
+      <TouchableOpacity style={styles.addroomButton} onPress={navigateToAddRoom}>
+          <Text style={styles.addroomButtonText}>Add room</Text>
+        </TouchableOpacity>
       <Navbar />
     </>
   );
