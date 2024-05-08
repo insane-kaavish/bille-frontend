@@ -14,15 +14,16 @@ import { useAuth } from "./Auth/AuthProvider";
 import { useBill } from "./Components/BillProvider";
 import { GlobalStyles } from "./Styles/GlobalStyles";
 import { Dimensions } from "react-native";
+
 const DashboardScreen = ({ navigation }) => {
   const { authToken } = useAuth();
-  const { units, totalCost, perUnitCost, slab, fetchPredictedData } = useBill();
+  const { units, totalCost, perUnitCost, slab, taxes ,fetchPredictedData, surcharge, tvFees, adjustments} = useBill();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState({
     title: "",
     subtitle: "",
-    details: "",
+    details: [],
   });
 
   const conservationTips = require("../assets/conservationTips.json");
@@ -49,25 +50,34 @@ const DashboardScreen = ({ navigation }) => {
       setModalContent({
         title: "",
         subtitle: "",
-        details: "",
+        details: [],
       });
     }
     setModalVisible(true);
   };
 
+  const fetchBillDetails = () => {
+    const details = [
+      { key: "Total Cost", value: `Rs. ${totalCost}` },
+      { key: "Unit Cost", value: `Rs. ${perUnitCost}` },
+      { key: "Taxes", value: `Rs. ${taxes}` },
+      { key: "Surcharge", value: `Rs. ${surcharge}` },
+      { key: "TV Fees", value: `Rs. ${tvFees}` },
+    ];
+
+    setModalContent({
+      title: "Detailed Bill Breakdown",
+      subtitle: "Complete billing information based on your usage pattern",
+      details,
+    });
+
+    setModalVisible(true);
+  };
   useEffect(() => {
     fetchPredictedData();
     fetchBillDetails(); // You might need to create this function to fetch billing details
   }, [authToken]);
   
-  const fetchBillDetails = () => {
-    // Assume this function fetches detailed billing information
-    setModalContent({
-      title: "Detailed Bill Breakdown",
-      subtitle: "Complete billing information based on your usage pattern",
-      details: `Total Cost: Rs. ${totalCost}\nUnit Cost: Rs. ${perUnitCost}\nTaxes: [Calculated Taxes]\nDiscounts: [Applicable Discounts]`
-    });
-  };
 
   return (
     <>
@@ -161,7 +171,16 @@ const DashboardScreen = ({ navigation }) => {
           <View style={styles.modalView}>
             <Text style={styles.modalTitle}>{modalContent.title}</Text>
             <Text style={styles.modalSubtitle}>{modalContent.subtitle}</Text>
-            <Text style={styles.modalText}>{modalContent.details}</Text>
+
+            <View style={styles.tableContainer}>
+              {modalContent.details.map((item, index) => (
+                <View key={index} style={styles.tableRow}>
+                  <Text style={styles.tableCellKey}>{item.key}</Text>
+                  <Text style={styles.tableCellValue}>{item.value}</Text>
+                </View>
+              ))}
+            </View>
+
             <TouchableOpacity
               style={styles.closeButton}
               onPress={() => setModalVisible(false)}
@@ -170,6 +189,7 @@ const DashboardScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </Modal>
+
         <View style={{ height: 10 }} />
       </View>
     </>
@@ -323,6 +343,24 @@ const styles = StyleSheet.create({
     marginBottom: 15, // Consistent spacing between paragraphs or text blocks
     lineHeight: 24, // Increased line height for better readability
     textAlign: "justify", // Justify alignment for a cleaner, more formal presentation
+  },
+  tableContainer: {
+    width: "100%", // Ensure the table fills the modal
+  },
+  tableRow: {
+    flexDirection: "row",
+    justifyContent: "space-between", // Evenly spaced rows
+    paddingVertical: 10, // Spacing between rows
+  },
+  tableCellKey: {
+    fontSize: 16,
+    fontFamily: "Lato-Bold",
+    color: "#333",
+  },
+  tableCellValue: {
+    fontSize: 16,
+    fontFamily: "Lato-Regular",
+    color: "#333",
   },
   closeButton: {
     marginTop: 20, // Space above the button to separate it from the last text element
