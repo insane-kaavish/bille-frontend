@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Modal,
 } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome5, Entypo } from "@expo/vector-icons";
 import Header from "./Components/Header";
 import Navbar from "./Components/Navbar";
 import { useAuth } from "./Auth/AuthProvider";
@@ -40,6 +40,10 @@ const DashboardScreen = ({ navigation }) => {
 
   const navigateToRoomOverview = () => {
     navigation.navigate("RoomOverview");
+  };
+
+  const navigateToInsights = () => {
+    navigation.navigate("Insights");
   };
 
   const handleRecommendationPress = (title) => {
@@ -131,6 +135,20 @@ const DashboardScreen = ({ navigation }) => {
                 <FontAwesome5 name="chart-bar" size={24} color="#28a745" />
                 <Text style={styles.reportText}>Monthly Units</Text>
               </TouchableOpacity>
+            </View>
+          </View>
+          {/* Insights Section */}
+          <View style={styles.monthlyReportContainer}>
+            <Text style={styles.sectionTitle}>Insights</Text>
+            <View style={styles.reportContainer}>
+              <TouchableOpacity
+                style={styles.reportCard}
+                onPress={navigateToInsights}
+              >
+                <Entypo name="info" size={24} color="#007AFF" />
+                <Text style={styles.reportText}>Insight Screen</Text>
+              </TouchableOpacity>
+              
             </View>
           </View>
           {/* Conservation Tips */}
