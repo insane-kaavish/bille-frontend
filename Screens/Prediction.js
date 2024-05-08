@@ -9,12 +9,10 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { BarChart } from "react-native-chart-kit";
-import { LineChart } from "react-native-chart-kit";
+
 import { Defs, LinearGradient, Stop } from "react-native-svg";
-// import { LineChart, Grid } from "react-native-svg-charts";
-import { LineChart } from "react-native-chart-kit";
-import { Defs, LinearGradient, Stop } from "react-native-svg";
-// import { LineChart, Grid } from "react-native-svg-charts";
+import { LineChart, Grid } from "react-native-svg-charts";
+
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { useNavigation } from "@react-navigation/native";
 import Header from "./Components/Header";
