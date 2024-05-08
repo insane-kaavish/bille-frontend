@@ -130,6 +130,11 @@ export const BillProvider = ({ children }) => {
   const [units, setUnits] = useState(0);
   const [totalCost, setTotalCost] = useState(0);
   const [perUnitCost, setPerUnitCost] = useState(0);
+  const [taxes, setTaxes] = useState(0);
+  const [surcharge, setSurcharge] = useState(0);
+  const [tvFees, setTvFees] = useState(0);
+  const [adjustments, setAdjustments] = useState(0);
+  const [slab, setSlab] = useState(0);
   const [labels, setLabels] = useState([
     "Jan",
     "Feb",
@@ -168,6 +173,11 @@ export const BillProvider = ({ children }) => {
         setUnits(data.units);
         setTotalCost(data.total_cost);
         setPerUnitCost(data.per_unit_cost);
+        setTaxes(data.taxes);
+        setSurcharge(data.add_surcharge);
+        setTvFees(data.tv_fees);
+        setAdjustments(data.prev_adj);
+        setSlab(data.slab);
       }
     }
     catch (error) {
@@ -203,17 +213,17 @@ export const BillProvider = ({ children }) => {
     setPerUnitCost(0);
     setLabels([
       "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
     ]);
     setActualMonthly([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,]);
     setPredictedMonthly([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,]);
@@ -229,6 +239,11 @@ export const BillProvider = ({ children }) => {
         labels,
         totalCost,
         perUnitCost,
+        taxes,
+        surcharge,
+        tvFees,
+        adjustments,
+        slab,
         isMonthlyDataFetched,
         barGraph,
         predictionMonth,

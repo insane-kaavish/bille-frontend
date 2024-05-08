@@ -9,6 +9,12 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { BarChart } from "react-native-chart-kit";
+import { LineChart } from "react-native-chart-kit";
+import { Defs, LinearGradient, Stop } from "react-native-svg";
+// import { LineChart, Grid } from "react-native-svg-charts";
+import { LineChart } from "react-native-chart-kit";
+import { Defs, LinearGradient, Stop } from "react-native-svg";
+// import { LineChart, Grid } from "react-native-svg-charts";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { useNavigation } from "@react-navigation/native";
 import Header from "./Components/Header";
@@ -22,8 +28,10 @@ const screenWidth = Dimensions.get("window").width;
 const PredictionScreen = () => {
   const navigation = useNavigation();
   const { authToken } = useAuth();
-  const { units, totalCost, actualMonthly, predictedMonthly, barGraph, labels, fetchMonthlyData } = useBill();
+  const { units, totalCost, actualMonthly, predictedMonthly, slab, barGraph, labels, fetchMonthlyData } = useBill();
   const [fillPercentage, setFillPercentage] = useState(0);
+  const startValue = slab; // Example start value
+  const endValue = slab + 100; // Example end value
 
   useEffect(() => {
     console.log("Prediction screen mounted")
@@ -71,9 +79,9 @@ const PredictionScreen = () => {
                 fill={fillPercentage}
                 tintColor="#007AFF"
                 backgroundColor="#E5E5EA"
-                rotation={225}
+                rotation={240}
                 lineCap="round"
-                arcSweepAngle={270}
+                arcSweepAngle={240}
               >
                 {(fill) => (
                   <View style={styles.progressTextContainer}>
@@ -83,6 +91,10 @@ const PredictionScreen = () => {
                 )}
               </AnimatedCircularProgress>
             </TouchableWithoutFeedback>
+
+            <Text style={styles.startValueText}>{startValue}</Text>
+            <Text style={styles.endValueText}>{endValue}</Text>
+
             <Text style={styles.estimatedBill}>
               Estimated Bill: <Text style={{ color: "#007AFF", fontFamily:"Lato-Bold" }}>Pkr {totalCost}</Text>
             </Text>
@@ -98,7 +110,7 @@ const PredictionScreen = () => {
 
           <View style={styles.graphCard}>
             <ScrollView horizontal>
-              <BarChart
+              <LineChart
                 data={data}
                 width={screenWidth * 1.5}
                 height={300}
@@ -115,7 +127,6 @@ const PredictionScreen = () => {
               <Text style={{ color: "gray" }}> Predicted</Text> units.
             </Text>
           </View>
-
         </ScrollView>
         <Navbar />
       </View>
@@ -213,8 +224,24 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: "50%",
     left: "50%",
-    transform: [{ translateX: -70 }, { translateY: -40 }],
+    transform: [{ translateX: -60 }, { translateY: -40 }],
     alignItems: "center",
+  },
+  startValueText: {
+    position: "absolute",
+    left: 60,
+    top: 220,
+    fontSize: 20,
+    color: "#A9A9A9",
+    fontFamily: "Lato-Regular",
+  },
+  endValueText: {
+    position: "absolute",
+    right: 60,
+    top: 220,
+    fontSize: 20,
+    color: "red",
+    fontFamily: "Lato-Regular",
   },
 });
 
