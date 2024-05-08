@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: "50%",
     left: "50%",
-    transform: [{ translateX: -70 }, { translateY: -40 }],
+    transform: [{ translateX: -60 }, { translateY: -40 }],
     alignItems: "center",
   },
   startValueText: {
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     left: 60,
     top: 220,
     fontSize: 20,
-    color: "#007AFF",
+    color: "#A9A9A9",
     fontFamily: "Lato-Regular",
   },
   endValueText: {
