@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  Modal,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -68,6 +69,23 @@ const RoomOverviewScreen = () => {
   return (
     <>
       <Header screenName="Room Overview" navigation={navigation} />
+      {rooms.length === 0 && (
+        <Modal animationType="slide" transparent={true} visible={true}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>No rooms found</Text>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  navigation.navigate("AddRoom");
+                }}
+              >
+                <Text style={styles.buttonText}>Add room</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      )}
       <ScrollView style={styles.container}>
         <View style={styles.card}>
           <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
