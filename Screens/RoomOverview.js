@@ -8,15 +8,14 @@ import {
   Dimensions,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
-import { ProgressChart } from "react-native-chart-kit";
+import { PieChart } from "react-native-chart-kit";
 
 import Header from "./Components/Header";
 import Navbar from "./Components/Navbar";
 import { useAuth } from "./Auth/AuthProvider";
 import { useRoom } from "./Components/RoomProvider";
-
-const height = Dimensions.get("window").height;
 
 const RoomOverviewScreen = () => {
   const navigation = useNavigation();
@@ -31,100 +30,93 @@ const RoomOverviewScreen = () => {
   }, [selectedRoom, authToken]);
 
   const colors = [
-    "#535CE8",
-    "#2ACCCF",
-    "#FE763E",
-    "#F1C932",
-    "#7B48CC",
-    "#DE3B40",
-    "#EFB034",
-    "#1DD75B",
-    "#379AE6",
+    "#6a1b9a", // Deep purple
+    "#00695c", // Dark teal
+    "#d32f2f", // Vibrant red
+    "#f9a825", // Bright yellow
+    "#0288d1", // Vivid blue
+    "#c2185b", // Rich pink
+    "#f57c00", // Deep orange
+    "#2e7d32", // Dense green
   ];
 
-  const totalUnits = rooms.reduce(
-    (total, room) => total + room.units,
-    0
-  );
+  const totalUnits = rooms.reduce((total, room) => total + room.units, 0);
 
-  const data = {
-    labels: rooms.map((room) => room.alias),
-    data: rooms.map((room) => room.units / totalUnits),
-    colors: rooms.map((room) => colors[rooms.indexOf(room)]),
-  };
-
-
-  // Sort the data in ascending order
-  data.labels.sort();
-  data.data.sort();
-  data.colors.sort();
-  const navigateToRoomDetails = (room) => {
-    setSelectedRoom(room);
-    navigation.navigate("RoomDetail");
-  };
-  const navigateToAddRoom = () => {
-    navigation.navigate("AddRoom");
+  const getIconName = (alias) => {
+    const normalizedAlias = alias.toLowerCase().replace(/\s+/g, " ");
+  
+    if (normalizedAlias.includes("bedroom")) return "bed";
+    if (normalizedAlias.includes("kitchen")) return "restaurant";
+    if (normalizedAlias.includes("tv") || normalizedAlias.includes("television")) return "tv";
+    if (normalizedAlias.includes("bath")) return "bathtub";
+    if (normalizedAlias.includes("dining")) return "restaurant-menu";
+    if (normalizedAlias.includes("living") || normalizedAlias.includes("lounge")) return "weekend";
+    if (normalizedAlias.includes("office")) return "business-center";
+    if (normalizedAlias.includes("garage")) return "drive-eta";
+    if (normalizedAlias.includes("study")) return "import-contacts"; // book for MaterialIcons
+    if (normalizedAlias.includes("gym")) return "fitness-center";
+    if (normalizedAlias.includes("laundry")) return "local-laundry-service";
+    if (normalizedAlias.includes("gaming")) return "gamepad";
+  
+    return "home"; // Default icon
   };
 
   return (
     <>
       <Header screenName="Room Overview" navigation={navigation} />
-      <View style={styles.container}>
-        <ScrollView style={styles.scrollContainer}>
-          <View style={styles.card}>
-            <View style={styles.progressContainer}>
-              <ProgressChart
-                data={data}
-                // FIXME: Do not hard code dimensions!
-                width={Dimensions.get("window").width - 80}
-                height={220}
-                chartConfig={{
-                  backgroundGradientFrom: "#ffffff",
-                  backgroundGradientTo: "#ffffff",
-                  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                  strokeWidth: 5,
-                }}
-                style={{ borderRadius: 16, padding: 10 }}
-                hideLegend={true}
-                withCustomBarColorFromData
-              />
-              <View style={styles.unitDetails}>
-                <Text style={styles.estimatedBill}>
-                  Total Predicted Units:{" "}
-                  <Text style={{ color: "orange" }}>
-                    {" "}
-                    {totalUnits} Units
-                  </Text>
-                </Text>
-              </View>
+      <ScrollView style={styles.container}>
+        <View style={styles.card}>
+          <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+            <PieChart
+              data={rooms.map((room, index) => ({
+                name: room.alias,
+                units: room.units,
+                color: colors[index % colors.length],
+                legendFontColor: "#7F7F7F",
+                legendFontSize: 12,
+              }))}
+              width={Dimensions.get("window").width * 0.9}
+              height={220}
+              chartConfig={{
+                color: (opacity = 1) => `rgba(33, 37, 41, ${opacity})`,
+              }}
+              accessor={"units"}
+              backgroundColor={"transparent"}
+              paddingLeft={"10"}
+              center={[0, 0]}
+              absolute={false}
+            />
+          </ScrollView>
+          <Text style={styles.estimatedBill}>
+            Total Predicted Units: <Text style={{ color: "orange", fontFamily: "Lato-Bold" }}>
+              {totalUnits} Units
+            </Text>
+          </Text>
+        </View>
+        {rooms.map((room, index) => (
+          <TouchableOpacity
+            key={index}
+            style={styles.roomCard}
+            onPress={() => {
+              setSelectedRoom(room);
+              navigation.navigate("RoomDetail");
+            }}
+          >
+            <View style={[styles.iconContainer, { backgroundColor: colors[index % colors.length] }]}>
+              {/* <Ionicons name={getIconName(room.alias)} size={24} color="#fff" /> */}
+            <MaterialIcons name={getIconName(room.alias)} size={24} color="#fff" />
+
             </View>
-          </View>
-          {rooms.map((room, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.roomCard}
-              onPress={() => navigateToRoomDetails(room)}
-            >
-              <View
-                style={[styles.iconContainer, { backgroundColor: colors[rooms.indexOf(room)] }]}
-              >
-                <Ionicons name={"home"} size={24} color="#fff" />
-              </View>
-              <View style={styles.roomDetails}>
-                <Text style={styles.roomName}>{room.alias}</Text>
-                <Text style={styles.roomUnits}>{`${room.units} Units`}</Text>
-              </View>
-              <Ionicons name="chevron-forward" size={24} color="#C0C0C0" />
-            </TouchableOpacity>
-          ))}
-          
-        </ScrollView>
-        <TouchableOpacity style={styles.addroomButton} onPress={navigateToAddRoom}>
-          <Text style={styles.addroomButtonText}>Add room</Text>
-        </TouchableOpacity>
-        
-        <Navbar />
-      </View>
+            <View style={styles.roomDetails}>
+              <Text style={styles.roomName}>{room.alias}</Text>
+              <Text style={styles.roomUnits}>{`${room.units} Units`}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={24} color="#C0C0C0" />
+          </TouchableOpacity>
+        ))}
+        <View style={{ height: 80 }} /> 
+      </ScrollView>
+      <Navbar />
     </>
   );
 };
@@ -133,55 +125,35 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    padding: 10,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    paddingHorizontal: 10,
-    paddingTop: height * 0.001,
-    backgroundColor: "#fff",
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-  },
-  scrollContainer: {
-    flex: 1,
+    padding: 20,
   },
   card: {
+    marginTop:5,
     backgroundColor: "#fff",
-    borderRadius: 10,
-    padding: 10,
+    borderRadius: 24,
+    paddingVertical: 20,
+    paddingHorizontal: 10,
     marginVertical: 10,
     marginHorizontal: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  progressContainer: {
-    alignItems: "center",
-    marginBottom: 10,
-    elevation: 3,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.3,
-    shadowRadius: 1,
+    shadowColor: "rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 5,
+    shadowRadius: 20,
+    elevation: 9,
   },
   roomCard: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#fff",
-    borderRadius: 10,
+    borderRadius: 24,
     padding: 15,
-    marginVertical: 5,
+    marginBottom: 10,
     marginHorizontal: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowColor: "rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.5,
+    shadowRadius: 20,
+    elevation: 6,
   },
   iconContainer: {
     width: 40,
@@ -199,29 +171,20 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: "#000",
+    fontFamily: "Lato-Regular"
   },
   roomUnits: {
     fontSize: 16,
     color: "#666",
-  },
-  unitDetails: {
-    backgroundColor: "#f9f9f9",
-    borderRadius: 8,
-    padding: 16,
-    margin: 16,
-    alignItems: "center",
-    elevation: 6, // for the main shadow
-    shadowColor: "#000", // color of the shadow
-    shadowOffset: { width: 0, height: 0 }, // same as the CSS code
-    shadowOpacity: 0.6, // opacity of the shadow
-    shadowRadius: 1, // blur radius of the shadow
+    fontFamily: "Lato-Regular"
   },
   estimatedBill: {
-    fontSize: 20,
+    fontSize: 18,
+    fontWeight: 'normal',
+    fontFamily: "Lato-Regular",
     color: "#666",
     textAlign: "center",
-    // marginBottom: 20,
-    fontFamily: "Lato-Bold",
+    paddingVertical: 20,
   },
   addroomButton: {
     backgroundColor: "#535CE8",

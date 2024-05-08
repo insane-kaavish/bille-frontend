@@ -84,7 +84,7 @@ const PredictionScreen = () => {
               </AnimatedCircularProgress>
             </TouchableWithoutFeedback>
             <Text style={styles.estimatedBill}>
-              Estimated Bill: <Text style={{ color: "#007AFF" }}>PKR {totalCost}</Text>
+              Estimated Bill: <Text style={{ color: "#007AFF", fontFamily:"Lato-Bold" }}>Pkr {totalCost}</Text>
             </Text>
 
             <TouchableOpacity
@@ -160,16 +160,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   estimatedBill: {
-    fontSize: 22,
-    color: "#333",
-    textAlign: "center",
+    fontSize: 20,
+    fontWeight: 'normal',
     fontFamily: "Lato-Regular",
-    marginVertical: 20,
+    color: "#666",
+    textAlign: "center",
+    paddingVertical: 20,
+    marginTop:-15
   },
   detailsButton: {
     backgroundColor: "#007AFF",
-    borderRadius: 22,
-    padding: 12,
+    borderRadius: 36,
+    padding: 14,
     width: "70%",
     alignSelf: "center",
     shadowColor: "#000",
@@ -183,7 +185,7 @@ const styles = StyleSheet.create({
   },
   detailsButtonText: {
     color: "#fff",
-    fontSize: 13,
+    fontSize: 14,
     fontFamily: "Lato-Bold",
     textAlign: "center",
   },

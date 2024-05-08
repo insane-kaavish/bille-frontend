@@ -89,7 +89,7 @@ const HomeScreen = ({ navigation }) => {
   }, [authToken, navigation]);
 
   return (
-    <View style={[styles.container, { backgroundColor: "#535CE8" }]}>
+    <View style={[styles.container, { backgroundColor: Color.color }]}>
       <View style={styles.backgroundCircle} />
       <Text style={styles.content}>
         We are preparing the best experience for you. This may take a few
