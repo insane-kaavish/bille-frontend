@@ -121,7 +121,7 @@ const RoomOverviewScreen = () => {
         <View style={{ height: 80 }} /> 
       </ScrollView>
       <TouchableOpacity style={styles.addroomButton} onPress={navigateToAddRoom}>
-          <Text style={styles.addroomButtonText}>Add room</Text>
+          <Text style={styles.addroomButtonText}>+</Text>
         </TouchableOpacity>
       <Navbar />
     </>
@@ -194,23 +194,21 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   addroomButton: {
-    backgroundColor: "#535CE8",
-    bottom: "5%",
-    borderRadius: 20,
+    backgroundColor: "#007AFF",
+    bottom: "8%",
+    right: "5%",
     padding: 12,
     alignItems: "center",
-    width: "45%",
-    alignSelf: "center",
-    marginBottom: 20,
-    borderRadius: 20,
-    // padding: 12,
-    // alignItems: 'center',
-    // width: '45%',
-  },
-  addroomButtonText: {
+    justifyContent: "center", // Center the text vertically
+    width: "10%",
+    height: 40,
+    alignSelf: "flex-end",
+    borderRadius: 100, // Half of the height to make it round
+},
+addroomButtonText: {
     color: "white",
     fontWeight: "bold",
-  },
+},
 });
 
 export default RoomOverviewScreen;
