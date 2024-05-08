@@ -12,6 +12,9 @@ import { BarChart } from "react-native-chart-kit";
 import { LineChart } from "react-native-chart-kit";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
 // import { LineChart, Grid } from "react-native-svg-charts";
+import { LineChart } from "react-native-chart-kit";
+import { Defs, LinearGradient, Stop } from "react-native-svg";
+// import { LineChart, Grid } from "react-native-svg-charts";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { useNavigation } from "@react-navigation/native";
 import Header from "./Components/Header";
@@ -25,10 +28,10 @@ const screenWidth = Dimensions.get("window").width;
 const PredictionScreen = () => {
   const navigation = useNavigation();
   const { authToken } = useAuth();
-  const { units, totalCost, actualMonthly, predictedMonthly, barGraph, labels, fetchMonthlyData } = useBill();
+  const { units, totalCost, actualMonthly, predictedMonthly, slab, barGraph, labels, fetchMonthlyData } = useBill();
   const [fillPercentage, setFillPercentage] = useState(0);
-  const startValue = 100; // Example start value
-  const endValue = 100; // Example end value
+  const startValue = slab; // Example start value
+  const endValue = slab + 100; // Example end value
 
   useEffect(() => {
     console.log("Prediction screen mounted")
