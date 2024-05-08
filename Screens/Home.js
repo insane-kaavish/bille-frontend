@@ -14,7 +14,7 @@ const API_URL = process.env.EXPO_PUBLIC_API_URL;
 const handleScrape = async (token) => {
   try {
     const response = await fetch(`${API_URL}/scrape/`, {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Token ${token}`,

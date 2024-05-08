@@ -16,7 +16,6 @@ import {
   RoomDetailScreen,
   RoomOverviewScreen,
   RoomDataScreen,
-  DataInputScreen,
   SplashScreen,
 } from "./Screens";
 
@@ -27,6 +26,7 @@ import { RoomProvider } from "./Screens/Components/RoomProvider";
 import * as Font from "expo-font";
 import { MenuProvider } from "react-native-popup-menu";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AddRoomScreen from "./Screens/AddRoom";
 
 const Stack = createNativeStackNavigator();
 
@@ -94,6 +94,7 @@ const App = () => {
                       name="RoomOverview"
                       component={RoomOverviewScreen}
                     />
+                        <Stack.Screen name="AddRoom" component={AddRoomScreen} />
                     <Stack.Screen
                       name="RoomDetail"
                       component={RoomDetailScreen}

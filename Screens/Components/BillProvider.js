@@ -32,15 +32,14 @@ const currentYear = currentDate.getFullYear();
 const predictRequest = async (token) => {
   try {
     const response = await fetch(`${API_URL}/predict/`, {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: token ? `Token ${token}` : "",
       },
-      body: JSON.stringify({ month: currentMonthName, year: currentYear }),
     });
     if (!response.ok) {
-      throw new Error("Failed to fetch bill data");
+      console.log("Error: Failed to fetch bill data");
     }
     const data = await response.json();
     return data;
@@ -74,6 +73,25 @@ const monthlyRequest = async (token, is_predicted = "False") => {
   }
 };
 
+const barGraphRequest = async (token) => {
+  try {
+    const response = await fetch(`${API_URL}/bar_graph/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Token ${token}` : "",
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Failed to fetch bar graph data");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
 const getLast12Months = () => {
   const last12Months = [];
   for (let i = 11; i >= 0; i--) {
@@ -85,15 +103,15 @@ const getLast12Months = () => {
 };
 
 const fillMissingMonths = (data, last12Months) => {
-  return last12Months.map((month) => (data[month] ? data[month][0] : 0));
+  return last12Months.map((month) => (data[month] ? data[month] : 0));
 };
 
-const getLabels = () => {
+const getLabels = (predictionMonth, predictionYear) => {
   const labels = [];
   // Start from 11 months ago to include the correct range
   for (let i = 11; i >= 0; i--) {
-    const year = currentMonth - i < 0 ? currentYear - 1 : currentYear;
-    const monthIndex = (currentMonth - i + 12) % 12;
+    const year = predictionMonth - i < 0 ? predictionYear - 1 : predictionYear;
+    const monthIndex = (predictionMonth - i + 12) % 12;
     const month = monthNames[monthIndex];
     const label =
       i === 11 || month === "Jan"
@@ -132,6 +150,11 @@ export const BillProvider = ({ children }) => {
   const [predictedMonthly, setPredictedMonthly] = useState([
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   ]);
+  const [barGraph, setBarGraph] = useState([
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  ]);
+  const [predictionMonth, setPredictionMonth] = useState(currentMonthName);
+  const [predictionYear, setPredictionYear] = useState(currentYear);
   const [isMonthlyDataFetched, setIsMonthlyDataFetched] = useState(false);
 
   const fetchPredictedData = async () => {
@@ -141,26 +164,37 @@ export const BillProvider = ({ children }) => {
     }
     try {
       const data = await predictRequest(authToken);
-      setUnits(data.units);
-      setTotalCost(data.total_cost);
-      setPerUnitCost(data.per_unit_cost);
+      if (data) {
+        setUnits(data.units);
+        setTotalCost(data.total_cost);
+        setPerUnitCost(data.per_unit_cost);
+      }
     }
     catch (error) {
       console.log("Error:", error)
-      navigation.navigate("Signin");
     }
   };
 
   const fetchMonthlyData = async () => {
-    const last12Months = getLast12Months();
-    const actualValues = await monthlyRequest(authToken, "False");
-    const predictedValues = await monthlyRequest(authToken, "True");
-    const actualData = fillMissingMonths(actualValues, last12Months);
-    const predictedData = fillMissingMonths(predictedValues, last12Months);
-    setActualMonthly(actualData);
-    setPredictedMonthly(predictedData);
-    setLabels(getLabels());
-    setIsMonthlyDataFetched(true);
+    try {
+      const last12Months = getLast12Months();
+      const actualValues = await monthlyRequest(authToken, "False");
+      const predictedValues = await monthlyRequest(authToken, "True");
+      const actualData = fillMissingMonths(actualValues, last12Months);
+      const predictedData = fillMissingMonths(predictedValues, last12Months);
+      const barGraphData = await barGraphRequest(authToken);
+      console.log(barGraphData)
+      setBarGraph(barGraphData.units.slice(-12));
+      setPredictionMonth(barGraphData.month);
+      setPredictionYear(barGraphData.year);
+      setActualMonthly(actualData);
+      setPredictedMonthly(predictedData);
+      setLabels(getLabels(barGraphData.month - 1, barGraphData.year));
+      setIsMonthlyDataFetched(true);
+    }
+    catch (error) {
+      console.log("Error:", error)
+    }
   };
 
   const resetData = () => {
@@ -196,6 +230,9 @@ export const BillProvider = ({ children }) => {
         totalCost,
         perUnitCost,
         isMonthlyDataFetched,
+        barGraph,
+        predictionMonth,
+        predictionYear,
         fetchPredictedData,
         fetchMonthlyData,
         resetData,

@@ -16,7 +16,7 @@ import { useRoom } from "./Components/RoomProvider";
 
 
 const RoomDetailScreen = ({ navigation }) => {
-  const { room, categories, selectedRoom, fetchRoom, deleteAppliance, updateRoom, appliances, setAppliances, fetchRooms } = useRoom();
+  const { room, categories, selectedRoom, fetchRoom, deleteAppliance, updateRoom, appliances, setAppliances, fetchRooms, deleteRoom } = useRoom();
   const [deletedAppliances, setDeletedAppliances] = useState([]);
 
   useEffect(() => {
@@ -54,6 +54,12 @@ const RoomDetailScreen = ({ navigation }) => {
     navigation.goBack();
     fetchRooms();
   };
+
+  const deleteSubmit = () => {
+    deleteRoom(selectedRoom.id);
+    fetchRooms();
+    navigation.goBack();
+  }
 
   return (
     <>
@@ -133,9 +139,14 @@ const RoomDetailScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </ScrollView>
-      <TouchableOpacity style={styles.saveButton} onPress={saveData}>
-        <Text style={styles.saveButtonText}>Save</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity style={styles.saveButton} onPress={deleteSubmit}>
+          <Text style={styles.saveButtonText}>Delete</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.saveButton} onPress={saveData}>
+          <Text style={styles.saveButtonText}>Save</Text>
+        </TouchableOpacity>
+      </View>
       <Navbar />
     </View>
     </>
@@ -216,7 +227,7 @@ const styles = StyleSheet.create({
   },
   addButtonText: {
     color: "white",
-    fontWeight: "bold",
+    // fontWeight: "bold",
   },
   saveButton: {
     backgroundColor: "#535CE8",
@@ -234,7 +245,12 @@ const styles = StyleSheet.create({
   },
   saveButtonText: {
     color: "white",
-    fontWeight: "bold",
+    // fontWeight: "bold",
+  },
+  buttonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
   },
 });
 

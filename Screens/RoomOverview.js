@@ -60,7 +60,7 @@ const RoomOverviewScreen = () => {
   
     return "home"; // Default icon
   };
-    
+
   return (
     <>
       <Header screenName="Room Overview" navigation={navigation} />
@@ -185,6 +185,24 @@ const styles = StyleSheet.create({
     color: "#666",
     textAlign: "center",
     paddingVertical: 20,
+  },
+  addroomButton: {
+    backgroundColor: "#535CE8",
+    bottom: "5%",
+    borderRadius: 20,
+    padding: 12,
+    alignItems: "center",
+    width: "45%",
+    alignSelf: "center",
+    marginBottom: 20,
+    borderRadius: 20,
+    // padding: 12,
+    // alignItems: 'center',
+    // width: '45%',
+  },
+  addroomButtonText: {
+    color: "white",
+    fontWeight: "bold",
   },
 });
 

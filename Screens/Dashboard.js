@@ -30,6 +30,7 @@ const DashboardScreen = ({ navigation }) => {
   const conservationTips = require("../assets/conservationTips.json");
 
   useEffect(() => {
+    console.log("Dashboard Screen: Fetching predicted data")
     fetchPredictedData();
   }, [authToken]);
 
