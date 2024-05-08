@@ -13,12 +13,10 @@ import Navbar from "./Components/Navbar";
 import { useAuth } from "./Auth/AuthProvider";
 import { useBill } from "./Components/BillProvider";
 import { GlobalStyles } from "./Styles/GlobalStyles";
-
-// get width
 import { Dimensions } from "react-native";
 const DashboardScreen = ({ navigation }) => {
   const { authToken } = useAuth();
-  const { units, totalCost, perUnitCost, fetchPredictedData } = useBill();
+  const { units, totalCost, perUnitCost, slab, fetchPredictedData } = useBill();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState({
@@ -113,7 +111,7 @@ const DashboardScreen = ({ navigation }) => {
               <Text style={styles.cardDescription}>Average cost per unit</Text>
             </TouchableOpacity>
           </View>
-          {/* Monthly Report Section */}
+
           <View style={styles.monthlyReportContainer}>
             <Text style={styles.sectionTitle}>Monthly Report</Text>
             <View style={styles.reportContainer}>
@@ -133,7 +131,7 @@ const DashboardScreen = ({ navigation }) => {
               </TouchableOpacity>
             </View>
           </View>
-          {/* Conservation Tips */}
+
           <View style={styles.tipsContainer}>
             <Text style={styles.sectionTitle}>Conservation Tips</Text>
             <ScrollView
