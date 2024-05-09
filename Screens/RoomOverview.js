@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
 import { PieChart } from "react-native-chart-kit";
@@ -121,7 +122,8 @@ const RoomOverviewScreen = () => {
         <View style={{ height: 80 }} /> 
       </ScrollView>
       <TouchableOpacity style={styles.addroomButton} onPress={navigateToAddRoom}>
-          <Text style={styles.addroomButtonText}>Add room</Text>
+          {/* <Text style={styles.addroomButtonText}>+</Text> */}
+          <AntDesign name="pluscircle" size={50} color="#007AFF" />
         </TouchableOpacity>
       <Navbar />
     </>
@@ -194,21 +196,19 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   addroomButton: {
-    backgroundColor: "#535CE8",
-    bottom: "5%",
-    borderRadius: 20,
-    padding: 12,
-    alignItems: "center",
-    width: "45%",
-    alignSelf: "center",
-    marginBottom: 20,
-    borderRadius: 20,
+    // backgroundColor: "#007AFF",
+    bottom: "8%",
+    right: "3%",
     // padding: 12,
-    // alignItems: 'center',
-    // width: '45%',
-  },
+    alignItems: "center",
+    width: "20%",
+    height: "20",
+    alignSelf: "flex-end",
+    borderRadius: 100, // Half of the height to make it round
+},
   addroomButtonText: {
     color: "white",
+    // textAlign: "center",
     fontWeight: "bold",
   },
 });

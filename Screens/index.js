@@ -14,6 +14,7 @@ export { default as RoomOverviewScreen } from "./RoomOverview";
 export { default as AddRoom } from "./AddRoom";
 export { default as RoomDataScreen } from "./Data/RoomData";
 export { default as SplashScreen } from "./Splash";
+export { default as InsightsScreen } from "./Insights";
 
 // import all the components
 export { default as Navbar } from "./Components/Navbar";

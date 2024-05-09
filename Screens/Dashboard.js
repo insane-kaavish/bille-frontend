@@ -8,7 +8,7 @@ import {
   Modal,
   Dimensions,
 } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome5, Entypo } from "@expo/vector-icons";
 import Header from "./Components/Header";
 import Navbar from "./Components/Navbar";
 import { useAuth } from "./Auth/AuthProvider";
@@ -38,6 +38,10 @@ const DashboardScreen = ({ navigation }) => {
 
   const navigateToRoomOverview = () => {
     navigation.navigate("RoomOverview");
+  };
+
+  const navigateToInsights = () => {
+    navigation.navigate("Insights");
   };
 
   const handleRecommendationPress = (title) => {
@@ -123,7 +127,24 @@ const DashboardScreen = ({ navigation }) => {
             </View>
           </View>
 
+
+          {/* Insights Section */}
+          <View style={styles.monthlyReportContainer}>
+            <Text style={styles.sectionTitle}>Insights</Text>
+            <View style={styles.reportContainer}>
+              <TouchableOpacity
+                style={styles.reportCard}
+                onPress={navigateToInsights}
+              >
+                <Entypo name="info" size={24} color="#007AFF" />
+                <Text style={styles.reportText}>Insight Screen</Text>
+              </TouchableOpacity>
+              
+            </View>
+          </View>
           {/* Conservation Tips */}
+
+
           <View style={styles.tipsContainer}>
             <Text style={styles.sectionTitle}>Conservation Tips</Text>
             <ScrollView
