@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   Modal,
+  Dimensions,
 } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Header from "./Components/Header";
@@ -13,23 +14,21 @@ import Navbar from "./Components/Navbar";
 import { useAuth } from "./Auth/AuthProvider";
 import { useBill } from "./Components/BillProvider";
 import { GlobalStyles } from "./Styles/GlobalStyles";
-import { Dimensions } from "react-native";
 
 const DashboardScreen = ({ navigation }) => {
   const { authToken } = useAuth();
-  const { units, totalCost, perUnitCost, slab, taxes ,fetchPredictedData, surcharge, tvFees, adjustments} = useBill();
+  const { units, totalCost, perUnitCost, taxes, surcharge, tvFees, fetchPredictedData } = useBill();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState({
     title: "",
     subtitle: "",
-    details: [],
+    details: "",
   });
 
   const conservationTips = require("../assets/conservationTips.json");
 
   useEffect(() => {
-    console.log("Dashboard Screen: Fetching predicted data")
     fetchPredictedData();
   }, [authToken]);
 
@@ -43,48 +42,31 @@ const DashboardScreen = ({ navigation }) => {
 
   const handleRecommendationPress = (title) => {
     const tip = conservationTips[title];
-    if (tip) {
-      setModalContent(tip);
-    } else {
-      // Handle the case where the title is not found
-      setModalContent({
-        title: "",
-        subtitle: "",
-        details: [],
-      });
-    }
+    setModalContent(tip);
     setModalVisible(true);
   };
 
-  const fetchBillDetails = () => {
-    const details = [
-      { key: "Total Cost", value: `Rs. ${totalCost}` },
-      { key: "Unit Cost", value: `Rs. ${perUnitCost}` },
-      { key: "Taxes", value: `Rs. ${taxes}` },
-      { key: "Surcharge", value: `Rs. ${surcharge}` },
-      { key: "TV Fees", value: `Rs. ${tvFees}` },
-    ];
-
-    setModalContent({
+  const showBillDetails = () => {
+    const detailedBill = {
       title: "Detailed Bill Breakdown",
       subtitle: "Complete billing information based on your usage pattern",
-      details,
-    });
-
+      details: [
+        { label: "Total Cost", value: `Rs. ${totalCost}` },
+        { label: "Unit Cost", value: `Rs. ${perUnitCost}` },
+        { label: "Taxes", value: `Rs. ${taxes}` },
+        { label: "Surcharge", value: `Rs. ${surcharge}` },
+        { label: "TV Fees", value: `Rs. ${tvFees}` },
+      ],
+    };
+    setModalContent(detailedBill);
     setModalVisible(true);
   };
-  useEffect(() => {
-    fetchPredictedData();
-    fetchBillDetails(); // You might need to create this function to fetch billing details
-  }, [authToken]);
-  
 
   return (
     <>
       <Header screenName="Dashboard" navigation={navigation} />
       <View style={GlobalStyles.screenContainer}>
         <ScrollView style={styles.container}>
-          <View style={{ height: 10 }} />
           {/* Current Units Card */}
           <View style={styles.section}>
             <TouchableOpacity
@@ -95,23 +77,21 @@ const DashboardScreen = ({ navigation }) => {
               <Text style={styles.cardValue}>{units}</Text>
               <Text style={styles.cardDescription}>
                 Your current consumption data suggests that your predicted units
-                are {units}, which is deemed satisfactory.{" "}
+                are {units}, which is deemed satisfactory.
               </Text>
             </TouchableOpacity>
           </View>
+
           {/* Billing Information Container */}
           <View style={styles.billingContainer}>
-          <TouchableOpacity
-            style={styles.card}
-            onPress={() => {
-              setModalVisible(true);
-              fetchBillDetails(); // Ensure the billing details are updated each time the modal is opened
-            }}
-          >
-            <Text style={styles.cardTitle}>Expected Bill</Text>
-            <Text style={styles.cardValue}>Rs. {totalCost}</Text>
-            <Text style={styles.cardDescription}>Based on usage pattern</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.card}
+              onPress={showBillDetails}
+            >
+              <Text style={styles.cardTitle}>Expected Bill</Text>
+              <Text style={styles.cardValue}>Rs. {totalCost}</Text>
+              <Text style={styles.cardDescription}>Based on usage pattern</Text>
+            </TouchableOpacity>
             <TouchableOpacity
               style={styles.card}
               onPress={navigateToRoomOverview}
@@ -122,6 +102,7 @@ const DashboardScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
 
+          {/* Monthly Report Section */}
           <View style={styles.monthlyReportContainer}>
             <Text style={styles.sectionTitle}>Monthly Report</Text>
             <View style={styles.reportContainer}>
@@ -142,6 +123,7 @@ const DashboardScreen = ({ navigation }) => {
             </View>
           </View>
 
+          {/* Conservation Tips */}
           <View style={styles.tipsContainer}>
             <Text style={styles.sectionTitle}>Conservation Tips</Text>
             <ScrollView
@@ -162,6 +144,7 @@ const DashboardScreen = ({ navigation }) => {
           </View>
         </ScrollView>
         <Navbar />
+        
         <Modal
           animationType="slide"
           transparent={true}
@@ -171,16 +154,18 @@ const DashboardScreen = ({ navigation }) => {
           <View style={styles.modalView}>
             <Text style={styles.modalTitle}>{modalContent.title}</Text>
             <Text style={styles.modalSubtitle}>{modalContent.subtitle}</Text>
-
-            <View style={styles.tableContainer}>
-              {modalContent.details.map((item, index) => (
-                <View key={index} style={styles.tableRow}>
-                  <Text style={styles.tableCellKey}>{item.key}</Text>
-                  <Text style={styles.tableCellValue}>{item.value}</Text>
-                </View>
-              ))}
-            </View>
-
+            {Array.isArray(modalContent.details) ? (
+              <View style={styles.tableContainer}>
+                {modalContent.details.map((item, index) => (
+                  <View key={index} style={styles.tableRow}>
+                    <Text style={styles.tableCell}>{item.label}</Text>
+                    <Text style={styles.tableCell}>{item.value}</Text>
+                  </View>
+                ))}
+              </View>
+            ) : (
+              <Text style={styles.modalText}>{modalContent.details}</Text>
+            )}
             <TouchableOpacity
               style={styles.closeButton}
               onPress={() => setModalVisible(false)}
@@ -189,8 +174,6 @@ const DashboardScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </Modal>
-
-        <View style={{ height: 10 }} />
       </View>
     </>
   );
@@ -345,21 +328,22 @@ const styles = StyleSheet.create({
     textAlign: "justify", // Justify alignment for a cleaner, more formal presentation
   },
   tableContainer: {
-    width: "100%", // Ensure the table fills the modal
+    width: '100%',
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 10,
+    padding: 10,
   },
   tableRow: {
     flexDirection: "row",
-    justifyContent: "space-between", // Evenly spaced rows
-    paddingVertical: 10, // Spacing between rows
+    justifyContent: "space-between",
+    paddingVertical: 10,
+    borderBottomWidth: 0.4,
+    borderColor: "#ccc",
   },
-  tableCellKey: {
-    fontSize: 16,
-    fontFamily: "Lato-Bold",
-    color: "#333",
-  },
-  tableCellValue: {
-    fontSize: 16,
+  tableCell: {
     fontFamily: "Lato-Regular",
+    fontSize: 16,
     color: "#333",
   },
   closeButton: {

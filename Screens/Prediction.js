@@ -114,9 +114,11 @@ const PredictionScreen = () => {
                 segments={4}
                 withCustomBarColorFromData={true}
                 verticalLabelRotation={0}
+                withHorizontalLabels={false}
+                showValuesOnTopOfBars={true}
                 chartConfig={chartConfig}
-                style={{ marginVertical: 8, borderRadius: 16, paddingRight: 33.5}}
-              />
+                style={{ marginVertical: 8, borderRadius: 16, paddingRight: 5}}
+                />
             </ScrollView>
             <Text style={styles.graphDescription}>
               <Text style={{ color: "#007AFF" }}>Actual</Text> and 
