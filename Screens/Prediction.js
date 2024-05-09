@@ -19,6 +19,7 @@ import Navbar from "./Components/Navbar";
 import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "./Auth/AuthProvider";
 import { useBill } from "./Components/BillProvider";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -45,10 +46,12 @@ const PredictionScreen = () => {
           index === barGraph.length - 1
             ? `#FF7F7F` 
             : `#007AFF` 
+        
         ),
       },
     ],
   };
+  
 
   const chartConfig = {
     backgroundGradientFrom: "#fff",
@@ -101,7 +104,7 @@ const PredictionScreen = () => {
               onPress={() => navigation.navigate("RoomOverview")}
             >
               <Ionicons name="eye" size={20} color="white" />
-              <Text style={styles.detailsButtonText}> View Room Details</Text>
+              <Text style={styles.detailsButtonText}>  View Room Details</Text>
             </TouchableOpacity>
           </View>
 
@@ -122,8 +125,12 @@ const PredictionScreen = () => {
                 />
             </ScrollView>
             <Text style={styles.graphDescription}>
-              <Text style={{ color: "#007AFF" }}>Actual</Text> and 
-              <Text style={{ color: "#FF7F7F" }}> Predicted</Text> units.
+              {/* <Text style={{ color: "#007AFF" }}>Actual</Text> and 
+              <Text style={{ color: "#FF7F7F" }}> Predicted</Text> units. */}
+            <Text fontFamily="Lato-Regular" color="#666" textAlign="center" paddingVertical={20} marginTop={-15}>
+              The graph shows the actual units consumed in blue and the predicted units in red. The last bar represents the current month.
+            </Text>
+
             </Text>
           </View>
         </ScrollView>
@@ -180,7 +187,7 @@ const styles = StyleSheet.create({
   },
   detailsButton: {
     backgroundColor: "#007AFF",
-    borderRadius: 36,
+    borderRadius: 18,
     padding: 14,
     width: "70%",
     alignSelf: "center",
@@ -239,7 +246,7 @@ const styles = StyleSheet.create({
     right: 60,
     top: 220,
     fontSize: 20,
-    color: "red",
+    color : "#007AFF",
     fontFamily: "Lato-Regular",
   },
 });
