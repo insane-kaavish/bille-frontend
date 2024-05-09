@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  Modal,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -69,6 +70,25 @@ const RoomOverviewScreen = () => {
   return (
     <>
       <Header screenName="Room Overview" navigation={navigation} />
+      {rooms.length === 0 && (
+        <Modal animationType="slide" transparent={true} visible={true}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>No rooms found</Text>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  navigation.navigate("AddRoom");
+                }}
+              >
+                <Text style={styles.buttonText}>Add room</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      )}
+      {rooms.length > 0 && (
+        <>
       <ScrollView style={styles.container}>
         <View style={styles.card}>
           <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
@@ -125,6 +145,8 @@ const RoomOverviewScreen = () => {
           {/* <Text style={styles.addroomButtonText}>+</Text> */}
           <AntDesign name="pluscircle" size={50} color="#007AFF" />
         </TouchableOpacity>
+        </>
+      )}
       <Navbar />
     </>
   );
@@ -209,6 +231,43 @@ const styles = StyleSheet.create({
   addroomButtonText: {
     color: "white",
     // textAlign: "center",
+    fontWeight: "bold",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize: 18,
+    fontFamily: "Lato-Regular"
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "#535CE8",
+  },
+  buttonText: {
+    color: "white",
     fontWeight: "bold",
   },
 });
