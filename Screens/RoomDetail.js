@@ -7,13 +7,12 @@ import {
   ScrollView,
   TextInput,
 } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { MaterialCommunityIcons } from '@expo/vector-icons'; // Ensure you have the latest version
 import ModalDropdown from "react-native-modal-dropdown";
 import Navbar from "./Components/Navbar";
 import Header from "./Components/Header";
 
 import { useRoom } from "./Components/RoomProvider";
-
 
 const RoomDetailScreen = ({ navigation }) => {
   const { room, categories, selectedRoom, fetchRoom, deleteAppliance, updateRoom, appliances, setAppliances, fetchRooms } = useRoom();
@@ -23,18 +22,10 @@ const RoomDetailScreen = ({ navigation }) => {
     fetchRoom(selectedRoom.id);
   }, [selectedRoom.id]);
 
-  const getSubcategoryOptions = (category) => {
-    const selectedAppliance = categories.find(
-      (appliance) => appliance.name === category
-    );
-    return selectedAppliance ? selectedAppliance.sub_categories : [];
-  };
+  const getSubcategoryOptions = (category) => categories.find(cat => cat.name === category)?.sub_categories || [];
 
   const addAppliance = () => {
-    setAppliances([
-      ...appliances,
-      { alias: "", category: "Appliance", sub_category: "Type", daily_usage: "0" },
-    ]);
+    setAppliances([...appliances, { alias: "", category: "Appliance", sub_category: "Type", daily_usage: "0" }]);
   };
 
   const removeAppliance = (index) => {
@@ -48,68 +39,57 @@ const RoomDetailScreen = ({ navigation }) => {
       ...room,
       appliances: appliances,
     };
-    console.log("Updated room data:", data)
     updateRoom(data);
-    deletedAppliances.forEach((appliance) => deleteAppliance(appliance.id));
+    deletedAppliances.forEach(appliance => deleteAppliance(appliance.id));
     navigation.goBack();
     fetchRooms();
   };
 
   return (
     <>
-    <Header screenName={room ? room.alias : ""} navigation={navigation} />
-    <View style={styles.container}>
-      <ScrollView style={styles.scrollContainer}>
-        <View style={styles.roomInfo}>
+      <Header screenName={room ? room.alias : "Room Details"} navigation={navigation} />
+      <ScrollView style={styles.container}>
+        <View style={styles.card}>
           {appliances.map((appliance, index) => (
-            <View key={index} style={styles.applianceRow}>
-              <View style={styles.dropdownContainer}>
+            <View key={index} style={styles.applianceDetailContainer}>
+              <View style={styles.inputGroup}>
+                <MaterialCommunityIcons name="lightbulb-outline" size={24} color="#007AFF" style={styles.iconStyle} />
+                <Text style={styles.label}>Appliance:</Text>
                 <ModalDropdown
-                  defaultIndex={0}
-                  options={categories.map((appliance) => appliance.name)}
-                  defaultValue={appliance.category || "Appliance"}
-                  defaultTextStyle={{ color: "pink", opacity: 0.5 }}
-                  style={styles.pickerStyle}
-                  textStyle={{ color: "black" }}
-                  dropdownStyle={styles.dropdownStyle}
+                  options={categories.map(category => category.name)}
+                  defaultValue={appliance.category}
                   onSelect={(selectedIndex, value) => {
-                    const selectedAppliance = categories.find(
-                      (appliance) => appliance.name === value
-                    );
-                    if (selectedAppliance) {
-                      setAppliances((prevState) => {
-                        const updatedAppliances = [...prevState];
-                        updatedAppliances[index].category =
-                          selectedAppliance.name;
-                        // Remove the automatic selection of subcategory here
-                        return updatedAppliances;
-                      });
-                    }
+                    const newAppliances = [...appliances];
+                    newAppliances[index].category = value;
+                    newAppliances[index].sub_category = getSubcategoryOptions(value)[0] || 'Select Subcategory';
+                    setAppliances(newAppliances);
                   }}
+                  style={styles.dropdownStyle}
+                  textStyle={styles.dropdownTextStyle}
+                  dropdownStyle={styles.dropdownMenuStyle}
                 />
               </View>
-              {appliances[index].category && (
-                <View style={styles.subCategoryContainer}>
+              <View style={styles.typeUsageContainer}>
+                <View style={styles.inputGroup}>
+                  <MaterialCommunityIcons name="format-align-justify" size={22} color="#007AFF" style={styles.iconStyle} />
+                  <Text style={styles.label}>Type:</Text>
                   <ModalDropdown
-                    defaultIndex={0}
                     options={getSubcategoryOptions(appliance.category)}
-                    placeholder="Subcategory"
-                    defaultValue={appliance.sub_category || "Subcategory"}
-                    style={styles.subCategoryPickerStyle}
-                    textStyle={{ color: "black" }}
-                    dropdownStyle={styles.dropdownStyle}
+                    defaultValue={appliance.sub_category}
                     onSelect={(selectedIndex, value) => {
-                      setAppliances((prevState) => {
-                        const updatedAppliances = [...prevState];
-                        updatedAppliances[index].sub_category = value;
-                        return updatedAppliances;
-                      });
+                      const newAppliances = [...appliances];
+                      newAppliances[index].sub_category = value;
+                      setAppliances(newAppliances);
                     }}
+                    style={styles.dropdownStyle}
+                    textStyle={styles.dropdownTextStyle}
+                    dropdownStyle={styles.dropdownMenuStyle}
                   />
                 </View>
-              )}
-              <View style={styles.usageContainer}>
-                <TextInput
+                <View style={styles.inputGroup}>
+                  <MaterialCommunityIcons name="clock-time-four-outline" size={22} color="#007AFF" style={styles.iconStyle} />
+                  <Text style={styles.label}>Usage:</Text>
+                  <TextInput
                   style={styles.usageInput}
                   onChangeText={(text) =>
                     setAppliances((prevState) => {
@@ -122,120 +102,193 @@ const RoomDetailScreen = ({ navigation }) => {
                   placeholder="Usage"
                   keyboardType="numeric"
                 />
+                </View>
               </View>
-              <TouchableOpacity onPress={() => removeAppliance(index)}>
-                <Ionicons name="close-circle" size={24} color="red" />
+              <TouchableOpacity onPress={() => removeAppliance(index)} style={styles.iconButton}>
+                <MaterialCommunityIcons name="trash-can-outline" size={24} color="#FF6347" />
               </TouchableOpacity>
             </View>
           ))}
           <TouchableOpacity style={styles.addButton} onPress={addAppliance}>
+            <MaterialCommunityIcons name="plus-circle-outline" size={24} color="white" style={styles.addIcon} />
             <Text style={styles.addButtonText}>Add Appliance</Text>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity style={styles.saveButton} onPress={saveData}>
+          <MaterialCommunityIcons name="content-save-cog-outline" size={24} color="white" style={styles.saveIcon} />
+          <Text style={styles.saveButtonText}>Save</Text>
+        </TouchableOpacity>
+        <View style={{ height: 70 }} />
       </ScrollView>
-      <TouchableOpacity style={styles.saveButton} onPress={saveData}>
-        <Text style={styles.saveButtonText}>Save</Text>
-      </TouchableOpacity>
       <Navbar />
-    </View>
     </>
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#fff",
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 20,
+    // marginBottom: 70,
   },
-  scrollContainer: {
+  card: {
+    marginTop:5,
+    backgroundColor: "#fff",
+    borderRadius: 24,
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    marginVertical: 10,
+    marginHorizontal: 5,
+    shadowColor: "rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 5,
+    shadowRadius: 20,
+    elevation: 9,
+  },
+  
+  inputGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+    
+  },
+  label: {
+    fontSize: 16,
+    fontFamily: 'Lato-Bold',
+    color: '#007AFF',
+    marginLeft: -1,
+  },
+  
+  roomNameInput: {
     flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#E0E0E0",
+    borderRadius: 8,
     padding: 10,
+    backgroundColor: "#fff",
+    marginLeft: 10,
+    
   },
-  roomInfo: {
-    backgroundColor: "#f7f7f7",
-    borderRadius: 10,
-    padding: 16,
-    marginBottom: 16,
+
+  applianceDetailContainer: {
+    marginTop: 20,
+    marginBottom: 20,
+    marginRight : 5,
+    marginLeft : 5,
+    backgroundColor: '#F7F7F7',
+    borderRadius: 8,
+    padding: 10,
+    // shadowColor: '#000',
+    shadowColor: "#rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 6 },  // Reduced height for a closer shadow
+    shadowOpacity: 0.5,  // Lower opacity for a softer appearance
+    shadowRadius: 8,  // Increased radius to blur edges more
+    elevation: 6,  // Adjust elevation for Android to match visual consistency
   },
-  roominfocard: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 10,
+  
+  typeUsageContainer: {
+    backgroundColor: '#EFEFEF',
+    borderRadius: 8,
+    paddingLeft: 10,
+    marginRight: 5,
+    marginLeft: 5,
+    paddingVertical: 10,
+    shadowColor: "#rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 6 },  // Reduced height for a closer shadow
+    shadowOpacity: 0.5,  // Lower opacity for a softer appearance
+    shadowRadius: 8,  // Increased radius to blur edges more
+    elevation: 6,  // Adjust elevation for Android to match visual consistency
   },
-  roomInfoText: {
-    fontSize: 26,
-    fontWeight: "bold",
-    color: "black",
-    fontFamily: "Lato-Bold",
-  },
-  roomAlias: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "black",
-  },
-  applianceRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 10,
-  },
-  pickerStyle: {
-    width: 120, // Set a fixed width for the dropdown
+  dropdownStyle: {
+    flex: 1,
     borderWidth: 1,
-    borderColor: "grey",
-    borderRadius: 10,
-    marginRight: 8,
-    padding: 12,
+    borderColor: '#D0D4D8',
+    borderRadius: 8,
+    padding: 10,
+    backgroundColor: '#FFFFFF',
+    marginLeft: 10,
   },
-  subCategoryPickerStyle: {
-    width: 120, // Set a fixed width for the dropdown
+  dropdownTextStyle: {
+    fontSize: 14,
+    fontFamily: 'Lato-Regular',
+    color: '#606770',
+  },
+  dropdownMenuStyle: {
+    marginTop: -20,
+    marginLeft: -5,
+    width: '35%',
     borderWidth: 1,
-    borderColor: "grey",
-    borderRadius: 10,
-    marginRight: 8,
-    padding: 12,
+    borderColor: '#fff',
+    borderRadius: 7,
+    backgroundColor: '#FFFFFF',
+    fontFamily: 'Lato-Regular',
   },
   usageInput: {
-    width: 40, // Adjust width as needed
     borderWidth: 1,
-    borderColor: "grey",
-    borderRadius: 10,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
+    borderColor: '#E0E0E0',
+    borderRadius: 8,
+    paddingLeft: 10,
     fontSize: 14,
+    backgroundColor: '#FFFFFF',
+    flex: 1,
+    marginLeft: 10,
   },
   addButton: {
-    backgroundColor: "#535CE8",
-    borderRadius: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#007AFF',
+    borderRadius: 18,
     padding: 10,
-    alignItems: "center",
-    width: "50%",
-    alignSelf: "center",
+    alignItems: 'center',
+    width: '58%',
+    alignSelf: 'center',
     marginTop: 10,
   },
   addButtonText: {
-    color: "white",
-    // fontWeight: "bold",
+    color: 'white',
+    fontSize: 16,
+    fontFamily: 'Lato-Bold',
+    marginLeft: 3,
   },
   saveButton: {
-    backgroundColor: "#535CE8",
-    bottom: "5%",
-    borderRadius: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#007AFF',
+    borderRadius: 16,
     padding: 12,
-    alignItems: "center",
-    width: "45%",
-    alignSelf: "center",
+    alignItems: 'center',
+    width: '35%',
+    alignSelf: 'center',
+    marginTop: 20,
     marginBottom: 20,
-    borderRadius: 20,
-    // padding: 12,
-    // alignItems: 'center',
-    // width: '45%',
   },
   saveButtonText: {
-    color: "white",
-    // fontWeight: "bold",
+    color: 'white',
+    fontSize: 16,
+    fontFamily: 'Lato-Bold',
+    marginLeft: 8,
+  },
+  iconStyle: {
+    marginRight: 8,
+  },
+  iconButton: {
+    alignSelf: 'flex-end',
+    marginTop: 5,
+  },
+  addIcon: {
+    marginRight: 8,
+  },
+  saveIcon: {
+    marginRight: 8,
   },
 });
 
+
 export default RoomDetailScreen;
+
