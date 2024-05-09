@@ -11,10 +11,6 @@ import {
 import { BarChart } from "react-native-chart-kit";
 import { LineChart } from "react-native-chart-kit";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
-// import { LineChart, Grid } from "react-native-svg-charts";
-import { LineChart } from "react-native-chart-kit";
-import { Defs, LinearGradient, Stop } from "react-native-svg";
-// import { LineChart, Grid } from "react-native-svg-charts";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { useNavigation } from "@react-navigation/native";
 import Header from "./Components/Header";
@@ -46,7 +42,7 @@ const PredictionScreen = () => {
         data: barGraph,
         colors: barGraph.map((_, index) => (opacity = 1) =>
           index === barGraph.length - 1
-            ? `gray` 
+            ? `#FF7F7F` 
             : `#007AFF` 
         ),
       },
@@ -57,13 +53,13 @@ const PredictionScreen = () => {
     backgroundGradientFrom: "#fff",
     backgroundGradientTo: "#fff",
     decimalPlaces: 0,
-    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // Solid black for labels and axes
-    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // Consistent label color
-    style: {
-      borderRadius: 16,
-    },
-    useShadowColor: false, // Disable shadow color'
-    showValuesOnTopOfBars: true,
+    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+    withVerticalLabels: false, // Removes Y-axis labels
+    paddingRight: 10, // Reduce padding on the right
+    paddingLeft: 10, // Reduce padding on the left
+    showValuesOnTopOfBars: false,
+    useShadowColor: false,
   };
 
   return (
@@ -110,21 +106,23 @@ const PredictionScreen = () => {
 
           <View style={styles.graphCard}>
             <ScrollView horizontal>
-              <LineChart
+              <BarChart
                 data={data}
-                width={screenWidth * 1.5}
+                width={screenWidth * 1.65}
                 height={300}
                 fromZero
-                segments={2}
-                withCustomBarColorFromData={true} // Enable custom colors from `data.datasets.colors`
+                segments={4}
+                withCustomBarColorFromData={true}
                 verticalLabelRotation={0}
-                chartConfig={chartConfig} // Solid background and label colors
-                style={{ marginVertical: 8, borderRadius: 16 }}
-              />
+                withHorizontalLabels={false}
+                showValuesOnTopOfBars={true}
+                chartConfig={chartConfig}
+                style={{ marginVertical: 8, borderRadius: 16, paddingRight: 5}}
+                />
             </ScrollView>
             <Text style={styles.graphDescription}>
               <Text style={{ color: "#007AFF" }}>Actual</Text> and 
-              <Text style={{ color: "gray" }}> Predicted</Text> units.
+              <Text style={{ color: "#FF7F7F" }}> Predicted</Text> units.
             </Text>
           </View>
         </ScrollView>
