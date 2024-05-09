@@ -86,6 +86,8 @@ const RoomOverviewScreen = () => {
           </View>
         </Modal>
       )}
+      {rooms.length > 0 && (
+        <>
       <ScrollView style={styles.container}>
         <View style={styles.card}>
           <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
@@ -141,6 +143,8 @@ const RoomOverviewScreen = () => {
       <TouchableOpacity style={styles.addroomButton} onPress={navigateToAddRoom}>
           <Text style={styles.addroomButtonText}>Add room</Text>
         </TouchableOpacity>
+        </>
+      )}
       <Navbar />
     </>
   );
@@ -226,6 +230,43 @@ const styles = StyleSheet.create({
     // width: '45%',
   },
   addroomButtonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize: 18,
+    fontFamily: "Lato-Regular"
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "#535CE8",
+  },
+  buttonText: {
     color: "white",
     fontWeight: "bold",
   },
