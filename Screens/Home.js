@@ -8,6 +8,7 @@ import {
   Image,
 } from "react-native";
 import { useAuth } from "./Auth/AuthProvider";
+import { Colors } from "./Styles/GlobalStyles";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -89,7 +90,7 @@ const HomeScreen = ({ navigation }) => {
   }, [authToken, navigation]);
 
   return (
-    <View style={[styles.container, { backgroundColor: Color.color }]}>
+    <View style={[styles.container, { backgroundColor: Colors.color }]}>
       <View style={styles.backgroundCircle} />
       <Text style={styles.content}>
         We are preparing the best experience for you. This may take a few
