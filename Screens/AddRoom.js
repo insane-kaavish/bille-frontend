@@ -5,126 +5,130 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  TextInput
+  TextInput,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { MaterialCommunityIcons } from '@expo/vector-icons'; // Ensure you have the latest version
 import ModalDropdown from 'react-native-modal-dropdown';
 import Navbar from './Components/Navbar';
 import Header from './Components/Header';
 
 import { useRoom } from './Components/RoomProvider';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const AddRoomScreen = ({ navigation }) => {
-  //const { addRoom, categories } = useRoom();  // Ensuring addRoom and categories are provided from RoomProvider
-  const { room, categories, selectedRoom, fetchRoom, deleteAppliance, updateRoom, addRoom, fetchRooms } = useRoom();
-
+  const { categories, addRoom, fetchRooms } = useRoom();
   const [roomName, setRoomName] = useState('');
   const [appliances, setAppliances] = useState([
     { alias: '', category: 'Appliance', sub_category: 'Type', daily_usage: '0' },
   ]);
 
   const addAppliance = () => {
-    setAppliances([
-      ...appliances,
-      { alias: "", category: "Appliance", sub_category: "Type", daily_usage: "0" },
-    ]);
+    setAppliances([...appliances, { alias: '', category: 'Appliance', sub_category: 'Type', daily_usage: '0' }]);
   };
 
   const removeAppliance = (index) => {
     setAppliances(appliances.filter((_, i) => i !== index));
   };
 
-  
   const saveData = () => {
-    // Construct the room data object according to your API's expected format
-    const roomData = {
-      alias: roomName,  // 'roomName' will be used as the 'alias' of the room
-      //tag: roomName.slice(0, 2).toUpperCase(),  // Create a 'tag' from the first two letters of the room name
-      appliances: appliances,
-    };
-  
+    const roomData = { alias: roomName, appliances: appliances };
     try {
-      addRoom(roomData);  // Assuming 'addRoom' sends the room data to your API
-      // console.log('New room data:', roomData);
+      addRoom(roomData);
       fetchRooms();
       navigation.goBack();
     } catch (error) {
       console.error("Failed to add room", error);
-      // Optionally handle error, e.g., show an alert to the user
     }
   };
-  
 
-  const getSubcategoryOptions = (category) => {
-    const selectedCategory = categories.find(cat => cat.name === category);
-    return selectedCategory ? selectedCategory.sub_categories : [];
-  };
+  const getSubcategoryOptions = (category) => categories.find(cat => cat.name === category)?.sub_categories || [];
 
   return (
     <>
       <Header screenName={'Add New Room'} navigation={navigation} />
-      <View style={styles.container}>
-        <ScrollView style={styles.scrollContainer}>
-          <TextInput
-            style={styles.roomNameInput}
-            onChangeText={setRoomName}
-            value={roomName}
-            placeholder="Enter Room Name"
-          />
+      <ScrollView style={styles.container}>
+        <View style={styles.card}>
+          <View style={styles.inputGroup}>
+          <MaterialCommunityIcons name="home-outline" size={30} color="#007AFF" style={styles.iconStyle} />
+            <Text style={styles.label}>Room Name:</Text>
+            <TextInput
+              style={styles.roomNameInput}
+              onChangeText={setRoomName}
+              value={roomName}
+              placeholder="Enter Room Name"
+            />
+          </View>
           {appliances.map((appliance, index) => (
-            <View key={index} style={styles.applianceRow}>
-              <ModalDropdown
-                defaultIndex={0}
-                options={categories.map(category => category.name)}
-                defaultValue={appliance.category}
-                onSelect={(selectedIndex, value) => {
-                  const newAppliances = [...appliances];
-                  newAppliances[index].category = value;
-                  newAppliances[index].sub_category = getSubcategoryOptions(value)[0] || 'Select Subcategory';
-                  setAppliances(newAppliances);
-                }}
-                style={styles.dropdownStyle}
-                textStyle={styles.dropdownTextStyle}
-                dropdownStyle={styles.dropdownMenuStyle}
-              />
-              <ModalDropdown
-                options={getSubcategoryOptions(appliance.category)}
-                defaultIndex={0}
-                defaultValue={appliance.sub_category}
-                onSelect={(selectedIndex, value) => {
-                  const newAppliances = [...appliances];
-                  newAppliances[index].sub_category = value;
-                  setAppliances(newAppliances);
-                }}
-                style={styles.dropdownStyle}
-                textStyle={styles.dropdownTextStyle}
-                dropdownStyle={styles.dropdownMenuStyle}
-              />
-              <TextInput
-                style={styles.usageInput}
-                onChangeText={(text) => {
-                  const newAppliances = [...appliances];
-                  newAppliances[index].daily_usage = text;
-                  setAppliances(newAppliances);
-                }}
-                value={appliance.daily_usage}
-                placeholder="Usage"
-                keyboardType="numeric"
-              />
-              <TouchableOpacity onPress={() => removeAppliance(index)}>
-                <Ionicons name="close-circle" size={24} color="red" />
+            <View key={index} style={styles.applianceDetailContainer}>
+              <View style={styles.inputGroup}>
+                <MaterialCommunityIcons name="lightbulb-outline" size={24} color="#007AFF" style={styles.iconStyle} />
+                <Text style={styles.label}>Appliance:</Text>
+                <ModalDropdown
+                  options={categories.map(category => category.name)}
+                  defaultValue={appliance.category}
+                  onSelect={(selectedIndex, value) => {
+                    const newAppliances = [...appliances];
+                    newAppliances[index].category = value;
+                    newAppliances[index].sub_category = getSubcategoryOptions(value)[0] || 'Select Subcategory';
+                    setAppliances(newAppliances);
+                  }}
+                  style={styles.dropdownStyle}
+                  textStyle={styles.dropdownTextStyle}
+                  dropdownStyle={styles.dropdownMenuStyle}
+                />
+              </View>
+              <View style={styles.typeUsageContainer}>
+                <View style={styles.inputGroup}>
+                  <MaterialCommunityIcons name="format-align-justify" size={22} color="#007AFF" style={styles.iconStyle} />
+                  <Text style={styles.label}>Type:</Text>
+                  <ModalDropdown
+                    options={getSubcategoryOptions(appliance.category)}
+                    defaultValue={appliance.sub_category}
+                    onSelect={(selectedIndex, value) => {
+                      const newAppliances = [...appliances];
+                      newAppliances[index].sub_category = value;
+                      setAppliances(newAppliances);
+                    }}
+                    style={styles.dropdownStyle}
+                    textStyle={styles.dropdownTextStyle}
+                    dropdownStyle={styles.dropdownMenuStyle}
+                  />
+                </View>
+                <View style={styles.inputGroup}>
+                  <MaterialCommunityIcons name="clock-time-four-outline" size={22} color="#007AFF" style={styles.iconStyle} />
+                  <Text style={styles.label}>Usage:</Text>
+                  <TextInput
+                    style={styles.usageInput}
+                    onChangeText={(text) => {
+                      const newAppliances = [...appliances];
+                      newAppliances[index].daily_usage = text;
+                      setAppliances(newAppliances);
+                    }}
+                    value={appliance.daily_usage}
+                    placeholder="Usage"
+                    keyboardType="numeric"
+                  />
+                </View>
+              </View>
+              <TouchableOpacity onPress={() => removeAppliance(index)} style={styles.iconButton}>
+                <MaterialCommunityIcons name="trash-can-outline" size={24} color="#FF6347" />
               </TouchableOpacity>
             </View>
           ))}
           <TouchableOpacity style={styles.addButton} onPress={addAppliance}>
+            <MaterialCommunityIcons name="plus-circle-outline" size={24} color="white" style={styles.addIcon} />
             <Text style={styles.addButtonText}>Add Appliance</Text>
           </TouchableOpacity>
-        </ScrollView>
+        </View>
         <TouchableOpacity style={styles.saveButton} onPress={saveData}>
-          <Text style={styles.saveButtonText}>Add Room</Text>
+          <MaterialCommunityIcons name="content-save-cog-outline" size={24} color="white" style={styles.saveIcon} />
+          <Text style={styles.saveButtonText}>Save Room</Text>
         </TouchableOpacity>
-        <Navbar />
-      </View>
+        <View style={{ height: 70 }} />
+
+      </ScrollView>
+
+      <Navbar />
     </>
   );
 };
@@ -132,86 +136,164 @@ const AddRoomScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: "#fff",
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 20,
+    // marginBottom: 70,
   },
-  scrollContainer: {
-    flex: 1,
-    padding: 10,
+  card: {
+    marginTop:5,
+    backgroundColor: "#fff",
+    borderRadius: 24,
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    marginVertical: 10,
+    marginHorizontal: 5,
+    shadowColor: "rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 5,
+    shadowRadius: 20,
+    elevation: 9,
   },
-  roomNameInput: {
-    borderWidth: 1,
-    borderColor: 'grey',
-    borderRadius: 10,
-    padding: 12,
-    marginBottom: 16,
-    fontSize: 16,
-  },
-  applianceRow: {
+  
+  inputGroup: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 10,
-    // padding: 10,
+    marginBottom: 15,
+    
+  },
+  label: {
+    fontSize: 16,
+    fontFamily: 'Lato-Bold',
+    color: '#007AFF',
+    marginLeft: -1,
+  },
+  
+  roomNameInput: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#E0E0E0",
+    borderRadius: 8,
+    padding: 10,
+    backgroundColor: "#fff",
+    marginLeft: 10,
+    
+  },
+
+  applianceDetailContainer: {
+    marginTop: 20,
+    marginBottom: 20,
+    marginRight : 5,
+    marginLeft : 5,
+    backgroundColor: '#F7F7F7',
+    borderRadius: 8,
+    padding: 10,
+    // shadowColor: '#000',
+    shadowColor: "#rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 6 },  // Reduced height for a closer shadow
+    shadowOpacity: 0.5,  // Lower opacity for a softer appearance
+    shadowRadius: 8,  // Increased radius to blur edges more
+    elevation: 6,  // Adjust elevation for Android to match visual consistency
+  },
+  
+  typeUsageContainer: {
+    backgroundColor: '#EFEFEF',
+    borderRadius: 8,
+    paddingLeft: 10,
+    marginRight: 5,
+    marginLeft: 5,
+    paddingVertical: 10,
+    shadowColor: "#rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 6 },  // Reduced height for a closer shadow
+    shadowOpacity: 0.5,  // Lower opacity for a softer appearance
+    shadowRadius: 8,  // Increased radius to blur edges more
+    elevation: 6,  // Adjust elevation for Android to match visual consistency
   },
   dropdownStyle: {
-    width: 120, // Match width from RoomDetailScreen
+    flex: 1,
     borderWidth: 1,
-    borderColor: 'grey',
-    borderRadius: 10,
-    marginRight: 8,
-    padding: 12,
-    // backgroundColor: 'white',
+    borderColor: '#D0D4D8',
+    borderRadius: 8,
+    padding: 10,
+    backgroundColor: '#FFFFFF',
+    marginLeft: 10,
   },
-  // dropdownTextStyle: {
-  //   fontSize: 14,
-  //   textAlign: 'center',
-  //   color: 'black', // Ensure text color is consistent
-  // },
-  // dropdownMenuStyle: {
-  //   borderWidth: 1,
-  //   borderColor: 'grey',
-  //   borderRadius: 10,
-  // },
-  usageInput: {
-    width: 40, // Consistent width as in RoomDetailScreen
-    borderWidth: 1,
-    borderColor: 'grey',
-    borderRadius: 10,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
+  dropdownTextStyle: {
     fontSize: 14,
-    // marginRight: 10,
+    fontFamily: 'Lato-Regular',
+    color: '#606770',
+  },
+  dropdownMenuStyle: {
+    marginTop: -20,
+    marginLeft: -5,
+    width: '35%',
+    borderWidth: 1,
+    borderColor: '#fff',
+    borderRadius: 7,
+    backgroundColor: '#FFFFFF',
+    fontFamily: 'Lato-Regular',
+  },
+  usageInput: {
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderRadius: 8,
+    paddingLeft: 10,
+    fontSize: 14,
+    backgroundColor: '#FFFFFF',
+    flex: 1,
+    marginLeft: 10,
   },
   addButton: {
-    backgroundColor: '#535CE8',
-    borderRadius: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#007AFF',
+    borderRadius: 18,
     padding: 10,
     alignItems: 'center',
-    width: '50%',
+    width: '58%',
     alignSelf: 'center',
     marginTop: 10,
   },
   addButtonText: {
     color: 'white',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Lato-Bold',
+    marginLeft: 3,
   },
   saveButton: {
-    backgroundColor: '#535CE8',
-    bottom: '5%',
-    borderRadius: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#007AFF',
+    borderRadius: 16,
     padding: 12,
     alignItems: 'center',
-    width: '45%',
+    width: '50%',
     alignSelf: 'center',
+    marginTop: 20,
     marginBottom: 20,
   },
   saveButtonText: {
     color: 'white',
     fontSize: 16,
-    // fontWeight: 'bold',
+    fontFamily: 'Lato-Bold',
+    marginLeft: 8,
+  },
+  iconStyle: {
+    marginRight: 8,
+  },
+  iconButton: {
+    alignSelf: 'flex-end',
+    marginTop: 5,
+  },
+  addIcon: {
+    marginRight: 8,
+  },
+  saveIcon: {
+    marginRight: 8,
   },
 });
-
 
 export default AddRoomScreen;

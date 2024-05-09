@@ -209,7 +209,7 @@ const SignupScreen = ({ navigation }) => {
       return;
     }
     console.log("successfully signed up");
-    navigation.navigate("RoomData");
+    navigation.navigate("Home");
     setLoading(false);
   };
 
