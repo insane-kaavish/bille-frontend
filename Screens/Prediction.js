@@ -96,7 +96,7 @@ const PredictionScreen = () => {
             <Text style={styles.endValueText}>{endValue}</Text>
 
             <Text style={styles.estimatedBill}>
-              Estimated Bill: <Text style={{ color: "#007AFF", fontFamily:"Lato-Bold" }}>Pkr {totalCost}</Text>
+              Estimated Bill: <Text style={{ color: "#007AFF", fontFamily:"Lato-Bold" }}>Rs. {totalCost}</Text>
             </Text>
 
             <TouchableOpacity
