@@ -105,9 +105,10 @@ const AddRoomScreen = ({ navigation }) => {
                       setAppliances(newAppliances);
                     }}
                     value={appliance.daily_usage}
-                    placeholder="Usage"
+                    placeholder="0"
                     keyboardType="numeric"
                   />
+                  <Text style={styles.subDescription}>hours per day</Text>
                 </View>
               </View>
               <TouchableOpacity onPress={() => removeAppliance(index)} style={styles.iconButton}>
@@ -241,10 +242,14 @@ const styles = StyleSheet.create({
     borderColor: '#E0E0E0',
     borderRadius: 8,
     paddingLeft: 10,
+    paddingRight: 10,
     fontSize: 14,
     backgroundColor: '#FFFFFF',
     flex: 1,
     marginLeft: 10,
+    maxWidth: 50,
+    // align the input text to the center of the field
+    textAlign: 'center',
   },
   addButton: {
     flexDirection: 'row',
@@ -293,6 +298,12 @@ const styles = StyleSheet.create({
   },
   saveIcon: {
     marginRight: 8,
+  },
+  subDescription: {
+    fontSize: 12,
+    color: '#666',
+    fontFamily: 'Lato-Regular',
+    marginLeft: 5,
   },
 });
 
