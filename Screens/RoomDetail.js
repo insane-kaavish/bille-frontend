@@ -136,6 +136,8 @@ const RoomDetailScreen = ({ navigation }) => {
                   value={appliance.daily_usage.toString()}
                   placeholder="0"
                   keyboardType="numeric"
+                  // Disable input when edit mode is false
+                  editable={editMode}
                 />
                 <Text style={styles.subDescription}>hours per day</Text>
 
