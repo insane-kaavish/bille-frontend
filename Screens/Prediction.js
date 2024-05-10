@@ -128,7 +128,7 @@ const PredictionScreen = () => {
               {/* <Text style={{ color: "#007AFF" }}>Actual</Text> and 
               <Text style={{ color: "#FF7F7F" }}> Predicted</Text> units. */}
             <Text fontFamily="Lato-Regular" color="#666" textAlign="center" paddingVertical={20} marginTop={-15}>
-              The graph shows the actual units consumed in blue and the predicted units in red. The last bar represents the current month.
+              The previous billed units are shown in <Text style={{ color: "#007AFF" }}>blue</Text> and the upcoming predicted units are in <Text style={{ color: "#FF7F7F" }}>red</Text>.
             </Text>
 
             </Text>
