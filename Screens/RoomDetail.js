@@ -122,7 +122,10 @@ const RoomDetailScreen = ({ navigation }) => {
             <Text style={styles.addButtonText}>Add Appliance</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.buttonscard}>
+        
+        <View style={{ height: 70 }} />
+      </ScrollView>
+      <View style={styles.buttonscard}>
         <TouchableOpacity style={styles.saveButton} onPress={saveData}>
           <MaterialCommunityIcons name="content-save-cog-outline" size={24} color="white" style={styles.saveIcon} />
           <Text style={styles.saveButtonText}>Save</Text>
@@ -132,8 +135,6 @@ const RoomDetailScreen = ({ navigation }) => {
           <Text style={styles.saveButtonText}>Delete Room</Text>
       </TouchableOpacity>
         </View>
-        <View style={{ height: 70 }} />
-      </ScrollView>
       <Navbar />
     </>
   );
@@ -303,12 +304,12 @@ const styles = StyleSheet.create({
   }, 
   buttonscard: {
     // position: 'absolute',
-    
+    marginBottom: "12%",
     backgroundColor: 'transparent', // Transparent background
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingBottom: 20,
+    // paddingBottom: "30",
     zIndex: 1, // Ensure it appears above other components
   },
 });

@@ -22,7 +22,7 @@ import { useRoom } from "./Components/RoomProvider";
 const RoomOverviewScreen = () => {
   const navigation = useNavigation();
   const { authToken } = useAuth();
-  const { rooms, fetchRooms, setSelectedRoom, fetchCategories, selectedRoom, setRoom, setAppliances } = useRoom();
+  const { rooms, fetchRooms, setSelectedRoom, fetchCategories, selectedRoom, setRoom, setAppliances , numrooms } = useRoom();
 
   useEffect(() => {
     fetchRooms();
@@ -70,7 +70,13 @@ const RoomOverviewScreen = () => {
   return (
     <>
       <Header screenName="Room Overview" navigation={navigation} />
-      {rooms.length === 0 && (
+      {numrooms === -1 && (
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <Text>Loading...</Text>
+        </View>
+      )
+      }
+      {numrooms === 0 && (
         <Modal animationType="slide" transparent={true} visible={true}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
@@ -87,7 +93,7 @@ const RoomOverviewScreen = () => {
           </View>
         </Modal>
       )}
-      {rooms.length > 0 && (
+      {numrooms > 0 && (
         <>
       <ScrollView style={styles.container}>
         <View style={styles.card}>

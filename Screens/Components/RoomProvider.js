@@ -13,6 +13,7 @@ export const RoomProvider = ({ children }) => {
   const [selectedRoom, setSelectedRoom] = useState(null);
 	const [room, setRoom] = useState(null);
   const [appliances, setAppliances] = useState([]);
+  const [numrooms, setNumRooms] = useState(-1);
 
   const fetchRooms = async () => {
     try {
@@ -28,6 +29,7 @@ export const RoomProvider = ({ children }) => {
       }
       const data = await response.json();
       setRooms(data);
+      setNumRooms(data.length);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -169,6 +171,7 @@ export const RoomProvider = ({ children }) => {
 				deleteAppliance,
         setAppliances,
         setRoom,
+        numrooms
       }}
     >
       {children}
