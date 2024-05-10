@@ -98,7 +98,7 @@ const DashboardScreen = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.card}
-              onPress={navigateToRoomOverview}
+              // onPress={navigateToRoomOverview}
             >
               <Text style={styles.cardTitle}>Price per Unit</Text>
               <Text style={styles.cardValue}>Rs. {perUnitCost}</Text>
@@ -108,7 +108,7 @@ const DashboardScreen = ({ navigation }) => {
 
           {/* Monthly Report Section */}
           <View style={styles.monthlyReportContainer}>
-            <Text style={styles.sectionTitle}>Monthly Report</Text>
+            <Text style={styles.sectionTitle}>Diagnostics</Text>
             <View style={styles.reportContainer}>
               <TouchableOpacity
                 style={styles.reportCard}
@@ -121,7 +121,7 @@ const DashboardScreen = ({ navigation }) => {
                 style={styles.reportCard}
                 onPress={navigateToPrediction}
               >
-                <FontAwesome5 name="chart-bar" size={24} color="#28a745" />
+                <FontAwesome5 name="chart-bar" size={24} color="#007AFF" />
                 <Text style={styles.reportText}>Monthly Units</Text>
               </TouchableOpacity>
             </View>
@@ -129,19 +129,19 @@ const DashboardScreen = ({ navigation }) => {
 
 
           {/* Insights Section */}
-          <View style={styles.monthlyReportContainer}>
-            <Text style={styles.sectionTitle}>Insights</Text>
-            <View style={styles.reportContainer}>
+          {/* <View style={styles.monthlyReportContainer}> */}
+            {/* <Text style={styles.sectionTitle}>Insights</Text> */}
+            {/* <View style={styles.reportContainer}> */}
               <TouchableOpacity
                 style={styles.reportCard}
                 onPress={navigateToInsights}
               >
                 <Entypo name="info" size={24} color="#007AFF" />
-                <Text style={styles.reportText}>Insight Screen</Text>
+                <Text style={styles.reportText}>Insights</Text>
               </TouchableOpacity>
               
-            </View>
-          </View>
+            {/* </View> */}
+          {/* </View> */}
           {/* Conservation Tips */}
 
 
