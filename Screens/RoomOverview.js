@@ -184,7 +184,7 @@ const RoomOverviewScreen = () => {
           </ScrollView>
           <TouchableOpacity
             style={styles.addroomButton}
-            onPress={navigateToAddRoom}
+            onPress={handleAddRoom}
           >
             {/* <Text style={styles.addroomButtonText}>+</Text> */}
             <AntDesign name="pluscircle" size={50} color="#007AFF" />
