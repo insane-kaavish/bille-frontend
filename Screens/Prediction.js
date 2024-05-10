@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   consumptionUnit: {
-    fontSize: 18,
+    fontSize: 19,
     color: "#666",
     fontFamily: "Lato-Bold",
     textAlign: "center",
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: "50%",
     left: "50%",
-    transform: [{ translateX: -60 }, { translateY: -40 }],
+    transform: [{ translateX: -69 }, { translateY: -40 }],
     alignItems: "center",
   },
   startValueText: {

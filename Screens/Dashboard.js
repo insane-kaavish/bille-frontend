@@ -157,7 +157,7 @@ const DashboardScreen = ({ navigation }) => {
                   style={styles.recommendationContainer}
                   onPress={() => handleRecommendationPress(title)}
                 >
-                  <FontAwesome5 name="lightbulb" size={24} color="#007AFF" />
+                  <FontAwesome5 name="ghost" size={24} color="#007AFF" />
                   <Text style={styles.containerTitle}>{title}</Text>
                 </TouchableOpacity>
               ))}
@@ -219,7 +219,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     borderRadius: 24,
     padding: 20,
-    marginBottom: 10,
+    // marginBottom: 10,
+    marginTop: 10,
     shadowColor: "rgba(0,0,0,0.5)",
     shadowOffset: { width: 0, height: 10 }, // Reduced height for a closer shadow
     shadowOpacity: 0.5, // Lower opacity for a softer appearance
@@ -385,8 +386,9 @@ const styles = StyleSheet.create({
     fontFamily: "Lato-Bold", // Ensuring the title is bold for emphasis
     fontSize: 20, // A moderate size for clear readability
     color: "#333", // Dark grey for a subtle, strong impression
-    marginBottom: 15, // Space below the title to separate from content
-    marginTop: 20, // Space above the title to distinguish from previous content
+    marginBottom: 10, // Space below the title to separate from content
+    marginTop: 10, // Space above the title to distinguish from previous content
+    marginLeft: 10, // Space to the left to align with the content
   },
   
 });

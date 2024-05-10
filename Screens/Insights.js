@@ -160,13 +160,15 @@ const Insightscreen = ({ navigation }) => {
 			  <Text style={styles.cardTitle}>Billing Comparison</Text>
 			  <BarChart
 				data={billData}
-				width={screenWidth - 20}
+				width={screenWidth - 70}
 				height={220}
 				chartConfig={chartConfig}
 				showValuesOnTopOfBars={true}
 				withCustomBarColorFromData={true}
 				fromZero
 			  />
+			  {/* add empty space */}
+			  <Text></Text>
 			  <Text style={styles.cardText}>{billChange}% {billChange > 0 ? "Increase" : "Decrease"} due to temperature change of {tempChange}°C</Text> 
 			</View>
 	
@@ -192,19 +194,32 @@ const Insightscreen = ({ navigation }) => {
 		marginBottom: 50,
 	  },
 	  card: {
-		backgroundColor: "#f9f9f9",
-		borderRadius: 10,
+		backgroundColor: "#ffffff",
+		borderRadius: 24,
 		padding: 20,
-		marginBottom: 10,
+		marginTop: 5,
+		marginBottom: 22,
+		marginLeft: 10,
+		marginRight: 10,
+		shadowColor: "rgba(0,0,0,0.5)",
+		shadowOffset: { width: 0, height: 10 }, // Reduced height for a closer shadow
+		shadowOpacity: 0.5, // Lower opacity for a softer appearance
+		shadowRadius: 20, // Increased radius to blur edges more
+		elevation: 10, // Adjust elevation for Android to match visual consistency
+		flex: 1,
+		marginHorizontal: 5,
 	  },
 	  cardTitle: {
 		fontSize: 20,
-		fontWeight: "bold",
+		fontFamily: "Lato-Bold",
 		marginBottom: 10,
+		color: "#007AFF",
 	  },
 	  cardText: {
 		fontSize: 16,
 		marginBottom: 10,
+		fontFamily: "Lato-Regular",
+		color: "#666",
 	  },
 	});
 
