@@ -17,6 +17,7 @@ import { useRoom } from "./Components/RoomProvider";
 const RoomDetailScreen = ({ navigation }) => {
   const { room, categories, selectedRoom, fetchRoom, deleteAppliance, updateRoom, appliances, setAppliances, fetchRooms, deleteRoom } = useRoom();
   const [deletedAppliances, setDeletedAppliances] = useState([]);
+  const [usageError, setUsageError] = useState(false);
 
   useEffect(() => {
     fetchRoom(selectedRoom.id);
@@ -107,9 +108,10 @@ const RoomDetailScreen = ({ navigation }) => {
                     })
                   }
                   value={`${appliance.daily_usage}`}
-                  placeholder="Usage"
+                  placeholder="0"
                   keyboardType="numeric"
                 />
+                <Text style={styles.subDescription}>hours per day</Text>
                 </View>
               </View>
               <TouchableOpacity onPress={() => removeAppliance(index)} style={styles.iconButton}>
@@ -249,10 +251,20 @@ const styles = StyleSheet.create({
     borderColor: '#E0E0E0',
     borderRadius: 8,
     paddingLeft: 10,
+    paddingRight: 10,
     fontSize: 14,
     backgroundColor: '#FFFFFF',
     flex: 1,
     marginLeft: 10,
+    maxWidth: 50,
+    // align the input text to the center of the field
+    textAlign: 'center',
+  },
+  subDescription: {
+    fontSize: 12,
+    fontFamily: 'Lato-Regular',
+    color: '#666',
+    marginLeft: 5,
   },
   addButton: {
     flexDirection: 'row',
