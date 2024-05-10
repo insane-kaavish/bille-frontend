@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Modal,
+  ActivityIndicator,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -73,7 +74,7 @@ const RoomOverviewScreen = () => {
       <Header screenName="Room Overview" navigation={navigation} />
       {numrooms === -1 && (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-          <Text>Loading...</Text>
+          <ActivityIndicator size="large" color="#007AFF" />
         </View>
       )
       }
