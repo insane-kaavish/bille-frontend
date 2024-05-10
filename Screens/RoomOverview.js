@@ -23,7 +23,16 @@ import { useRoom } from "./Components/RoomProvider";
 const RoomOverviewScreen = () => {
   const navigation = useNavigation();
   const { authToken } = useAuth();
-  const { rooms, fetchRooms, setSelectedRoom, fetchCategories, selectedRoom, setRoom, setAppliances , numrooms } = useRoom();
+  const {
+    rooms,
+    fetchRooms,
+    setSelectedRoom,
+    fetchCategories,
+    selectedRoom,
+    setRoom,
+    setAppliances,
+    numrooms,
+  } = useRoom();
 
   useEffect(() => {
     fetchRooms();
@@ -43,116 +52,143 @@ const RoomOverviewScreen = () => {
     "#f0f4c3", // Light lime
   ];
 
-
   const totalUnits = rooms.reduce((total, room) => total + room.units, 0);
 
   const getIconName = (alias) => {
     const normalizedAlias = alias.toLowerCase().replace(/\s+/g, " ");
-  
+
     if (normalizedAlias.includes("bedroom")) return "bed";
     if (normalizedAlias.includes("kitchen")) return "restaurant";
-    if (normalizedAlias.includes("tv") || normalizedAlias.includes("television")) return "tv";
+    if (
+      normalizedAlias.includes("tv") ||
+      normalizedAlias.includes("television")
+    )
+      return "tv";
     if (normalizedAlias.includes("bath")) return "bathtub";
     if (normalizedAlias.includes("dining")) return "restaurant-menu";
-    if (normalizedAlias.includes("living") || normalizedAlias.includes("lounge")) return "weekend";
+    if (
+      normalizedAlias.includes("living") ||
+      normalizedAlias.includes("lounge")
+    )
+      return "weekend";
     if (normalizedAlias.includes("office")) return "business-center";
     if (normalizedAlias.includes("garage")) return "drive-eta";
     if (normalizedAlias.includes("study")) return "import-contacts"; // book for MaterialIcons
     if (normalizedAlias.includes("gym")) return "fitness-center";
     if (normalizedAlias.includes("laundry")) return "local-laundry-service";
     if (normalizedAlias.includes("gaming")) return "gamepad";
-  
+
     return "home"; // Default icon
   };
 
-  const navigateToAddRoom = () => {
+  const handleAddRoom = () => {
     navigation.navigate("AddRoom");
   };
+
+  const handleSkip = () => {
+    navigation.navigate("Dashboard");
+  }
 
   return (
     <>
       <Header screenName="Room Overview" navigation={navigation} />
       {numrooms === -1 && (
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
           <ActivityIndicator size="large" color="#007AFF" />
         </View>
-      )
-      }
+      )}
       {numrooms === 0 && (
         <Modal animationType="slide" transparent={true} visible={true}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={styles.modalText}>No rooms found</Text>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
-                  navigation.navigate("AddRoom");
-                }}
-              >
-                <Text style={styles.buttonText}>Add room</Text>
-              </TouchableOpacity>
+              <View style={styles.buttonscard}>
+                <TouchableOpacity style={{ ...styles.addButton, backgroundColor: "#AAA" }} onPress={handleSkip}>
+                  <Text style={styles.addButtonText}>Skip</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.addButton}
+                  onPress={handleAddRoom}
+                >
+                  <Text style={styles.addButtonText}>Add Room</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </Modal>
       )}
       {numrooms > 0 && (
         <>
-      <ScrollView style={styles.container}>
-        <View style={styles.card}>
-          <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
-            <PieChart
-              data={rooms.map((room, index) => ({
-                name: room.alias,
-                units: room.units,
-                color: colors[index % colors.length],
-                legendFontColor: "#7F7F7F",
-                legendFontSize: 12,
-              }))}
-              width={Dimensions.get("window").width * 0.9}
-              height={220}
-              chartConfig={{
-                color: (opacity = 1) => `rgba(33, 37, 41, ${opacity})`,
-              }}
-              accessor={"units"}
-              backgroundColor={"transparent"}
-              paddingLeft={"10"}
-              center={[0, 0]}
-              absolute={false}
-            />
+          <ScrollView style={styles.container}>
+            <View style={styles.card}>
+              <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+                <PieChart
+                  data={rooms.map((room, index) => ({
+                    name: room.alias,
+                    units: room.units,
+                    color: colors[index % colors.length],
+                    legendFontColor: "#7F7F7F",
+                    legendFontSize: 12,
+                  }))}
+                  width={Dimensions.get("window").width * 0.9}
+                  height={220}
+                  chartConfig={{
+                    color: (opacity = 1) => `rgba(33, 37, 41, ${opacity})`,
+                  }}
+                  accessor={"units"}
+                  backgroundColor={"transparent"}
+                  paddingLeft={"10"}
+                  center={[0, 0]}
+                  absolute={false}
+                />
+              </ScrollView>
+              <Text style={styles.estimatedBill}>
+                Total Predicted Units:{" "}
+                <Text style={{ color: "orange", fontFamily: "Lato-Bold" }}>
+                  {totalUnits} Units
+                </Text>
+              </Text>
+            </View>
+            {rooms.map((room, index) => (
+              <TouchableOpacity
+                key={index}
+                style={styles.roomCard}
+                onPress={() => {
+                  setSelectedRoom(room);
+                  navigation.navigate("RoomDetail");
+                }}
+              >
+                <View
+                  style={[
+                    styles.iconContainer,
+                    { backgroundColor: colors[index % colors.length] },
+                  ]}
+                >
+                  {/* <Ionicons name={getIconName(room.alias)} size={24} color="#fff" /> */}
+                  <MaterialIcons
+                    name={getIconName(room.alias)}
+                    size={24}
+                    color="#fff"
+                  />
+                </View>
+                <View style={styles.roomDetails}>
+                  <Text style={styles.roomName}>{room.alias}</Text>
+                  <Text style={styles.roomUnits}>{`${room.units} Units`}</Text>
+                </View>
+                <Ionicons name="chevron-forward" size={24} color="#C0C0C0" />
+              </TouchableOpacity>
+            ))}
+            <View style={{ height: 80 }} />
           </ScrollView>
-          <Text style={styles.estimatedBill}>
-            Total Predicted Units: <Text style={{ color: "orange", fontFamily: "Lato-Bold" }}>
-              {totalUnits} Units
-            </Text>
-          </Text>
-        </View>
-        {rooms.map((room, index) => (
           <TouchableOpacity
-            key={index}
-            style={styles.roomCard}
-            onPress={() => {
-              setSelectedRoom(room);
-              navigation.navigate("RoomDetail");
-            }}
+            style={styles.addroomButton}
+            onPress={navigateToAddRoom}
           >
-            <View style={[styles.iconContainer, { backgroundColor: colors[index % colors.length] }]}>
-              {/* <Ionicons name={getIconName(room.alias)} size={24} color="#fff" /> */}
-            <MaterialIcons name={getIconName(room.alias)} size={24} color="#fff" />
-
-            </View>
-            <View style={styles.roomDetails}>
-              <Text style={styles.roomName}>{room.alias}</Text>
-              <Text style={styles.roomUnits}>{`${room.units} Units`}</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={24} color="#C0C0C0" />
+            {/* <Text style={styles.addroomButtonText}>+</Text> */}
+            <AntDesign name="pluscircle" size={50} color="#007AFF" />
           </TouchableOpacity>
-        ))}
-        <View style={{ height: 80 }} /> 
-      </ScrollView>
-      <TouchableOpacity style={styles.addroomButton} onPress={navigateToAddRoom}>
-          {/* <Text style={styles.addroomButtonText}>+</Text> */}
-          <AntDesign name="pluscircle" size={50} color="#007AFF" />
-        </TouchableOpacity>
         </>
       )}
       <Navbar />
@@ -167,7 +203,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   card: {
-    marginTop:5,
+    marginTop: 5,
     backgroundColor: "#fff",
     borderRadius: 24,
     paddingVertical: 20,
@@ -210,16 +246,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: "#000",
-    fontFamily: "Lato-Regular"
+    fontFamily: "Lato-Regular",
   },
   roomUnits: {
     fontSize: 16,
     color: "#666",
-    fontFamily: "Lato-Regular"
+    fontFamily: "Lato-Regular",
   },
   estimatedBill: {
     fontSize: 18,
-    fontWeight: 'normal',
+    fontWeight: "normal",
     fontFamily: "Lato-Regular",
     color: "#666",
     textAlign: "center",
@@ -235,7 +271,7 @@ const styles = StyleSheet.create({
     height: "20",
     alignSelf: "flex-end",
     borderRadius: 100, // Half of the height to make it round
-},
+  },
   addroomButtonText: {
     color: "white",
     // textAlign: "center",
@@ -266,7 +302,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center",
     fontSize: 18,
-    fontFamily: "Lato-Regular"
+    fontFamily: "Lato-Regular",
   },
   button: {
     borderRadius: 20,
@@ -277,6 +313,27 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontWeight: "bold",
+  },
+  buttonscard: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    marginTop: 20,
+  },
+  addButton: {
+    backgroundColor: "#007AFF",
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    width: "45%",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  addButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    marginLeft: 5,
   },
 });
 

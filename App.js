@@ -28,6 +28,7 @@ import * as Font from "expo-font";
 import { MenuProvider } from "react-native-popup-menu";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AddRoomScreen from "./Screens/AddRoom";
+import { StatusBar } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
@@ -66,6 +67,7 @@ const App = () => {
                   edges={["right", "top", "left"]}
                   style={{ flex: 1 }}
                 >
+                  <StatusBar barStyle="dark-content" />
                   <Stack.Navigator
                     initialRouteName="Splash"
                     screenOptions={ScreenOptions}
