@@ -10,8 +10,7 @@ import {
 import { useAuth } from "./Auth/AuthProvider";
 import { Colors } from "./Styles/GlobalStyles";
 
-// const API_URL = process.env.EXPO_PUBLIC_API_URL;
-const API_URL = "http://10.15.4.82:8000a"
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 const handleScrape = async (token) => {
   try {
