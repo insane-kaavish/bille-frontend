@@ -18,7 +18,7 @@ import { useRoom } from "./Components/RoomProvider";
 const RoomDetailScreen = ({ navigation }) => {
   const { room, categories, selectedRoom, fetchRoom, deleteAppliance, updateRoom, appliances, setAppliances, fetchRooms, deleteRoom } = useRoom();
   const [deletedAppliances, setDeletedAppliances] = useState([]);
-  const [usageError, setUsageError] = useState(false);
+  const [editMode, setEditMode] = useState(false); // Track edit mode state
 
   useEffect(() => {
     fetchRoom(selectedRoom.id);
@@ -104,6 +104,7 @@ const RoomDetailScreen = ({ navigation }) => {
                   style={styles.dropdownStyle}
                   textStyle={styles.dropdownTextStyle}
                   dropdownStyle={styles.dropdownMenuStyle}
+                  disabled={!editMode} // Disable dropdown when edit mode is false
                 />
               </View>
               <View style={styles.typeUsageContainer}>
@@ -121,6 +122,7 @@ const RoomDetailScreen = ({ navigation }) => {
                     style={styles.dropdownStyle}
                     textStyle={styles.dropdownTextStyle}
                     dropdownStyle={styles.dropdownMenuStyle}
+                    disabled={!editMode} // Disable dropdown when edit mode is false
                   />
                 </View>
                 <View style={styles.inputGroup}>
@@ -134,31 +136,45 @@ const RoomDetailScreen = ({ navigation }) => {
                   keyboardType="numeric"
                 />
                 <Text style={styles.subDescription}>hours per day</Text>
+
                 </View>
               </View>
-              <TouchableOpacity onPress={() => removeAppliance(index)} style={styles.iconButton}>
-                <MaterialCommunityIcons name="trash-can-outline" size={24} color="#FF6347" />
-              </TouchableOpacity>
+              {editMode && (
+                <TouchableOpacity onPress={() => removeAppliance(index)} style={styles.iconButton}>
+                  <MaterialCommunityIcons name="trash-can-outline" size={24} color="#FF6347" />
+                </TouchableOpacity>
+              )}
             </View>
           ))}
-          <TouchableOpacity style={styles.addButton} onPress={addAppliance}>
-            <MaterialCommunityIcons name="plus-circle-outline" size={24} color="white" style={styles.addIcon} />
-            <Text style={styles.addButtonText}>Add Appliance</Text>
-          </TouchableOpacity>
+          {editMode && (
+            <TouchableOpacity style={styles.addButton} onPress={addAppliance}>
+              <MaterialCommunityIcons name="plus-circle-outline" size={24} color="white" style={styles.addIcon} />
+              <Text style={styles.addButtonText}>Add Appliance</Text>
+            </TouchableOpacity>
+          )}
         </View>
-        
+        <View style={styles.buttonscard}>
+          {!editMode && (
+            <TouchableOpacity style={styles.addButton} onPress={() => setEditMode(true)}>
+              <MaterialCommunityIcons name="pencil-outline" size={24} color="white" style={styles.saveIcon} />
+              <Text style={styles.addButtonText}>Edit</Text>
+            </TouchableOpacity>
+          )}
+          {editMode && (
+            <View style={styles.buttonscard}>
+              <TouchableOpacity style={styles.addButton} onPress={saveData}>
+                <MaterialCommunityIcons name="content-save-cog-outline" size={24} color="white" style={styles.saveIcon} />
+                <Text style={styles.addButtonText}>Save</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={{ ...styles.addButton, backgroundColor: 'red' }} onPress={deleteRoomAndAppliances}>
+                <MaterialCommunityIcons name="trash-can-outline" size={24} color="white" style={styles.saveIcon} />
+                <Text style={styles.addButtonText}>Delete</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
         <View style={{ height: 70 }} />
       </ScrollView>
-      <View style={styles.buttonscard}>
-        <TouchableOpacity style={styles.saveButton} onPress={saveData}>
-          <MaterialCommunityIcons name="content-save-cog-outline" size={24} color="white" style={styles.saveIcon} />
-          <Text style={styles.saveButtonText}>Save</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.saveButton} onPress={deleteRoomAndAppliances}>
-          <MaterialCommunityIcons name="trash-can-outline" size={24} color="white" style={styles.saveIcon} />
-          <Text style={styles.saveButtonText}>Delete Room</Text>
-      </TouchableOpacity>
-        </View>
       <Navbar />
     </>
   );
@@ -273,20 +289,10 @@ const styles = StyleSheet.create({
     borderColor: '#E0E0E0',
     borderRadius: 8,
     paddingLeft: 10,
-    paddingRight: 10,
     fontSize: 14,
     backgroundColor: '#FFFFFF',
     flex: 1,
     marginLeft: 10,
-    maxWidth: 50,
-    // align the input text to the center of the field
-    textAlign: 'center',
-  },
-  subDescription: {
-    fontSize: 12,
-    fontFamily: 'Lato-Regular',
-    color: '#666',
-    marginLeft: 5,
   },
   addButton: {
     flexDirection: 'row',
@@ -294,25 +300,35 @@ const styles = StyleSheet.create({
     backgroundColor: '#007AFF',
     borderRadius: 18,
     padding: 10,
-    alignItems: 'center',
-    width: '58%',
     alignSelf: 'center',
-    marginTop: 10,
+    margin: 10,
   },
   addButtonText: {
     color: 'white',
     fontSize: 16,
     fontFamily: 'Lato-Bold',
-    marginLeft: 3,
   },
   saveButton: {
     flexDirection: 'row',
-    alignItems: 'center',
+    // alignItems: 'center',
     backgroundColor: '#007AFF',
     borderRadius: 16,
-    padding: 12,
+    padding: 16,
     alignItems: 'center',
     width: '35%',
+    alignSelf: 'center',
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  editButton: {
+    flexDirection: 'row',
+    backgroundColor: '#007AFF',
+    borderRadius: 16,
+    padding: 16,
+    // alignItems: 'center',
+    justifyContent: 'center', // Center horizontally
+    width: '35%',
+    marginHorizontal: "33%",
     alignSelf: 'center',
     marginTop: 20,
     marginBottom: 20,
@@ -337,17 +353,15 @@ const styles = StyleSheet.create({
     marginRight: 8,
   }, 
   buttonscard: {
-    // position: 'absolute',
-    marginBottom: "12%",
+    alignItems: 'center',
+    alignSelf: 'center',
     backgroundColor: 'transparent', // Transparent background
     flexDirection: 'row',
-    justifyContent: 'space-between',
     paddingHorizontal: 20,
-    // paddingBottom: "30",
+    paddingBottom: 20,
     zIndex: 1, // Ensure it appears above other components
   },
 });
 
 
 export default RoomDetailScreen;
-
