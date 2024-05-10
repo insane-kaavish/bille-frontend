@@ -132,22 +132,22 @@ const RoomDetailScreen = ({ navigation }) => {
         </View>
         <View style={styles.buttonscard}>
           {!editMode && (
-            <TouchableOpacity style={styles.editButton} onPress={() => setEditMode(true)}>
+            <TouchableOpacity style={styles.addButton} onPress={() => setEditMode(true)}>
               <MaterialCommunityIcons name="pencil-outline" size={24} color="white" style={styles.saveIcon} />
-              <Text style={styles.saveButtonText}>Edit</Text>
+              <Text style={styles.addButtonText}>Edit</Text>
             </TouchableOpacity>
           )}
           {editMode && (
-            <>
-              <TouchableOpacity style={styles.saveButton} onPress={saveData}>
+            <View style={styles.buttonscard}>
+              <TouchableOpacity style={styles.addButton} onPress={saveData}>
                 <MaterialCommunityIcons name="content-save-cog-outline" size={24} color="white" style={styles.saveIcon} />
-                <Text style={styles.saveButtonText}>Save</Text>
+                <Text style={styles.addButtonText}>Save</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.saveButton} onPress={deleteRoomAndAppliances}>
+              <TouchableOpacity style={{ ...styles.addButton, backgroundColor: 'red' }} onPress={deleteRoomAndAppliances}>
                 <MaterialCommunityIcons name="trash-can-outline" size={24} color="white" style={styles.saveIcon} />
-                <Text style={styles.saveButtonText}>Delete</Text>
+                <Text style={styles.addButtonText}>Delete</Text>
               </TouchableOpacity>
-            </>
+            </View>
           )}
         </View>
         <View style={{ height: 70 }} />
@@ -277,16 +277,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#007AFF',
     borderRadius: 18,
     padding: 10,
-    alignItems: 'center',
-    width: '58%',
     alignSelf: 'center',
-    marginTop: 10,
+    margin: 10,
   },
   addButtonText: {
     color: 'white',
     fontSize: 16,
     fontFamily: 'Lato-Bold',
-    marginLeft: 3,
   },
   saveButton: {
     flexDirection: 'row',
@@ -333,11 +330,10 @@ const styles = StyleSheet.create({
     marginRight: 8,
   }, 
   buttonscard: {
-    // position: 'absolute',
-    
+    alignItems: 'center',
+    alignSelf: 'center',
     backgroundColor: 'transparent', // Transparent background
     flexDirection: 'row',
-    justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingBottom: 20,
     zIndex: 1, // Ensure it appears above other components
