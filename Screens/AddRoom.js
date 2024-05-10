@@ -6,31 +6,58 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  Alert,
 } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons'; // Ensure you have the latest version
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ModalDropdown from 'react-native-modal-dropdown';
 import Navbar from './Components/Navbar';
 import Header from './Components/Header';
 
 import { useRoom } from './Components/RoomProvider';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const AddRoomScreen = ({ navigation }) => {
   const { categories, addRoom, fetchRooms } = useRoom();
   const [roomName, setRoomName] = useState('');
   const [appliances, setAppliances] = useState([
-    { alias: '', category: 'Appliance', sub_category: 'Type', daily_usage: '0' },
+    { alias: '', category: '', sub_category: '', daily_usage: '0' },
   ]);
 
   const addAppliance = () => {
-    setAppliances([...appliances, { alias: '', category: 'Appliance', sub_category: 'Type', daily_usage: '0' }]);
+    // Check if the last appliance is fully set before adding a new one
+    if (appliances.length === 0) {
+      setAppliances([{ alias: '', category: '', sub_category: '', daily_usage: '0' }]);
+      return;
+    }
+    const lastAppliance = appliances[appliances.length - 1];
+    if (lastAppliance.category && lastAppliance.sub_category && lastAppliance.daily_usage) {
+      setAppliances([...appliances, { alias: '', category: '', sub_category: '', daily_usage: '0' }]);
+    } else {
+      Alert.alert("Error", "Please complete filling out the previous appliance's details.");
+    }
   };
 
   const removeAppliance = (index) => {
-    setAppliances(appliances.filter((_, i) => i !== index));
+    setAppliances(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleUsageChange = (text, index) => {
+    let usage = parseFloat(text);
+    if (usage < 0 || usage > 24 || isNaN(usage)) {
+      Alert.alert("Invalid Input", "Usage must be a number between 0 and 24.");
+      return;
+    }
+    const newAppliances = [...appliances];
+    newAppliances[index].daily_usage = text;
+    setAppliances(newAppliances);
   };
 
   const saveData = () => {
+    // Ensure all fields are filled
+    if (!roomName.trim() || appliances.some(appliance => !appliance.category || !appliance.sub_category || appliance.daily_usage === '')) {
+      Alert.alert("Error", "Please fill all fields before saving.");
+      return;
+    }
+
     const roomData = { alias: roomName, appliances: appliances };
     try {
       addRoom(roomData);
@@ -49,7 +76,7 @@ const AddRoomScreen = ({ navigation }) => {
       <ScrollView style={styles.container}>
         <View style={styles.card}>
           <View style={styles.inputGroup}>
-          <MaterialCommunityIcons name="home-outline" size={30} color="#007AFF" style={styles.iconStyle} />
+            <MaterialCommunityIcons name="home-outline" size={30} color="#007AFF" style={styles.iconStyle} />
             <Text style={styles.label}>Room Name:</Text>
             <TextInput
               style={styles.roomNameInput}
@@ -65,7 +92,7 @@ const AddRoomScreen = ({ navigation }) => {
                 <Text style={styles.label}>Appliance:</Text>
                 <ModalDropdown
                   options={categories.map(category => category.name)}
-                  defaultValue={appliance.category}
+                  defaultValue={appliance.category ? appliance.category : 'Select'}
                   onSelect={(selectedIndex, value) => {
                     const newAppliances = [...appliances];
                     newAppliances[index].category = value;
@@ -83,7 +110,7 @@ const AddRoomScreen = ({ navigation }) => {
                   <Text style={styles.label}>Type:</Text>
                   <ModalDropdown
                     options={getSubcategoryOptions(appliance.category)}
-                    defaultValue={appliance.sub_category}
+                    defaultValue={appliance.sub_category ? appliance.sub_category : 'Select'}
                     onSelect={(selectedIndex, value) => {
                       const newAppliances = [...appliances];
                       newAppliances[index].sub_category = value;
@@ -99,15 +126,12 @@ const AddRoomScreen = ({ navigation }) => {
                   <Text style={styles.label}>Usage:</Text>
                   <TextInput
                     style={styles.usageInput}
-                    onChangeText={(text) => {
-                      const newAppliances = [...appliances];
-                      newAppliances[index].daily_usage = text;
-                      setAppliances(newAppliances);
-                    }}
-                    value={appliance.daily_usage}
-                    placeholder="Usage"
+                    onChangeText={(text) => handleUsageChange(text, index)}
+                    value={appliance.daily_usage.toString()}
+                    placeholder="0"
                     keyboardType="numeric"
                   />
+                  <Text style={styles.subDescription}>hours per day</Text>
                 </View>
               </View>
               <TouchableOpacity onPress={() => removeAppliance(index)} style={styles.iconButton}>
@@ -125,9 +149,7 @@ const AddRoomScreen = ({ navigation }) => {
           <Text style={styles.saveButtonText}>Save Room</Text>
         </TouchableOpacity>
         <View style={{ height: 70 }} />
-
       </ScrollView>
-
       <Navbar />
     </>
   );
@@ -241,10 +263,14 @@ const styles = StyleSheet.create({
     borderColor: '#E0E0E0',
     borderRadius: 8,
     paddingLeft: 10,
+    paddingRight: 10,
     fontSize: 14,
     backgroundColor: '#FFFFFF',
     flex: 1,
     marginLeft: 10,
+    maxWidth: 50,
+    // align the input text to the center of the field
+    textAlign: 'center',
   },
   addButton: {
     flexDirection: 'row',
@@ -293,6 +319,12 @@ const styles = StyleSheet.create({
   },
   saveIcon: {
     marginRight: 8,
+  },
+  subDescription: {
+    fontSize: 12,
+    color: '#666',
+    fontFamily: 'Lato-Regular',
+    marginLeft: 5,
   },
 });
 
