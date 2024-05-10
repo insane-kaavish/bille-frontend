@@ -1,22 +1,24 @@
 {
   "expo": {
-    "name": "app-bille-fe",
+    "name": "Bill-E",
     "slug": "app-bille-fe",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Bill-E.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/Splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "assets": [
       "./extra/fonts/Lato",
+      "./extra/fonts/Roboto",
       "./extra/fonts/Outfit/static"
     ],
     "assetBundlePatterns": [
       "./extra/fonts/Lato/*",
+      "./extra/fonts/Roboto/*",
       "./extra/fonts/Outfit/static/*"
     ],
     
@@ -30,7 +32,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/Bill-E.png",
         "backgroundColor": "#ffffff"
       },
       "usesCleartextTraffic": true,
