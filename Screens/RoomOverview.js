@@ -32,15 +32,16 @@ const RoomOverviewScreen = () => {
   }, [selectedRoom, authToken]);
 
   const colors = [
-    "#6a1b9a", // Deep purple
-    "#00695c", // Dark teal
-    "#d32f2f", // Vibrant red
-    "#f9a825", // Bright yellow
-    "#0288d1", // Vivid blue
-    "#c2185b", // Rich pink
-    "#f57c00", // Deep orange
-    "#2e7d32", // Dense green
+    "#64b5f6", // Light blue
+    "#ff8a65", // Light orange
+    "#aed581", // Light green
+    "#ffcdd2", // Light pink
+    "#b2ebf2", // Light cyan
+    "#e1bee7", // Light purple
+    "#c5cae9", // Light indigo
+    "#f0f4c3", // Light lime
   ];
+
 
   const totalUnits = rooms.reduce((total, room) => total + room.units, 0);
 
