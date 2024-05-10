@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  Alert,
 } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons'; // Ensure you have the latest version
 import ModalDropdown from "react-native-modal-dropdown";
@@ -26,7 +27,17 @@ const RoomDetailScreen = ({ navigation }) => {
   const getSubcategoryOptions = (category) => categories.find(cat => cat.name === category)?.sub_categories || [];
 
   const addAppliance = () => {
-    setAppliances([...appliances, { alias: "", category: "Appliance", sub_category: "Type", daily_usage: "0" }]);
+    // Check if the last appliance is fully set before adding a new one
+    if (appliances.length === 0) {
+      setAppliances([{ alias: '', category: '', sub_category: '', daily_usage: '0' }]);
+      return;
+    }
+    const lastAppliance = appliances[appliances.length - 1];
+    if (lastAppliance.category && lastAppliance.sub_category && lastAppliance.daily_usage) {
+      setAppliances([...appliances, { alias: '', category: '', sub_category: '', daily_usage: '0' }]);
+    } else {
+      Alert.alert("Error", "Please complete filling out the previous appliance's details.");
+    }
   };
 
   const removeAppliance = (index) => {
@@ -35,15 +46,32 @@ const RoomDetailScreen = ({ navigation }) => {
     setDeletedAppliances([...deletedAppliances, appliances[index]]);
   };
 
+  const handleUsageChange = (text, index) => {
+    let usage = parseFloat(text);
+    if (usage < 0 || usage > 24 || isNaN(usage)) {
+      Alert.alert("Invalid Input", "Usage must be a number between 0 and 24.");
+      return;
+    }
+    const newAppliances = [...appliances];
+    newAppliances[index].daily_usage = text;
+    setAppliances(newAppliances);
+  };
+
   const saveData = () => {
-    const data = {
-      ...room,
-      appliances: appliances,
-    };
-    updateRoom(data);
-    deletedAppliances.forEach(appliance => deleteAppliance(appliance.id));
-    navigation.goBack();
-    fetchRooms();
+    // Ensure all fields are filled
+    if (!roomName.trim() || appliances.some(appliance => !appliance.category || !appliance.sub_category || appliance.daily_usage === '')) {
+      Alert.alert("Error", "Please fill all fields before saving.");
+      return;
+    }
+
+    const roomData = { alias: roomName, appliances: appliances };
+    try {
+      addRoom(roomData);
+      fetchRooms();
+      navigation.goBack();
+    } catch (error) {
+      console.error("Failed to add room", error);
+    }
   };
 
   const deleteRoomAndAppliances = () => {
@@ -66,7 +94,7 @@ const RoomDetailScreen = ({ navigation }) => {
                 <Text style={styles.label}>Appliance:</Text>
                 <ModalDropdown
                   options={categories.map(category => category.name)}
-                  defaultValue={appliance.category}
+                  defaultValue={appliance.category ? appliance.category : 'Select'}
                   onSelect={(selectedIndex, value) => {
                     const newAppliances = [...appliances];
                     newAppliances[index].category = value;
@@ -84,7 +112,7 @@ const RoomDetailScreen = ({ navigation }) => {
                   <Text style={styles.label}>Type:</Text>
                   <ModalDropdown
                     options={getSubcategoryOptions(appliance.category)}
-                    defaultValue={appliance.sub_category}
+                    defaultValue={appliance.sub_category ? appliance.sub_category : 'Select'}
                     onSelect={(selectedIndex, value) => {
                       const newAppliances = [...appliances];
                       newAppliances[index].sub_category = value;
@@ -100,14 +128,8 @@ const RoomDetailScreen = ({ navigation }) => {
                   <Text style={styles.label}>Usage:</Text>
                   <TextInput
                   style={styles.usageInput}
-                  onChangeText={(text) =>
-                    setAppliances((prevState) => {
-                      const updatedAppliances = [...prevState];
-                      updatedAppliances[index].daily_usage = text;
-                      return updatedAppliances;
-                    })
-                  }
-                  value={`${appliance.daily_usage}`}
+                  onChangeText={(text) => handleUsageChange(text, index)}
+                  value={appliance.daily_usage.toString()}
                   placeholder="0"
                   keyboardType="numeric"
                 />
