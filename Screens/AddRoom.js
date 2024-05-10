@@ -101,6 +101,7 @@ const AddRoomScreen = ({ navigation }) => {
                   }}
                   style={styles.dropdownStyle}
                   textStyle={styles.dropdownTextStyle}
+                  defaultIndex={appliance.category ? categories.findIndex(cat => cat.name === appliance.category) : 0}
                   dropdownStyle={styles.dropdownMenuStyle}
                 />
               </View>
@@ -118,6 +119,7 @@ const AddRoomScreen = ({ navigation }) => {
                     }}
                     style={styles.dropdownStyle}
                     textStyle={styles.dropdownTextStyle}
+                    defaultIndex={appliance.sub_category ? getSubcategoryOptions(appliance.category).findIndex(subcat => subcat === appliance.sub_category) : 0}
                     dropdownStyle={styles.dropdownMenuStyle}
                   />
                 </View>

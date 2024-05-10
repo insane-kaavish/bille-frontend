@@ -59,19 +59,19 @@ const RoomDetailScreen = ({ navigation }) => {
 
   const saveData = () => {
     // Ensure all fields are filled
-    if (!roomName.trim() || appliances.some(appliance => !appliance.category || !appliance.sub_category || appliance.daily_usage === '')) {
+    if (appliances.some(appliance => !appliance.category || !appliance.sub_category || appliance.daily_usage === '')) {
       Alert.alert("Error", "Please fill all fields before saving.");
       return;
     }
 
-    const roomData = { alias: roomName, appliances: appliances };
-    try {
-      addRoom(roomData);
-      fetchRooms();
-      navigation.goBack();
-    } catch (error) {
-      console.error("Failed to add room", error);
-    }
+    const data = {
+      ...room,
+      appliances: appliances,
+    };
+    updateRoom(data);
+    deletedAppliances.forEach(appliance => deleteAppliance(appliance.id));
+    navigation.goBack();
+    fetchRooms();
   };
 
   const deleteRoomAndAppliances = () => {
@@ -104,6 +104,7 @@ const RoomDetailScreen = ({ navigation }) => {
                   style={styles.dropdownStyle}
                   textStyle={styles.dropdownTextStyle}
                   dropdownStyle={styles.dropdownMenuStyle}
+                  defaultIndex={appliance.category ? categories.findIndex(cat => cat.name === appliance.category) : 0}
                   disabled={!editMode} // Disable dropdown when edit mode is false
                 />
               </View>
@@ -122,6 +123,7 @@ const RoomDetailScreen = ({ navigation }) => {
                     style={styles.dropdownStyle}
                     textStyle={styles.dropdownTextStyle}
                     dropdownStyle={styles.dropdownMenuStyle}
+                    defaultIndex={appliance.sub_category ? getSubcategoryOptions(appliance.category).findIndex(subcat => subcat === appliance.sub_category) : 0}
                     disabled={!editMode} // Disable dropdown when edit mode is false
                   />
                 </View>
@@ -289,10 +291,14 @@ const styles = StyleSheet.create({
     borderColor: '#E0E0E0',
     borderRadius: 8,
     paddingLeft: 10,
+    paddingRight: 10,
     fontSize: 14,
     backgroundColor: '#FFFFFF',
     flex: 1,
     marginLeft: 10,
+    maxWidth: 50,
+    // align the input text to the center of the field
+    textAlign: 'center',
   },
   addButton: {
     flexDirection: 'row',
@@ -360,6 +366,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 20,
     zIndex: 1, // Ensure it appears above other components
+  },
+  subDescription: {
+    fontSize: 12,
+    fontFamily: 'Lato-Regular',
+    color: '#333',
+    marginLeft: 10,
   },
 });
 
