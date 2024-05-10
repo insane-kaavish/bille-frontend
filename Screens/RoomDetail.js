@@ -15,7 +15,7 @@ import Header from "./Components/Header";
 import { useRoom } from "./Components/RoomProvider";
 
 const RoomDetailScreen = ({ navigation }) => {
-  const { room, categories, selectedRoom, fetchRoom, deleteAppliance, updateRoom, appliances, setAppliances, fetchRooms } = useRoom();
+  const { room, categories, selectedRoom, fetchRoom, deleteAppliance, updateRoom, appliances, setAppliances, fetchRooms, deleteRoom } = useRoom();
   const [deletedAppliances, setDeletedAppliances] = useState([]);
 
   useEffect(() => {
@@ -40,6 +40,14 @@ const RoomDetailScreen = ({ navigation }) => {
       appliances: appliances,
     };
     updateRoom(data);
+    deletedAppliances.forEach(appliance => deleteAppliance(appliance.id));
+    navigation.goBack();
+    fetchRooms();
+  };
+
+  const deleteRoomAndAppliances = () => {
+    // Delete room and its appliances
+    deleteRoom(selectedRoom.id);
     deletedAppliances.forEach(appliance => deleteAppliance(appliance.id));
     navigation.goBack();
     fetchRooms();
@@ -114,12 +122,19 @@ const RoomDetailScreen = ({ navigation }) => {
             <Text style={styles.addButtonText}>Add Appliance</Text>
           </TouchableOpacity>
         </View>
+        
+        <View style={{ height: 70 }} />
+      </ScrollView>
+      <View style={styles.buttonscard}>
         <TouchableOpacity style={styles.saveButton} onPress={saveData}>
           <MaterialCommunityIcons name="content-save-cog-outline" size={24} color="white" style={styles.saveIcon} />
           <Text style={styles.saveButtonText}>Save</Text>
         </TouchableOpacity>
-        <View style={{ height: 70 }} />
-      </ScrollView>
+        <TouchableOpacity style={styles.saveButton} onPress={deleteRoomAndAppliances}>
+          <MaterialCommunityIcons name="trash-can-outline" size={24} color="white" style={styles.saveIcon} />
+          <Text style={styles.saveButtonText}>Delete Room</Text>
+      </TouchableOpacity>
+        </View>
       <Navbar />
     </>
   );
@@ -286,6 +301,16 @@ const styles = StyleSheet.create({
   },
   saveIcon: {
     marginRight: 8,
+  }, 
+  buttonscard: {
+    // position: 'absolute',
+    marginBottom: "12%",
+    backgroundColor: 'transparent', // Transparent background
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    // paddingBottom: "30",
+    zIndex: 1, // Ensure it appears above other components
   },
 });
 
