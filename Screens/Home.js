@@ -8,7 +8,7 @@ import {
   Image,
   Modal,
   TextInput,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import { useAuth } from "./Auth/AuthProvider";
 import { Colors } from "./Styles/GlobalStyles";
@@ -16,13 +16,36 @@ import { useBill } from "./Components/BillProvider";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
+const updateUser = async (authToken, data) => {
+  try {
+    const response = await fetch(`${API_URL}/update_user/`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authToken ? `Token ${authToken}` : "",
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      throw new Error("Failed to update user data");
+    }
+    console.log("User data updated successfully");
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
 const HomeScreen = ({ navigation }) => {
-  const { authToken, logout } = useAuth(); // Assuming logout method is available via useAuth
+  const { authToken, logout } = useAuth();
   const { fetchPredictedData } = useBill();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [error, setError] = useState("");
+  const [errorCode, setErrorCode] = useState(0);
+  const [isError, setIsError] = useState(false);
+  const [scrape, setScrape] = useState(false);
   const [retry, setRetry] = useState(false);
-  const [updateAccount, setUpdateAccount] = useState(false);
-  const [accountNumber, setAccountNumber] = useState('');
-  const [showAccountModal, setShowAccountModal] = useState(false);
+  const [accountNumber, setAccountNumber] = useState("");
+  const [inputError, setInputError] = useState(false);
   const catPosition = useRef(new Animated.Value(-100)).current;
 
   const handleScrape = async () => {
@@ -34,40 +57,49 @@ const HomeScreen = ({ navigation }) => {
           Authorization: `Token ${authToken}`,
         },
       });
-      if (response.status !== 202) return false;
+      if (response.status !== 202)
+        throw new Error("Failed to initiate scraping");
       return response;
     } catch (error) {
       console.error(error);
-      return false;
+      return null;
     }
   };
 
   const checkStatus = async (task_id) => {
     try {
-      const response = await fetch(`${API_URL}/task_status/?task_id=${task_id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${authToken}`,
-        },
-      });
+      const response = await fetch(
+        `${API_URL}/task_status/?task_id=${task_id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${authToken}`,
+          },
+        }
+      );
       const data = await response.json();
-      if (data.status === "SUCCESS") {
-        if (data.result.status === 500) {
-          console.error("Error: Failed to scrape data");
-          setRetry(true);
-          return false
-        }
-        if (data.result.status === 404) {
-          console.error("Error: Account not found");
-          setUpdateAccount(true);
-          return false;
-        }
-        return true;
+      console.log(data);
+      if (data.status === "SUCCESS" && data.result.status !== 200) {
+        const errorMessages = {
+          500: "Failed to scrape data. Please retry.",
+          404: "Account not found. Please update your account number.",
+        };
+        setError(
+          errorMessages[data.result.status] || "An unknown error occurred."
+        );
+        setErrorCode(data.result.status);
+        setModalVisible(true);
+        setIsError(true);
+        return false;
       }
-      return false;
+      return data.status === "SUCCESS";
     } catch (error) {
       console.error(error);
+      setError("An error occurred while checking status.");
+      setModalVisible(true);
+      setIsError(true);
+      return false;
     }
   };
 
@@ -88,6 +120,8 @@ const HomeScreen = ({ navigation }) => {
     ).start();
   }, []);
 
+  const intervalIdRef = useRef(null);
+
   useEffect(() => {
     const fetchData = async () => {
       const response = await handleScrape();
@@ -95,85 +129,105 @@ const HomeScreen = ({ navigation }) => {
         const data = await response.json();
         console.log(data);
         const { task_id } = data;
-        let status = false;
-        const intervalId = setInterval(async () => {
-          status = await checkStatus(task_id);
+        intervalIdRef.current = setInterval(async () => {
+          const status = await checkStatus(task_id);
           if (status) {
-            clearInterval(intervalId);
+            clearInterval(intervalIdRef.current);
             fetchPredictedData();
             navigation.navigate("Dashboard");
           }
-          if (retry || updateAccount) clearInterval(intervalId);
         }, 15000);
       }
     };
     fetchData();
-  }, [authToken, navigation]);
+
+    // Clear interval on component unmount or when fetchData is called again
+    return () => {
+      if (intervalIdRef.current) {
+        clearInterval(intervalIdRef.current);
+      }
+    };
+  }, [authToken, scrape]); // re-run the effect if authToken or scrape changes
+
+  useEffect(() => {
+    if (isError) {
+      if (intervalIdRef.current) {
+        clearInterval(intervalIdRef.current);
+        console.log("Error occurred, stopping the interval.");
+      }
+    }
+  }, [isError]); // this effect runs when isError changes
 
   const handleRetry = async () => {
     setRetry(false);
-    const response = await handleScrape();
-    if (response) {
-      const data = await response.json();
-      console.log(data);
-      const { task_id } = data;
-      let status = false;
-      const intervalId = setInterval(async () => {
-        status = await checkStatus(task_id);
-        if (status) {
-          clearInterval(intervalId);
-          navigation.navigate("Dashboard");
-        }
-      }, 15000);
-    }
+    setIsError(false);
+    setScrape(true);
+    setModalVisible(false);
   };
 
   const handleLogout = () => {
-    setUpdateAccount(false);
     logout();
-    navigation.navigate("Signin");
+    setModalVisible(false);
     setRetry(false);
+    setIsError(false);
+    navigation.navigate("Signin");
+  };
+
+  const handleUpdateAccount = async () => {
+    if (!accountNumber) {
+      setError("Account number cannot be empty.");
+      setModalVisible(true);
+      return;
+    }
+    try {
+      await updateUser(authToken, { ke_num: accountNumber });
+      setModalVisible(false);
+      setScrape(true);
+    } catch (error) {
+      console.error("Error:", error);
+      setError("Failed to update account number.");
+      setModalVisible(true);
+    }
   };
 
   return (
     <View style={[styles.container, { backgroundColor: Colors.color }]}>
-      <Modal visible={retry} animationType="slide"
-          transparent={true}>
+      <Modal visible={modalVisible} animationType="slide" transparent={true}>
         <View style={styles.modalView}>
-          <Text style={styles.modalTitle}>A problem occurred, what would you like to do?</Text>
-          <TouchableOpacity style={styles.button} onPress={handleRetry}>
-            <Text style={styles.buttonText}>Retry</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleLogout}>
-            <Text style={styles.buttonText}>Logout</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
-      <Modal visible={updateAccount} transparent>
-        <View style={styles.modalView}>
-          <Text style={styles.modalTitle}>Account not found, please update your account number or logout.</Text>
-          <TouchableOpacity style={styles.button} onPress={() => setShowAccountModal(true)}>
-            <Text style={styles.buttonText}>Update Account Number</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleLogout}>
-            <Text style={styles.buttonText}>Logout</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
-      <Modal visible={showAccountModal} transparent>
-        <View style={styles.modalContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your new account number"
-            value={accountNumber}
-            onChangeText={setAccountNumber}
-          />
-          <TouchableOpacity style={styles.button} onPress={() => {
-            // Add logic to handle account update
-            setShowAccountModal(false);
-          }}>
-            <Text style={styles.buttonText}>Submit</Text>
-          </TouchableOpacity>
+          <Text style={styles.modalTitle}>{error}</Text>
+            {errorCode === 404 && (
+              <View
+              style={[
+                styles.inputContainer,
+                { borderColor: inputError ? "red" : "#ccc" },
+              ]}
+            >
+              <TextInput
+                style={styles.input}
+                placeholder="Account Number"
+                value={accountNumber}
+                onChangeText={setAccountNumber}
+              />
+              </View>
+            )}
+          <View style={styles.buttonFlex}>
+            {errorCode === 404 && (
+              <TouchableOpacity
+                style={styles.addButton}
+                onPress={handleUpdateAccount}
+              >
+                <Text style={styles.addButtonText}>Update Account</Text>
+              </TouchableOpacity>
+            )}
+            {errorCode === 500 && (
+            <TouchableOpacity style={styles.addButton} onPress={handleRetry}>
+              <Text style={styles.addButtonText}>Retry</Text>
+            </TouchableOpacity>
+            )}
+            <TouchableOpacity style={styles.addButton} onPress={handleLogout}>
+              <Text style={styles.addButtonText}>Logout</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
       <View style={styles.backgroundCircle} />
@@ -246,17 +300,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
-  },
-  modalText: {
-    color: "white",
-    fontSize: 20,
-    marginBottom: 20,
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background
   },
   input: {
-    width: '80%',
+    width: "80%",
     padding: 10,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 10,
     marginBottom: 20,
   },
@@ -272,13 +321,8 @@ const styles = StyleSheet.create({
     shadowRadius: 20, // Increased radius to blur edges more
     elevation: 10, // Adjust elevation for Android to match visual consistency
     justifyContent: "center", // Center the modal content vertically
-    position: "absolute", // Positions the modal view absolutely relative to its parent
-    top: "50%", // Places the top edge of the modal at the center of the parent
-    left: "50%", // Places the left edge of the modal at the center of the parent
-    transform: [
-      { translateX: -Dimensions.get("window").width * 0.5 }, // Shifts the modal to the left by 40% of the screen width
-      { translateY: -Dimensions.get("window").height * 0.31 },
-    ],
+    alignSelf: "center", // Center the modal content horizontally
+    top: "20%",
   },
   modalTitle: {
     fontSize: 24, // Increased font size for greater emphasis
@@ -286,6 +330,25 @@ const styles = StyleSheet.create({
     color: "#007AFF", // A strong but not overwhelming color
     marginBottom: 20, // Increased bottom margin to separate from body text
     textAlign: "center", // Centered text to match the modal's alignment
+  },
+  buttonFlex: {
+    flexDirection: "row", // Align buttons horizontally
+    justifyContent: "space-between", // Distribute space evenly between buttons
+    padding: 10, // Add padding around the buttons for touchability
+  },
+  addButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#007AFF",
+    borderRadius: 18,
+    padding: 10,
+    alignSelf: "center",
+    margin: 10,
+  },
+  addButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontFamily: "Lato-Bold",
   },
 });
 
