@@ -204,12 +204,24 @@ const SignupScreen = ({ navigation }) => {
     };
 
     const response = await signup(data);
-    if (response.status !== 201) {
+    if (response.status === 201) {
+      console.log("successfully signed up");
+      navigation.navigate("Home");
       setLoading(false);
       return;
     }
-    console.log("successfully signed up");
-    navigation.navigate("Home");
+    if (response.status === 409) {
+      setLoading(false);
+      setError("User already exists");
+      setShowError(true);
+      return;
+    }
+    if (response.status === 500) {
+      setLoading(false);
+      setError("Internal server error. Please try again later");
+      setShowError(true);
+      return;
+    }
     setLoading(false);
   };
 
