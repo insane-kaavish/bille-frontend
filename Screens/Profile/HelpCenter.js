@@ -24,7 +24,7 @@ const HelpCenterScreen = ({ navigation }) => {
           </Text>
         </View>
       </ScrollView>
-      <Navbar />
+      <Navbar navigation={navigation} />
     </>
   );
 };

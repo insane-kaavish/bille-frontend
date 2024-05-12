@@ -23,8 +23,7 @@ import { Colors } from "react-native/Libraries/NewAppScreen";
 
 const screenWidth = Dimensions.get("window").width;
 
-const PredictionScreen = () => {
-  const navigation = useNavigation();
+const PredictionScreen = ({ navigation }) => {
   const { authToken } = useAuth();
   const { units, totalCost, actualMonthly, predictedMonthly, slab, barGraph, labels, fetchMonthlyData } = useBill();
   const [fillPercentage, setFillPercentage] = useState(0);
@@ -35,7 +34,7 @@ const PredictionScreen = () => {
     console.log("Prediction screen mounted")
     fetchMonthlyData();
     setFillPercentage(units % 100);
-  }, []);
+  }, [navigation]);
 
   const data = {
     labels: labels,
@@ -134,7 +133,7 @@ const PredictionScreen = () => {
             </Text>
           </View>
         </ScrollView>
-        <Navbar />
+        <Navbar navigation={navigation} />
       </View>
     </>
   );

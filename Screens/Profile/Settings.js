@@ -60,7 +60,7 @@ const SettingsScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-      <Navbar />
+      <Navbar navigation={navigation} />
     </>
   );
 };

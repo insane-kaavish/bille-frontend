@@ -20,8 +20,7 @@ import Navbar from "./Components/Navbar";
 import { useAuth } from "./Auth/AuthProvider";
 import { useRoom } from "./Components/RoomProvider";
 
-const RoomOverviewScreen = () => {
-  const navigation = useNavigation();
+const RoomOverviewScreen = ({ navigation }) => {
   const { authToken } = useAuth();
   const {
     rooms,
@@ -39,7 +38,7 @@ const RoomOverviewScreen = () => {
     fetchCategories();
     setRoom(null);
     setAppliances([]);
-  }, [selectedRoom, authToken]);
+  }, [selectedRoom, navigation]);
 
   const colors = [
     "#64b5f6", // Light blue
@@ -191,7 +190,7 @@ const RoomOverviewScreen = () => {
           </TouchableOpacity>
         </>
       )}
-      <Navbar />
+      <Navbar navigation={navigation} />
     </>
   );
 };

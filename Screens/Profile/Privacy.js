@@ -4,8 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import Header from "../Components/Header";
 import Navbar from "../Components/Navbar";
 
-const PrivacyScreen = () => {
-  const navigation = useNavigation();
+const PrivacyScreen = ({ navigation }) => {
 
   return (
     <>
@@ -64,7 +63,7 @@ const PrivacyScreen = () => {
         <View style={{ height: 40 }} />
       </ScrollView>
 
-      <Navbar />
+      <Navbar navigation={navigation} />
     </>
   );
 };

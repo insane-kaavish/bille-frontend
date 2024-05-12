@@ -181,7 +181,7 @@ const Insightscreen = ({ navigation }) => {
 			  </Text>
 			</View>
 		  </ScrollView>
-		  <Navbar />
+		  <Navbar navigation={navigation} />
 		</>
 	  );
 	};

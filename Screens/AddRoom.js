@@ -152,7 +152,7 @@ const AddRoomScreen = ({ navigation }) => {
         </TouchableOpacity>
         <View style={{ height: 70 }} />
       </ScrollView>
-      <Navbar />
+      <Navbar navigation={navigation} />
     </>
   );
 };

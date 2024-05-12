@@ -30,7 +30,7 @@ const DashboardScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchPredictedData();
-  }, [authToken]);
+  }, [authToken, navigation]);
 
   const navigateToPrediction = () => {
     navigation.navigate("Prediction");
@@ -164,7 +164,7 @@ const DashboardScreen = ({ navigation }) => {
             </ScrollView>
           </View>
         </ScrollView>
-        <Navbar />
+        <Navbar navigation={navigation} />
         
         <Modal
           animationType="slide"

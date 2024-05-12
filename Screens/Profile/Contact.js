@@ -68,7 +68,7 @@ const ContactScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-      <Navbar />
+      <Navbar navigation={navigation} />
     </>
   );
 };

@@ -5,8 +5,7 @@ import { TouchableOpacity, StyleSheet, View, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const Navbar = () => {
-  const navigation = useNavigation();
+const Navbar = ({ navigation }) => {
 
   const navigateToOverview = () => {
     navigation.navigate("Dashboard");

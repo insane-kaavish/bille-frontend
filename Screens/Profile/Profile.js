@@ -124,7 +124,7 @@ const ProfileScreen = ({ navigation }) => {
         </View>
       </View>
 
-      <Navbar />
+      <Navbar navigation={navigation} />
     </>
   );
 };
