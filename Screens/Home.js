@@ -104,8 +104,11 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
-  useEffect(() => {
-    Animated.loop(
+  const catAnimation = useRef(null); // Ref to hold the animation
+
+useEffect(() => {
+  const startAnimation = () => {
+    catAnimation.current = Animated.loop(
       Animated.sequence([
         Animated.timing(catPosition, {
           toValue: 100,
@@ -118,8 +121,25 @@ const HomeScreen = ({ navigation }) => {
           useNativeDriver: true,
         }),
       ])
-    ).start();
-  }, []);
+    );
+    catAnimation.current.start();
+  };
+
+  if (!modalVisible) {
+    startAnimation(); // Start the animation if modal is not visible
+  } else {
+    if (catAnimation.current) {
+      catAnimation.current.stop(); // Stop the animation if modal is visible
+    }
+  }
+
+  // Cleanup function to stop the animation when the component unmounts or modal visibility changes
+  return () => {
+    if (catAnimation.current) {
+      catAnimation.current.stop();
+    }
+  };
+}, [modalVisible]);
 
   const intervalIdRef = useRef(null);
 
@@ -255,6 +275,7 @@ const HomeScreen = ({ navigation }) => {
         Meanwhile, enjoy watching our configuration assistant rushing to set
         your application for you.
       </Text>
+      {!modalVisible && (
       <Animated.View
         style={[styles.widget, { transform: [{ translateX: catPosition }] }]}
       >
@@ -263,6 +284,7 @@ const HomeScreen = ({ navigation }) => {
           style={{ width: 180, height: 150 }}
         />
       </Animated.View>
+    )}
     </View>
   );
 };
