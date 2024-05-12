@@ -9,6 +9,7 @@ import {
   Modal,
   TextInput,
   Dimensions,
+  BackHandler,
 } from "react-native";
 import { useAuth } from "./Auth/AuthProvider";
 import { Colors } from "./Styles/GlobalStyles";
@@ -139,8 +140,9 @@ const HomeScreen = ({ navigation }) => {
         }, 15000);
       }
     };
-    fetchData();
-
+    if (authToken) {
+      fetchData();
+    }
     // Clear interval on component unmount or when fetchData is called again
     return () => {
       if (intervalIdRef.current) {
@@ -188,6 +190,22 @@ const HomeScreen = ({ navigation }) => {
       setError("Failed to update account number.");
       setModalVisible(true);
     }
+  };
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      handleBackButtonPress
+    );
+
+    // Cleanup function
+    return () => backHandler.remove();
+  }, []);
+
+  const handleBackButtonPress = () => {
+    // Return `true` to indicate that you have handled the back press
+    // and you don't want the default behavior to be executed.
+    return true;
   };
 
   return (
