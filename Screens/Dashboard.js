@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   Modal,
   Dimensions,
+  BackHandler,
+  ToastAndroid,
 } from "react-native";
 import { FontAwesome5, Entypo } from "@expo/vector-icons";
 import Header from "./Components/Header";
@@ -14,6 +16,8 @@ import Navbar from "./Components/Navbar";
 import { useAuth } from "./Auth/AuthProvider";
 import { useBill } from "./Components/BillProvider";
 import { GlobalStyles } from "./Styles/GlobalStyles";
+
+const DOUBLE_PRESS_DELAY = 2000; // Two seconds delay for the second back press
 
 const DashboardScreen = ({ navigation }) => {
   const { authToken } = useAuth();
@@ -64,6 +68,32 @@ const DashboardScreen = ({ navigation }) => {
     };
     setModalContent(detailedBill);
     setModalVisible(true);
+  };
+
+  let lastBackPressed = 0;
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      handleBackButtonPress
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
+  const handleBackButtonPress = () => {
+    if (lastBackPressed && lastBackPressed + DOUBLE_PRESS_DELAY > Date.now()) {
+      // If the two presses are within the defined duration, exit the app
+      BackHandler.exitApp();
+      return true;
+    }
+
+    // Record the time of the first back press
+    lastBackPressed = Date.now();
+
+    // Inform the user that pressing back again will exit the app
+    ToastAndroid.show('Press back again to exit', ToastAndroid.SHORT);
+    return true;
   };
 
   return (
